@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { walkDirectory, ALL_EXTENSIONS, type WalkedFile } from "./file-walker.js";
+import { generateSecretsAuditSection } from "./secrets-scanner.js";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -379,6 +380,12 @@ export function generateEnvAudit(projectPath: string): string {
       lines.push(`- \`${v.name}\``);
     }
     lines.push("");
+  }
+
+  // ── Hardcoded secrets scan ──────────────────────────────────────────────
+  const secretsSection = generateSecretsAuditSection(projectPath);
+  if (secretsSection) {
+    lines.push(secretsSection);
   }
 
   lines.push("---");

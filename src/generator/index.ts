@@ -41,6 +41,8 @@ import { applyOverrides } from "./customization.js";
 import { hasCustomTemplate, renderCustomTemplate } from "../templates/engine.js";
 import { generateLicenseCompliance } from "../scanner/license-scanner.js";
 import { generateWhistleblowerPolicy } from "./whistleblower.js";
+import { generateRecordOfProcessing } from "./record-of-processing.js";
+import { generateTransferImpactAssessment } from "./international-transfer-impact.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -451,6 +453,26 @@ export function generateDocuments(
       name: "Whistleblower Policy",
       filename: "WHISTLEBLOWER_POLICY.md",
       content: whistleblowerPolicy,
+    });
+  }
+
+  // Record of Processing Activities — GDPR Article 30 requirement
+  const recordOfProcessing = generateRecordOfProcessing(docScan, ctx);
+  if (recordOfProcessing) {
+    docs.push({
+      name: "Record of Processing Activities",
+      filename: "RECORD_OF_PROCESSING_ACTIVITIES.md",
+      content: recordOfProcessing,
+    });
+  }
+
+  // Transfer Impact Assessment — Schrems II compliance for EU-to-US transfers
+  const transferImpact = generateTransferImpactAssessment(docScan, ctx);
+  if (transferImpact) {
+    docs.push({
+      name: "Transfer Impact Assessment",
+      filename: "TRANSFER_IMPACT_ASSESSMENT.md",
+      content: transferImpact,
     });
   }
 
