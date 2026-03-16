@@ -29,9 +29,9 @@ In accordance with GDPR Art. 13(1)(e) and Art. 14(1)(d), we collect the followin
 
 ### Personal Identity Data
 
-Email addresses, names, profile pictures, and account credentials collected through authentication.
+Email addresses, names, profile pictures, and account credentials collected through authentication. names detected in Prisma schema fields: User.name.
 
-**Collected through:** @supabase/supabase-js
+**Collected through:** @supabase/supabase-js, User.name
 
 ### Financial Data
 
@@ -63,6 +63,18 @@ Error reports, stack traces, performance data, and user context collected throug
 
 **Collected through:** @sentry/node
 
+### Contact Information
+
+email addresses, phone numbers detected in Prisma schema fields: User.email, User.phone.
+
+**Collected through:** User.email, User.phone
+
+### Authentication Data
+
+password hashes detected in Prisma schema fields: User.passwordHash.
+
+**Collected through:** User.passwordHash
+
 ### How Your Data Flows Through Our Service
 
 The following summarizes how personal data moves through our application:
@@ -74,6 +86,12 @@ The following summarizes how personal data moves through our application:
 - AI-powered feature usage → user prompts, conversation history, generated content (via openai)
 - Email subscription/contact forms → email addresses, email content (via resend)
 - Payment checkout → payment information, billing address, email, transaction history (via stripe)
+
+**Data Storage:**
+
+- Database schema (Personal Identity Data): @supabase/supabase-js, User.name
+- Database schema (Contact Information): User.email, User.phone
+- Database schema (Authentication Data): User.passwordHash
 
 **Third-Party Data Sharing:**
 
@@ -92,9 +110,9 @@ We classify the personal data we collect according to GDPR sensitivity levels to
 | Sensitivity Level | Fields Detected | Protection Standard |
 |-------------------|-----------------|--------------------|
 | Special Category (Art. 9) | 2 | Explicit consent, DPIA, encryption, DPO oversight |
-| High | 6 | Encryption, tokenization, access control, audit logging |
-| Medium | 5 | Encryption in transit, consent, user access rights |
-| Low | 25 | Encryption in transit, anonymization where possible |
+| High | 8 | Encryption, tokenization, access control, audit logging |
+| Medium | 7 | Encryption in transit, consent, user access rights |
+| Low | 27 | Encryption in transit, anonymization where possible |
 
 For a detailed breakdown of each data field and its classification, see our Data Classification Report.
 

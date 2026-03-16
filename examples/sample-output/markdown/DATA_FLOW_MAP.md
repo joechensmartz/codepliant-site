@@ -26,7 +26,11 @@ The following entry points collect personal data from users:
 
 The following services and systems store personal data:
 
-No data storage services were detected.
+| Storage System | Category | Data Stored |
+|---------------|----------|-------------|
+| Database schema | Personal Identity Data | @supabase/supabase-js, User.name |
+| Database schema | Contact Information | User.email, User.phone |
+| Database schema | Authentication Data | User.passwordHash |
 
 ## Third-Party Data Sharing
 
@@ -53,7 +57,9 @@ COLLECTION:
 - Payment checkout → payment information, billing address, email, transaction history (via stripe)
 
 STORAGE:
-- No data storage services detected
+- Database schema (Personal Identity Data) → @supabase/supabase-js, User.name
+- Database schema (Contact Information) → User.email, User.phone
+- Database schema (Authentication Data) → User.passwordHash
 
 SHARING (Third Parties):
 - @anthropic-ai/sdk → user prompts, conversation history, generated content

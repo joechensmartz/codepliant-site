@@ -12,11 +12,11 @@
 | Sensitivity Level | Count | Description |
 |-------------------|-------|-------------|
 | Special Category (Art. 9) | 2 | Health, biometric, genetic, racial, political, religious, sexual orientation, trade union |
-| High | 6 | Financial (PCI), government ID (SSN), authentication credentials |
-| Medium | 5 | Contact info (email, phone), identity (name, DOB), location |
-| Low | 25 | Behavioral (analytics), technical (IP, device info), preferences |
+| High | 8 | Financial (PCI), government ID (SSN), authentication credentials |
+| Medium | 7 | Contact info (email, phone), identity (name, DOB), location |
+| Low | 27 | Behavioral (analytics), technical (IP, device info), preferences |
 
-**Total classified fields:** 38
+**Total classified fields:** 44
 
 ---
 
@@ -30,13 +30,17 @@
 | payment information | stripe | High | Financial — payment data | 7 years (tax/legal compliance) |
 | billing address | stripe | High | Financial — payment data | 7 years (tax/legal compliance) |
 | transaction history | stripe | High | Financial — payment data | 7 years (tax/legal compliance) |
-| Email addresses, names, profile pictures, and account credentials collected through authentication. | @supabase/supabase-js | High | Authentication credential | Until account deletion; rotate regularly |
+| Email addresses, names, profile pictures, and account credentials collected through authentication. names detected in Prisma schema fields: User.name. | @supabase/supabase-js | High | Authentication credential | Until account deletion; rotate regularly |
+| Email addresses, names, profile pictures, and account credentials collected through authentication. names detected in Prisma schema fields: User.name. | User.name | High | Authentication credential | Until account deletion; rotate regularly |
 | Payment card information, billing addresses, and transaction history processed through payment providers. | stripe | High | Financial — payment data | 7 years (tax/legal compliance) |
+| password hashes detected in Prisma schema fields: User.passwordHash. | User.passwordHash | High | Authentication credential | Until account deletion; rotate regularly |
 | email | @supabase/supabase-js | Medium | Contact — email | Until account deletion or consent withdrawal |
 | email addresses | resend | Medium | Contact — email | Until account deletion or consent withdrawal |
 | email content | resend | Medium | Contact — email | Until account deletion or consent withdrawal |
 | email | stripe | Medium | Contact — email | Until account deletion or consent withdrawal |
 | Email addresses and email content processed through email service providers. | resend | Medium | Contact — email | Until account deletion or consent withdrawal |
+| email addresses, phone numbers detected in Prisma schema fields: User.email, User.phone. | User.email | Medium | Contact — email | Until account deletion or consent withdrawal |
+| email addresses, phone numbers detected in Prisma schema fields: User.email, User.phone. | User.phone | Medium | Contact — email | Until account deletion or consent withdrawal |
 | user prompts | @anthropic-ai/sdk | Low | Unclassified data | Review and define retention policy |
 | conversation history | @anthropic-ai/sdk | Low | Unclassified data | Review and define retention policy |
 | generated content | @anthropic-ai/sdk | Low | Unclassified data | Review and define retention policy |
@@ -62,6 +66,8 @@
 | AI Interaction Data | category:AI Interaction Data | Low | Unclassified data | Review and define retention policy |
 | Communication Data | category:Communication Data | Low | Unclassified data | Review and define retention policy |
 | Technical & Diagnostic Data | category:Technical & Diagnostic Data | Low | Unclassified data | Review and define retention policy |
+| Contact Information | category:Contact Information | Low | Unclassified data | Review and define retention policy |
+| Authentication Data | category:Authentication Data | Low | Unclassified data | Review and define retention policy |
 
 
 ---
@@ -77,7 +83,7 @@
 - **Minimize collection**: Only collect what is strictly necessary for the stated purpose
 - **Audit logging**: Maintain detailed access logs for all special category data
 
-### High Sensitivity Data — 6 field(s)
+### High Sensitivity Data — 8 field(s)
 
 - **Encrypt at rest and in transit** using industry-standard algorithms (AES-256, TLS 1.2+)
 - **Tokenize payment data** — never store raw card numbers (PCI DSS requirement)
@@ -86,7 +92,7 @@
 - **Retain per regulatory requirements** (e.g., 7 years for financial records)
 - **Regular security audits** and penetration testing recommended
 
-### Medium Sensitivity Data — 5 field(s)
+### Medium Sensitivity Data — 7 field(s)
 
 - **Encrypt in transit** (TLS 1.2+); encrypt at rest where feasible
 - **Obtain clear consent** before collection; provide opt-out mechanisms
@@ -94,7 +100,7 @@
 - **Pseudonymize** where possible to reduce risk
 - **Define clear retention periods** and automate data deletion
 
-### Low Sensitivity Data — 25 field(s)
+### Low Sensitivity Data — 27 field(s)
 
 - **Encrypt in transit** (TLS 1.2+)
 - **Anonymize or aggregate** analytics data where possible
