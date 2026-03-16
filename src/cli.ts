@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "310.0.0";
+const VERSION = "320.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -97,6 +97,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}completeness${RESET()}    Show percentage of recommended docs that exist
   ${CYAN()}migrate${RESET()}         Show new document types available after upgrade
   ${CYAN()}tree${RESET()}            Show generated files as a tree with sizes and categories
+  ${CYAN()}fix${RESET()}             Auto-fix common compliance issues
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -714,6 +715,21 @@ ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant generate --format html${RESET()}     Generate as HTML
 `,
 
+  fix: `${BOLD()}codepliant fix${RESET()} <issue> [path]
+
+Auto-fix common compliance issues.
+
+${BOLD()}Issues:${RESET()}
+  ${CYAN()}missing-dpo${RESET()}       Prompt for DPO info and save to config
+  ${CYAN()}stale-docs${RESET()}        Regenerate all compliance documents
+  ${CYAN()}missing-consent${RESET()}   Add cookie banner recommendation
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant fix missing-dpo${RESET()}           Set up DPO information
+  ${CYAN()}codepliant fix stale-docs${RESET()}            Regenerate all documents
+  ${CYAN()}codepliant fix missing-consent${RESET()}       Get cookie banner guidance
+`,
+
   count: `${BOLD()}codepliant count${RESET()} [path] [options]
 
 Quick stats: number of detected services, documents to generate, and compliance score.
@@ -1144,7 +1160,7 @@ function main() {
         console.error(`${RED()}Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
         process.exit(1);
       }
-    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show")) {
+    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show") && !(command === "fix" && (arg === "missing-dpo" || arg === "stale-docs" || arg === "missing-consent"))) {
       projectPath = arg;
     }
   }
@@ -1507,6 +1523,11 @@ function main() {
 
     if (command === "changelog") {
       runChangelog(quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "fix") {
+      runFix(absProjectPath, absOutputDir, args, quiet, verbose);
       return;
     }
 
@@ -2955,6 +2976,123 @@ function runNotify(
   });
 }
 
+// --- `codepliant fix` command ---
+
+function runFix(
+  absProjectPath: string,
+  absOutputDir: string,
+  args: string[],
+  quiet: boolean,
+  verbose: boolean
+) {
+  const issue = args[1];
+
+  if (!issue) {
+    console.error(`\n${RED()}${BOLD()}Error:${RESET()} Please specify an issue to fix.\n`);
+    console.log(`${BOLD()}Available fixes:${RESET()}`);
+    console.log(`  ${CYAN()}codepliant fix missing-dpo${RESET()}       Set up DPO information`);
+    console.log(`  ${CYAN()}codepliant fix stale-docs${RESET()}        Regenerate all documents`);
+    console.log(`  ${CYAN()}codepliant fix missing-consent${RESET()}   Cookie banner recommendation\n`);
+    process.exit(1);
+  }
+
+  if (issue === "missing-dpo") {
+    const config = loadConfig(absProjectPath);
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+    const ask = (question: string): Promise<string> =>
+      new Promise((resolve) => rl.question(question, resolve));
+
+    (async () => {
+      console.log(`\n${BOLD()}${CYAN()}DPO Configuration${RESET()}\n`);
+
+      const dpoName = await ask(`  ${BOLD()}DPO Name${RESET()} [${config.dpoName || "none"}]: `);
+      const dpoEmail = await ask(`  ${BOLD()}DPO Email${RESET()} [${config.dpoEmail || "none"}]: `);
+      const euRep = await ask(`  ${BOLD()}EU Representative${RESET()} [${config.euRepresentative || "none"}]: `);
+
+      rl.close();
+
+      if (dpoName.trim()) config.dpoName = dpoName.trim();
+      if (dpoEmail.trim()) config.dpoEmail = dpoEmail.trim();
+      if (euRep.trim()) config.euRepresentative = euRep.trim();
+
+      const configPath = saveConfig(absProjectPath, config);
+
+      console.log(`\n${GREEN()}${BOLD()}Done!${RESET()} DPO info saved to ${DIM()}${path.relative(absProjectPath, configPath)}${RESET()}`);
+      if (config.dpoName) console.log(`  ${DIM()}DPO Name:${RESET()} ${config.dpoName}`);
+      if (config.dpoEmail) console.log(`  ${DIM()}DPO Email:${RESET()} ${config.dpoEmail}`);
+      if (config.euRepresentative) console.log(`  ${DIM()}EU Representative:${RESET()} ${config.euRepresentative}`);
+      console.log(`\n${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to regenerate documents with DPO info.${RESET()}\n`);
+      process.exit(0);
+    })();
+    return;
+  }
+
+  if (issue === "stale-docs") {
+    if (!quiet) printBanner();
+    console.log(`${BOLD()}Regenerating all compliance documents...${RESET()}\n`);
+
+    const config = loadConfig(absProjectPath);
+    const { result, durationMs } = scanWithProgress(absProjectPath, quiet, verbose);
+    const docs = generateDocuments(result, config);
+
+    if (!fs.existsSync(absOutputDir)) {
+      fs.mkdirSync(absOutputDir, { recursive: true });
+    }
+
+    writeDocuments(docs, absOutputDir);
+
+    console.log(`\n${GREEN()}${BOLD()}Done!${RESET()} Regenerated ${BOLD()}${docs.length}${RESET()} documents in ${DIM()}${path.relative(absProjectPath, absOutputDir)}/${RESET()}`);
+    console.log(`${DIM()}Scan took ${durationMs}ms${RESET()}\n`);
+    process.exit(0);
+  }
+
+  if (issue === "missing-consent") {
+    console.log(`\n${BOLD()}${CYAN()}Cookie Consent Recommendation${RESET()}\n`);
+
+    const config = loadConfig(absProjectPath);
+    const result = scan(absProjectPath);
+    // Detect services that may set cookies or collect behavioural data
+    const cookieRelated = result.services.filter(
+      (s) => s.category === "analytics" || s.category === "advertising" ||
+        s.dataCollected.some((d) => /cookie|session|behavioural/i.test(d))
+    );
+
+    const allRelevant = [...new Set(cookieRelated)];
+
+    if (allRelevant.length === 0) {
+      console.log(`  ${GREEN()}No cookie-setting services detected.${RESET()}`);
+      console.log(`  ${DIM()}Cookie consent banner may not be required for this project.${RESET()}\n`);
+      process.exit(0);
+    }
+
+    console.log(`  ${YELLOW()}${BOLD()}${allRelevant.length} service(s)${RESET()} detected that may require cookie consent:\n`);
+    for (const svc of allRelevant) {
+      console.log(`    ${YELLOW()}●${RESET()} ${svc.name} (${svc.category})`);
+    }
+
+    console.log(`\n  ${BOLD()}Recommended actions:${RESET()}\n`);
+    console.log(`    1. ${CYAN()}Install a cookie consent manager${RESET()} (e.g., Cookiebot, OneTrust, cookie-consent)`);
+    console.log(`    2. ${CYAN()}Block non-essential cookies${RESET()} until the user provides consent`);
+    console.log(`    3. ${CYAN()}Categorise cookies${RESET()} as: Necessary, Analytics, Marketing, Preferences`);
+    console.log(`    4. ${CYAN()}Add banner to your app${RESET()} that allows granular opt-in/opt-out`);
+    console.log(`    5. ${CYAN()}Log consent records${RESET()} with timestamp, version, and choices\n`);
+
+    console.log(`  ${BOLD()}GDPR/ePrivacy Directive requirements:${RESET()}\n`);
+    console.log(`    - Prior consent required for non-essential cookies (Directive 2002/58/EC)`);
+    console.log(`    - Consent must be freely given, specific, informed, and unambiguous`);
+    console.log(`    - Pre-ticked boxes do not constitute valid consent`);
+    console.log(`    - Users must be able to withdraw consent as easily as they gave it\n`);
+
+    console.log(`  ${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to generate a Cookie Policy and Cookie Consent Config.${RESET()}\n`);
+    process.exit(0);
+  }
+
+  console.error(`${RED()}Unknown fix issue: "${issue}"${RESET()}`);
+  console.error(`${DIM()}Available: missing-dpo, stale-docs, missing-consent${RESET()}`);
+  process.exit(1);
+}
+
 // --- `codepliant dashboard` command ---
 
 function runDashboard(
@@ -3099,6 +3237,57 @@ function runDashboard(
   else if (score > 60) barColor = YELLOW();
   const progressBar = `${barColor}${"█".repeat(filledBlocks)}${DIM()}${"░".repeat(emptyBlocks)}${RESET()}`;
 
+  // Score history sparkline
+  const scoresFile = path.join(absProjectPath, ".codepliant-scores.json");
+  let sparkline = "";
+  let trendLabel = "";
+  try {
+    if (fs.existsSync(scoresFile)) {
+      const raw = fs.readFileSync(scoresFile, "utf-8");
+      const history: { date: string; score: number }[] = JSON.parse(raw);
+      if (history.length > 0) {
+        // Take last 8 entries + current
+        const recentScores = [...history.slice(-7).map((h) => h.score), score];
+        const sparkChars = "▁▂▃▄▅▆▇█";
+        const minS = Math.min(...recentScores);
+        const maxS = Math.max(...recentScores);
+        const range = maxS - minS || 1;
+        const spark = recentScores
+          .map((s) => sparkChars[Math.min(7, Math.floor(((s - minS) / range) * 7))])
+          .join("");
+        sparkline = ` ${DIM()}${spark}${RESET()}`;
+
+        // Determine trend
+        const prev = history[history.length - 1]?.score ?? score;
+        if (score > prev) trendLabel = ` ${GREEN()}(improving)${RESET()}`;
+        else if (score < prev) trendLabel = ` ${RED()}(declining)${RESET()}`;
+        else trendLabel = ` ${DIM()}(stable)${RESET()}`;
+      }
+    }
+  } catch {
+    // ignore errors reading score history
+  }
+
+  // Save current score to history
+  try {
+    let history: { date: string; score: number }[] = [];
+    if (fs.existsSync(scoresFile)) {
+      try {
+        history = JSON.parse(fs.readFileSync(scoresFile, "utf-8"));
+      } catch { /* start fresh */ }
+    }
+    const today = new Date().toISOString().split("T")[0];
+    // Only add one entry per day
+    if (history.length === 0 || history[history.length - 1].date !== today) {
+      history.push({ date: today, score });
+      // Keep last 30 entries
+      if (history.length > 30) history = history.slice(-30);
+      fs.writeFileSync(scoresFile, JSON.stringify(history, null, 2) + "\n", "utf-8");
+    }
+  } catch {
+    // ignore errors writing score history
+  }
+
   const topBorder = `${CYAN()}┌─ CODEPLIANT DASHBOARD ${"─".repeat(BOX_WIDTH - 25)}┐${RESET()}`;
   const bottomBorder = `${CYAN()}└${"─".repeat(BOX_WIDTH - 2)}┘${RESET()}`;
 
@@ -3109,8 +3298,8 @@ function runDashboard(
   // Project name
   lines.push(line(`${BOLD()}Project:${RESET()} ${result.projectName}`));
 
-  // Score
-  lines.push(line(`${BOLD()}Score:${RESET()}   ${progressBar} ${barColor}${BOLD()}${score}%${RESET()}`));
+  // Score with sparkline
+  lines.push(line(`${BOLD()}Score:${RESET()}   ${progressBar} ${barColor}${BOLD()}${score}%${RESET()}${sparkline}${trendLabel}`));
 
   lines.push(emptyLine());
 

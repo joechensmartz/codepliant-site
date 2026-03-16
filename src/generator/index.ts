@@ -107,6 +107,8 @@ import { generateThirdPartyDueDiligence } from "./third-party-due-diligence.js";
 import { generateComplianceSummaryEmail } from "./compliance-summary-email.js";
 import { generateVendorExitPlan } from "./vendor-exit-plan.js";
 import { generatePrivacyPolicyComparison } from "./privacy-policy-comparison.js";
+import { generateAIImpactAssessment } from "./ai-impact-assessment.js";
+import { generateCrossBorderTransferMap } from "./cross-border-transfer-map.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1077,6 +1079,26 @@ export function generateDocuments(
       name: "Privacy Policy Comparison",
       filename: "PRIVACY_POLICY_COMPARISON.md",
       content: privacyPolicyComparison,
+    });
+  }
+
+  // AI Impact Assessment — EU AI Act + Colorado AI Act combined assessment
+  const aiImpactAssessment = generateAIImpactAssessment(docScan, ctx);
+  if (aiImpactAssessment) {
+    docs.push({
+      name: "AI Impact Assessment",
+      filename: "AI_IMPACT_ASSESSMENT.md",
+      content: aiImpactAssessment,
+    });
+  }
+
+  // Cross-Border Transfer Map — visual map of all international data transfers
+  const crossBorderMap = generateCrossBorderTransferMap(docScan, ctx);
+  if (crossBorderMap) {
+    docs.push({
+      name: "Cross-Border Transfer Map",
+      filename: "CROSS_BORDER_TRANSFER_MAP.md",
+      content: crossBorderMap,
     });
   }
 
