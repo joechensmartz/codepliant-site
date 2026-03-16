@@ -81,6 +81,8 @@ import { generateOpenSourceNotice } from "./open-source-notice.js";
 import { generateThirdPartyCookieNotice } from "./third-party-cookie-notice.js";
 import { generateDataPortabilityGuide } from "./data-portability-guide.js";
 import { generateAITrainingDataNotice } from "./ai-training-data-notice.js";
+import { generateEmployeeHandbookPrivacySection } from "./employee-handbook-privacy.js";
+import { generateVendorOnboardingChecklist } from "./vendor-onboarding-checklist.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -797,6 +799,26 @@ export function generateDocuments(
       name: "AI Training Data Notice",
       filename: "AI_TRAINING_DATA_NOTICE.md",
       content: aiTrainingDataNotice,
+    });
+  }
+
+  // Employee Handbook Privacy Section — monitoring policies, device usage, email monitoring
+  const employeeHandbookPrivacy = generateEmployeeHandbookPrivacySection(docScan, ctx);
+  if (employeeHandbookPrivacy) {
+    docs.push({
+      name: "Employee Handbook Privacy Section",
+      filename: "EMPLOYEE_HANDBOOK_PRIVACY_SECTION.md",
+      content: employeeHandbookPrivacy,
+    });
+  }
+
+  // Vendor Onboarding Checklist — DPA, security assessment, data classification
+  const vendorOnboardingChecklist = generateVendorOnboardingChecklist(docScan, ctx);
+  if (vendorOnboardingChecklist) {
+    docs.push({
+      name: "Vendor Onboarding Checklist",
+      filename: "VENDOR_ONBOARDING_CHECKLIST.md",
+      content: vendorOnboardingChecklist,
     });
   }
 

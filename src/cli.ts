@@ -33,7 +33,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "160.0.0";
+const VERSION = "170.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -88,6 +88,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}diff${RESET()}            Show changes since last generation
   ${CYAN()}dashboard${RESET()}       Show compliance status dashboard
   ${CYAN()}status${RESET()}          Alias for dashboard
+  ${CYAN()}summary${RESET()}         One-paragraph plain English compliance summary
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -482,18 +483,18 @@ ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant explain "AI Disclosure" ./my-app${RESET()}
   ${CYAN()}codepliant explain --json "Cookie Policy"${RESET()}
 `,
-  compare: `\${BOLD()}codepliant compare\${RESET()} <path1> <path2> [options]
+  compare: `${BOLD()}codepliant compare${RESET()} <path1> <path2> [options]
 
 Compare compliance status of two projects side by side.
 
-\${BOLD()}Options:\${RESET()}
-  \${DIM()}--json\${RESET()}                Output comparison as JSON
-  \${DIM()}--quiet, -q\${RESET()}           Minimal output
-  \${DIM()}--no-color\${RESET()}            Disable colored output
+${BOLD()}Options:${RESET()}
+  ${DIM()}--json${RESET()}                Output comparison as JSON
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
 
-\${BOLD()}Examples:\${RESET()}
-  \${CYAN()}codepliant compare ./app1 ./app2\${RESET()}      Compare two projects
-  \${CYAN()}codepliant compare ./app1 ./app2 --json\${RESET()}  JSON output
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant compare ./app1 ./app2${RESET()}      Compare two projects
+  ${CYAN()}codepliant compare ./app1 ./app2 --json${RESET()}  JSON output
 `,
 
   publish: `${BOLD()}codepliant publish${RESET()} [path] [options]
@@ -574,11 +575,123 @@ ${BOLD()}Examples:${RESET()}
   status: `${BOLD()}codepliant status${RESET()} [path] [options]
 
 Alias for ${CYAN()}codepliant dashboard${RESET()}. Show compliance status dashboard.
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant status${RESET()}                    Show dashboard for current project
+  ${CYAN()}codepliant status ./my-app${RESET()}            Dashboard for a specific project
+  ${CYAN()}codepliant status --json${RESET()}              JSON output for scripts
 `,
 
   generate: `${BOLD()}codepliant generate${RESET()} [path] [options]
 
 Alias for ${CYAN()}codepliant go${RESET()}. Scan + generate compliance documents.
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant generate${RESET()}                  Generate docs for current directory
+  ${CYAN()}codepliant generate ./my-app${RESET()}          Generate for a specific project
+  ${CYAN()}codepliant generate --format html${RESET()}     Generate as HTML
+`,
+
+  count: `${BOLD()}codepliant count${RESET()} [path] [options]
+
+Quick stats: number of detected services, documents to generate, and compliance score.
+Output is machine-friendly (key=value pairs) for use in scripts and CI.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--json${RESET()}                Output as JSON
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant count${RESET()}                     Quick stats for current project
+  ${CYAN()}codepliant count ./my-app${RESET()}             Stats for a specific project
+  ${CYAN()}codepliant count --json${RESET()}               JSON output for CI
+`,
+
+  notify: `${BOLD()}codepliant notify${RESET()} [path] [options]
+
+Send compliance status notification via configured channels (Slack, email, webhook).
+Configure notification settings in .codepliant.json.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Document directory (default: ./legal)
+  ${DIM()}--json${RESET()}                Output notification payload as JSON
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant notify${RESET()}                    Send notification for current project
+  ${CYAN()}codepliant notify ./my-app${RESET()}            Notify for a specific project
+  ${CYAN()}codepliant notify --json${RESET()}              Preview payload without sending
+`,
+
+  serve: `${BOLD()}codepliant serve${RESET()} [options]
+
+Start the Codepliant HTTP API server for programmatic access.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--port <number>${RESET()}        Port number (default: 3939)
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant serve${RESET()}                     Start server on port 3939
+  ${CYAN()}codepliant serve --port 8080${RESET()}          Start on a custom port
+`,
+
+  upgrade: `${BOLD()}codepliant upgrade${RESET()} [plan]
+
+Upgrade to a Pro or Team plan.
+
+${BOLD()}Plans:${RESET()}
+  ${CYAN()}pro${RESET()}          Pro plan — advanced features
+  ${CYAN()}team${RESET()}         Team plan — multi-user, team config
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant upgrade pro${RESET()}                Upgrade to Pro
+  ${CYAN()}codepliant upgrade team${RESET()}               Upgrade to Team
+`,
+
+  activate: `${BOLD()}codepliant activate${RESET()} <license-key>
+
+Activate a license key for Pro or Team plan features.
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant activate XXXX-XXXX-XXXX${RESET()}   Activate a license key
+`,
+
+  deactivate: `${BOLD()}codepliant deactivate${RESET()}
+
+Remove the current license key and revert to free tier.
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant deactivate${RESET()}                Remove license key
+`,
+
+  template: `${BOLD()}codepliant template${RESET()} <init>
+
+Manage custom document templates. Initialize a templates directory with
+editable copies of all document templates.
+
+${BOLD()}Subcommands:${RESET()}
+  ${CYAN()}init${RESET()}        Create templates directory with defaults
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant template init${RESET()}              Initialize templates directory
+`,
+
+  summary: `${BOLD()}codepliant summary${RESET()} [path] [options]
+
+Print a one-paragraph plain English summary of your project's compliance status.
+Includes service count, key services, needed documents, and compliance score.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--json${RESET()}                Output as JSON
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant summary${RESET()}                   Summary for current project
+  ${CYAN()}codepliant summary ./my-app${RESET()}           Summary for a specific project
+  ${CYAN()}codepliant summary --json${RESET()}             JSON output for scripts
 `,
   };
 }
@@ -971,6 +1084,11 @@ function main() {
 
     if (command === "count") {
       runCount(absProjectPath, absOutputDir, jsonOutput);
+      return;
+    }
+
+    if (command === "summary") {
+      runSummary(absProjectPath, absOutputDir, jsonOutput);
       return;
     }
 
@@ -1952,6 +2070,67 @@ function runCount(
 
   // One-line output for scripting
   console.log(`services=${result.services.length} documents=${docs.length} score=${fullScore.total} grade=${fullScore.grade}`);
+  process.exit(0);
+}
+
+// --- `codepliant summary` command ---
+
+function runSummary(
+  absProjectPath: string,
+  absOutputDir: string,
+  jsonOutput: boolean,
+) {
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+  const docs = generateDocuments(result, config);
+
+  const scoreInput: ScoreInput = {
+    scanResult: result,
+    docs,
+    config,
+    outputDir: absOutputDir,
+  };
+  const fullScore = computeFullComplianceScore(scoreInput);
+
+  // Identify key/notable services to name explicitly
+  const serviceNames = result.services.map((s) => s.name);
+  const notable = serviceNames.filter((n) =>
+    /openai|stripe|anthropic|google|sentry|posthog|mixpanel|amplitude|datadog|twilio|sendgrid|aws|firebase|supabase|clerk|auth0|vercel/i.test(n)
+  );
+  const namedServices = notable.length > 0
+    ? notable.slice(0, 3).join(", ") + (notable.length > 3 ? `, and ${notable.length - 3} more` : "")
+    : serviceNames.slice(0, 3).join(", ") + (serviceNames.length > 3 ? `, and ${serviceNames.length - 3} more` : "");
+
+  // Identify needed document types
+  const neededDocs = [...new Set(result.complianceNeeds.map((n) => n.document))];
+  const neededList = neededDocs.length > 0
+    ? neededDocs.slice(0, 4).map((d) => d.toLowerCase()).join(", ") + (neededDocs.length > 4 ? `, and ${neededDocs.length - 4} more` : "")
+    : "no additional documents";
+
+  // Build the summary paragraph
+  const serviceCountText = result.services.length === 1
+    ? "1 service"
+    : `${result.services.length} services`;
+  const docCountText = docs.length === 1
+    ? "1 document"
+    : `${docs.length} documents`;
+
+  const summary = `Your project uses ${serviceCountText}${namedServices ? ` including ${namedServices}` : ""}. You need ${neededList}. Codepliant generates ${docCountText} for your project. Your compliance score is ${fullScore.total}% (${fullScore.grade}).`;
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      summary,
+      services: result.services.length,
+      serviceNames,
+      documents: docs.length,
+      neededDocuments: neededDocs,
+      score: fullScore.total,
+      grade: fullScore.grade,
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`\n${summary}\n`);
   process.exit(0);
 }
 
