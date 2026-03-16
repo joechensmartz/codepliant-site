@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "380.0.0";
+const VERSION = "390.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -101,6 +101,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}todo${RESET()}            Show all actionable compliance items as a todo list
   ${CYAN()}benchmark${RESET()}       Compare your compliance score against industry average
   ${CYAN()}search${RESET()}          Search across all generated documents
+  ${CYAN()}audit${RESET()}           Run comprehensive self-audit, generate AUDIT_REPORT.md
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -1600,6 +1601,11 @@ function main() {
 
     if (command === "health") {
       runHealth(absProjectPath, absOutputDir, quiet);
+      return;
+    }
+
+    if (command === "audit") {
+      runAudit(absProjectPath, absOutputDir, quiet, jsonOutput);
       return;
     }
 
@@ -5591,6 +5597,305 @@ function runHealth(absProjectPath: string, absOutputDir: string, quiet: boolean)
   } else {
     console.log(`${YELLOW()}Issues found. Run ${CYAN()}codepliant doctor${RESET()}${YELLOW()} for details.${RESET()}\n`);
     process.exit(1);
+  }
+}
+
+// --- `codepliant audit` command ---
+
+function runAudit(absProjectPath: string, absOutputDir: string, quiet: boolean, jsonOutput: boolean) {
+  if (!quiet) printBanner();
+  console.log(`${BOLD()}Running comprehensive compliance audit...${RESET()}\n`);
+
+  interface AuditFinding {
+    category: "config" | "docs" | "freshness" | "score" | "coverage";
+    severity: "pass" | "warning" | "critical";
+    title: string;
+    detail: string;
+    recommendation?: string;
+  }
+
+  const findings: AuditFinding[] = [];
+  const auditDate = new Date().toISOString().split("T")[0];
+  const auditTimestamp = new Date().toISOString();
+
+  // ── 1. Config Completeness ─────────────────────────────────────
+  const hasConfig = configExists(absProjectPath);
+  if (hasConfig) {
+    const config = loadConfig(absProjectPath);
+    const warnings = validateConfig(config);
+    if (warnings.length === 0) {
+      findings.push({ category: "config", severity: "pass", title: "Configuration complete", detail: "All config fields are valid and present." });
+    } else {
+      findings.push({
+        category: "config",
+        severity: "warning",
+        title: `Configuration has ${warnings.length} warning(s)`,
+        detail: warnings.map(w => w.message).join("; "),
+        recommendation: "Run 'codepliant init' to update your configuration.",
+      });
+    }
+    // Check important fields
+    if (!config.companyName || config.companyName === "[Your Company Name]") {
+      findings.push({ category: "config", severity: "warning", title: "Company name not set", detail: "companyName is missing or still a placeholder.", recommendation: "Set companyName in .codepliantrc.json." });
+    }
+    if (!config.contactEmail || config.contactEmail.includes("example.com")) {
+      findings.push({ category: "config", severity: "warning", title: "Contact email not set", detail: "contactEmail is missing or uses a placeholder.", recommendation: "Set contactEmail in .codepliantrc.json." });
+    }
+    if (!config.jurisdiction) {
+      findings.push({ category: "config", severity: "warning", title: "Jurisdiction not set", detail: "No jurisdiction configured. Compliance documents may not target the correct regulations.", recommendation: "Set jurisdiction (e.g. 'gdpr', 'ccpa') in .codepliantrc.json." });
+    }
+  } else {
+    findings.push({
+      category: "config",
+      severity: "critical",
+      title: "No configuration file",
+      detail: "No .codepliantrc.json found. Documents will use placeholder values.",
+      recommendation: "Run 'codepliant init' to create a configuration file.",
+    });
+  }
+
+  // ── 2. Document Completeness ───────────────────────────────────
+  let scanResult: ScanResult | null = null;
+  let generatedDocs: ReturnType<typeof generateDocuments> | null = null;
+  try {
+    const config = hasConfig ? loadConfig(absProjectPath) : undefined;
+    scanResult = scan(absProjectPath);
+    generatedDocs = generateDocuments(scanResult, config);
+  } catch (err: unknown) {
+    findings.push({ category: "docs", severity: "critical", title: "Scan failed", detail: err instanceof Error ? err.message : String(err), recommendation: "Ensure you are running codepliant from a valid project root." });
+  }
+
+  if (generatedDocs && scanResult) {
+    const expectedFilenames = new Set(generatedDocs.map(d => d.filename));
+
+    if (fs.existsSync(absOutputDir)) {
+      const existingFiles = new Set(fs.readdirSync(absOutputDir).filter(f => f.endsWith(".md") || f.endsWith(".json")));
+      const missing = [...expectedFilenames].filter(f => !existingFiles.has(f));
+      const extra = [...existingFiles].filter(f => !expectedFilenames.has(f));
+
+      if (missing.length === 0) {
+        findings.push({ category: "docs", severity: "pass", title: "All expected documents present", detail: `${expectedFilenames.size} document(s) expected, all found.` });
+      } else {
+        findings.push({
+          category: "docs",
+          severity: missing.length > 5 ? "critical" : "warning",
+          title: `${missing.length} document(s) missing`,
+          detail: `Missing: ${missing.slice(0, 10).join(", ")}${missing.length > 10 ? ` and ${missing.length - 10} more` : ""}`,
+          recommendation: "Run 'codepliant go' to generate all documents.",
+        });
+      }
+
+      if (extra.length > 0) {
+        findings.push({ category: "docs", severity: "pass", title: `${extra.length} additional document(s) found`, detail: `Extra files not in current generation set: ${extra.slice(0, 5).join(", ")}${extra.length > 5 ? "..." : ""}` });
+      }
+
+      // Coverage percentage
+      const coveragePct = expectedFilenames.size > 0 ? Math.round(((expectedFilenames.size - missing.length) / expectedFilenames.size) * 100) : 0;
+      findings.push({
+        category: "coverage",
+        severity: coveragePct >= 90 ? "pass" : coveragePct >= 60 ? "warning" : "critical",
+        title: `Document coverage: ${coveragePct}%`,
+        detail: `${expectedFilenames.size - missing.length} / ${expectedFilenames.size} recommended documents exist.`,
+        recommendation: coveragePct < 100 ? "Run 'codepliant go' to reach 100% coverage." : undefined,
+      });
+    } else {
+      findings.push({
+        category: "docs",
+        severity: "critical",
+        title: "No output directory",
+        detail: `Output directory (${path.basename(absOutputDir)}/) does not exist.`,
+        recommendation: "Run 'codepliant go' to scan and generate documents.",
+      });
+    }
+
+    // ── 3. Document Freshness ──────────────────────────────────────
+    if (fs.existsSync(absOutputDir)) {
+      try {
+        const docDiff = diffDocuments(generatedDocs, absOutputDir);
+        if (docDiff.hasChanges) {
+          const staleCount = docDiff.changes.length;
+          findings.push({
+            category: "freshness",
+            severity: staleCount > 10 ? "critical" : "warning",
+            title: `${staleCount} document(s) are stale`,
+            detail: `These documents differ from what would be generated now: ${docDiff.changes.slice(0, 5).map(c => c.filename).join(", ")}${staleCount > 5 ? "..." : ""}`,
+            recommendation: "Run 'codepliant go' or 'codepliant update' to refresh documents.",
+          });
+        } else {
+          findings.push({ category: "freshness", severity: "pass", title: "All documents are fresh", detail: "Generated documents match what the current scan would produce." });
+        }
+      } catch {
+        findings.push({ category: "freshness", severity: "warning", title: "Freshness check failed", detail: "Could not compare existing documents with expected output." });
+      }
+
+      // Check file ages
+      try {
+        const mdFiles = fs.readdirSync(absOutputDir).filter(f => f.endsWith(".md"));
+        const now = Date.now();
+        const oldFiles = mdFiles.filter(f => {
+          const stat = fs.statSync(path.join(absOutputDir, f));
+          return (now - stat.mtimeMs) > 90 * 24 * 60 * 60 * 1000; // > 90 days old
+        });
+        if (oldFiles.length > 0) {
+          findings.push({
+            category: "freshness",
+            severity: "warning",
+            title: `${oldFiles.length} document(s) older than 90 days`,
+            detail: `Files not modified in 90+ days: ${oldFiles.slice(0, 5).join(", ")}${oldFiles.length > 5 ? "..." : ""}`,
+            recommendation: "Regenerate documents to keep them current.",
+          });
+        } else if (mdFiles.length > 0) {
+          findings.push({ category: "freshness", severity: "pass", title: "All documents modified within 90 days", detail: "No stale files detected." });
+        }
+      } catch { /* ignore stat errors */ }
+    }
+
+    // ── 4. Score Trend ─────────────────────────────────────────────
+    const currentScore = computeComplianceScore(scanResult, absOutputDir);
+    findings.push({
+      category: "score",
+      severity: currentScore >= 80 ? "pass" : currentScore >= 50 ? "warning" : "critical",
+      title: `Compliance score: ${currentScore}/100`,
+      detail: currentScore >= 80 ? "Good compliance posture." : currentScore >= 50 ? "Moderate compliance — some documents may be missing." : "Low compliance — significant gaps detected.",
+      recommendation: currentScore < 80 ? "Generate missing documents and ensure config is complete." : undefined,
+    });
+
+    // Check score history file
+    const scoreHistoryPath = path.join(absProjectPath, ".codepliant", "score-history.json");
+    if (fs.existsSync(scoreHistoryPath)) {
+      try {
+        const history = JSON.parse(fs.readFileSync(scoreHistoryPath, "utf-8"));
+        if (Array.isArray(history) && history.length >= 2) {
+          const prev = history[history.length - 2];
+          const delta = currentScore - (prev.score || 0);
+          findings.push({
+            category: "score",
+            severity: delta >= 0 ? "pass" : "warning",
+            title: `Score trend: ${delta >= 0 ? "+" : ""}${delta} since last scan`,
+            detail: `Previous score: ${prev.score}/100 on ${prev.date || "unknown date"}.`,
+            recommendation: delta < 0 ? "Investigate why compliance score has declined." : undefined,
+          });
+        }
+      } catch { /* ignore parse errors */ }
+    }
+  }
+
+  // ── Compute overall grade ────────────────────────────────────────
+  const criticalCount = findings.filter(f => f.severity === "critical").length;
+  const warningCount = findings.filter(f => f.severity === "warning").length;
+  const passCount = findings.filter(f => f.severity === "pass").length;
+
+  let overallGrade = "A";
+  if (criticalCount > 0) overallGrade = "F";
+  else if (warningCount > 5) overallGrade = "C";
+  else if (warningCount > 2) overallGrade = "B";
+  else if (warningCount > 0) overallGrade = "B+";
+
+  // ── Print to console ─────────────────────────────────────────────
+  for (const f of findings) {
+    let icon: string;
+    switch (f.severity) {
+      case "pass": icon = `${GREEN()}✓${RESET()}`; break;
+      case "warning": icon = `${YELLOW()}⚠${RESET()}`; break;
+      case "critical": icon = `${RED()}✗${RESET()}`; break;
+    }
+    console.log(`  ${icon} ${f.title}`);
+    if (f.severity !== "pass") {
+      console.log(`    ${DIM()}${f.detail}${RESET()}`);
+      if (f.recommendation) console.log(`    ${CYAN()}→ ${f.recommendation}${RESET()}`);
+    }
+  }
+
+  console.log();
+  console.log(`${BOLD()}Audit Summary:${RESET()} ${GREEN()}${passCount} pass${RESET()} / ${YELLOW()}${warningCount} warning${RESET()} / ${RED()}${criticalCount} critical${RESET()}`);
+  console.log(`${BOLD()}Overall Grade:${RESET()} ${overallGrade}\n`);
+
+  // ── Generate AUDIT_REPORT.md ─────────────────────────────────────
+  const reportLines: string[] = [
+    `# Compliance Audit Report`,
+    ``,
+    `**Project:** ${scanResult?.projectName || path.basename(absProjectPath)}`,
+    `**Audit Date:** ${auditDate}`,
+    `**Audit Timestamp:** ${auditTimestamp}`,
+    `**Overall Grade:** ${overallGrade}`,
+    `**Findings:** ${passCount} pass, ${warningCount} warning(s), ${criticalCount} critical`,
+    ``,
+    `---`,
+    ``,
+    `## Summary`,
+    ``,
+    `| Metric | Value |`,
+    `|--------|-------|`,
+    `| Overall Grade | **${overallGrade}** |`,
+    `| Pass | ${passCount} |`,
+    `| Warnings | ${warningCount} |`,
+    `| Critical | ${criticalCount} |`,
+    `| Services Detected | ${scanResult?.services.length || 0} |`,
+    `| Documents Expected | ${generatedDocs?.length || 0} |`,
+    ``,
+    `---`,
+    ``,
+  ];
+
+  // Group findings by category
+  const categories: Array<{ key: string; label: string }> = [
+    { key: "config", label: "Configuration Completeness" },
+    { key: "docs", label: "Document Completeness" },
+    { key: "coverage", label: "Coverage" },
+    { key: "freshness", label: "Document Freshness" },
+    { key: "score", label: "Compliance Score" },
+  ];
+
+  for (const cat of categories) {
+    const catFindings = findings.filter(f => f.category === cat.key);
+    if (catFindings.length === 0) continue;
+
+    reportLines.push(`## ${cat.label}`);
+    reportLines.push(``);
+
+    for (const f of catFindings) {
+      const icon = f.severity === "pass" ? "PASS" : f.severity === "warning" ? "WARNING" : "CRITICAL";
+      reportLines.push(`### ${icon}: ${f.title}`);
+      reportLines.push(``);
+      reportLines.push(f.detail);
+      if (f.recommendation) {
+        reportLines.push(``);
+        reportLines.push(`**Recommendation:** ${f.recommendation}`);
+      }
+      reportLines.push(``);
+    }
+
+    reportLines.push(`---`);
+    reportLines.push(``);
+  }
+
+  // Action items summary
+  const actionItems = findings.filter(f => f.recommendation);
+  if (actionItems.length > 0) {
+    reportLines.push(`## Action Items`);
+    reportLines.push(``);
+    for (const [i, f] of actionItems.entries()) {
+      const priority = f.severity === "critical" ? "HIGH" : "MEDIUM";
+      reportLines.push(`${i + 1}. **[${priority}]** ${f.recommendation}`);
+    }
+    reportLines.push(``);
+    reportLines.push(`---`);
+    reportLines.push(``);
+  }
+
+  reportLines.push(`*This audit report was generated by [Codepliant](https://github.com/joechensmartz/codepliant) on ${auditDate}. It is an automated self-assessment and should be supplemented by human review.*`);
+
+  // Write the report
+  if (!fs.existsSync(absOutputDir)) {
+    fs.mkdirSync(absOutputDir, { recursive: true });
+  }
+  const reportPath = path.join(absOutputDir, "AUDIT_REPORT.md");
+  fs.writeFileSync(reportPath, reportLines.join("\n"), "utf-8");
+
+  console.log(`${GREEN()}Audit report written to ${reportPath}${RESET()}\n`);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({ grade: overallGrade, pass: passCount, warnings: warningCount, critical: criticalCount, findings }, null, 2));
   }
 }
 

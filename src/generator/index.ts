@@ -121,6 +121,8 @@ import { generateComplianceOath } from "./compliance-oath.js";
 import { generatePrivacyImpactRegister } from "./privacy-impact-register.js";
 import { generateAIRedTeamGuide } from "./ai-red-team-guide.js";
 import { generateComplianceKPIDashboard } from "./compliance-kpi-dashboard.js";
+import { generateDataRetentionScheduleVisual } from "./data-retention-schedule-visual.js";
+import { generateComplianceCommunicationPlan } from "./compliance-communication-plan.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1222,6 +1224,26 @@ export function generateDocuments(
       name: "Compliance KPI Dashboard",
       filename: "COMPLIANCE_KPI_DASHBOARD.md",
       content: complianceKPIDashboard,
+    });
+  }
+
+  // Data Retention Schedule Visual — Mermaid Gantt chart of retention timelines
+  const dataRetentionVisual = generateDataRetentionScheduleVisual(docScan, ctx);
+  if (dataRetentionVisual) {
+    docs.push({
+      name: "Data Retention Schedule Visual",
+      filename: "DATA_RETENTION_SCHEDULE_VISUAL.md",
+      content: dataRetentionVisual,
+    });
+  }
+
+  // Compliance Communication Plan — internal communication plan for compliance updates
+  const complianceCommunicationPlan = generateComplianceCommunicationPlan(docScan, ctx);
+  if (complianceCommunicationPlan) {
+    docs.push({
+      name: "Compliance Communication Plan",
+      filename: "COMPLIANCE_COMMUNICATION_PLAN.md",
+      content: complianceCommunicationPlan,
     });
   }
 
