@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/ai-disclosure-generator/page": "app/ai-disclosure-generator/page.js",
+  "/cookie-policy-generator/page": "app/cookie-policy-generator/page.js",
+  "/docs/page": "app/docs/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/gdpr-compliance/page": "app/gdpr-compliance/page.js",
+  "/page": "app/page.js",
+  "/pricing/page": "app/pricing/page.js",
+  "/privacy-policy-generator/page": "app/privacy-policy-generator/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/terms-of-service-generator/page": "app/terms-of-service-generator/page.js"
+}
