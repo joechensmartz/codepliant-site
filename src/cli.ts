@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "220.0.0";
+const VERSION = "230.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -119,6 +119,7 @@ ${BOLD()}Setup:${RESET()}
   ${CYAN()}wizard${RESET()}          Step-by-step compliance wizard
   ${CYAN()}hook${RESET()}            Install/uninstall pre-commit hook
   ${CYAN()}template${RESET()}        Manage custom document templates
+  ${CYAN()}config show${RESET()}     Pretty-print current configuration
 
 ${BOLD()}Account:${RESET()}
   ${CYAN()}upgrade${RESET()}         Upgrade to Pro or Team plan
@@ -800,6 +801,7 @@ function classifyDocCategory(docName: string): string {
   const lower = docName.toLowerCase();
   if (lower.includes("ai ") || lower.includes("ai-") || lower.includes("model card")) return "AI Compliance";
   if (lower.includes("privacy") || lower.includes("cookie") || lower.includes("consent") || lower.includes("dsar") || lower.includes("data subject") || lower.includes("data protection") || lower.includes("media consent")) return "Privacy";
+  if (lower.includes("dpo") || lower.includes("data protection officer")) return "Privacy";
   if (lower.includes("security") || lower.includes("incident") || lower.includes("vulnerability") || lower.includes("access control") || lower.includes("encryption") || lower.includes("penetration") || lower.includes("disclosure") || lower.includes("backup") || lower.includes("disaster")) return "Security";
   if (lower.includes("terms") || lower.includes("acceptable use") || lower.includes("refund") || lower.includes("sla") || lower.includes("service level") || lower.includes("api terms") || lower.includes("supplier") || lower.includes("whistleblower")) return "Legal";
   if (lower.includes("soc") || lower.includes("iso") || lower.includes("compliance") || lower.includes("audit") || lower.includes("annual review") || lower.includes("risk")) return "Audit";
@@ -1028,7 +1030,7 @@ function main() {
         console.error(`${RED()}Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
         process.exit(1);
       }
-    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login")) {
+    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show")) {
       projectPath = arg;
     }
   }
@@ -1178,6 +1180,16 @@ function main() {
     if (command === "notify") {
       runNotify(absProjectPath, absOutputDir, quiet, jsonOutput, verbose);
       return;
+    }
+
+    if (command === "config") {
+      const subCmd = args[1];
+      if (subCmd === "show") {
+        runConfigShow(absProjectPath);
+        process.exit(0);
+      }
+      console.error(`${RED()}Unknown config subcommand: "${subCmd || ""}". Use: codepliant config show${RESET()}`);
+      process.exit(1);
     }
 
     if (command === "init") {
@@ -1414,6 +1426,7 @@ function runScanAndGenerate(
   // Generate documents
   if (!quiet) console.log(`\n${BOLD()}Generating documents...${RESET()}\n`);
 
+  const genStart = Date.now();
   const docs = generateDocuments(result, config, plugins);
 
   // Track changes before writing
@@ -1427,21 +1440,27 @@ function runScanAndGenerate(
     writtenFiles.push(changelogPath);
   }
 
+  const genDurationMs = Date.now() - genStart;
+
   // Collect per-file stats and category counts
   let totalLinesGenerated = 0;
+  let totalBytesGenerated = 0;
   const docCategoryMap = new Map<string, number>();
+  const docCategorySizeMap = new Map<string, number>();
   for (const file of writtenFiles) {
     const relativePath = path.relative(absProjectPath, file);
     const content = fs.readFileSync(file, "utf-8");
     const size = Buffer.byteLength(content, "utf-8");
     const lines = countLines(content);
     totalLinesGenerated += lines;
+    totalBytesGenerated += size;
     const docName = docs.find(d => file.endsWith(d.filename))?.name || path.basename(file);
     console.log(`  ${GREEN()}✓${RESET()} ${relativePath} ${DIM()}(${docName}: ${formatFileSize(size)}, ${lines} lines)${RESET()}`);
 
     // Categorize the document
     const cat = classifyDocCategory(docName);
     docCategoryMap.set(cat, (docCategoryMap.get(cat) || 0) + 1);
+    docCategorySizeMap.set(cat, (docCategorySizeMap.get(cat) || 0) + size);
   }
 
   // --- Generation Summary ---
@@ -1452,9 +1471,15 @@ function runScanAndGenerate(
     console.log(`${CYAN()}${"─".repeat(50)}${RESET()}`);
     console.log();
     console.log(`  ${BOLD()}Total documents:${RESET()} ${writtenFiles.length}`);
+    console.log(`  ${BOLD()}Total size:${RESET()} ${formatFileSize(totalBytesGenerated)}`);
+    console.log(`  ${BOLD()}Generation time:${RESET()} ${formatDuration(genDurationMs)}`);
+    console.log();
+    console.log(`  ${BOLD()}By category:${RESET()}`);
     for (const [cat, count] of [...docCategoryMap.entries()].sort((a, b) => b[1] - a[1])) {
-      console.log(`    ${DIM()}${cat}:${RESET()} ${count}`);
+      const catSize = docCategorySizeMap.get(cat) || 0;
+      console.log(`    ${DIM()}${cat}:${RESET()} ${count} doc${count > 1 ? "s" : ""} ${DIM()}(${formatFileSize(catSize)})${RESET()}`);
     }
+    console.log();
     console.log(`  ${BOLD()}Total lines generated:${RESET()} ${totalLinesGenerated.toLocaleString()}`);
     const estimatedCostPerDoc = 1000;
     const estimatedCostSaved = writtenFiles.length * estimatedCostPerDoc;
@@ -4053,6 +4078,98 @@ function zipCrc32(buf: Buffer): number {
   return (crc ^ 0xFFFFFFFF) >>> 0;
 }
 
+
+function runConfigShow(absProjectPath: string) {
+  printBanner();
+  const exists = configExists(absProjectPath);
+  if (!exists) {
+    console.log(`${YELLOW()}No .codepliantrc.json found in ${absProjectPath}${RESET()}`);
+    console.log(`${DIM()}Run 'codepliant init' to create one.${RESET()}\n`);
+    return;
+  }
+
+  const config = loadConfig(absProjectPath);
+  const warnings = validateConfig(config);
+  const warningFields = new Set(warnings.map((w) => w.field));
+
+  console.log(`${BOLD()}Configuration:${RESET()} ${path.join(absProjectPath, ".codepliantrc.json")}\n`);
+
+  // Recommended fields
+  const recommendedFields: Array<{ key: keyof CodepliantConfig; label: string }> = [
+    { key: "companyName", label: "Company Name" },
+    { key: "contactEmail", label: "Contact Email" },
+    { key: "website", label: "Website" },
+    { key: "jurisdiction", label: "Jurisdiction" },
+    { key: "jurisdictions", label: "Jurisdictions" },
+    { key: "dpoName", label: "DPO Name" },
+    { key: "dpoEmail", label: "DPO Email" },
+    { key: "securityEmail", label: "Security Email" },
+    { key: "outputDir", label: "Output Directory" },
+    { key: "outputFormat", label: "Output Format" },
+    { key: "language", label: "Language" },
+    { key: "dataRetentionDays", label: "Data Retention Days" },
+    { key: "aiRiskLevel", label: "AI Risk Level" },
+    { key: "companyLocation", label: "Company Location" },
+    { key: "euRepresentative", label: "EU Representative" },
+    { key: "bugBountyUrl", label: "Bug Bounty URL" },
+    { key: "plugins", label: "Plugins" },
+    { key: "licenseKey", label: "License Key" },
+  ];
+
+  for (const field of recommendedFields) {
+    const value = config[field.key];
+    const hasWarning = warningFields.has(field.key);
+
+    if (value === undefined || value === null) {
+      console.log(`  ${DIM()}${field.label.padEnd(22)}${RESET()} ${YELLOW()}(not set)${RESET()}`);
+    } else if (hasWarning) {
+      const displayValue = field.key === "licenseKey" ? maskValue(String(value)) : formatConfigValue(value);
+      console.log(`  ${field.label.padEnd(22)} ${YELLOW()}${displayValue}${RESET()} ${YELLOW()}⚠${RESET()}`);
+    } else {
+      const displayValue = field.key === "licenseKey" ? maskValue(String(value)) : formatConfigValue(value);
+      console.log(`  ${field.label.padEnd(22)} ${GREEN()}${displayValue}${RESET()}`);
+    }
+  }
+
+  // Show warnings
+  if (warnings.length > 0) {
+    console.log();
+    console.log(`${YELLOW()}${BOLD()}Warnings:${RESET()}`);
+    for (const w of warnings) {
+      console.log(`  ${YELLOW()}⚠${RESET()} ${w.field}: ${w.message}`);
+    }
+  }
+
+  // Missing recommended fields
+  const missingRecommended = recommendedFields
+    .filter((f) => {
+      const v = config[f.key];
+      return v === undefined || v === null;
+    })
+    .filter((f) => ["website", "jurisdictions", "dpoName", "dpoEmail", "securityEmail", "companyLocation"].includes(f.key));
+
+  if (missingRecommended.length > 0) {
+    console.log();
+    console.log(`${CYAN()}${BOLD()}Recommended fields to set:${RESET()}`);
+    for (const f of missingRecommended) {
+      console.log(`  ${CYAN()}+${RESET()} ${f.label} ${DIM()}(${f.key})${RESET()}`);
+    }
+    console.log(`\n${DIM()}Run 'codepliant init' or edit .codepliantrc.json directly.${RESET()}`);
+  }
+
+  console.log();
+}
+
+function maskValue(value: string): string {
+  if (value.length <= 8) return "****";
+  return value.substring(0, 4) + "****" + value.substring(value.length - 4);
+}
+
+function formatConfigValue(value: unknown): string {
+  if (Array.isArray(value)) return value.join(", ");
+  if (typeof value === "boolean") return value ? "true" : "false";
+  return String(value);
+}
 
 function runDoctor(absProjectPath: string, absOutputDir: string, quiet: boolean) {
   if (!quiet) printBanner();

@@ -366,6 +366,27 @@ export const DOCUMENT_RELATIONSHIPS: Record<string, DocumentRelationship[]> = {
     { name: "Compliance Notes", filename: "COMPLIANCE_NOTES.md" },
     { name: "Annual Review Checklist", filename: "ANNUAL_REVIEW_CHECKLIST.md" },
   ],
+  "PRIVACY_DASHBOARD_CONFIG.json": [
+    { name: "Privacy Policy", filename: "PRIVACY_POLICY.md" },
+    { name: "DSAR Handling Guide", filename: "DSAR_HANDLING_GUIDE.md" },
+    { name: "Consent Management Guide", filename: "CONSENT_MANAGEMENT_GUIDE.md" },
+    { name: "Cookie Consent Configuration", filename: "COOKIE_CONSENT_CONFIG.json" },
+    { name: "Data Portability Guide", filename: "DATA_PORTABILITY_GUIDE.md" },
+  ],
+  "DPO_HANDBOOK.md": [
+    { name: "Privacy Policy", filename: "PRIVACY_POLICY.md" },
+    { name: "Record of Processing Activities", filename: "RECORD_OF_PROCESSING_ACTIVITIES.md" },
+    { name: "DSAR Handling Guide", filename: "DSAR_HANDLING_GUIDE.md" },
+    { name: "Incident Response Plan", filename: "INCIDENT_RESPONSE_PLAN.md" },
+    { name: "Data Protection Policy", filename: "DATA_PROTECTION_POLICY.md" },
+    { name: "Annual Review Checklist", filename: "ANNUAL_REVIEW_CHECKLIST.md" },
+  ],
+  "INCIDENT_COMMUNICATION_TEMPLATES.md": [
+    { name: "Incident Response Plan", filename: "INCIDENT_RESPONSE_PLAN.md" },
+    { name: "Data Breach Notification Templates", filename: "DATA_BREACH_NOTIFICATION_TEMPLATE.md" },
+    { name: "Security Policy", filename: "SECURITY.md" },
+    { name: "Business Continuity Plan", filename: "BUSINESS_CONTINUITY_PLAN.md" },
+  ],
 };
 
 /**

@@ -88,6 +88,9 @@ import { generatePrivacyNoticeShort } from "./privacy-notice-short.js";
 import { generateCookieConsentConfig } from "./cookie-consent-config.js";
 import { generateQuickStartGuide } from "./quick-start-guide.js";
 import { generateComplianceRoadmap } from "./compliance-roadmap.js";
+import { generatePrivacyDashboardConfig } from "./privacy-dashboard-config.js";
+import { generateDPOHandbook } from "./dpo-handbook.js";
+import { generateIncidentCommunicationTemplates } from "./incident-communication-templates.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -870,6 +873,36 @@ export function generateDocuments(
     filename: "COMPLIANCE_ROADMAP.md",
     content: generateComplianceRoadmap(docScan, ctx),
   });
+
+  // Privacy Dashboard Config — machine-readable config for user-facing "My Data" page
+  const privacyDashboardConfig = generatePrivacyDashboardConfig(docScan, ctx);
+  if (privacyDashboardConfig) {
+    docs.push({
+      name: "Privacy Dashboard Configuration",
+      filename: "PRIVACY_DASHBOARD_CONFIG.json",
+      content: privacyDashboardConfig,
+    });
+  }
+
+  // DPO Handbook — guide for the appointed Data Protection Officer (GDPR Art. 37-39)
+  const dpoHandbook = generateDPOHandbook(docScan, ctx);
+  if (dpoHandbook) {
+    docs.push({
+      name: "DPO Handbook",
+      filename: "DPO_HANDBOOK.md",
+      content: dpoHandbook,
+    });
+  }
+
+  // Incident Communication Templates — pre-written templates for incident lifecycle
+  const incidentCommTemplates = generateIncidentCommunicationTemplates(docScan, ctx);
+  if (incidentCommTemplates) {
+    docs.push({
+      name: "Incident Communication Templates",
+      filename: "INCIDENT_COMMUNICATION_TEMPLATES.md",
+      content: incidentCommTemplates,
+    });
+  }
 
   // Compliance Certificate — self-attestation certificate (generated after all other docs)
   // Note: score is not available at this point; it will show 0/N/A.
