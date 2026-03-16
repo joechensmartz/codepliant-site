@@ -54,3 +54,13 @@ export type {
 
 export { sendNotification, buildPayload, formatSlackMessage, postWebhook } from "./notifications/index.js";
 export type { NotificationPayload, NotificationResult } from "./notifications/index.js";
+
+export { scanLicenses, generateLicenseCompliance } from "./scanner/license-scanner.js";
+export type { LicenseScanResult, LicenseInfo } from "./scanner/license-scanner.js";
+
+export { generateWhistleblowerPolicy, requiresWhistleblowerPolicy } from "./generator/whistleblower.js";
+
+export { generateDocx, writeDocx } from "./output/docx.js";
+
+export { lintDocuments } from "./lint.js";
+export type { LintResult, LintIssue } from "./lint.js";

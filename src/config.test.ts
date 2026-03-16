@@ -251,7 +251,7 @@ describe("validateConfig", () => {
   it("warns on invalid jurisdictions, outputFormat, language, and aiRiskLevel", () => {
     const config = makeValidConfig({
       jurisdictions: ["GDPR", "HIPAA"],
-      outputFormat: "docx" as CodepliantConfig["outputFormat"],
+      outputFormat: "rtf" as CodepliantConfig["outputFormat"],
       language: "zh",
       aiRiskLevel: "extreme" as CodepliantConfig["aiRiskLevel"],
     });

@@ -211,6 +211,24 @@ ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant check -o ./docs${RESET()}           Check a custom output dir
 `,
 
+  lint: `${BOLD()}codepliant lint${RESET()} [path] [options]
+
+Check existing compliance documents for completeness.
+Compares against what codepliant would generate, flags missing
+sections, placeholder values, and outdated documents.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Directory to check for documents (default: ./legal)
+  ${DIM()}--json${RESET()}                Output results as JSON
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant lint${RESET()}                     Lint current project
+  ${CYAN()}codepliant lint --json${RESET()}               JSON output for CI
+  ${CYAN()}codepliant lint -o ./docs${RESET()}             Lint a custom output dir
+`,
+
   diff: `${BOLD()}codepliant diff${RESET()} [path] [options]
 
 Show what would change if you regenerated documents now.

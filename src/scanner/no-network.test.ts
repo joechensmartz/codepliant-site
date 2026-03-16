@@ -124,10 +124,11 @@ describe("Zero Network Calls Verification", () => {
 
     for (const file of sourceFiles) {
       const relativePath = path.relative(SRC_DIR, file);
-      // Skip MCP server file and API server
+      // Skip MCP server file, API server, AI features (intentionally use network)
       if (relativePath.startsWith("mcp/")) continue;
       if (relativePath.startsWith("api/")) continue;
       if (relativePath.startsWith("notifications/")) continue;
+      if (relativePath.startsWith("ai/")) continue;
 
       const content = fs.readFileSync(file, "utf-8");
       const lines = content.split("\n");
