@@ -750,7 +750,7 @@ function main() {
   const absOutputDir = path.resolve(absProjectPath, outputDir);
 
   // Validate project path with actionable error messages
-  if (command !== "help" && command !== "init" && command !== "wizard" && command !== "serve" && command !== "auth" && command !== "audit-trail") {
+  if (command !== "help" && command !== "init" && command !== "wizard" && command !== "serve" && command !== "auth" && command !== "audit-trail" && command !== "explain") {
     if (!fs.existsSync(absProjectPath)) {
       console.error(`${RED()}Error: "${absProjectPath}" does not exist.${RESET()}`);
       console.error(`${DIM()}Check the path and try again.${RESET()}`);
@@ -953,12 +953,17 @@ function main() {
     }
 
     if (command === "review") {
-      console.log("AI review coming soon. Use: codepliant review");
-      process.exit(0);
+      runReview(absProjectPath, absOutputDir, quiet, jsonOutput, verbose).then(() => {
+        process.exit(0);
+      }).catch((err) => {
+        console.error(`${RED()}Error during review: ${formatError(err)}${RESET()}`);
+        process.exit(1);
+      });
+      return;
     }
 
     if (command === "explain") {
-      console.log("Explain coming soon."); process.exit(0);
+      runExplain(absProjectPath, args, quiet, jsonOutput);
       return;
     }
 
@@ -2704,39 +2709,446 @@ ${DIM()}⚠ These documents are generated from code analysis. Review and customi
 `);
 }
 
-async function runReview(projectPath: string, outputDir: string, quiet: boolean, jsonOutput: boolean, verbose: boolean) {
-  console.log("AI review coming soon.");
+async function runReview(absProjectPath: string, absOutputDir: string, quiet: boolean, jsonOutput: boolean, verbose: boolean) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const plugins = config.plugins ? loadPlugins(absProjectPath, config.plugins) : [];
+
+  const reviewConfig: AIReviewConfig = {
+    aiReviewApiKey: (config as unknown as Record<string, unknown>).aiReviewApiKey as string | undefined,
+    aiReviewModel: (config as unknown as Record<string, unknown>).aiReviewModel as string | undefined,
+  };
+
+  if (!isReviewAvailable(reviewConfig)) {
+    if (jsonOutput) {
+      console.log(JSON.stringify({ reviewed: false, error: "No aiReviewApiKey configured." }, null, 2));
+    } else {
+      console.log(`${YELLOW()}AI review requires an API key.${RESET()}`);
+      console.log(`${DIM()}Add "aiReviewApiKey": "sk-..." to your .codepliantrc.json to enable.${RESET()}`);
+      console.log(`${DIM()}Optionally set "aiReviewModel" (default: claude-sonnet-4-20250514).${RESET()}\n`);
+      console.log(`${DIM()}Without AI review, codepliant still generates all documents normally.${RESET()}\n`);
+    }
+    process.exit(0);
+  }
+
+  const { result: scanResult, durationMs } = scanWithProgress(absProjectPath, quiet || jsonOutput, verbose, plugins);
+
+  if (!quiet && !jsonOutput) {
+    console.log(`\n  ${DIM()}Scanned in ${formatDuration(durationMs)}${RESET()}\n`);
+  }
+
+  const docs = generateDocuments(scanResult, config, plugins);
+
+  if (!quiet && !jsonOutput) {
+    console.log(`${BOLD()}Reviewing ${docs.length} document(s) with AI...${RESET()}\n`);
+  }
+
+  const reviewResults = await reviewDocuments(docs, reviewConfig);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify(reviewResults, null, 2));
+    return;
+  }
+
+  const totalSuggestions = reviewResults.reduce((sum, r) => sum + r.suggestions.length, 0);
+
+  for (const r of reviewResults) {
+    if (!r.reviewed) {
+      console.log(`  ${YELLOW()}!${RESET()} ${r.documentName}: ${r.error || "Not reviewed"}`);
+      continue;
+    }
+
+    if (r.suggestions.length === 0) {
+      console.log(`  ${GREEN()}✓${RESET()} ${r.documentName}: No issues found`);
+      continue;
+    }
+
+    console.log(`  ${YELLOW()}!${RESET()} ${BOLD()}${r.documentName}${RESET()}: ${r.suggestions.length} suggestion(s)`);
+
+    for (const s of r.suggestions) {
+      const severityColor = s.severity === "high" ? RED() : s.severity === "medium" ? YELLOW() : DIM();
+      const severityLabel = s.severity.toUpperCase();
+      console.log(`    ${severityColor}[${severityLabel}]${RESET()} ${s.section} ${DIM()}(${s.issue})${RESET()}`);
+      console.log(`      ${s.suggestion}`);
+    }
+    console.log();
+  }
+
+  if (totalSuggestions === 0) {
+    console.log(`\n${GREEN()}${BOLD()}All documents passed AI review.${RESET()}\n`);
+  } else {
+    console.log(`\n${YELLOW()}${BOLD()}${totalSuggestions} suggestion(s) across ${reviewResults.filter(r => r.suggestions.length > 0).length} document(s).${RESET()}`);
+    console.log(`${DIM()}These are suggestions — review them and apply as needed.${RESET()}\n`);
+  }
+}
+
+// --- `codepliant explain` command ---
+
+interface DocumentExplanation {
+  document: string;
+  filename: string;
+  reasons: string[];
+  evidence: Array<{ type: string; detail: string }>;
+}
+
+function runExplain(absProjectPath: string, args: string[], quiet: boolean, jsonOutput: boolean) {
+  const nonFlags: string[] = [];
+
+  for (let i = 1; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === "--json" || arg === "--quiet" || arg === "-q" || arg === "--no-color") continue;
+    if (arg === "--output" || arg === "-o") { i++; continue; }
+    if (arg.startsWith("-")) continue;
+    nonFlags.push(arg);
+  }
+
+  if (nonFlags.length === 0) {
+    console.error(`${RED()}Error: Missing document argument.${RESET()}`);
+    console.error(`${DIM()}Usage: codepliant explain <document> [path]${RESET()}`);
+    console.error(`${DIM()}Example: codepliant explain "Privacy Policy"${RESET()}`);
+    process.exit(1);
+  }
+
+  const docQuery = nonFlags[0];
+  const projPath = nonFlags.length > 1 ? nonFlags[1] : absProjectPath;
+  const absPath = path.resolve(projPath);
+
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absPath);
+  const plugins = config.plugins ? loadPlugins(absPath, config.plugins) : [];
+  const scanResult = scan(absPath, { plugins });
+  const docs = generateDocuments(scanResult, config, plugins);
+
+  // Find the matching document
+  const queryLower = docQuery.toLowerCase().replace(/[_\-.]/g, " ");
+  const matchedDoc = docs.find((d) => {
+    const nameLower = d.name.toLowerCase();
+    const filenameLower = d.filename.toLowerCase().replace(/[_\-.]/g, " ");
+    return nameLower === queryLower || filenameLower === queryLower || filenameLower.replace(/\.md$/, "") === queryLower || d.filename.toLowerCase() === docQuery.toLowerCase();
+  });
+
+  if (!matchedDoc) {
+    if (jsonOutput) {
+      console.log(JSON.stringify({ found: false, query: docQuery, availableDocuments: docs.map(d => d.name) }, null, 2));
+    } else {
+      console.error(`${RED()}Document not found: "${docQuery}"${RESET()}\n`);
+      console.log(`${BOLD()}Available documents for this project:${RESET()}\n`);
+      for (const d of docs) {
+        console.log(`  ${CYAN()}*${RESET()} ${d.name} ${DIM()}(${d.filename})${RESET()}`);
+      }
+      console.log();
+    }
+    process.exit(1);
+  }
+
+  const explanation = buildDocExplanation(matchedDoc, scanResult, config);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({ found: true, ...explanation }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}Why was "${matchedDoc.name}" generated?${RESET()}\n`);
+  console.log(`  ${DIM()}Document:${RESET()} ${matchedDoc.name}`);
+  console.log(`  ${DIM()}Filename:${RESET()} ${matchedDoc.filename}\n`);
+
+  if (explanation.reasons.length > 0) {
+    console.log(`${BOLD()}Reasons:${RESET()}\n`);
+    for (const reason of explanation.reasons) {
+      console.log(`  ${GREEN()}*${RESET()} ${reason}`);
+    }
+    console.log();
+  }
+
+  if (explanation.evidence.length > 0) {
+    console.log(`${BOLD()}Evidence:${RESET()}\n`);
+    for (const ev of explanation.evidence) {
+      console.log(`  ${CYAN()}[${ev.type}]${RESET()} ${ev.detail}`);
+    }
+    console.log();
+  }
+
+  console.log(`${DIM()}This document was auto-generated based on code analysis. Review and customize for your needs.${RESET()}\n`);
   process.exit(0);
 }
 
-function runExplain(projectPath: string, args: string[], quiet: boolean, jsonOutput: boolean) {
-  console.log("Document explain coming soon.");
-  process.exit(0);
+function buildDocExplanation(
+  doc: { name: string; filename: string },
+  scanResult: ScanResult,
+  config: CodepliantConfig,
+): DocumentExplanation {
+  const reasons: string[] = [];
+  const evidence: Array<{ type: string; detail: string }> = [];
+
+  const services = scanResult.services;
+  const hasAI = services.some((s) => s.category === "ai");
+  const hasPayment = services.some((s) => s.category === "payment");
+  const hasAnalytics = services.some((s) => s.category === "analytics" || s.category === "advertising");
+  const hasAuth = services.some((s) => s.category === "auth");
+  const hasEmail = services.some((s) => s.category === "email");
+  const hasMonitoring = services.some((s) => s.category === "monitoring");
+
+  const docName = doc.name;
+
+  // Always-generated documents
+  if (docName === "Terms of Service" || docName === "Security Policy" || docName === "Incident Response Plan" || docName === "Acceptable Use Policy") {
+    reasons.push(`"${docName}" is generated for every project as a standard compliance document.`);
+  }
+
+  if (docName === "Privacy Policy") {
+    reasons.push(`${services.length} third-party service(s) were detected that collect or process user data.`);
+    for (const s of services.filter((sv) => sv.isDataProcessor !== false)) {
+      evidence.push({ type: "service", detail: `${s.name} (${s.category}) collects: ${s.dataCollected.join(", ")}` });
+      for (const ev of s.evidence) {
+        evidence.push({ type: ev.type, detail: `${ev.file} -> ${ev.detail}` });
+      }
+    }
+  }
+
+  if (docName === "Data Flow Map") {
+    reasons.push(`${services.length} service(s) detected; data flow map shows how data moves between them.`);
+    for (const s of services) {
+      evidence.push({ type: "service", detail: `${s.name} (${s.category})` });
+    }
+  }
+
+  if (docName === "AI Disclosure" || docName === "AI Act Compliance Checklist" || docName === "AI Model Card" || docName === "Acceptable AI Use Policy") {
+    if (hasAI) {
+      reasons.push("AI/ML services were detected in the project.");
+      for (const s of services.filter((sv) => sv.category === "ai")) {
+        evidence.push({ type: "service", detail: `${s.name} found in dependencies` });
+        for (const ev of s.evidence) {
+          evidence.push({ type: ev.type, detail: `${ev.file} -> ${ev.detail}` });
+        }
+      }
+    }
+  }
+
+  if (docName === "Cookie Policy" || docName === "Consent Management Guide") {
+    if (hasAnalytics) {
+      reasons.push("Analytics or advertising services detected that typically use cookies or user behavior collection.");
+      for (const s of services.filter((sv) => sv.category === "analytics" || sv.category === "advertising")) {
+        evidence.push({ type: "service", detail: `${s.name} (${s.category})` });
+      }
+    }
+    if (hasAuth) {
+      reasons.push("Authentication services detected that may set session cookies.");
+    }
+  }
+
+  if (docName === "Data Processing Agreement") {
+    reasons.push("Third-party services that process data on your behalf require a DPA.");
+    for (const s of services.filter((sv) => sv.isDataProcessor !== false)) {
+      evidence.push({ type: "service", detail: `${s.name} (${s.category})` });
+    }
+  }
+
+  if (docName === "Sub-Processor List") {
+    reasons.push(`${services.length} third-party services detected (threshold: 3+).`);
+  }
+
+  if (docName === "Data Retention Policy") {
+    reasons.push(`${services.length} services detected (threshold: 3+).`);
+    if (config.dataRetentionDays) {
+      evidence.push({ type: "config", detail: `dataRetentionDays set to ${config.dataRetentionDays}` });
+    }
+  }
+
+  if (docName === "DSAR Handling Guide") {
+    reasons.push("Services that collect personal data require DSAR handling procedures.");
+  }
+
+  if (docName === "Risk Register") {
+    reasons.push("Compliance risks were identified based on detected services and configuration.");
+    if (hasAI) reasons.push("AI services present; AI-specific risks identified.");
+    if (hasPayment) reasons.push("Payment services present; PCI DSS risks identified.");
+    if (hasAnalytics) reasons.push("Analytics/advertising services present; consent risks identified.");
+    if (services.length >= 3) reasons.push(`${services.length} third-party vendors; vendor management risks identified.`);
+  }
+
+  if (docName === "Third-Party Risk Assessment") {
+    reasons.push(`${services.length} third-party services detected (threshold: 3+).`);
+  }
+
+  if (docName === "Privacy Impact Assessment") {
+    if (hasAI) reasons.push("AI services detected; DPIA may be required under GDPR Article 35.");
+    if (hasAnalytics) reasons.push("Analytics services detected; large-scale profiling may require DPIA.");
+  }
+
+  if (docName === "SOC 2 Readiness Checklist") {
+    reasons.push(`${services.length} services detected (threshold: 5+).`);
+  }
+
+  if (docName === "Refund Policy") {
+    if (hasPayment) {
+      reasons.push("Payment services were detected.");
+      for (const s of services.filter((sv) => sv.category === "payment")) {
+        evidence.push({ type: "service", detail: `${s.name} found in dependencies` });
+      }
+    }
+  }
+
+  if (docName === "Service Level Agreement") {
+    if (hasMonitoring) reasons.push("Monitoring services detected; SLA is recommended.");
+  }
+
+  if (docName === "Employee Privacy Notice") {
+    evidence.push({ type: "config", detail: "generateEmployeeNotice is enabled in .codepliantrc.json" });
+    reasons.push("Employee privacy notice was explicitly enabled in config.");
+  }
+
+  if (docName === "Compliance Notes" || docName === "Compliance Timeline" || docName === "Regulatory Updates") {
+    reasons.push("Generated based on detected services and configured jurisdictions.");
+    if (config.jurisdictions && config.jurisdictions.length > 0) {
+      evidence.push({ type: "config", detail: `Jurisdictions: ${config.jurisdictions.join(", ")}` });
+    }
+  }
+
+  if (docName === "Vendor Contacts Directory") {
+    reasons.push("Multiple third-party services detected; vendor contact information compiled.");
+  }
+
+  if (docName === "Transparency Report") {
+    reasons.push("Generated for all projects with detected services as a public accountability template.");
+  }
+
+  // Fallback
+  if (reasons.length === 0) {
+    reasons.push("This document was generated as part of the standard compliance suite.");
+  }
+
+  return { document: doc.name, filename: doc.filename, reasons, evidence };
 }
 
 function runCompare(path1: string, path2: string, quiet: boolean, jsonOutput: boolean) {
-  if (!quiet) printBanner();
-  const config1 = loadConfig(path1);
-  const config2 = loadConfig(path2);
-  const result1 = scan(path1);
-  const result2 = scan(path2);
-  if (jsonOutput) {
-    console.log(JSON.stringify({ project1: { path: path1, services: result1.services.length }, project2: { path: path2, services: result2.services.length } }, null, 2));
-  } else {
-    console.log(`${BOLD()}Comparison:${RESET()}\n`);
-    console.log(`  ${CYAN()}${path.basename(path1)}${RESET()}: ${result1.services.length} service(s)`);
-    console.log(`  ${CYAN()}${path.basename(path2)}${RESET()}: ${result2.services.length} service(s)`);
-    const names1 = new Set(result1.services.map(s => s.name));
-    const names2 = new Set(result2.services.map(s => s.name));
-    const onlyIn1 = [...names1].filter(n => !names2.has(n));
-    const onlyIn2 = [...names2].filter(n => !names1.has(n));
-    if (onlyIn1.length > 0) console.log(`\n  ${YELLOW()}Only in ${path.basename(path1)}:${RESET()} ${onlyIn1.join(", ")}`);
-    if (onlyIn2.length > 0) console.log(`\n  ${YELLOW()}Only in ${path.basename(path2)}:${RESET()} ${onlyIn2.join(", ")}`);
-    if (onlyIn1.length === 0 && onlyIn2.length === 0) console.log(`\n  ${GREEN()}Both projects detect the same services.${RESET()}`);
-    console.log();
+  for (const p of [path1, path2]) {
+    if (!fs.existsSync(p)) {
+      console.error(`${RED()}Error: "${p}" does not exist.${RESET()}`);
+      process.exit(1);
+    }
+    if (!fs.statSync(p).isDirectory()) {
+      console.error(`${RED()}Error: "${p}" is not a directory.${RESET()}`);
+      process.exit(1);
+    }
   }
+
+  if (!quiet && !jsonOutput) printBanner();
+  if (!quiet && !jsonOutput) {
+    console.log(`${BOLD()}Comparing two projects:${RESET()}\n`);
+    console.log(`  ${CYAN()}A:${RESET()} ${path1}`);
+    console.log(`  ${CYAN()}B:${RESET()} ${path2}\n`);
+  }
+
+  const resultA = scan(path1);
+  const resultB = scan(path2);
+  const configA = loadConfig(path1);
+  const configB = loadConfig(path2);
+  const docsA = generateDocuments(resultA, configA);
+  const docsB = generateDocuments(resultB, configB);
+  const outputDirA = path.resolve(path1, configA.outputDir || "./legal");
+  const outputDirB = path.resolve(path2, configB.outputDir || "./legal");
+  const scoreA = computeComplianceScore(resultA, outputDirA);
+  const scoreB = computeComplianceScore(resultB, outputDirB);
+
+  const serviceNamesA = new Set(resultA.services.map((s) => s.name));
+  const serviceNamesB = new Set(resultB.services.map((s) => s.name));
+  const onlyInA = resultA.services.filter((s) => !serviceNamesB.has(s.name));
+  const onlyInB = resultB.services.filter((s) => !serviceNamesA.has(s.name));
+  const shared = resultA.services.filter((s) => serviceNamesB.has(s.name));
+
+  const docFilenamesA = new Set(docsA.map((d) => d.filename));
+  const docFilenamesB = new Set(docsB.map((d) => d.filename));
+  const docsOnlyInA = docsA.filter((d) => !docFilenamesB.has(d.filename));
+  const docsOnlyInB = docsB.filter((d) => !docFilenamesA.has(d.filename));
+  const sharedDocs = docsA.filter((d) => docFilenamesB.has(d.filename));
+
+  const needsA = new Set(resultA.complianceNeeds.map((n) => n.document));
+  const needsB = new Set(resultB.complianceNeeds.map((n) => n.document));
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      projectA: { name: resultA.projectName, path: path1, services: resultA.services.length, documents: docsA.length, score: scoreA, complianceNeeds: resultA.complianceNeeds.length },
+      projectB: { name: resultB.projectName, path: path2, services: resultB.services.length, documents: docsB.length, score: scoreB, complianceNeeds: resultB.complianceNeeds.length },
+      comparison: {
+        servicesOnlyInA: onlyInA.map((s) => s.name),
+        servicesOnlyInB: onlyInB.map((s) => s.name),
+        sharedServices: shared.map((s) => s.name),
+        docsOnlyInA: docsOnlyInA.map((d) => d.filename),
+        docsOnlyInB: docsOnlyInB.map((d) => d.filename),
+        sharedDocs: sharedDocs.map((d) => d.filename),
+      },
+    }, null, 2));
+    process.exit(0);
+  }
+
+  const COL = 30;
+  console.log(`${"\u2500".repeat(64)}`);
+  console.log(`${BOLD()}${"Metric".padEnd(COL)}${resultA.projectName.padEnd(18)}${resultB.projectName}${RESET()}`);
+  console.log(`${"\u2500".repeat(64)}`);
+  console.log(`${"Services Detected".padEnd(COL)}${String(resultA.services.length).padEnd(18)}${resultB.services.length}`);
+  console.log(`${"Documents Generated".padEnd(COL)}${String(docsA.length).padEnd(18)}${docsB.length}`);
+  console.log(`${"Compliance Needs".padEnd(COL)}${String(resultA.complianceNeeds.length).padEnd(18)}${resultB.complianceNeeds.length}`);
+  console.log(`${"Compliance Score".padEnd(COL)}${String(scoreA + "%").padEnd(18)}${scoreB}%`);
+
+  console.log(`\n${"\u2500".repeat(64)}`);
+
+  if (shared.length > 0) {
+    console.log(`\n${BOLD()}Shared services (${shared.length}):${RESET()}`);
+    for (const s of shared) {
+      console.log(`  ${GREEN()}\u25cf${RESET()} ${s.name} ${DIM()}(${s.category})${RESET()}`);
+    }
+  }
+  if (onlyInA.length > 0) {
+    console.log(`\n${BOLD()}Only in ${resultA.projectName}:${RESET()}`);
+    for (const s of onlyInA) {
+      console.log(`  ${CYAN()}A${RESET()} ${s.name} ${DIM()}(${s.category})${RESET()}`);
+    }
+  }
+  if (onlyInB.length > 0) {
+    console.log(`\n${BOLD()}Only in ${resultB.projectName}:${RESET()}`);
+    for (const s of onlyInB) {
+      console.log(`  ${CYAN()}B${RESET()} ${s.name} ${DIM()}(${s.category})${RESET()}`);
+    }
+  }
+  if (docsOnlyInA.length > 0) {
+    console.log(`\n${BOLD()}Documents only in ${resultA.projectName}:${RESET()}`);
+    for (const d of docsOnlyInA) {
+      console.log(`  ${CYAN()}A${RESET()} ${d.name} ${DIM()}(${d.filename})${RESET()}`);
+    }
+  }
+  if (docsOnlyInB.length > 0) {
+    console.log(`\n${BOLD()}Documents only in ${resultB.projectName}:${RESET()}`);
+    for (const d of docsOnlyInB) {
+      console.log(`  ${CYAN()}B${RESET()} ${d.name} ${DIM()}(${d.filename})${RESET()}`);
+    }
+  }
+
+  const needsOnlyA = resultA.complianceNeeds.filter((n) => !needsB.has(n.document));
+  const needsOnlyB = resultB.complianceNeeds.filter((n) => !needsA.has(n.document));
+  if (needsOnlyA.length > 0 || needsOnlyB.length > 0) {
+    console.log(`\n${BOLD()}Compliance needs differences:${RESET()}`);
+    for (const n of needsOnlyA) {
+      console.log(`  ${CYAN()}A only${RESET()} ${n.document} ${DIM()}(${n.priority})${RESET()}`);
+    }
+    for (const n of needsOnlyB) {
+      console.log(`  ${CYAN()}B only${RESET()} ${n.document} ${DIM()}(${n.priority})${RESET()}`);
+    }
+  }
+
+  console.log(`\n${"\u2500".repeat(64)}\n`);
+  if (scoreA > scoreB) {
+    console.log(`${GREEN()}${resultA.projectName}${RESET()} has a higher compliance score (${scoreA}% vs ${scoreB}%).`);
+  } else if (scoreB > scoreA) {
+    console.log(`${GREEN()}${resultB.projectName}${RESET()} has a higher compliance score (${scoreB}% vs ${scoreA}%).`);
+  } else {
+    console.log(`Both projects have the same compliance score (${scoreA}%).`);
+  }
+  console.log(`\n${DIM()}Scores are based on code analysis. Review with legal counsel for full compliance assessment.${RESET()}\n`);
   process.exit(0);
 }
+
 
 function runSignatures(absProjectPath: string, args: string[]) {
   const subcommand = args[1];
@@ -2795,34 +3207,151 @@ function runSignatures(absProjectPath: string, args: string[]) {
 
 function runExport(absProjectPath: string, absOutputDir: string, quiet: boolean, formatFlag: OutputFormat | undefined, verbose: boolean = false) {
   if (!quiet) printBanner();
+
   const config = loadConfig(absProjectPath);
-  const format = formatFlag || getOutputFormat(config);
   const plugins = config.plugins ? loadPlugins(absProjectPath, config.plugins) : [];
-  const { result, durationMs } = scanWithProgress(absProjectPath, quiet, verbose, plugins);
-  if (!quiet) console.log(`\n  ${DIM()}Scanned in ${formatDuration(durationMs)}${RESET()}\n`);
-  const docs = generateDocuments(result, config, plugins);
-  let writtenFiles: string[];
-  if (format === "wiki") {
-    writtenFiles = writeGithubWiki(docs, absOutputDir, config);
-  } else {
-    writtenFiles = writeDocumentsInFormat(docs, absOutputDir, format, config, result);
-  }
+  const { result, durationMs, timings } = scanWithProgress(absProjectPath, quiet, verbose, plugins);
+
   if (!quiet) {
-    for (const file of writtenFiles) {
-      const relativePath = path.relative(absProjectPath, file);
-      console.log(`  ${GREEN()}✓${RESET()} ${relativePath}`);
-    }
-    console.log(`\n${GREEN()}${BOLD()}Done!${RESET()} ${writtenFiles.length} file(s) exported in ${format} format.\n`);
-    if (format === "wiki") {
-      const wikiDir = path.relative(absProjectPath, path.join(absOutputDir, "wiki"));
-      console.log(`${DIM()}To publish to your GitHub Wiki:${RESET()}`);
-      console.log(`  ${CYAN()}cd ${wikiDir}${RESET()}`);
-      console.log(`  ${CYAN()}git init && git remote add origin <project>.wiki.git${RESET()}`);
-      console.log(`  ${CYAN()}git add . && git commit -m "Update compliance docs" && git push${RESET()}\n`);
-    }
+    console.log(`\n  ${DIM()}Scanned in ${formatDuration(durationMs)}${RESET()}\n`);
   }
+  if (verbose && timings && !quiet) {
+    printTimings(timings, durationMs);
+  }
+
+  const docs = generateDocuments(result, config, plugins);
+
+  if (!quiet) {
+    console.log(`${BOLD()}Creating ZIP archive...${RESET()}\n`);
+  }
+
+  const zipEntries: { name: string; data: Buffer }[] = [];
+  for (const doc of docs) {
+    zipEntries.push({ name: doc.filename, data: Buffer.from(doc.content, "utf-8") });
+  }
+
+  const metadata = {
+    exportedAt: new Date().toISOString(),
+    version: VERSION,
+    project: result.projectName,
+    projectPath: result.projectPath,
+    servicesDetected: result.services.length,
+    documentsGenerated: docs.length,
+    documentList: docs.map((d) => ({ name: d.name, filename: d.filename })),
+    services: result.services.map((s) => ({
+      name: s.name,
+      category: s.category,
+      dataCollected: s.dataCollected,
+    })),
+    complianceNeeds: result.complianceNeeds,
+    dataCategories: result.dataCategories,
+  };
+  zipEntries.push({
+    name: "codepliant-metadata.json",
+    data: Buffer.from(JSON.stringify(metadata, null, 2), "utf-8"),
+  });
+
+  const zipBuffer = buildZipArchive(zipEntries);
+
+  if (!fs.existsSync(absOutputDir)) {
+    fs.mkdirSync(absOutputDir, { recursive: true });
+  }
+
+  const safeName = result.projectName.replace(/[^a-zA-Z0-9_-]/g, "-").replace(/-+/g, "-");
+  const zipFilename = `codepliant-${safeName}.zip`;
+  const zipPath = path.join(absOutputDir, zipFilename);
+  fs.writeFileSync(zipPath, zipBuffer);
+
+  const zipSize = zipBuffer.length;
+  const relativePath = path.relative(absProjectPath, zipPath);
+
+  if (!quiet) {
+    console.log(`  ${GREEN()}\u2713${RESET()} ${relativePath} ${DIM()}(${formatFileSize(zipSize)}, ${docs.length} documents + metadata)${RESET()}`);
+    console.log(
+      `\n${GREEN()}${BOLD()}Done!${RESET()} Compliance archive exported to ${relativePath}\n`
+    );
+    console.log(`${DIM()}Contents:${RESET()}`);
+    for (const doc of docs) {
+      console.log(`  ${DIM()}\u2022 ${doc.filename} (${doc.name})${RESET()}`);
+    }
+    console.log(`  ${DIM()}\u2022 codepliant-metadata.json (scan results + metadata)${RESET()}\n`);
+  }
+
   process.exit(0);
 }
+
+function buildZipArchive(entries: { name: string; data: Buffer }[]): Buffer {
+  const parts: Buffer[] = [];
+  const centralDir: Buffer[] = [];
+  let offset = 0;
+
+  for (const entry of entries) {
+    const nameBytes = Buffer.from(entry.name, "utf-8");
+    const dataLen = entry.data.length;
+    const crc = zipCrc32(entry.data);
+
+    const local = Buffer.alloc(30 + nameBytes.length);
+    local.writeUInt32LE(0x04034b50, 0);
+    local.writeUInt16LE(20, 4);
+    local.writeUInt16LE(0, 6);
+    local.writeUInt16LE(0, 8);
+    local.writeUInt16LE(0, 10);
+    local.writeUInt16LE(0, 12);
+    local.writeUInt32LE(crc, 14);
+    local.writeUInt32LE(dataLen, 18);
+    local.writeUInt32LE(dataLen, 22);
+    local.writeUInt16LE(nameBytes.length, 26);
+    local.writeUInt16LE(0, 28);
+    nameBytes.copy(local, 30);
+    parts.push(local, entry.data);
+
+    const central = Buffer.alloc(46 + nameBytes.length);
+    central.writeUInt32LE(0x02014b50, 0);
+    central.writeUInt16LE(20, 4);
+    central.writeUInt16LE(20, 6);
+    central.writeUInt16LE(0, 8);
+    central.writeUInt16LE(0, 10);
+    central.writeUInt16LE(0, 12);
+    central.writeUInt16LE(0, 14);
+    central.writeUInt32LE(crc, 16);
+    central.writeUInt32LE(dataLen, 20);
+    central.writeUInt32LE(dataLen, 24);
+    central.writeUInt16LE(nameBytes.length, 28);
+    central.writeUInt16LE(0, 30);
+    central.writeUInt16LE(0, 32);
+    central.writeUInt16LE(0, 34);
+    central.writeUInt16LE(0, 36);
+    central.writeUInt32LE(0, 38);
+    central.writeUInt32LE(offset, 42);
+    nameBytes.copy(central, 46);
+    centralDir.push(central);
+    offset += local.length + dataLen;
+  }
+
+  const centralDirBuf = Buffer.concat(centralDir);
+  const eocd = Buffer.alloc(22);
+  eocd.writeUInt32LE(0x06054b50, 0);
+  eocd.writeUInt16LE(0, 4);
+  eocd.writeUInt16LE(0, 6);
+  eocd.writeUInt16LE(entries.length, 8);
+  eocd.writeUInt16LE(entries.length, 10);
+  eocd.writeUInt32LE(centralDirBuf.length, 12);
+  eocd.writeUInt32LE(offset, 16);
+  eocd.writeUInt16LE(0, 20);
+  return Buffer.concat([...parts, centralDirBuf, eocd]);
+}
+
+function zipCrc32(buf: Buffer): number {
+  let crc = 0xFFFFFFFF;
+  for (let i = 0; i < buf.length; i++) {
+    crc ^= buf[i];
+    for (let j = 0; j < 8; j++) {
+      crc = (crc >>> 1) ^ (crc & 1 ? 0xEDB88320 : 0);
+    }
+  }
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
 
 function runDoctor(absProjectPath: string, absOutputDir: string, quiet: boolean) {
   if (!quiet) printBanner();
