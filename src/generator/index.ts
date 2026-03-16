@@ -119,6 +119,8 @@ import { generateDataSubjectRightsPortal } from "./data-subject-rights-portal.js
 import { generateComplianceAutomationGuide } from "./compliance-automation-guide.js";
 import { generateComplianceOath } from "./compliance-oath.js";
 import { generatePrivacyImpactRegister } from "./privacy-impact-register.js";
+import { generateAIRedTeamGuide } from "./ai-red-team-guide.js";
+import { generateComplianceKPIDashboard } from "./compliance-kpi-dashboard.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1200,6 +1202,26 @@ export function generateDocuments(
       name: "Privacy Impact Register",
       filename: "PRIVACY_IMPACT_REGISTER.md",
       content: privacyImpactRegister,
+    });
+  }
+
+  // AI Red Team Guide — adversarial testing guide for AI features (OWASP LLM Top 10)
+  const aiRedTeamGuide = generateAIRedTeamGuide(docScan, ctx);
+  if (aiRedTeamGuide) {
+    docs.push({
+      name: "AI Red Team Guide",
+      filename: "AI_RED_TEAM_GUIDE.md",
+      content: aiRedTeamGuide,
+    });
+  }
+
+  // Compliance KPI Dashboard — KPIs for compliance program measurement
+  const complianceKPIDashboard = generateComplianceKPIDashboard(docScan, ctx);
+  if (complianceKPIDashboard) {
+    docs.push({
+      name: "Compliance KPI Dashboard",
+      filename: "COMPLIANCE_KPI_DASHBOARD.md",
+      content: complianceKPIDashboard,
     });
   }
 

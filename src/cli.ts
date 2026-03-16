@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "370.0.0";
+const VERSION = "380.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -1843,10 +1843,20 @@ function runScanAndGenerate(
     }
     console.log();
     console.log(`  ${BOLD()}Total lines generated:${RESET()} ${totalLinesGenerated.toLocaleString()}`);
+    console.log();
+    console.log(`${CYAN()}${"─".repeat(50)}${RESET()}`);
+    console.log(`${CYAN()}${BOLD()}Estimated Time & Cost Savings${RESET()}`);
+    console.log(`${CYAN()}${"─".repeat(50)}${RESET()}`);
+    console.log();
+    const genSeconds = (genDurationMs / 1000).toFixed(1);
+    const estimatedHoursPerDoc = 0.5; // ~30 min per doc for manual drafting
+    const estimatedManualHours = Math.round(writtenFiles.length * estimatedHoursPerDoc);
     const estimatedCostPerDoc = 1000;
     const estimatedCostSaved = writtenFiles.length * estimatedCostPerDoc;
     const costK = Math.round(estimatedCostSaved / 1000);
-    console.log(`  ${GREEN()}${BOLD()}Estimated lawyer equivalent:${RESET()} Generated ${writtenFiles.length} documents (~$${costK},000 lawyer equivalent)`);
+    console.log(`  ${GREEN()}${BOLD()}Generated ${writtenFiles.length}+ documents in ${genSeconds} seconds${RESET()}`);
+    console.log(`  ${GREEN()}${BOLD()}Estimated manual equivalent: ${estimatedManualHours}+ hours${RESET()}`);
+    console.log(`  ${GREEN()}${BOLD()}Estimated lawyer cost: $${costK.toLocaleString()},000+${RESET()}`);
     console.log();
   }
 
@@ -4795,6 +4805,39 @@ function runExport(absProjectPath: string, absOutputDir: string, quiet: boolean,
     data: Buffer.from(JSON.stringify(metadata, null, 2), "utf-8"),
   });
 
+  // Include full scan result JSON
+  zipEntries.push({
+    name: "scan-result.json",
+    data: Buffer.from(JSON.stringify(result, null, 2), "utf-8"),
+  });
+
+  // Include .codepliantrc.json if it exists
+  const rcPath = path.join(absProjectPath, ".codepliantrc.json");
+  if (fs.existsSync(rcPath)) {
+    zipEntries.push({
+      name: ".codepliantrc.json",
+      data: fs.readFileSync(rcPath),
+    });
+  }
+
+  // Include compliance score summary
+  const complianceScore = computeComplianceScore(result, absOutputDir);
+  const scoreSummary = {
+    score: complianceScore,
+    grade: complianceScore >= 90 ? "A" : complianceScore >= 80 ? "B" : complianceScore >= 70 ? "C" : complianceScore >= 60 ? "D" : "F",
+    servicesDetected: result.services.length,
+    documentsGenerated: docs.length,
+    complianceNeeds: result.complianceNeeds.length,
+    requiredDocs: result.complianceNeeds.filter(n => n.priority === "required").length,
+    recommendedDocs: result.complianceNeeds.filter(n => n.priority === "recommended").length,
+    generatedAt: new Date().toISOString(),
+    version: VERSION,
+  };
+  zipEntries.push({
+    name: "compliance-score.json",
+    data: Buffer.from(JSON.stringify(scoreSummary, null, 2), "utf-8"),
+  });
+
   const zipBuffer = buildZipArchive(zipEntries);
 
   if (!fs.existsSync(absOutputDir)) {
@@ -4818,7 +4861,12 @@ function runExport(absProjectPath: string, absOutputDir: string, quiet: boolean,
     for (const doc of docs) {
       console.log(`  ${DIM()}\u2022 ${doc.filename} (${doc.name})${RESET()}`);
     }
-    console.log(`  ${DIM()}\u2022 codepliant-metadata.json (scan results + metadata)${RESET()}\n`);
+    console.log(`  ${DIM()}\u2022 codepliant-metadata.json (scan results + metadata)${RESET()}`);
+    console.log(`  ${DIM()}\u2022 scan-result.json (full scan result)${RESET()}`);
+    if (fs.existsSync(rcPath)) {
+      console.log(`  ${DIM()}\u2022 .codepliantrc.json (project configuration)${RESET()}`);
+    }
+    console.log(`  ${DIM()}\u2022 compliance-score.json (score: ${scoreSummary.score}%, grade: ${scoreSummary.grade})${RESET()}\n`);
   }
 
   process.exit(0);
