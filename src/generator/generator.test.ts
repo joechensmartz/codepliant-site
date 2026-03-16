@@ -16,6 +16,8 @@ import { generateAIModelCard } from "./ai-model-card.js";
 import { generateDataFlowDiagram, buildMermaidDiagram } from "./data-map-visual.js";
 import { generateAuditLogPolicy } from "./audit-log-policy.js";
 import { generateAcceptableAIUsePolicy } from "./acceptable-ai-use.js";
+import { generateRegulatoryReadinessScorecard } from "./regulatory-readiness-scorecard.js";
+import { generateDataLifecycleDiagram } from "./data-lifecycle-diagram.js";
 import type { GeneratorContext } from "./index.js";
 
 // --- Mock data helpers ---
@@ -1773,5 +1775,143 @@ describe("generateAcceptableAIUsePolicy", () => {
     const result = generateAcceptableAIUsePolicy(scanWithAll, ctx)!;
     assert.ok(result !== null);
     assert.ok(result.includes("Acceptable AI Use Policy"));
+  });
+});
+
+// ============================================================
+// generateRegulatoryReadinessScorecard
+// ============================================================
+
+describe("generateRegulatoryReadinessScorecard", () => {
+  it("returns null for empty scan", () => {
+    const result = generateRegulatoryReadinessScorecard(emptyScan, ctx);
+    assert.strictEqual(result, null);
+  });
+
+  it("generates valid markdown with heading", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctx)!;
+    assert.ok(result !== null);
+    assert.ok(result.includes("# Regulatory Readiness Scorecard"));
+  });
+
+  it("includes visual progress bars", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctx)!;
+    // Should contain block characters for the progress bar
+    assert.ok(result.includes("\u2588") || result.includes("\u2591"));
+  });
+
+  it("includes GDPR assessment by default", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctx)!;
+    assert.ok(result.includes("GDPR"));
+  });
+
+  it("includes CCPA when jurisdiction is set", () => {
+    const ctxCCPA = { ...ctx, jurisdictions: ["ccpa"] };
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctxCCPA)!;
+    assert.ok(result.includes("CCPA"));
+  });
+
+  it("includes EU AI Act when AI services detected", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAI, ctx)!;
+    assert.ok(result.includes("EU AI Act"));
+  });
+
+  it("includes PCI DSS when payment services detected", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithPayment, ctx)!;
+    assert.ok(result.includes("PCI DSS"));
+  });
+
+  it("includes action items", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctx)!;
+    assert.ok(result.includes("Action items to reach 100%") || result.includes("Priority Action Plan"));
+  });
+
+  it("includes overall score percentage", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctx)!;
+    assert.ok(result.includes("Overall Score:"));
+    assert.ok(/%/.test(result));
+  });
+
+  it("uses company name from context", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctx)!;
+    assert.ok(result.includes("Acme Corp"));
+  });
+
+  it("includes Codepliant disclaimer", () => {
+    const result = generateRegulatoryReadinessScorecard(scanWithAll, ctx)!;
+    assert.ok(result.includes("Codepliant"));
+  });
+});
+
+// ============================================================
+// generateDataLifecycleDiagram
+// ============================================================
+
+describe("generateDataLifecycleDiagram", () => {
+  it("returns null for empty scan", () => {
+    const result = generateDataLifecycleDiagram(emptyScan, ctx);
+    assert.strictEqual(result, null);
+  });
+
+  it("generates valid markdown with heading", () => {
+    const result = generateDataLifecycleDiagram(scanWithAll, ctx)!;
+    assert.ok(result !== null);
+    assert.ok(result.includes("# Data Lifecycle Diagram"));
+  });
+
+  it("includes Mermaid diagram", () => {
+    const result = generateDataLifecycleDiagram(scanWithAll, ctx)!;
+    assert.ok(result.includes("```mermaid"));
+    assert.ok(result.includes("graph LR"));
+  });
+
+  it("includes lifecycle stages", () => {
+    const result = generateDataLifecycleDiagram(scanWithAll, ctx)!;
+    assert.ok(result.includes("Collection"));
+    assert.ok(result.includes("Processing"));
+    assert.ok(result.includes("Storage"));
+    assert.ok(result.includes("Sharing"));
+    assert.ok(result.includes("Deletion"));
+  });
+
+  it("includes retention summary table", () => {
+    const result = generateDataLifecycleDiagram(scanWithAll, ctx)!;
+    assert.ok(result.includes("Retention Summary"));
+    assert.ok(result.includes("Retention Period"));
+  });
+
+  it("includes per-data-type lifecycle", () => {
+    const result = generateDataLifecycleDiagram(scanWithAll, ctx)!;
+    assert.ok(result.includes("Detailed Lifecycle per Data Type"));
+  });
+
+  it("detects AI interaction data for AI scan", () => {
+    const result = generateDataLifecycleDiagram(scanWithAI, ctx)!;
+    assert.ok(result.includes("AI Interaction Data"));
+  });
+
+  it("detects payment data for payment scan", () => {
+    const result = generateDataLifecycleDiagram(scanWithPayment, ctx)!;
+    assert.ok(result.includes("Payment"));
+  });
+
+  it("detects behavioral data for analytics scan", () => {
+    const result = generateDataLifecycleDiagram(scanWithAnalytics, ctx)!;
+    assert.ok(result.includes("Behavioral") || result.includes("Analytics"));
+  });
+
+  it("detects identity data for auth scan", () => {
+    const result = generateDataLifecycleDiagram(scanWithAuth, ctx)!;
+    assert.ok(result.includes("Identity"));
+  });
+
+  it("uses company name from context", () => {
+    const result = generateDataLifecycleDiagram(scanWithAll, ctx)!;
+    assert.ok(result.includes("Acme Corp"));
+  });
+
+  it("includes Codepliant disclaimer", () => {
+    const result = generateDataLifecycleDiagram(scanWithAll, ctx)!;
+    assert.ok(result.includes("Codepliant"));
   });
 });

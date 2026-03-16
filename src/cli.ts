@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "330.0.0";
+const VERSION = "340.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -148,6 +148,8 @@ ${BOLD()}Service Management:${RESET()}
 ${BOLD()}Diagnostics:${RESET()}
   ${CYAN()}doctor${RESET()}          Diagnose common issues and suggest fixes
   ${CYAN()}health${RESET()}          Quick health check of compliance setup
+  ${CYAN()}preview${RESET()}         Preview a specific document in terminal (paged output)
+  ${CYAN()}reset${RESET()}           Reset all codepliant state (scores, usage, todo)
   ${CYAN()}archive${RESET()}         Archive current legal/ directory with timestamp
   ${CYAN()}clean${RESET()}           Remove all generated files in legal/
 
@@ -1164,7 +1166,7 @@ function main() {
         console.error(`${RED()}Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
         process.exit(1);
       }
-    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show") && !(command === "fix" && (arg === "missing-dpo" || arg === "stale-docs" || arg === "missing-consent"))) {
+    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show") && !(command === "fix" && (arg === "missing-dpo" || arg === "stale-docs" || arg === "missing-consent")) && !(command === "preview")) {
       projectPath = arg;
     }
   }
@@ -1543,6 +1545,16 @@ function main() {
 
     if (command === "benchmark") {
       runBenchmark(absProjectPath, absOutputDir, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "preview") {
+      runPreview(absProjectPath, absOutputDir, args, quiet);
+      return;
+    }
+
+    if (command === "reset") {
+      runReset(absProjectPath, absOutputDir, args, quiet, forceFlag);
       return;
     }
 
@@ -6861,6 +6873,260 @@ function runBenchmark(
 
   console.log(`${DIM()}Benchmarks based on aggregated analysis of ${generalBenchmark.sampleSize}+ repositories across industries.${RESET()}\n`);
   process.exit(0);
+}
+
+// --- `codepliant preview <document>` command ---
+
+function runPreview(
+  absProjectPath: string,
+  absOutputDir: string,
+  args: string[],
+  quiet: boolean,
+) {
+  if (!quiet) printBanner();
+
+  // Find the document argument (first non-flag arg after "preview")
+  const previewIdx = args.indexOf("preview");
+  let docArg: string | undefined;
+  for (let i = previewIdx + 1; i < args.length; i++) {
+    if (!args[i].startsWith("-")) {
+      docArg = args[i];
+      break;
+    }
+  }
+
+  if (!docArg) {
+    // List available documents
+    if (!fs.existsSync(absOutputDir)) {
+      console.log(`${YELLOW()}No generated documents found. Run ${CYAN()}codepliant go${RESET()}${YELLOW()} first.${RESET()}`);
+      process.exit(1);
+    }
+    const files = fs.readdirSync(absOutputDir).filter((f: string) => f.endsWith(".md"));
+    if (files.length === 0) {
+      console.log(`${YELLOW()}No markdown documents found in ${absOutputDir}.${RESET()}`);
+      process.exit(1);
+    }
+    console.log(`${BOLD()}Available documents:${RESET()}\n`);
+    for (const file of files) {
+      console.log(`  ${CYAN()}${file.replace(".md", "").toLowerCase().replace(/_/g, "-")}${RESET()}  ${DIM()}(${file})${RESET()}`);
+    }
+    console.log(`\n${DIM()}Usage: codepliant preview <document-name>${RESET()}`);
+    process.exit(0);
+  }
+
+  // Resolve document name — match by filename, slug, or partial
+  if (!fs.existsSync(absOutputDir)) {
+    console.error(`${RED()}No generated documents found. Run ${CYAN()}codepliant go${RESET()}${RED()} first.${RESET()}`);
+    process.exit(1);
+  }
+
+  const files = fs.readdirSync(absOutputDir).filter((f: string) => f.endsWith(".md"));
+  const normalizedArg = docArg.toUpperCase().replace(/-/g, "_");
+
+  let matchedFile: string | undefined;
+
+  // Exact filename match
+  matchedFile = files.find((f: string) => f === docArg || f === `${docArg}.md`);
+
+  // Slug match: privacy-policy -> PRIVACY_POLICY.md
+  if (!matchedFile) {
+    matchedFile = files.find((f: string) => f.replace(".md", "") === normalizedArg);
+  }
+
+  // Partial match
+  if (!matchedFile) {
+    matchedFile = files.find((f: string) => f.toUpperCase().includes(normalizedArg));
+  }
+
+  if (!matchedFile) {
+    console.error(`${RED()}Document "${docArg}" not found.${RESET()}`);
+    console.log(`${DIM()}Run ${CYAN()}codepliant preview${RESET()}${DIM()} to see available documents.${RESET()}`);
+    process.exit(1);
+  }
+
+  const filePath = path.join(absOutputDir, matchedFile);
+  const content = fs.readFileSync(filePath, "utf-8");
+
+  // Syntax-highlighted markdown rendering
+  const highlighted = highlightMarkdown(content);
+
+  // Paged output
+  const termHeight = process.stdout.rows || 40;
+  const lines = highlighted.split("\n");
+
+  if (lines.length <= termHeight - 2) {
+    // Fits on screen — no paging needed
+    console.log(highlighted);
+    process.exit(0);
+  }
+
+  // Page through output
+  let offset = 0;
+  const pageSize = termHeight - 3;
+
+  const showPage = () => {
+    const pageLines = lines.slice(offset, offset + pageSize);
+    console.log(pageLines.join("\n"));
+    const remaining = lines.length - offset - pageSize;
+    if (remaining > 0) {
+      process.stdout.write(`${DIM()}--- ${remaining} more lines (press Enter for next page, q to quit) ---${RESET()}`);
+    }
+  };
+
+  showPage();
+
+  if (offset + pageSize >= lines.length) {
+    process.exit(0);
+  }
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  rl.on("line", (input: string) => {
+    if (input.trim().toLowerCase() === "q") {
+      rl.close();
+      process.exit(0);
+    }
+    offset += pageSize;
+    if (offset >= lines.length) {
+      rl.close();
+      process.exit(0);
+    }
+    showPage();
+    if (offset + pageSize >= lines.length) {
+      rl.close();
+      process.exit(0);
+    }
+  });
+}
+
+/** Simple markdown syntax highlighting for terminal output. */
+function highlightMarkdown(content: string): string {
+  const lines = content.split("\n");
+  const result: string[] = [];
+
+  for (const line of lines) {
+    if (line.startsWith("# ")) {
+      result.push(`${BOLD()}${CYAN()}${line}${RESET()}`);
+    } else if (line.startsWith("## ")) {
+      result.push(`${BOLD()}${GREEN()}${line}${RESET()}`);
+    } else if (line.startsWith("### ")) {
+      result.push(`${BOLD()}${YELLOW()}${line}${RESET()}`);
+    } else if (line.startsWith("- [ ] ")) {
+      result.push(`  ${RED()}☐${RESET()} ${line.slice(6)}`);
+    } else if (line.startsWith("- [x] ") || line.startsWith("- [X] ")) {
+      result.push(`  ${GREEN()}☑${RESET()} ${line.slice(6)}`);
+    } else if (line.startsWith("> ")) {
+      result.push(`${DIM()}${line}${RESET()}`);
+    } else if (line.startsWith("---")) {
+      result.push(`${DIM()}${"─".repeat(60)}${RESET()}`);
+    } else if (line.startsWith("| ")) {
+      // Table row — highlight headers
+      result.push(`${DIM()}${line}${RESET()}`);
+    } else if (line.startsWith("```")) {
+      result.push(`${DIM()}${line}${RESET()}`);
+    } else if (line.startsWith("- ") || line.startsWith("* ")) {
+      result.push(`  ${CYAN()}•${RESET()} ${line.slice(2)}`);
+    } else if (/^\d+\.\s/.test(line)) {
+      result.push(`  ${CYAN()}${line}${RESET()}`);
+    } else if (line.startsWith("**") && line.endsWith("**")) {
+      result.push(`${BOLD()}${line.replace(/\*\*/g, "")}${RESET()}`);
+    } else {
+      result.push(line);
+    }
+  }
+
+  return result.join("\n");
+}
+
+// --- `codepliant reset` command ---
+
+function runReset(
+  absProjectPath: string,
+  absOutputDir: string,
+  args: string[],
+  quiet: boolean,
+  force: boolean,
+) {
+  if (!quiet) printBanner();
+
+  const allFlag = args.includes("--all");
+
+  // State files to remove
+  const stateFiles = [
+    path.join(absProjectPath, ".codepliant-scores.json"),
+    path.join(absProjectPath, ".codepliant-todo.json"),
+  ];
+
+  // Check what exists
+  const existingState = stateFiles.filter((f) => fs.existsSync(f));
+  const docsExist = fs.existsSync(absOutputDir) && fs.readdirSync(absOutputDir).some((f: string) => f.endsWith(".md") || f.endsWith(".json"));
+
+  if (existingState.length === 0 && (!allFlag || !docsExist)) {
+    console.log(`${YELLOW()}Nothing to reset — no codepliant state files found.${RESET()}`);
+    process.exit(0);
+  }
+
+  const doReset = () => {
+    let removed = 0;
+
+    // Remove state files
+    for (const file of existingState) {
+      fs.unlinkSync(file);
+      removed++;
+      if (!quiet) {
+        console.log(`  ${GREEN()}✓${RESET()} Removed ${path.basename(file)}`);
+      }
+    }
+
+    // With --all: also remove generated docs
+    if (allFlag && fs.existsSync(absOutputDir)) {
+      const files = fs.readdirSync(absOutputDir).filter((f: string) => f.endsWith(".md") || f.endsWith(".json"));
+      for (const file of files) {
+        fs.unlinkSync(path.join(absOutputDir, file));
+        removed++;
+      }
+      // Remove directory if empty
+      const remaining = fs.readdirSync(absOutputDir);
+      if (remaining.length === 0) {
+        fs.rmdirSync(absOutputDir);
+      }
+      if (!quiet) {
+        console.log(`  ${GREEN()}✓${RESET()} Removed ${files.length} generated document(s) from ${path.basename(absOutputDir)}/`);
+      }
+    }
+
+    if (!quiet) {
+      console.log(`\n${GREEN()}${BOLD()}Reset complete.${RESET()} Removed ${removed} file(s).`);
+      if (!allFlag) {
+        console.log(`${DIM()}Config (.codepliantrc.json) and generated documents were kept.${RESET()}`);
+        console.log(`${DIM()}Use ${CYAN()}codepliant reset --all${RESET()}${DIM()} to also remove generated documents.${RESET()}`);
+      }
+    }
+    process.exit(0);
+  };
+
+  if (force) {
+    doReset();
+    return;
+  }
+
+  // Confirmation prompt
+  const what = allFlag
+    ? `all codepliant state and ${fs.existsSync(absOutputDir) ? fs.readdirSync(absOutputDir).filter((f: string) => f.endsWith(".md") || f.endsWith(".json")).length : 0} generated document(s)`
+    : `${existingState.length} codepliant state file(s)`;
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  rl.question(
+    `${YELLOW()}Reset ${what}?${RESET()} [y/N] `,
+    (answer: string) => {
+      rl.close();
+      if (answer.toLowerCase() === "y" || answer.toLowerCase() === "yes") {
+        doReset();
+      } else {
+        console.log(`${DIM()}Cancelled.${RESET()}`);
+        process.exit(0);
+      }
+    },
+  );
 }
 
 main();

@@ -111,6 +111,8 @@ import { generateAIImpactAssessment } from "./ai-impact-assessment.js";
 import { generateCrossBorderTransferMap } from "./cross-border-transfer-map.js";
 import { generateComplianceGapAnalysis } from "./compliance-gap-analysis.js";
 import { generateKeyPersonRiskAssessment } from "./key-person-risk.js";
+import { generateRegulatoryReadinessScorecard } from "./regulatory-readiness-scorecard.js";
+import { generateDataLifecycleDiagram } from "./data-lifecycle-diagram.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1121,6 +1123,26 @@ export function generateDocuments(
       name: "Key Person Risk Assessment",
       filename: "KEY_PERSON_RISK_ASSESSMENT.md",
       content: keyPersonRisk,
+    });
+  }
+
+  // Regulatory Readiness Scorecard — per-regulation readiness score with visual bars
+  const regulatoryScorecard = generateRegulatoryReadinessScorecard(docScan, ctx);
+  if (regulatoryScorecard) {
+    docs.push({
+      name: "Regulatory Readiness Scorecard",
+      filename: "REGULATORY_READINESS_SCORECARD.md",
+      content: regulatoryScorecard,
+    });
+  }
+
+  // Data Lifecycle Diagram — Mermaid diagram: Collection -> Processing -> Storage -> Sharing -> Deletion
+  const dataLifecycle = generateDataLifecycleDiagram(docScan, ctx);
+  if (dataLifecycle) {
+    docs.push({
+      name: "Data Lifecycle Diagram",
+      filename: "DATA_LIFECYCLE_DIAGRAM.md",
+      content: dataLifecycle,
     });
   }
 
