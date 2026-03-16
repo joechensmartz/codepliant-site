@@ -146,10 +146,18 @@ The EU AI Act takes full effect **August 2, 2026**. Codepliant generates AI Disc
 
 <br>
 
+## Sample output
+
+See what Codepliant generates for a real SaaS project (OpenAI + Stripe + Supabase + PostHog + Sentry):
+
+**[Browse 25 example documents →](./examples/sample-output/)**
+
+<br>
+
 ## Links
 
-- [Documentation](https://github.com/joechensmartz/codepliant)
-- [Examples](./examples/)
+- [Sample Output](./examples/sample-output/) — see the generated documents
+- [Examples](./examples/) — test projects you can scan
 - [Contributing](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)
 
