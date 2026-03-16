@@ -15,6 +15,7 @@ import { loadPlugins } from "./plugins/loader.js";
 import type { CodepliantPlugin } from "./plugins/index.js";
 import type { ScanResult, ScanTimings } from "./scanner/index.js";
 import { generateEnvExample, writeEnvExample } from "./generator/env-example.js";
+import { generateQuickStartGuide } from "./generator/quick-start-guide.js";
 import { initTemplates, getTemplatesDir } from "./templates/engine.js";
 import { startServer } from "./api/server.js";
 import { sendNotification, buildPayload } from "./notifications/index.js";
@@ -34,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "180.0.0";
+const VERSION = "220.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -91,6 +92,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}dashboard${RESET()}       Show compliance status dashboard
   ${CYAN()}status${RESET()}          Alias for dashboard
   ${CYAN()}summary${RESET()}         One-paragraph plain English compliance summary
+  ${CYAN()}quickstart${RESET()}      Show quick start guide based on scan results
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -1125,6 +1127,11 @@ function main() {
 
     if (command === "summary") {
       runSummary(absProjectPath, absOutputDir, jsonOutput);
+      return;
+    }
+
+    if (command === "quickstart") {
+      runQuickstart(absProjectPath, quiet);
       return;
     }
 
@@ -2172,6 +2179,61 @@ function runSummary(
   }
 
   console.log(`\n${summary}\n`);
+  process.exit(0);
+}
+
+// --- `codepliant quickstart` command ---
+
+function runQuickstart(absProjectPath: string, quiet: boolean) {
+  if (!quiet) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+
+  const ctx = {
+    companyName: config?.companyName || "[Your Company Name]",
+    contactEmail: config?.contactEmail || "[your-email@example.com]",
+    website: config?.website,
+    jurisdiction: config?.jurisdiction,
+    dpoName: config?.dpoName,
+    dpoEmail: config?.dpoEmail,
+    jurisdictions: config?.jurisdictions,
+  };
+
+  const guide = generateQuickStartGuide(result, ctx);
+
+  // Print the guide content to terminal (strip the markdown header formatting for readability)
+  console.log();
+  console.log(`${CYAN()}${BOLD()}Quick Start Compliance Guide${RESET()}`);
+  console.log(`${CYAN()}${"═".repeat(50)}${RESET()}`);
+  console.log();
+
+  // Print section by section with color highlights
+  const lines = guide.split("\n");
+  for (const line of lines) {
+    if (line.startsWith("# ")) {
+      // Skip the main title, we already printed it
+      continue;
+    } else if (line.startsWith("## ")) {
+      console.log(`\n${BOLD()}${CYAN()}${line.replace("## ", "")}${RESET()}`);
+      console.log(`${CYAN()}${"─".repeat(50)}${RESET()}`);
+    } else if (line.startsWith("### ")) {
+      console.log(`\n${BOLD()}${line.replace("### ", "")}${RESET()}`);
+    } else if (line.startsWith("- [ ] ")) {
+      console.log(`  ${YELLOW()}☐${RESET()} ${line.replace("- [ ] ", "")}`);
+    } else if (line.startsWith("> ")) {
+      console.log(`  ${DIM()}${line.replace("> ", "")}${RESET()}`);
+    } else if (line.startsWith("---")) {
+      console.log(`${DIM()}${"─".repeat(50)}${RESET()}`);
+    } else {
+      console.log(line);
+    }
+  }
+
+  console.log();
+  console.log(`${GREEN()}${BOLD()}Tip:${RESET()} Run ${CYAN()}codepliant go${RESET()} to generate all documents, then follow the steps above.`);
+  console.log();
+
   process.exit(0);
 }
 

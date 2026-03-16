@@ -160,6 +160,51 @@ We scanned 100 open-source projects. Here are 10:
 
 ---
 
+## What happens when you run `codepliant go`
+
+When you run `npx codepliant go`, here's exactly what happens under the hood:
+
+### Step 1: Dependency Scanning (`src/scanner/dependencies.ts`)
+Reads your `package.json` (or `requirements.txt`, `Gemfile`, `go.mod`, `Cargo.toml`, `composer.json`, etc.) and matches every dependency against 200+ known service signatures. Each signature maps a package name to its category (analytics, auth, payment, AI, monitoring) and the data it typically collects.
+
+### Step 2: Source Code Import Scanning (`src/scanner/imports.ts`)
+Walks your source files and detects `import` and `require()` statements. This catches services used in code but not listed as direct dependencies — like AI SDKs imported from a monorepo package or vendored libraries.
+
+### Step 3: Environment Variable Scanning (`src/scanner/env.ts`)
+Reads `.env`, `.env.local`, `.env.example`, and similar files. Matches variable names against known patterns (e.g., `STRIPE_SECRET_KEY`, `OPENAI_API_KEY`, `SENTRY_DSN`) to detect services configured via environment variables.
+
+### Step 4: Schema & Model Scanning
+- **Prisma** (`src/scanner/schema.ts`) — parses `schema.prisma` to find user data fields (email, phone, passwordHash)
+- **Drizzle** (`src/scanner/drizzle-models.ts`) — detects data models in Drizzle ORM schemas
+- **Django** (`src/scanner/django-models.ts`) — reads `models.py` for field definitions
+- **SQLAlchemy** (`src/scanner/sqlalchemy-models.ts`) — parses Python ORM models
+- **Mongoose** (`src/scanner/mongoose-models.ts`) — detects MongoDB schemas
+- **TypeORM** (`src/scanner/typeorm-models.ts`) — reads TypeORM entity definitions
+- **Go structs** (`src/scanner/go-structs.ts`) — parses Go struct tags for data fields
+
+### Step 5: Infrastructure Scanning
+- **Docker Compose** (`src/scanner/docker-compose-services.ts`) — detects databases, caches, message queues
+- **Cloud providers** (`src/scanner/cloud-scanner.ts`) — AWS, GCP, Azure configurations
+- **CI/CD** (`src/scanner/ci-cd-scanner.ts`) — GitHub Actions, GitLab CI, CircleCI
+- **Database** (`src/scanner/database-scanner.ts`) — connection strings, database types
+
+### Step 6: Specialized Scanners
+- **API routes** (`src/scanner/api-routes.ts`) — detects data intake endpoints
+- **File uploads** (`src/scanner/file-upload-scanner.ts`) — media/document upload handling
+- **Payment** (`src/scanner/payment-scanner.ts`) — Stripe, PayPal, billing integrations
+- **Secrets** (`src/scanner/secrets-scanner.ts`) — hardcoded credentials detection
+- **License** (`src/scanner/license-scanner.ts`) — open source license compliance
+
+### Step 7: Document Generation (`src/generator/index.ts`)
+Based on scan results, generates 57+ documents — each personalized to your actual services. A project using Stripe, OpenAI, and Supabase gets documents that mention those services by name, list their specific data collection practices, and link to their DPA pages.
+
+### Step 8: Output & Scoring
+Writes all documents to `legal/` (or your configured output directory), computes a compliance score, and shows a generation summary with estimated lawyer-equivalent value.
+
+**Total time: typically under 1 second.** Zero network calls — everything runs locally.
+
+---
+
 ## Get started
 
 ```bash
@@ -199,7 +244,7 @@ npx codepliant dashboard
 ### CI/CD
 
 ```yaml
-- uses: codepliant/codepliant@v200
+- uses: codepliant/codepliant@v220
   with:
     fail-on-missing: true
 ```

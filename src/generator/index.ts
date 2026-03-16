@@ -86,6 +86,8 @@ import { generateVendorOnboardingChecklist } from "./vendor-onboarding-checklist
 import { generateExecutiveDashboard } from "./executive-dashboard.js";
 import { generatePrivacyNoticeShort } from "./privacy-notice-short.js";
 import { generateCookieConsentConfig } from "./cookie-consent-config.js";
+import { generateQuickStartGuide } from "./quick-start-guide.js";
+import { generateComplianceRoadmap } from "./compliance-roadmap.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -854,6 +856,20 @@ export function generateDocuments(
       content: cookieConsentConfig,
     });
   }
+
+  // Quick Start Compliance Guide — always generated, personalized to detected stack
+  docs.push({
+    name: "Quick Start Compliance Guide",
+    filename: "QUICK_START_COMPLIANCE_GUIDE.md",
+    content: generateQuickStartGuide(docScan, ctx),
+  });
+
+  // Compliance Roadmap — phased implementation plan
+  docs.push({
+    name: "Compliance Roadmap",
+    filename: "COMPLIANCE_ROADMAP.md",
+    content: generateComplianceRoadmap(docScan, ctx),
+  });
 
   // Compliance Certificate — self-attestation certificate (generated after all other docs)
   // Note: score is not available at this point; it will show 0/N/A.
