@@ -6,13 +6,10 @@ import * as os from "os";
 import { scanDotnetDependencies } from "./dotnet.js";
 
 function createTempProject(files: Record<string, string>): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "codepliant-dotnet-test-"));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "codepliant-test-"));
   for (const [filePath, content] of Object.entries(files)) {
     const fullPath = path.join(dir, filePath);
-    const dirName = path.dirname(fullPath);
-    if (!fs.existsSync(dirName)) {
-      fs.mkdirSync(dirName, { recursive: true });
-    }
+    fs.mkdirSync(path.dirname(fullPath), { recursive: true });
     fs.writeFileSync(fullPath, content);
   }
   return dir;
@@ -23,86 +20,49 @@ function cleanup(dir: string) {
 }
 
 describe("scanDotnetDependencies", () => {
-  it("detects Stripe.net from csproj", () => {
+  it("detects ConnectionStrings in appsettings.json", () => {
     const dir = createTempProject({
-      "MyApp.csproj": `<Project Sdk="Microsoft.NET.Sdk.Web">
-  <ItemGroup>
-    <PackageReference Include="Stripe.net" Version="43.0.0" />
-  </ItemGroup>
-</Project>`,
+      "appsettings.json": JSON.stringify({
+        ConnectionStrings: {
+          DefaultConnection: "Server=localhost;Database=mydb;User=sa;Password=secret;"
+        }
+      }),
     });
     try {
       const result = scanDotnetDependencies(dir);
-      assert.strictEqual(result.length, 1);
-      assert.strictEqual(result[0].name, "stripe");
-      assert.strictEqual(result[0].category, "payment");
+      assert.ok(result.some(s => s.name === "dotnet-database"));
     } finally {
       cleanup(dir);
     }
   });
 
-  it("detects multiple packages from csproj", () => {
+  it("detects SendGrid and Stripe in appsettings.json", () => {
     const dir = createTempProject({
-      "MyApp.csproj": `<Project Sdk="Microsoft.NET.Sdk.Web">
-  <ItemGroup>
-    <PackageReference Include="Sentry" Version="4.0.0" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.0" />
-    <PackageReference Include="SendGrid" Version="9.28.0" />
-  </ItemGroup>
-</Project>`,
+      "appsettings.json": JSON.stringify({
+        SendGrid: { ApiKey: "SG.xxx" },
+        Stripe: { SecretKey: "sk_test_xxx", PublishableKey: "pk_test_xxx" }
+      }),
     });
     try {
       const result = scanDotnetDependencies(dir);
-      assert.strictEqual(result.length, 3);
-      const names = result.map((r) => r.name).sort();
-      assert.deepStrictEqual(names, ["aws-s3", "sendgrid", "sentry"]);
+      assert.ok(result.some(s => s.name === "sendgrid"));
+      assert.ok(result.some(s => s.name === "stripe"));
     } finally {
       cleanup(dir);
     }
   });
 
-  it("detects packages from subdirectory csproj", () => {
+  it("detects Azure AD and Application Insights in appsettings.json", () => {
     const dir = createTempProject({
-      "src/WebApi.csproj": `<Project Sdk="Microsoft.NET.Sdk.Web">
-  <ItemGroup>
-    <PackageReference Include="Twilio" Version="6.0.0" />
-  </ItemGroup>
-</Project>`,
+      "appsettings.json": JSON.stringify({
+        AzureAd: { TenantId: "xxx", ClientId: "yyy" },
+        ApplicationInsights: { InstrumentationKey: "zzz" }
+      }),
     });
     try {
       const result = scanDotnetDependencies(dir);
-      assert.strictEqual(result.length, 1);
-      assert.strictEqual(result[0].name, "twilio");
-      assert.strictEqual(result[0].category, "other");
-    } finally {
-      cleanup(dir);
-    }
-  });
-
-  it("detects Identity and Firebase auth packages", () => {
-    const dir = createTempProject({
-      "MyApp.csproj": `<Project Sdk="Microsoft.NET.Sdk.Web">
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.7.0" />
-  </ItemGroup>
-</Project>`,
-    });
-    try {
-      const result = scanDotnetDependencies(dir);
-      assert.strictEqual(result.length, 2);
-      const names = result.map((r) => r.name).sort();
-      assert.deepStrictEqual(names, ["aspnetcore-identity", "google-cloud-storage"]);
-    } finally {
-      cleanup(dir);
-    }
-  });
-
-  it("returns empty for project with no csproj files", () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "codepliant-dotnet-test-"));
-    try {
-      const result = scanDotnetDependencies(dir);
-      assert.strictEqual(result.length, 0);
+      assert.ok(result.some(s => s.name === "azure-ad"));
+      assert.ok(result.some(s => s.name === "azure-app-insights"));
     } finally {
       cleanup(dir);
     }

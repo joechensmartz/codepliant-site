@@ -176,7 +176,114 @@ export function scanJavaDependencies(projectPath: string): DetectedService[] {
     scanBuildGradle(gradleKtsPath, "build.gradle.kts", detected);
   }
 
+  // Scan Spring Boot configuration files
+  scanSpringBootConfig(projectPath, detected);
+
+  // Scan Java source files for security annotations
+  scanJavaAnnotations(projectPath, detected);
+
   return Array.from(detected.values());
+}
+
+function scanSpringBootConfig(projectPath: string, detected: Map<string, DetectedService>) {
+  const configPaths = [
+    path.join(projectPath, "src", "main", "resources", "application.properties"),
+    path.join(projectPath, "src", "main", "resources", "application.yml"),
+    path.join(projectPath, "src", "main", "resources", "application.yaml"),
+    path.join(projectPath, "application.properties"),
+    path.join(projectPath, "application.yml"),
+  ];
+
+  for (const configPath of configPaths) {
+    if (!fs.existsSync(configPath)) continue;
+
+    let content: string;
+    try {
+      content = fs.readFileSync(configPath, "utf-8");
+    } catch {
+      continue;
+    }
+
+    const relPath = path.relative(projectPath, configPath);
+
+    const springPatterns: { pattern: RegExp; name: string; category: DetectedService["category"]; dataCollected: string[] }[] = [
+      { pattern: /spring[.\s:]+datasource|spring[.\s:]+jpa/i, name: "spring-datasource", category: "database", dataCollected: ["user data as defined in schema", "database records"] },
+      { pattern: /spring[.\s:]+mail|spring[.\s:]+sendgrid/i, name: "spring-mail", category: "email", dataCollected: ["email addresses", "email content"] },
+      { pattern: /spring[.\s:]+redis|spring[.\s:]+data[.\s:]+redis/i, name: "spring-redis", category: "database", dataCollected: ["cached data", "session data"] },
+      { pattern: /spring[.\s:]+data[.\s:]+mongodb/i, name: "spring-mongodb", category: "database", dataCollected: ["user data as defined in schema", "database records"] },
+      { pattern: /spring[.\s:]+elasticsearch/i, name: "spring-elasticsearch", category: "database", dataCollected: ["search indices", "application logs"] },
+      { pattern: /spring[.\s:]+rabbitmq/i, name: "spring-rabbitmq", category: "other", dataCollected: ["message queue data"] },
+      { pattern: /spring[.\s:]+kafka/i, name: "spring-kafka", category: "other", dataCollected: ["event stream data", "message data"] },
+      { pattern: /spring[.\s:]+security[.\s:]+oauth2/i, name: "spring-oauth2-config", category: "auth", dataCollected: ["email", "name", "OAuth tokens", "session data"] },
+      { pattern: /spring[.\s:]+cloud[.\s:]+aws[.\s:]+s3|aws[.\s:]+s3/i, name: "spring-aws-s3", category: "storage", dataCollected: ["uploaded files", "file metadata"] },
+    ];
+
+    for (const sp of springPatterns) {
+      if (sp.pattern.test(content) && !detected.has(sp.name)) {
+        detected.set(sp.name, {
+          name: sp.name,
+          category: sp.category,
+          evidence: [{ type: "code_pattern", file: relPath, detail: `Found ${sp.name} configuration in ${relPath}` }],
+          dataCollected: sp.dataCollected,
+        });
+      }
+    }
+  }
+}
+
+function scanJavaAnnotations(projectPath: string, detected: Map<string, DetectedService>) {
+  const srcDir = path.join(projectPath, "src", "main", "java");
+  if (!fs.existsSync(srcDir)) return;
+
+  const javaFiles = collectJavaFiles(srcDir, 4);
+
+  const annotationPatterns: { pattern: RegExp; name: string; category: DetectedService["category"]; dataCollected: string[] }[] = [
+    { pattern: /@EnableOAuth2Client|@EnableOAuth2Sso/i, name: "spring-oauth2-client", category: "auth", dataCollected: ["email", "name", "OAuth tokens", "session data", "profile data"] },
+    { pattern: /@EnableWebSecurity|@EnableGlobalMethodSecurity|@EnableMethodSecurity/i, name: "spring-web-security", category: "auth", dataCollected: ["email", "password hash", "session data", "authentication tokens"] },
+    { pattern: /@EnableJpaRepositories|@EnableMongoRepositories/i, name: "spring-data-repositories", category: "database", dataCollected: ["user data as defined in schema", "database records"] },
+    { pattern: /@EnableCaching/i, name: "spring-caching", category: "database", dataCollected: ["cached data"] },
+  ];
+
+  for (const filePath of javaFiles) {
+    let content: string;
+    try {
+      content = fs.readFileSync(filePath, "utf-8");
+    } catch {
+      continue;
+    }
+
+    const relPath = path.relative(projectPath, filePath);
+
+    for (const ap of annotationPatterns) {
+      if (ap.pattern.test(content) && !detected.has(ap.name)) {
+        detected.set(ap.name, {
+          name: ap.name,
+          category: ap.category,
+          evidence: [{ type: "code_pattern", file: relPath, detail: `Found ${ap.name} annotation in ${relPath}` }],
+          dataCollected: ap.dataCollected,
+        });
+      }
+    }
+  }
+}
+
+function collectJavaFiles(dir: string, maxDepth: number): string[] {
+  if (maxDepth <= 0) return [];
+  const files: string[] = [];
+  try {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isFile() && entry.name.endsWith(".java")) {
+        files.push(full);
+      } else if (entry.isDirectory() && !entry.name.startsWith(".")) {
+        files.push(...collectJavaFiles(full, maxDepth - 1));
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return files;
 }
 
 function discoverMavenModules(pomPath: string, projectPath: string): string[] {

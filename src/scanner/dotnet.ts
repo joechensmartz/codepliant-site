@@ -92,7 +92,69 @@ export function scanDotnetDependencies(projectPath: string): DetectedService[] {
     scanCsproj(csprojPath, relPath, detected);
   }
 
+  // Scan appsettings.json for service configurations
+  scanAppSettings(projectPath, detected);
+
   return Array.from(detected.values());
+}
+
+function scanAppSettings(projectPath: string, detected: Map<string, DetectedService>) {
+  const settingsFiles = [
+    "appsettings.json",
+    "appsettings.Development.json",
+    "appsettings.Production.json",
+  ];
+
+  for (const filename of settingsFiles) {
+    // Check root and one level deep
+    const candidates = [path.join(projectPath, filename)];
+    try {
+      const entries = fs.readdirSync(projectPath, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isDirectory() && !entry.name.startsWith(".") && !["bin", "obj", "node_modules"].includes(entry.name)) {
+          candidates.push(path.join(projectPath, entry.name, filename));
+        }
+      }
+    } catch {
+      // ignore
+    }
+
+    for (const filePath of candidates) {
+      if (!fs.existsSync(filePath)) continue;
+
+      let content: string;
+      try {
+        content = fs.readFileSync(filePath, "utf-8");
+      } catch {
+        continue;
+      }
+
+      const relPath = path.relative(projectPath, filePath) || filename;
+
+      const settingsPatterns: { pattern: RegExp; name: string; category: DetectedService["category"]; dataCollected: string[] }[] = [
+        { pattern: /ConnectionStrings/i, name: "dotnet-database", category: "database", dataCollected: ["user data as defined in schema", "database records"] },
+        { pattern: /SendGrid|SENDGRID/i, name: "sendgrid", category: "email", dataCollected: ["email addresses", "email content"] },
+        { pattern: /Stripe|STRIPE/i, name: "stripe", category: "payment", dataCollected: ["payment information", "billing address", "email", "transaction history"] },
+        { pattern: /Redis|REDIS/i, name: "dotnet-redis", category: "database", dataCollected: ["cached data", "session data"] },
+        { pattern: /ApplicationInsights|InstrumentationKey/i, name: "azure-app-insights", category: "monitoring", dataCollected: ["telemetry data", "error data", "user behavior", "performance metrics"] },
+        { pattern: /AzureAd|AzureAdB2C|Microsoft\.Identity/i, name: "azure-ad", category: "auth", dataCollected: ["email", "name", "OAuth tokens", "session data"] },
+        { pattern: /BlobStorage|AzureBlobStorage|StorageAccount/i, name: "azure-blob-storage", category: "storage", dataCollected: ["uploaded files", "file metadata"] },
+        { pattern: /Twilio|TWILIO/i, name: "twilio", category: "other", dataCollected: ["phone numbers", "SMS message content", "voice call metadata"] },
+        { pattern: /Auth0|AUTH0/i, name: "auth0", category: "auth", dataCollected: ["email", "name", "OAuth tokens", "session data"] },
+      ];
+
+      for (const sp of settingsPatterns) {
+        if (sp.pattern.test(content) && !detected.has(sp.name)) {
+          detected.set(sp.name, {
+            name: sp.name,
+            category: sp.category,
+            evidence: [{ type: "code_pattern", file: relPath, detail: `Found ${sp.name} config in ${relPath}` }],
+            dataCollected: sp.dataCollected,
+          });
+        }
+      }
+    }
+  }
 }
 
 function collectCsprojFiles(projectPath: string): string[] {

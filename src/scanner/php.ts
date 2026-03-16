@@ -93,7 +93,130 @@ export function scanPhpDependencies(projectPath: string): DetectedService[] {
     scanComposerJson(composerPath, path.relative(projectPath, composerPath) || "composer.json", detected);
   }
 
+  // Scan wp-config.php for WordPress services
+  scanWpConfig(projectPath, detected);
+
+  // Scan config/*.php for Laravel/Symfony configurations
+  scanPhpConfigDir(projectPath, detected);
+
+  // Detect WordPress plugins
+  scanWpPlugins(projectPath, detected);
+
   return Array.from(detected.values());
+}
+
+function scanWpConfig(projectPath: string, detected: Map<string, DetectedService>) {
+  const wpConfigPath = path.join(projectPath, "wp-config.php");
+  if (!fs.existsSync(wpConfigPath)) return;
+
+  let content: string;
+  try {
+    content = fs.readFileSync(wpConfigPath, "utf-8");
+  } catch {
+    return;
+  }
+
+  const wpPatterns: { pattern: RegExp; name: string; category: DetectedService["category"]; dataCollected: string[] }[] = [
+    { pattern: /DB_NAME|DB_USER|DB_PASSWORD|DB_HOST/i, name: "wordpress-database", category: "database", dataCollected: ["user data", "posts", "comments", "user accounts"] },
+    { pattern: /SMTP|WP_MAIL|mail\s*\(/i, name: "wordpress-mail", category: "email", dataCollected: ["email addresses", "email content"] },
+    { pattern: /WP_CACHE|MEMCACHED|W3TC|WP_REDIS/i, name: "wordpress-cache", category: "database", dataCollected: ["cached data", "session data"] },
+    { pattern: /AUTH_KEY|SECURE_AUTH_KEY|LOGGED_IN_KEY|NONCE_KEY/i, name: "wordpress-auth", category: "auth", dataCollected: ["authentication tokens", "session data"] },
+  ];
+
+  for (const wp of wpPatterns) {
+    if (wp.pattern.test(content)) {
+      if (!detected.has(wp.name)) {
+        detected.set(wp.name, {
+          name: wp.name,
+          category: wp.category,
+          evidence: [{ type: "code_pattern", file: "wp-config.php", detail: `Found ${wp.name} pattern in wp-config.php` }],
+          dataCollected: wp.dataCollected,
+        });
+      }
+    }
+  }
+}
+
+function scanPhpConfigDir(projectPath: string, detected: Map<string, DetectedService>) {
+  const configDir = path.join(projectPath, "config");
+  if (!fs.existsSync(configDir)) return;
+
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(configDir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+
+  const configPatterns: { pattern: RegExp; name: string; category: DetectedService["category"]; dataCollected: string[] }[] = [
+    { pattern: /['"]driver['"]\s*=>\s*['"](?:mysql|pgsql|sqlite|sqlsrv)['"]/i, name: "laravel-database", category: "database", dataCollected: ["user data as defined in schema", "database records"] },
+    { pattern: /['"]mailer['"]\s*=>\s*|['"]transport['"]\s*=>\s*['"]smtp['"]/i, name: "laravel-mail", category: "email", dataCollected: ["email addresses", "email content"] },
+    { pattern: /['"]redis['"]\s*=>\s*|predis|phpredis/i, name: "laravel-redis", category: "database", dataCollected: ["cached data", "session data"] },
+    { pattern: /['"]s3['"]\s*=>\s*|['"]driver['"]\s*=>\s*['"]s3['"]/i, name: "laravel-s3", category: "storage", dataCollected: ["uploaded files", "file metadata"] },
+    { pattern: /['"]stripe['"]\s*=>\s*|STRIPE_KEY|STRIPE_SECRET/i, name: "stripe", category: "payment", dataCollected: ["payment information", "billing address", "email", "transaction history"] },
+  ];
+
+  for (const entry of entries) {
+    if (!entry.isFile() || !entry.name.endsWith(".php")) continue;
+
+    const filePath = path.join(configDir, entry.name);
+    let content: string;
+    try {
+      content = fs.readFileSync(filePath, "utf-8");
+    } catch {
+      continue;
+    }
+
+    for (const cp of configPatterns) {
+      if (cp.pattern.test(content) && !detected.has(cp.name)) {
+        detected.set(cp.name, {
+          name: cp.name,
+          category: cp.category,
+          evidence: [{ type: "code_pattern", file: `config/${entry.name}`, detail: `Found ${cp.name} config in config/${entry.name}` }],
+          dataCollected: cp.dataCollected,
+        });
+      }
+    }
+  }
+}
+
+function scanWpPlugins(projectPath: string, detected: Map<string, DetectedService>) {
+  const pluginsDir = path.join(projectPath, "wp-content", "plugins");
+  if (!fs.existsSync(pluginsDir)) return;
+
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(pluginsDir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+
+  const pluginMap: Record<string, { name: string; category: DetectedService["category"]; dataCollected: string[] }> = {
+    "woocommerce": { name: "woocommerce", category: "payment", dataCollected: ["payment information", "billing address", "shipping address", "order history", "customer accounts"] },
+    "contact-form-7": { name: "contact-form-7", category: "other", dataCollected: ["form submissions", "email addresses", "names", "message content"] },
+    "wp-mail-smtp": { name: "wp-mail-smtp", category: "email", dataCollected: ["email addresses", "email content"] },
+    "google-analytics-for-wordpress": { name: "monsterinsights", category: "analytics", dataCollected: ["page views", "user behavior", "device information", "IP address"] },
+    "google-site-kit": { name: "google-site-kit", category: "analytics", dataCollected: ["page views", "user behavior", "search analytics"] },
+    "wordpress-seo": { name: "yoast-seo", category: "other", dataCollected: ["SEO metadata"] },
+    "wpforms-lite": { name: "wpforms", category: "other", dataCollected: ["form submissions", "email addresses", "names"] },
+    "elementor": { name: "elementor", category: "other", dataCollected: ["page content"] },
+    "akismet": { name: "akismet", category: "other", dataCollected: ["comment content", "IP addresses", "user agents", "email addresses"] },
+    "w3-total-cache": { name: "w3-total-cache", category: "database", dataCollected: ["cached page data"] },
+    "redis-cache": { name: "wp-redis-cache", category: "database", dataCollected: ["cached data", "session data"] },
+  };
+
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const plugin = pluginMap[entry.name];
+    if (plugin && !detected.has(plugin.name)) {
+      detected.set(plugin.name, {
+        name: plugin.name,
+        category: plugin.category,
+        evidence: [{ type: "code_pattern", file: `wp-content/plugins/${entry.name}`, detail: `WordPress plugin: ${entry.name}` }],
+        dataCollected: plugin.dataCollected,
+      });
+    }
+  }
 }
 
 function collectComposerPaths(projectPath: string): string[] {
