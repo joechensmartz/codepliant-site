@@ -124,6 +124,8 @@ import { generateComplianceKPIDashboard } from "./compliance-kpi-dashboard.js";
 import { generateDataRetentionScheduleVisual } from "./data-retention-schedule-visual.js";
 import { generateComplianceCommunicationPlan } from "./compliance-communication-plan.js";
 import { generateExecutiveBriefing } from "./executive-briefing.js";
+import { generateComplianceFAQ } from "./compliance-faq.js";
+import { generatePrivacyRoadmap } from "./privacy-roadmap.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1245,6 +1247,26 @@ export function generateDocuments(
       name: "Compliance Communication Plan",
       filename: "COMPLIANCE_COMMUNICATION_PLAN.md",
       content: complianceCommunicationPlan,
+    });
+  }
+
+  // Compliance FAQ — auto-generated FAQ based on detected services
+  const complianceFAQ = generateComplianceFAQ(docScan, ctx);
+  if (complianceFAQ) {
+    docs.push({
+      name: "Compliance FAQ",
+      filename: "COMPLIANCE_FAQ.md",
+      content: complianceFAQ,
+    });
+  }
+
+  // Privacy Roadmap — 12-month privacy program roadmap based on maturity level
+  const privacyRoadmap = generatePrivacyRoadmap(docScan, ctx, docs);
+  if (privacyRoadmap) {
+    docs.push({
+      name: "Privacy Program Roadmap",
+      filename: "PRIVACY_ROADMAP.md",
+      content: privacyRoadmap,
     });
   }
 

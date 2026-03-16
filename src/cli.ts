@@ -7,6 +7,7 @@ import { scan } from "./scanner/index.js";
 import { generateDocuments, writeDocuments } from "./generator/index.js";
 import { loadConfig, saveConfig, configExists, validateConfig, VALID_JURISDICTIONS, type CodepliantConfig } from "./config.js";
 import { writeDocumentsInFormat, getOutputFormat, getLastPdfResult, writeCompliancePage, writeComplianceReport, writeExecutiveSummary, type OutputFormat } from "./output/index.js";
+import { generateCompliancePage } from "./output/compliance-page.js";
 import { writeBadges } from "./output/badge.js";
 import { diffDocuments, appendChangelog } from "./output/diff.js";
 import { SERVICE_SIGNATURES } from "./scanner/types.js";
@@ -35,7 +36,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "400.0.0";
+const VERSION = "410.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -112,6 +113,7 @@ ${BOLD()}Generation:${RESET()}
   ${CYAN()}env${RESET()}             Generate .env.example from scan
   ${CYAN()}page${RESET()}            Generate compliance page
   ${CYAN()}badge${RESET()}           Generate compliance badges
+  ${CYAN()}format${RESET()}          Convert a single .md file to HTML
   ${CYAN()}export${RESET()}          Export all compliance docs as a ZIP file
   ${CYAN()}compare${RESET()}         Compare compliance status of two projects
 
@@ -1497,6 +1499,11 @@ function main() {
       return;
     }
 
+    if (command === "format") {
+      runFormat(args, quiet);
+      return;
+    }
+
     if (command === "export") {
       runExport(absProjectPath, absOutputDir, quiet, formatFlag, verbose);
       return;
@@ -2228,6 +2235,69 @@ async function runInit(projectPath: string) {
   }
 
   console.log();
+}
+
+// --- `codepliant format` command ---
+
+function runFormat(args: string[], quiet: boolean) {
+  // Usage: codepliant format <file.md> --output html
+  const filePath = args[1];
+  if (!filePath) {
+    console.error(`${RED()}[CP030] Missing file argument.${RESET()}`);
+    console.error(`Usage: codepliant format <file.md> --output html`);
+    process.exit(1);
+  }
+
+  const absFile = path.resolve(filePath);
+  if (!fs.existsSync(absFile)) {
+    console.error(`${RED()}[CP031] File not found: ${absFile}${RESET()}`);
+    process.exit(1);
+  }
+
+  if (!absFile.endsWith(".md")) {
+    console.error(`${RED()}[CP032] Only .md files are supported. Got: ${path.basename(absFile)}${RESET()}`);
+    process.exit(1);
+  }
+
+  // Parse --output flag (default to html)
+  let outputFormat = "html";
+  const outputIdx = args.indexOf("--output");
+  if (outputIdx !== -1 && args[outputIdx + 1]) {
+    outputFormat = args[outputIdx + 1].toLowerCase();
+  }
+  const dashOIdx = args.indexOf("-o");
+  if (dashOIdx !== -1 && args[dashOIdx + 1]) {
+    outputFormat = args[dashOIdx + 1].toLowerCase();
+  }
+
+  if (outputFormat !== "html") {
+    console.error(`${RED()}[CP033] Unsupported output format: "${outputFormat}". Currently only "html" is supported.${RESET()}`);
+    process.exit(1);
+  }
+
+  const mdContent = fs.readFileSync(absFile, "utf-8");
+  const baseName = path.basename(absFile, ".md");
+  const docName = baseName.replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  // Use the Apple-style HTML renderer (compliance page) for a single document
+  const html = generateCompliancePage(
+    [{ name: docName, filename: path.basename(absFile), content: mdContent }],
+    {
+      companyName: docName,
+      lastUpdated: new Date().toISOString().split("T")[0],
+    }
+  );
+
+  const outputPath = path.join(path.dirname(absFile), `${baseName}.html`);
+  fs.writeFileSync(outputPath, html, "utf-8");
+
+  if (!quiet) {
+    const size = Buffer.byteLength(html, "utf-8");
+    console.log(`  ${GREEN()}✓${RESET()} ${path.relative(process.cwd(), outputPath)} ${DIM()}(${formatFileSize(size)})${RESET()}`);
+    console.log(`\n${GREEN()}${BOLD()}Done!${RESET()} Converted ${path.basename(absFile)} to HTML.\n`);
+  }
+
+  process.exit(0);
 }
 
 // --- `codepliant page` command ---
