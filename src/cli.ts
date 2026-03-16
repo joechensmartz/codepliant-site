@@ -19,7 +19,14 @@ import { initTemplates, getTemplatesDir } from "./templates/engine.js";
 import { startServer } from "./api/server.js";
 import { sendNotification, buildPayload } from "./notifications/index.js";
 import { discoverProjects, type DiscoveredProject } from "./scanner/discover.js";
+import { listAllSignatures, exportSignatures, importSignatures } from "./community/signatures-repo.js";
+import { writeGithubWiki } from "./output/github-wiki.js";
+import { reviewDocuments, formatReviewResults, isReviewAvailable, type AIReviewConfig } from "./ai/review.js";
+import { lintDocuments } from "./lint.js";
 
+import { handleAuthLogin } from "./cloud/sso.js";
+import { handleAuditTrail, logAuditEntry } from "./cloud/audit-trail.js";
+import { handleTeamConfigInit } from "./cloud/team-config.js";
 const VERSION = "50.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
@@ -70,6 +77,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}scan${RESET()}            Scan project (no document generation)
   ${CYAN()}scan-all${RESET()}        Scan all projects under a directory
   ${CYAN()}check${RESET()}           Quick compliance pass/fail check
+  ${CYAN()}lint${RESET()}            Check existing docs for completeness
   ${CYAN()}diff${RESET()}            Show changes since last generation
   ${CYAN()}dashboard${RESET()}       Show compliance status dashboard
 
@@ -80,6 +88,8 @@ ${BOLD()}Generation:${RESET()}
   ${CYAN()}env${RESET()}             Generate .env.example from scan
   ${CYAN()}page${RESET()}            Generate compliance page
   ${CYAN()}badge${RESET()}           Generate compliance badges
+  ${CYAN()}export${RESET()}          Export all compliance docs as a ZIP file
+  ${CYAN()}compare${RESET()}         Compare compliance status of two projects
 
 ${BOLD()}Notifications:${RESET()}
   ${CYAN()}notify${RESET()}          Send compliance status notification
@@ -93,13 +103,23 @@ ${BOLD()}Setup:${RESET()}
   ${CYAN()}hook${RESET()}            Install/uninstall pre-commit hook
   ${CYAN()}template${RESET()}        Manage custom document templates
 
+${BOLD()}Community:${RESET()}
+  ${CYAN()}signatures${RESET()}      List, export, or import service signatures
+
+${BOLD()}AI (optional):${RESET()}
+  ${CYAN()}review${RESET()}          AI-powered review of generated documents
+  ${CYAN()}explain${RESET()}         Explain why a document was generated
+
+${BOLD()}Diagnostics:${RESET()}
+  ${CYAN()}doctor${RESET()}          Diagnose common issues and suggest fixes
+
 ${BOLD()}Info:${RESET()}
   ${CYAN()}version${RESET()}         Print version and exit
   ${CYAN()}help${RESET()}            Show this help message
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
-  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, all
+  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, wiki, all
   ${DIM()}--json${RESET()}                Output scan results as JSON
   ${DIM()}--quiet, -q${RESET()}           Minimal output
   ${DIM()}--watch, -w${RESET()}           Watch mode (auto re-scan on changes)
@@ -122,7 +142,7 @@ Scan the project and generate compliance documents.
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
-  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, all
+  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, wiki, all
   ${DIM()}--json${RESET()}                Output results as JSON
   ${DIM()}--quiet, -q${RESET()}           Minimal output
   ${DIM()}--watch, -w${RESET()}           Watch for changes and regenerate automatically
@@ -246,7 +266,7 @@ Confirmed/excluded services are saved to config for future runs.
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
-  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, all
+  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, wiki, all
   ${DIM()}--no-color${RESET()}            Disable colored output
 
 ${BOLD()}Examples:${RESET()}
@@ -335,7 +355,7 @@ Creates a separate output directory per project (e.g. ./legal/<project-name>/).
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--output, -o <dir>${RESET()}    Root output directory (default: ./legal)
-  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, all
+  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, wiki, all
   ${DIM()}--quiet, -q${RESET()}           Minimal output
   ${DIM()}--verbose, -v${RESET()}         Show per-scanner timing breakdown
   ${DIM()}--no-color${RESET()}            Disable colored output
@@ -343,6 +363,100 @@ ${BOLD()}Options:${RESET()}
 ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant generate-all ./org${RESET()}          Generate docs for all projects under ./org
   ${CYAN()}codepliant generate-all -o ./compliance${RESET()}  Custom output directory
+`,
+
+  signatures: `${BOLD()}codepliant signatures${RESET()} <list|export|import> [options]
+
+Manage service signatures (built-in + community).
+
+${BOLD()}Subcommands:${RESET()}
+  ${CYAN()}list${RESET()}        Show all built-in and community signatures
+  ${CYAN()}export${RESET()}      Export custom signatures to JSON for sharing
+  ${CYAN()}import${RESET()}      Import community signatures from a JSON file
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant signatures list${RESET()}                   List all signatures
+  ${CYAN()}codepliant signatures export sigs.json${RESET()}       Export custom signatures
+  ${CYAN()}codepliant signatures import community.json${RESET()}  Import shared signatures
+`,
+
+  export: `${BOLD()}codepliant export${RESET()} [path] [options]
+
+Export compliance documents in a specific format.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, wiki, all
+  ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant export --format wiki${RESET()}              Export as GitHub Wiki pages
+  ${CYAN()}codepliant export --format confluence${RESET()}        Export for Confluence
+`,
+
+  doctor: `${BOLD()}codepliant doctor${RESET()} [path]
+
+Diagnose common issues with your Codepliant setup.
+Checks for missing config, outdated docs, build errors, and more.
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant doctor${RESET()}                     Run diagnostics on current project
+  ${CYAN()}codepliant doctor ./my-app${RESET()}             Run diagnostics for a specific project
+`,
+
+  review: `${BOLD()}codepliant review${RESET()} [path] [options]
+
+AI-powered review of generated compliance documents.
+Uses Claude or OpenAI to check for legal accuracy, missing clauses, and unclear language.
+Returns suggestions only — never auto-edits your documents.
+
+Requires ${CYAN()}aiReviewApiKey${RESET()} in .codepliantrc.json.
+Optionally set ${CYAN()}aiReviewModel${RESET()} (default: claude-sonnet-4-20250514).
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Document directory to review (default: ./legal)
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--json${RESET()}                Output review results as JSON
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant review${RESET()}                    Review docs for current project
+  ${CYAN()}codepliant review ./my-app${RESET()}            Review docs for a specific project
+  ${CYAN()}codepliant review --json${RESET()}              JSON output for CI
+`,
+
+  explain: `${BOLD()}codepliant explain${RESET()} <document> [path]
+
+Explain why a specific document was generated.
+Lists the evidence (services, code patterns, config settings) that triggered the document.
+
+${BOLD()}Arguments:${RESET()}
+  ${CYAN()}<document>${RESET()}   Document name or filename (e.g. "Privacy Policy", "PRIVACY_POLICY.md")
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--json${RESET()}                Output explanation as JSON
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant explain "Privacy Policy"${RESET()}
+  ${CYAN()}codepliant explain RISK_REGISTER.md${RESET()}
+  ${CYAN()}codepliant explain "AI Disclosure" ./my-app${RESET()}
+  ${CYAN()}codepliant explain --json "Cookie Policy"${RESET()}
+`,
+  compare: `\${BOLD()}codepliant compare\${RESET()} <path1> <path2> [options]
+
+Compare compliance status of two projects side by side.
+
+\${BOLD()}Options:\${RESET()}
+  \${DIM()}--json\${RESET()}                Output comparison as JSON
+  \${DIM()}--quiet, -q\${RESET()}           Minimal output
+  \${DIM()}--no-color\${RESET()}            Disable colored output
+
+\${BOLD()}Examples:\${RESET()}
+  \${CYAN()}codepliant compare ./app1 ./app2\${RESET()}      Compare two projects
+  \${CYAN()}codepliant compare ./app1 ./app2 --json\${RESET()}  JSON output
 `,
   };
 }
@@ -595,10 +709,10 @@ function main() {
       // already handled by initColor
     } else if (arg === "--format") {
       const fmt = args[++i];
-      if (fmt === "markdown" || fmt === "html" || fmt === "pdf" || fmt === "json" || fmt === "notion" || fmt === "confluence" || fmt === "all") {
+      if (fmt === "markdown" || fmt === "html" || fmt === "pdf" || fmt === "json" || fmt === "notion" || fmt === "confluence" || fmt === "wiki" || fmt === "docx" || fmt === "all") {
         formatFlag = fmt;
       } else {
-        console.error(`${RED()}Error: Invalid format "${fmt}". Use: markdown, html, pdf, json, notion, confluence, all${RESET()}`);
+        console.error(`${RED()}Error: Invalid format "${fmt}". Use: markdown, html, pdf, json, notion, confluence, wiki, docx, all${RESET()}`);
         process.exit(1);
       }
     } else if (arg === "--port") {
@@ -609,7 +723,7 @@ function main() {
         console.error(`${RED()}Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
         process.exit(1);
       }
-    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "template" && arg === "init")) {
+    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login")) {
       projectPath = arg;
     }
   }
@@ -618,7 +732,7 @@ function main() {
   const absOutputDir = path.resolve(absProjectPath, outputDir);
 
   // Validate project path with actionable error messages
-  if (command !== "help" && command !== "init" && command !== "wizard" && command !== "serve") {
+  if (command !== "help" && command !== "init" && command !== "wizard" && command !== "serve" && command !== "auth" && command !== "audit-trail") {
     if (!fs.existsSync(absProjectPath)) {
       console.error(`${RED()}Error: "${absProjectPath}" does not exist.${RESET()}`);
       console.error(`${DIM()}Check the path and try again.${RESET()}`);
@@ -701,6 +815,11 @@ function main() {
       return;
     }
 
+    if (command === "lint") {
+      runLint(absProjectPath, outputDir, quiet, jsonOutput);
+      return;
+    }
+
     if (command === "diff") {
       runDiff(absProjectPath, absOutputDir, quiet, jsonOutput, formatFlag);
       return;
@@ -772,6 +891,77 @@ function main() {
       // TODO: implement runTemplate
       console.error(`${RED()}The "template" command is not yet implemented.${RESET()}`);
       process.exit(1);
+    }
+
+    if (command === "signatures") {
+      runSignatures(absProjectPath, args);
+      return;
+    }
+
+    if (command === "export") {
+      runExport(absProjectPath, absOutputDir, quiet, formatFlag, verbose);
+      return;
+    }
+
+    if (command === "doctor") {
+      runDoctor(absProjectPath, absOutputDir, quiet);
+      return;
+    }
+
+
+    if (command === "auth") {
+      const subCmd = args[1];
+      if (subCmd === "login") {
+        handleAuthLogin();
+        process.exit(0);
+      }
+      console.error(`${RED()}Unknown auth subcommand: "${subCmd || ""}". Use: codepliant auth login${RESET()}`);
+      process.exit(1);
+    }
+
+    if (command === "audit-trail") {
+      handleAuditTrail(jsonOutput);
+      process.exit(0);
+    }
+
+    if (command === "team-config") {
+      const subCmd = args[1];
+      if (subCmd === "init") {
+        handleTeamConfigInit(absProjectPath);
+        process.exit(0);
+      }
+      console.error(`${RED()}Unknown team-config subcommand: "${subCmd || ""}". Use: codepliant team-config init${RESET()}`);
+      process.exit(1);
+    }
+
+    if (command === "review") {
+      console.log("AI review coming soon. Use: codepliant review");
+      process.exit(0);
+    }
+
+    if (command === "explain") {
+      console.log("Explain coming soon."); process.exit(0);
+      return;
+    }
+
+    if (command === "compare") {
+      // Parse two paths from args
+      const comparePaths: string[] = [];
+      for (let i = 1; i < args.length; i++) {
+        const a = args[i];
+        if (a.startsWith("-")) {
+          if (a === "--output" || a === "-o" || a === "--format" || a === "--port") i++;
+          continue;
+        }
+        comparePaths.push(a);
+      }
+      if (comparePaths.length < 2) {
+        console.error(`${RED()}Error: compare requires two project paths.${RESET()}`);
+        console.error(`${DIM()}Usage: codepliant compare <path1> <path2>${RESET()}`);
+        process.exit(1);
+      }
+      runCompare(path.resolve(comparePaths[0]), path.resolve(comparePaths[1]), quiet, jsonOutput);
+      return;
     }
 
     console.error(`${RED()}Unknown command: "${command}"${RESET()}`);
@@ -1491,6 +1681,58 @@ function runCheck(
   }
 
   process.exit(allPass ? 0 : 1);
+}
+
+// --- `codepliant lint` command ---
+
+function runLint(
+  absProjectPath: string,
+  outputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean
+) {
+  if (!quiet && !jsonOutput) {
+    printBanner();
+    console.log(`${BOLD()}Linting compliance documents...${RESET()}\n`);
+  }
+
+  const result = lintDocuments(absProjectPath, outputDir);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify(result, null, 2));
+    process.exit(result.passed ? 0 : 1);
+  }
+
+  if (!quiet) {
+    console.log(`  ${DIM()}Documents expected: ${result.documentsExpected}${RESET()}`);
+    console.log(`  ${DIM()}Documents checked:  ${result.documentsChecked}${RESET()}\n`);
+  }
+
+  if (result.issues.length === 0) {
+    console.log(`${GREEN()}${BOLD()}PASS${RESET()} All compliance documents are complete.\n`);
+    process.exit(0);
+  }
+
+  const errors = result.issues.filter((i) => i.severity === "error");
+  const warnings = result.issues.filter((i) => i.severity === "warning");
+
+  for (const issue of errors) {
+    console.log(`  ${RED()}ERROR${RESET()}   ${issue.document}: ${issue.message}`);
+  }
+  for (const issue of warnings) {
+    console.log(`  ${YELLOW()}WARN${RESET()}    ${issue.document}: ${issue.message}`);
+  }
+
+  console.log();
+
+  if (result.passed) {
+    console.log(`${GREEN()}${BOLD()}PASS${RESET()} ${warnings.length} warning(s), no errors.\n`);
+  } else {
+    console.log(`${RED()}${BOLD()}FAIL${RESET()} ${errors.length} error(s), ${warnings.length} warning(s).`);
+    console.log(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to generate missing documents.${RESET()}\n`);
+  }
+
+  process.exit(result.passed ? 0 : 1);
 }
 
 // --- `codepliant diff` command ---
@@ -2442,6 +2684,36 @@ ${BOLD()}Next steps:${RESET()}
 ${DIM()}Confirmed/excluded services are saved in .codepliantrc.json for future runs.${RESET()}
 ${DIM()}⚠ These documents are generated from code analysis. Review and customize them for your specific use case.${RESET()}
 `);
+}
+
+async function runReview(projectPath: string, outputDir: string, quiet: boolean, jsonOutput: boolean, verbose: boolean) {
+  console.log("AI review coming soon.");
+  process.exit(0);
+}
+
+function runExplain(projectPath: string, args: string[], quiet: boolean, jsonOutput: boolean) {
+  console.log("Document explain coming soon.");
+  process.exit(0);
+}
+
+function runCompare(path1: string, path2: string, quiet: boolean, jsonOutput: boolean) {
+  console.log("Project comparison coming soon.");
+  process.exit(0);
+}
+
+function runSignatures(projectPath: string, args: string[]) {
+  console.log("Community signatures management coming soon.");
+  process.exit(0);
+}
+
+function runExport(projectPath: string, outputDir: string, quiet: boolean, formatFlag: OutputFormat | undefined, verbose: boolean) {
+  console.log("Document export coming soon.");
+  process.exit(0);
+}
+
+function runDoctor(projectPath: string, outputDir: string, quiet: boolean) {
+  console.log("Doctor diagnostics coming soon.");
+  process.exit(0);
 }
 
 main();

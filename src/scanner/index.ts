@@ -27,6 +27,7 @@ import { scanIndustryCompliance, deriveIndustryComplianceNeeds } from "./industr
 import { scanAccessibility, deriveAccessibilityComplianceNeeds } from "./accessibility.js";
 import { scanVulnerabilities } from "./vulnerability.js";
 import { scanInfrastructure } from "./infrastructure.js";
+import { scanLicenses, generateLicenseCompliance, type LicenseScanResult } from "./license-scanner.js";
 import { walkDirectory, ALL_EXTENSIONS } from "./file-walker.js";
 import type {
   ComplianceNeed,
@@ -698,6 +699,9 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
   // Sort services by name for deterministic output
   services.sort((a, b) => a.name.localeCompare(b.name));
 
+  // Scan for open source license compliance
+  const licenseScanResult = safeRun("License scan", () => scanLicenses(absPath), { projectLicense: null, dependencies: [], copyleftDependencies: [], warnings: [] } as LicenseScanResult);
+
   const result: ScanResult & { timings?: ScanTimings } = {
     projectName,
     projectPath: absPath,
@@ -706,6 +710,10 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
     dataCategories,
     complianceNeeds: deduplicatedNeeds,
   };
+
+  if (licenseScanResult.dependencies.length > 0 || licenseScanResult.projectLicense) {
+    result.licenseScan = licenseScanResult;
+  }
 
   if (monorepoInfo.detected) {
     result.monorepo = monorepoInfo;

@@ -17,7 +17,7 @@ export interface CodepliantConfig {
   aiUsageDescription?: string;
   jurisdictions?: string[];
   companyLocation?: string;
-  outputFormat?: "markdown" | "html" | "pdf" | "json" | "notion" | "confluence" | "all";
+  outputFormat?: "markdown" | "html" | "pdf" | "json" | "notion" | "confluence" | "wiki" | "docx" | "all";
   tollFreeNumber?: string;
   securityEmail?: string;
   bugBountyUrl?: string;
@@ -53,7 +53,7 @@ const PLACEHOLDER_PATTERNS = [
 ];
 
 export const VALID_JURISDICTIONS = ["GDPR", "CCPA", "UK GDPR"] as const;
-export const VALID_OUTPUT_FORMATS = ["markdown", "html", "pdf", "json", "notion", "confluence", "all"] as const;
+export const VALID_OUTPUT_FORMATS = ["markdown", "html", "pdf", "json", "notion", "confluence", "wiki", "docx", "all"] as const;
 export const VALID_LANGUAGES = ["en", "de", "fr", "es"] as const;
 export const VALID_AI_RISK_LEVELS = ["minimal", "limited", "high"] as const;
 

@@ -14,10 +14,13 @@ import { writeComplianceReport } from "./compliance-report.js";
 import { writeCookieBanner } from "./cookie-banner.js";
 import { writeNotionExport } from "./notion-export.js";
 import { writeConfluenceExport } from "./confluence-export.js";
+import { writeGithubWiki } from "./github-wiki.js";
+import { writeDocx } from "./docx.js";
 
-export type OutputFormat = "markdown" | "html" | "pdf" | "json" | "notion" | "confluence" | "all";
+export type OutputFormat = "markdown" | "html" | "pdf" | "json" | "notion" | "confluence" | "wiki" | "docx" | "all";
 export type { PdfResult };
 export { writeCompliancePage } from "./compliance-page.js";
+export { writeGithubWiki } from "./github-wiki.js";
 export { generateComplianceReport, writeComplianceReport } from "./compliance-report.js";
 export type { ComplianceReportOptions } from "./compliance-report.js";
 
@@ -80,7 +83,7 @@ export function writeHtml(
 export function getOutputFormat(config?: CodepliantConfig): OutputFormat {
   if (config?.outputFormat) {
     const fmt = config.outputFormat;
-    if (fmt === "markdown" || fmt === "html" || fmt === "pdf" || fmt === "json" || fmt === "notion" || fmt === "confluence" || fmt === "all") {
+    if (fmt === "markdown" || fmt === "html" || fmt === "pdf" || fmt === "json" || fmt === "notion" || fmt === "confluence" || fmt === "wiki" || fmt === "docx" || fmt === "all") {
       return fmt;
     }
   }
@@ -139,6 +142,14 @@ export function writeDocumentsInFormat(
 
   if (format === "confluence" || format === "all") {
     writtenFiles.push(...writeConfluenceExport(docs, outputDir, config));
+  }
+
+  if (format === "wiki" || format === "all") {
+    writtenFiles.push(...writeGithubWiki(docs, outputDir, config));
+  }
+
+  if (format === "docx" || format === "all") {
+    writtenFiles.push(...writeDocx(docs, outputDir, config));
   }
 
   if (format === "all" && scanResult) {

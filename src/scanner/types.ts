@@ -39,6 +39,13 @@ export interface MonorepoInfo {
   workspaces: WorkspaceInfo[];
 }
 
+export interface LicenseScanResult {
+  projectLicense: string | null;
+  dependencies: { package: string; version: string; license: string; isCopyleft: boolean }[];
+  copyleftDependencies: { package: string; version: string; license: string; isCopyleft: boolean }[];
+  warnings: string[];
+}
+
 export interface ScanResult {
   projectName: string;
   projectPath: string;
@@ -47,6 +54,8 @@ export interface ScanResult {
   dataCategories: DataCategory[];
   complianceNeeds: ComplianceNeed[];
   monorepo?: MonorepoInfo;
+  /** License compliance scan results */
+  licenseScan?: LicenseScanResult;
   /** Warnings from scanners that failed but did not prevent the scan from completing */
   warnings?: string[];
 }

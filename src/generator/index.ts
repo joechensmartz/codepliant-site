@@ -28,8 +28,19 @@ import { generateEmployeePrivacyNotice } from "./employee-privacy.js";
 import { generateAIModelCard } from "./ai-model-card.js";
 import { generateVendorContacts } from "./vendor-contacts.js";
 import { generateRegulatoryUpdates } from "./regulatory-updates.js";
+import { generateDataFlowDiagram } from "./data-map-visual.js";
+import { generateAuditLogPolicy } from "./audit-log-policy.js";
+import { generateAcceptableAIUsePolicy } from "./acceptable-ai-use.js";
+import { generateTransparencyReport } from "./transparency-report.js";
+import { generateAcceptableUsePolicy } from "./acceptable-use.js";
+import { generateRefundPolicy } from "./refund-policy.js";
+import { generateSLA } from "./sla.js";
+import { generateRiskRegister } from "./risk-register.js";
+import { generateISO27001Checklist } from "./iso27001.js";
 import { applyOverrides } from "./customization.js";
 import { hasCustomTemplate, renderCustomTemplate } from "../templates/engine.js";
+import { generateLicenseCompliance } from "../scanner/license-scanner.js";
+import { generateWhistleblowerPolicy } from "./whistleblower.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -266,6 +277,16 @@ export function generateDocuments(
     });
   }
 
+
+  // ISO 27001 Compliance Checklist when 5+ services detected
+  const iso27001Checklist = generateISO27001Checklist(docScan, ctx);
+  if (iso27001Checklist) {
+    docs.push({
+      name: "ISO 27001 Compliance Checklist",
+      filename: "ISO_27001_CHECKLIST.md",
+      content: iso27001Checklist,
+    });
+  }
   // Third-Party Risk Assessment when 3+ third-party services detected
   const thirdPartyRisk = generateThirdPartyRiskAssessment(docScan, ctx);
   if (thirdPartyRisk) {
@@ -335,6 +356,101 @@ export function generateDocuments(
       name: "Regulatory Updates",
       filename: "REGULATORY_UPDATES.md",
       content: regulatoryUpdates,
+    });
+  }
+
+  // Transparency Report — annual public reporting template for data requests & compliance metrics
+  if (docScan.services.length > 0) {
+    docs.push({
+      name: "Transparency Report",
+      filename: "TRANSPARENCY_REPORT.md",
+      content: generateTransparencyReport(docScan, ctx),
+    });
+  }
+
+  // Acceptable Use Policy — always generated (standard SaaS AUP)
+  docs.push({
+    name: "Acceptable Use Policy",
+    filename: "ACCEPTABLE_USE_POLICY.md",
+    content: generateAcceptableUsePolicy(docScan, ctx),
+  });
+
+  // Refund Policy — only when payment services detected
+  const refundPolicy = generateRefundPolicy(docScan, ctx);
+  if (refundPolicy) {
+    docs.push({
+      name: "Refund Policy",
+      filename: "REFUND_POLICY.md",
+      content: refundPolicy,
+    });
+  }
+
+  // Service Level Agreement — only when monitoring services detected
+  const sla = generateSLA(docScan, ctx);
+  if (sla) {
+    docs.push({
+      name: "Service Level Agreement",
+      filename: "SERVICE_LEVEL_AGREEMENT.md",
+      content: sla,
+    });
+  }
+
+  // Data Flow Diagram — Mermaid-based visual data flow diagram
+  const dataFlowDiagram = generateDataFlowDiagram(docScan, ctx);
+  if (dataFlowDiagram) {
+    docs.push({
+      name: "Data Flow Diagram",
+      filename: "DATA_FLOW_DIAGRAM.md",
+      content: dataFlowDiagram,
+    });
+  }
+
+  // Audit Log Policy — what events are logged, retention, access controls
+  const auditLogPolicy = generateAuditLogPolicy(docScan, ctx);
+  if (auditLogPolicy) {
+    docs.push({
+      name: "Audit Log Policy",
+      filename: "AUDIT_LOG_POLICY.md",
+      content: auditLogPolicy,
+    });
+  }
+
+  // Acceptable AI Use Policy — only when AI services detected
+  const acceptableAIUse = generateAcceptableAIUsePolicy(docScan, ctx);
+  if (acceptableAIUse) {
+    docs.push({
+      name: "Acceptable AI Use Policy",
+      filename: "ACCEPTABLE_AI_USE_POLICY.md",
+      content: acceptableAIUse,
+    });
+  }
+
+  // Risk Register — catalog of identified compliance risks with scoring matrix
+  const riskRegister = generateRiskRegister(docScan, ctx);
+  if (riskRegister) {
+    docs.push({
+      name: "Risk Register",
+      filename: "RISK_REGISTER.md",
+      content: riskRegister,
+    });
+  }
+
+  // License Compliance Report — open source license audit
+  if (docScan.licenseScan && (docScan.licenseScan.dependencies.length > 0 || docScan.licenseScan.projectLicense)) {
+    docs.push({
+      name: "License Compliance Report",
+      filename: "LICENSE_COMPLIANCE.md",
+      content: generateLicenseCompliance(docScan.licenseScan, ctx.companyName),
+    });
+  }
+
+  // Whistleblower Policy — EU Whistleblower Directive compliance (EU jurisdictions only)
+  const whistleblowerPolicy = generateWhistleblowerPolicy(docScan, ctx);
+  if (whistleblowerPolicy) {
+    docs.push({
+      name: "Whistleblower Policy",
+      filename: "WHISTLEBLOWER_POLICY.md",
+      content: whistleblowerPolicy,
     });
   }
 

@@ -5,6 +5,26 @@ All notable changes to Codepliant are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [56.0.0 – 60.0.0] - 2026-03-15
+
+### Added
+- Data Flow Diagram generator — Mermaid-based visual diagram of data flows (`DATA_FLOW_DIAGRAM.md`)
+- Audit Log Policy generator — event logging, retention periods, access controls (`AUDIT_LOG_POLICY.md`)
+- Acceptable AI Use Policy generator — permitted/prohibited AI uses, content review, bias commitments (`ACCEPTABLE_AI_USE_POLICY.md`)
+- Transparency Report generator — annual public reporting template
+- Acceptable Use Policy generator — standard SaaS AUP
+- Refund Policy generator — payment-triggered refund terms
+- Service Level Agreement generator — monitoring-triggered SLA
+- Risk Register generator — compliance risk catalog with scoring matrix
+- ISO 27001 Checklist generator
+- License Compliance scanner
+- Whistleblower Policy generator
+- 626 tests across 109 suites, 624 passing
+
+### Changed
+- Document generation expanded to 35+ document types
+- Generator test suite updated to use inclusive assertions for extensibility
+
 ## [50.0.0] - 2026-03-15
 
 ### Changed

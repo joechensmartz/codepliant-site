@@ -63,11 +63,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codepliant/codepliant.git"
+    "url": "git+https://github.com/joechensmartz/codepliant.git"
   },
-  "homepage": "https://github.com/codepliant/codepliant#readme",
+  "homepage": "https://github.com/joechensmartz/codepliant#readme",
   "bugs": {
-    "url": "https://github.com/codepliant/codepliant/issues"
+    "url": "https://github.com/joechensmartz/codepliant/issues"
   },
   "author": "",
   "license": "MIT",
