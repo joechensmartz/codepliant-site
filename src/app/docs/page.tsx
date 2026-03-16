@@ -9,9 +9,35 @@ export const metadata: Metadata = {
   },
 };
 
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Documentation",
+        item: "https://codepliant.dev/docs",
+      },
+    ],
+  };
+}
+
 export default function Docs() {
   return (
-    <article className="py-20 px-6">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}
+      />
+      <article className="py-20 px-6">
       <div className="max-w-[680px] mx-auto">
         <h1 className="text-4xl font-bold tracking-tight mb-6">
           Documentation

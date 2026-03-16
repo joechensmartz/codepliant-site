@@ -83,6 +83,34 @@ function faqJsonLd() {
   };
 }
 
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://codepliant.dev/blog",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "EU AI Act Deadline",
+        item: "https://codepliant.dev/blog/eu-ai-act-deadline",
+      },
+    ],
+  };
+}
+
 export default function EuAiActDeadline() {
   return (
     <>

@@ -78,6 +78,28 @@ function softwareJsonLd() {
   };
 }
 
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "HIPAA Compliance",
+        item: "https://codepliant.dev/hipaa-compliance",
+      },
+    ],
+  };
+}
+
 export default function HipaaCompliance() {
   return (
     <>

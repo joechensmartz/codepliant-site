@@ -89,6 +89,28 @@ function getCountdown() {
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
 
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "AI Disclosure Generator",
+        item: "https://codepliant.dev/ai-disclosure-generator",
+      },
+    ],
+  };
+}
+
 export default function AiDisclosureGenerator() {
   const daysLeft = getCountdown();
 

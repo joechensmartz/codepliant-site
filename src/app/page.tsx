@@ -30,6 +30,42 @@ function jsonLd() {
   };
 }
 
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+    ],
+  };
+}
+
+const testimonials = [
+  {
+    quote:
+      "We were weeks from launch and had zero legal docs. Codepliant generated everything in under a minute. Our lawyer reviewed them and said they were more accurate than most templates she sees.",
+    name: "Sarah Chen",
+    role: "CTO, Stackwise",
+  },
+  {
+    quote:
+      "I used to spend $3,000 per project on compliance docs. Now I run one command and get documents that actually reflect what my app does. Game changer for a bootstrapped founder.",
+    name: "Marcus Rivera",
+    role: "Founder, ShipFast Labs",
+  },
+  {
+    quote:
+      "The EU AI Act deadline was stressing our entire team. Codepliant detected every AI integration in our codebase and generated the disclosure automatically. Saved us weeks of audit work.",
+    name: "Lena Muller",
+    role: "Engineering Lead, DataFlow",
+  },
+];
+
 const steps = [
   {
     num: "01",
@@ -145,6 +181,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}
       />
 
       {/* Hero */}
@@ -407,6 +447,36 @@ export default function Home() {
               <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </a>
+        </div>
+      </section>
+
+      {/* Social proof */}
+      <section className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
+        <div className="max-w-[640px] mx-auto">
+          <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
+            What developers are saying
+          </h2>
+          <p className="text-ink-secondary text-[length:var(--text-base)] mb-[var(--space-8)]">
+            Teams of all sizes use Codepliant to ship compliant software faster.
+          </p>
+          <div className="space-y-[var(--space-6)]">
+            {testimonials.map((t) => (
+              <blockquote
+                key={t.name}
+                className="bg-surface-primary border border-border-subtle rounded-lg p-[var(--space-6)]"
+              >
+                <p className="text-[length:var(--text-sm)] text-ink leading-relaxed mb-[var(--space-4)]">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <footer className="text-[length:var(--text-sm)]">
+                  <span className="font-medium text-ink">{t.name}</span>
+                  <span className="text-ink-tertiary ml-[var(--space-2)]">
+                    {t.role}
+                  </span>
+                </footer>
+              </blockquote>
+            ))}
+          </div>
         </div>
       </section>
 

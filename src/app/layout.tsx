@@ -87,6 +87,20 @@ function Header() {
             Docs
           </a>
           <a
+            href="/changelog"
+            className="hover:text-ink transition-colors duration-150"
+            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+          >
+            Changelog
+          </a>
+          <a
+            href="/about"
+            className="hover:text-ink transition-colors duration-150"
+            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+          >
+            About
+          </a>
+          <a
             href="https://github.com/codepliant/codepliant"
             className="hover:text-ink transition-colors duration-150"
             style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
@@ -119,6 +133,16 @@ function Footer() {
               <li>
                 <a href="/docs" className="hover:text-ink transition-colors duration-150">
                   Documentation
+                </a>
+              </li>
+              <li>
+                <a href="/changelog" className="hover:text-ink transition-colors duration-150">
+                  Changelog
+                </a>
+              </li>
+              <li>
+                <a href="/about" className="hover:text-ink transition-colors duration-150">
+                  About
                 </a>
               </li>
               <li>

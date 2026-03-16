@@ -50,6 +50,34 @@ function articleJsonLd() {
   };
 }
 
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://codepliant.dev/blog",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "GDPR for Developers",
+        item: "https://codepliant.dev/blog/gdpr-for-developers",
+      },
+    ],
+  };
+}
+
 export default function GdprForDevelopers() {
   return (
     <>

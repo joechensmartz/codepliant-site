@@ -52,6 +52,34 @@ function articleJsonLd() {
   };
 }
 
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://codepliant.dev/blog",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "Privacy Policy for SaaS",
+        item: "https://codepliant.dev/blog/privacy-policy-for-saas",
+      },
+    ],
+  };
+}
+
 export default function PrivacyPolicyForSaas() {
   return (
     <>
