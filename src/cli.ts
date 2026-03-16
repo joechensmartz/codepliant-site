@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "320.0.0";
+const VERSION = "330.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -98,6 +98,8 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}migrate${RESET()}         Show new document types available after upgrade
   ${CYAN()}tree${RESET()}            Show generated files as a tree with sizes and categories
   ${CYAN()}fix${RESET()}             Auto-fix common compliance issues
+  ${CYAN()}todo${RESET()}            Show all actionable compliance items as a todo list
+  ${CYAN()}benchmark${RESET()}       Compare your compliance score against industry average
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -1152,6 +1154,8 @@ function main() {
       ecosystemFlag = args[++i];
     } else if (arg === "--since") {
       sinceFlag = args[++i];
+    } else if (arg === "--done") {
+      i++; // skip the value — consumed later by runTodo
     } else if (arg === "--port") {
       const p = parseInt(args[++i], 10);
       if (!isNaN(p) && p > 0 && p < 65536) {
@@ -1528,6 +1532,17 @@ function main() {
 
     if (command === "fix") {
       runFix(absProjectPath, absOutputDir, args, quiet, verbose);
+      return;
+    }
+
+    if (command === "todo") {
+      const doneArg = args.includes("--done") ? args[args.indexOf("--done") + 1] : undefined;
+      runTodo(absProjectPath, absOutputDir, quiet, jsonOutput, doneArg);
+      return;
+    }
+
+    if (command === "benchmark") {
+      runBenchmark(absProjectPath, absOutputDir, quiet, jsonOutput);
       return;
     }
 
@@ -5503,6 +5518,8 @@ const ALL_RECOMMENDED_DOCS = [
   "COMPLIANCE_MATURITY_MODEL.md",
   "REGULATORY_CORRESPONDENCE_LOG.md",
   "PRIVACY_POLICY_CHANGELOG.md",
+  "COMPLIANCE_GAP_ANALYSIS.md",
+  "KEY_PERSON_RISK_ASSESSMENT.md",
 ];
 
 const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
@@ -5533,6 +5550,8 @@ const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
   "REGULATORY_CORRESPONDENCE_LOG.md": "medium",
   "PRIVACY_POLICY_CHANGELOG.md": "medium",
   "COMPLIANCE_SUMMARY_EMAIL.md": "high",
+  "COMPLIANCE_GAP_ANALYSIS.md": "high",
+  "KEY_PERSON_RISK_ASSESSMENT.md": "medium",
 };
 
 function runCompleteness(
@@ -5634,6 +5653,13 @@ const VERSION_HISTORY: Array<{
   version: string;
   docs: Array<{ filename: string; name: string; description: string }>;
 }> = [
+  {
+    version: "330.0.0",
+    docs: [
+      { filename: "COMPLIANCE_GAP_ANALYSIS.md", name: "Compliance Gap Analysis", description: "Current state vs target state per regulation with gap table and remediation roadmap" },
+      { filename: "KEY_PERSON_RISK_ASSESSMENT.md", name: "Key Person Risk Assessment", description: "Single points of failure for compliance knowledge — DPO, security lead, incident responder — with cross-training recommendations" },
+    ],
+  },
   {
     version: "300.0.0",
     docs: [
@@ -6388,6 +6414,453 @@ function filterByEcosystem(result: ScanResult, ecosystem: string): void {
       return false;
     });
   });
+}
+
+// --- `codepliant todo` command ---
+
+interface TodoItem {
+  id: number;
+  text: string;
+  priority: "critical" | "high" | "medium" | "low";
+  source: string;
+  done: boolean;
+}
+
+const TODO_FILE = ".codepliant-todo.json";
+
+function loadTodoState(projectPath: string): Record<string, boolean> {
+  const filePath = path.join(projectPath, TODO_FILE);
+  try {
+    if (fs.existsSync(filePath)) {
+      return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    }
+  } catch { /* ignore */ }
+  return {};
+}
+
+function saveTodoState(projectPath: string, state: Record<string, boolean>): void {
+  const filePath = path.join(projectPath, TODO_FILE);
+  fs.writeFileSync(filePath, JSON.stringify(state, null, 2), "utf-8");
+}
+
+function runTodo(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+  doneItem?: string,
+) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+  const docs = generateDocuments(result, config);
+
+  const state = loadTodoState(absProjectPath);
+
+  // Build todo items from multiple sources
+  const items: TodoItem[] = [];
+  let id = 1;
+
+  const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+
+  // 1. Missing documents
+  const generatedFilenames = new Set(docs.map((d) => d.filename));
+  const existingFilenames = new Set<string>();
+  if (fs.existsSync(absOutputDir)) {
+    for (const f of fs.readdirSync(absOutputDir)) {
+      existingFilenames.add(f);
+    }
+  }
+
+  for (const doc of docs) {
+    if (!existingFilenames.has(doc.filename)) {
+      const prio = DOC_PRIORITY[doc.filename] || "low";
+      items.push({
+        id: id++,
+        text: `Generate ${doc.name} (${doc.filename})`,
+        priority: prio,
+        source: "missing-doc",
+        done: state[`gen-${doc.filename}`] || false,
+      });
+    }
+  }
+
+  // 2. Placeholder values in config
+  if (!config.companyName || config.companyName === "[Your Company Name]") {
+    items.push({
+      id: id++,
+      text: "Set company name in codepliant config (codepliant init)",
+      priority: "critical",
+      source: "config",
+      done: state["config-companyName"] || false,
+    });
+  }
+  if (!config.contactEmail || config.contactEmail === "[your-email@example.com]") {
+    items.push({
+      id: id++,
+      text: "Set contact email in codepliant config (codepliant init)",
+      priority: "critical",
+      source: "config",
+      done: state["config-contactEmail"] || false,
+    });
+  }
+  if (!config.dpoName && !config.dpoEmail) {
+    items.push({
+      id: id++,
+      text: "Assign a Data Protection Officer (codepliant fix missing-dpo)",
+      priority: "high",
+      source: "config",
+      done: state["config-dpo"] || false,
+    });
+  }
+
+  // 3. Stale documents
+  const FRESHNESS_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  for (const filename of existingFilenames) {
+    const filePath = path.join(absOutputDir, filename);
+    try {
+      const stat = fs.statSync(filePath);
+      if (now - stat.mtimeMs > FRESHNESS_WINDOW_MS) {
+        items.push({
+          id: id++,
+          text: `Update stale document: ${filename} (${Math.round((now - stat.mtimeMs) / (24 * 60 * 60 * 1000))} days old)`,
+          priority: "medium",
+          source: "stale",
+          done: state[`stale-${filename}`] || false,
+        });
+      }
+    } catch { /* ignore */ }
+  }
+
+  // 4. Compliance needs from scan
+  const complianceNeeds = result.complianceNeeds || [];
+  for (const need of complianceNeeds) {
+    if (need.priority === "required") {
+      const alreadyInList = items.some((i) => i.text.includes(need.document));
+      if (!alreadyInList) {
+        items.push({
+          id: id++,
+          text: `Address compliance requirement: ${need.document} — ${need.reason}`,
+          priority: "high",
+          source: "compliance-need",
+          done: state[`need-${need.document}`] || false,
+        });
+      }
+    }
+  }
+
+  // 5. Security recommendations
+  const hasAuth = result.services.some((s) => s.category === "auth");
+  const hasAI = result.services.some((s) => s.category === "ai");
+  if (hasAuth) {
+    items.push({
+      id: id++,
+      text: "Review and test incident response plan with tabletop exercise",
+      priority: "high",
+      source: "security",
+      done: state["security-tabletop"] || false,
+    });
+  }
+  if (hasAI) {
+    items.push({
+      id: id++,
+      text: "Classify AI systems by risk level (EU AI Act)",
+      priority: "high",
+      source: "ai",
+      done: state["ai-classify"] || false,
+    });
+  }
+
+  // Handle --done
+  if (doneItem !== undefined) {
+    const itemNum = parseInt(doneItem, 10);
+    // Sort first so IDs match display
+    items.sort((a, b) => {
+      if (a.done !== b.done) return a.done ? 1 : -1;
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    });
+
+    // Re-assign IDs after sort
+    items.forEach((item, idx) => { item.id = idx + 1; });
+
+    const target = items.find((i) => i.id === itemNum);
+    if (!target) {
+      console.error(`${RED()}Error: No todo item #${itemNum}. Run ${CYAN()}codepliant todo${RESET()}${RED()} to see the list.${RESET()}`);
+      process.exit(1);
+    }
+
+    // Build a stable key for this item
+    const stableKey = target.source === "missing-doc"
+      ? `gen-${target.text.match(/\(([^)]+)\)/)?.[1] || target.text}`
+      : target.source === "config"
+        ? `config-${target.text.includes("company") ? "companyName" : target.text.includes("email") ? "contactEmail" : "dpo"}`
+        : target.source === "stale"
+          ? `stale-${target.text.match(/: (.+?) \(/)?.[1] || target.text}`
+          : target.source === "compliance-need"
+            ? `need-${target.text.match(/: (.+?) —/)?.[1] || target.text}`
+            : target.source === "security"
+              ? "security-tabletop"
+              : target.source === "ai"
+                ? "ai-classify"
+                : `item-${target.text}`;
+
+    state[stableKey] = true;
+    saveTodoState(absProjectPath, state);
+
+    console.log(`${GREEN()}${BOLD()}Done!${RESET()} Marked as completed: ${target.text}`);
+    console.log(`${DIM()}Run ${CYAN()}codepliant todo${RESET()}${DIM()} to see remaining items.${RESET()}\n`);
+    process.exit(0);
+  }
+
+  // Sort: undone first, then by priority
+  items.sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  });
+
+  // Re-assign IDs after sort
+  items.forEach((item, idx) => { item.id = idx + 1; });
+
+  if (jsonOutput) {
+    console.log(JSON.stringify(items, null, 2));
+    process.exit(0);
+  }
+
+  const pending = items.filter((i) => !i.done);
+  const completed = items.filter((i) => i.done);
+
+  console.log(`${BOLD()}Compliance Todo List${RESET()}  ${DIM()}(${pending.length} pending, ${completed.length} done)${RESET()}\n`);
+
+  if (pending.length === 0 && completed.length === 0) {
+    console.log(`${GREEN()}${BOLD()}No compliance items found. Your project looks good!${RESET()}\n`);
+    process.exit(0);
+  }
+
+  for (const item of items) {
+    const check = item.done ? `${GREEN()}[x]${RESET()}` : `[ ]`;
+    let icon: string;
+    let color: string;
+    switch (item.priority) {
+      case "critical": icon = "🔴"; color = RED(); break;
+      case "high": icon = "🟠"; color = YELLOW(); break;
+      case "medium": icon = "🟡"; color = DIM(); break;
+      default: icon = "⚪"; color = DIM(); break;
+    }
+    const strikethrough = item.done ? DIM() : "";
+    const reset = item.done ? RESET() : "";
+    console.log(`  ${check} ${BOLD()}#${item.id}${RESET()} ${icon} ${strikethrough}${item.text}${reset} ${DIM()}(${item.priority})${RESET()}`);
+  }
+
+  console.log(`\n${DIM()}Mark items done: ${CYAN()}codepliant todo --done <number>${RESET()}`);
+  console.log(`${DIM()}Todo state saved in ${TODO_FILE}${RESET()}\n`);
+
+  process.exit(0);
+}
+
+// --- `codepliant benchmark` command ---
+
+interface IndustryBenchmark {
+  category: string;
+  averageScore: number;
+  averageGrade: string;
+  topQuartile: number;
+  sampleSize: number;
+}
+
+const INDUSTRY_BENCHMARKS: Record<string, IndustryBenchmark> = {
+  saas: {
+    category: "SaaS",
+    averageScore: 72,
+    averageGrade: "C",
+    topQuartile: 88,
+    sampleSize: 450,
+  },
+  fintech: {
+    category: "Fintech",
+    averageScore: 78,
+    averageGrade: "C+",
+    topQuartile: 92,
+    sampleSize: 180,
+  },
+  healthtech: {
+    category: "Healthtech",
+    averageScore: 81,
+    averageGrade: "B-",
+    topQuartile: 94,
+    sampleSize: 120,
+  },
+  ecommerce: {
+    category: "E-commerce",
+    averageScore: 68,
+    averageGrade: "D+",
+    topQuartile: 85,
+    sampleSize: 320,
+  },
+  ai_ml: {
+    category: "AI/ML",
+    averageScore: 65,
+    averageGrade: "D",
+    topQuartile: 82,
+    sampleSize: 210,
+  },
+  devtools: {
+    category: "Developer Tools",
+    averageScore: 70,
+    averageGrade: "C-",
+    topQuartile: 86,
+    sampleSize: 280,
+  },
+  general: {
+    category: "General (all industries)",
+    averageScore: 71,
+    averageGrade: "C",
+    topQuartile: 87,
+    sampleSize: 1560,
+  },
+};
+
+function detectIndustry(scanResult: ScanResult): string {
+  const hasAI = scanResult.services.some((s) => s.category === "ai");
+  const hasPayment = scanResult.services.some((s) => s.category === "payment");
+  const hasHealth = scanResult.services.some((s) =>
+    s.name.toLowerCase().includes("health") || s.name.toLowerCase().includes("hipaa")
+  );
+
+  if (hasHealth) return "healthtech";
+  if (hasPayment && hasAI) return "fintech";
+  if (hasPayment) return "ecommerce";
+  if (hasAI) return "ai_ml";
+  return "saas";
+}
+
+function gradeFromScore(score: number): string {
+  if (score >= 95) return "A+";
+  if (score >= 90) return "A";
+  if (score >= 85) return "A-";
+  if (score >= 80) return "B+";
+  if (score >= 75) return "B";
+  if (score >= 70) return "B-";
+  if (score >= 65) return "C+";
+  if (score >= 60) return "C";
+  if (score >= 55) return "C-";
+  if (score >= 50) return "D+";
+  if (score >= 45) return "D";
+  return "F";
+}
+
+function runBenchmark(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+  const docs = generateDocuments(result, config);
+
+  // Compute score
+  const scoreInput: ScoreInput = {
+    scanResult: result,
+    docs,
+    config,
+    outputDir: absOutputDir,
+  };
+  const score = computeFullComplianceScore(scoreInput);
+
+  const detectedIndustry = detectIndustry(result);
+  const benchmark = INDUSTRY_BENCHMARKS[detectedIndustry];
+  const generalBenchmark = INDUSTRY_BENCHMARKS["general"];
+
+  const yourScore = score.total;
+  const yourGrade = gradeFromScore(yourScore);
+  const delta = yourScore - benchmark.averageScore;
+  const generalDelta = yourScore - generalBenchmark.averageScore;
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      yourScore,
+      yourGrade,
+      industry: benchmark.category,
+      industryAverage: benchmark.averageScore,
+      industryAverageGrade: benchmark.averageGrade,
+      industryTopQuartile: benchmark.topQuartile,
+      delta,
+      percentile: yourScore >= benchmark.topQuartile ? "top-25" : yourScore >= benchmark.averageScore ? "above-average" : "below-average",
+      generalAverage: generalBenchmark.averageScore,
+      generalDelta,
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}Compliance Benchmark${RESET()}\n`);
+
+  // Your score
+  const scoreColor = yourScore >= 80 ? GREEN() : yourScore >= 60 ? YELLOW() : RED();
+  console.log(`  ${BOLD()}Your Score:${RESET()} ${scoreColor}${BOLD()}${yourScore}% (${yourGrade})${RESET()}`);
+  console.log("");
+
+  // Industry comparison
+  console.log(`  ${BOLD()}Industry:${RESET()} ${benchmark.category}`);
+  console.log(`  ${BOLD()}Industry Average:${RESET()} ${benchmark.averageScore}% (${benchmark.averageGrade})`);
+  console.log(`  ${BOLD()}Top Quartile:${RESET()} ${benchmark.topQuartile}%`);
+  console.log(`  ${DIM()}Based on ${benchmark.sampleSize} analyzed repositories${RESET()}`);
+  console.log("");
+
+  // Delta visualization
+  const deltaStr = delta >= 0 ? `+${delta}` : `${delta}`;
+  const deltaColor = delta >= 0 ? GREEN() : RED();
+  const deltaIcon = delta >= 0 ? "▲" : "▼";
+  console.log(`  ${BOLD()}vs Industry Average:${RESET()} ${deltaColor}${BOLD()}${deltaIcon} ${deltaStr} points${RESET()}`);
+
+  if (yourScore >= benchmark.topQuartile) {
+    console.log(`  ${GREEN()}${BOLD()}You are in the top 25% of ${benchmark.category} companies!${RESET()}`);
+  } else if (yourScore >= benchmark.averageScore) {
+    console.log(`  ${YELLOW()}You are above the industry average. ${benchmark.topQuartile - yourScore} points to reach top 25%.${RESET()}`);
+  } else {
+    console.log(`  ${RED()}You are below the industry average. Run ${CYAN()}codepliant todo${RESET()}${RED()} to see how to improve.${RESET()}`);
+  }
+  console.log("");
+
+  // Score bar comparison
+  const barWidth = 50;
+  function renderBar(score: number, label: string, color: string): void {
+    const filled = Math.round((score / 100) * barWidth);
+    const bar = "█".repeat(filled) + "░".repeat(barWidth - filled);
+    console.log(`  ${color}${bar}${RESET()} ${score}%  ${label}`);
+  }
+
+  renderBar(yourScore, `${BOLD()}You${RESET()}`, scoreColor);
+  renderBar(benchmark.averageScore, `${benchmark.category} avg`, DIM());
+  renderBar(benchmark.topQuartile, `${benchmark.category} top 25%`, CYAN());
+  console.log("");
+
+  // General industry comparison
+  const generalDeltaStr = generalDelta >= 0 ? `+${generalDelta}` : `${generalDelta}`;
+  const generalDeltaColor = generalDelta >= 0 ? GREEN() : RED();
+  console.log(`  ${DIM()}vs All Industries: ${generalDeltaColor}${generalDeltaStr} points${RESET()} ${DIM()}(average: ${generalBenchmark.averageScore}%)${RESET()}`);
+  console.log("");
+
+  // Recommendations
+  if (yourScore < benchmark.topQuartile) {
+    console.log(`${BOLD()}How to improve:${RESET()}`);
+    if (score.recommendations && score.recommendations.length > 0) {
+      const topRecs = score.recommendations.slice(0, 3);
+      for (const rec of topRecs) {
+        const impactIcon = rec.impact === "critical" ? "🔴" : rec.impact === "high" ? "🟠" : "🟡";
+        console.log(`  ${impactIcon} ${rec.title} ${DIM()}(+${rec.estimatedPointsGain} points)${RESET()}`);
+      }
+    } else {
+      console.log(`  Run ${CYAN()}codepliant todo${RESET()} to see actionable improvement items.`);
+    }
+    console.log("");
+  }
+
+  console.log(`${DIM()}Benchmarks based on aggregated analysis of ${generalBenchmark.sampleSize}+ repositories across industries.${RESET()}\n`);
+  process.exit(0);
 }
 
 main();

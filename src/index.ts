@@ -113,3 +113,6 @@ export {
   importSignatures,
 } from "./community/signatures-repo.js";
 export type { CommunitySignature, SignatureRepo } from "./community/signatures-repo.js";
+
+export { generateComplianceGapAnalysis } from "./generator/compliance-gap-analysis.js";
+export { generateKeyPersonRiskAssessment } from "./generator/key-person-risk.js";

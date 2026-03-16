@@ -109,6 +109,8 @@ import { generateVendorExitPlan } from "./vendor-exit-plan.js";
 import { generatePrivacyPolicyComparison } from "./privacy-policy-comparison.js";
 import { generateAIImpactAssessment } from "./ai-impact-assessment.js";
 import { generateCrossBorderTransferMap } from "./cross-border-transfer-map.js";
+import { generateComplianceGapAnalysis } from "./compliance-gap-analysis.js";
+import { generateKeyPersonRiskAssessment } from "./key-person-risk.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1099,6 +1101,26 @@ export function generateDocuments(
       name: "Cross-Border Transfer Map",
       filename: "CROSS_BORDER_TRANSFER_MAP.md",
       content: crossBorderMap,
+    });
+  }
+
+  // Compliance Gap Analysis — current state vs target state per regulation
+  const complianceGapAnalysis = generateComplianceGapAnalysis(docScan, ctx);
+  if (complianceGapAnalysis) {
+    docs.push({
+      name: "Compliance Gap Analysis",
+      filename: "COMPLIANCE_GAP_ANALYSIS.md",
+      content: complianceGapAnalysis,
+    });
+  }
+
+  // Key Person Risk Assessment — single points of failure + cross-training recommendations
+  const keyPersonRisk = generateKeyPersonRiskAssessment(docScan, ctx);
+  if (keyPersonRisk) {
+    docs.push({
+      name: "Key Person Risk Assessment",
+      filename: "KEY_PERSON_RISK_ASSESSMENT.md",
+      content: keyPersonRisk,
     });
   }
 
