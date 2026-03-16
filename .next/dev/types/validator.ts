@@ -21,6 +21,24 @@ type AppPageConfig<Route extends AppRoutes = AppRoutes> = {
 }
 
 
+// Validate ../../../src/app/ai-governance/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/ai-governance">> = Specific
+  const handler = {} as typeof import("../../../src/app/ai-governance/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../src/app/data-privacy/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/data-privacy">> = Specific
+  const handler = {} as typeof import("../../../src/app/data-privacy/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../src/app/hipaa-compliance/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/hipaa-compliance">> = Specific
