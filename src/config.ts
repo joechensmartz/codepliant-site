@@ -26,6 +26,7 @@ export interface CodepliantConfig {
   plugins?: string[];
   generateEmployeeNotice?: boolean;
   webhookUrl?: string;
+  licenseKey?: string;
 }
 
 export interface ConfigWarning {
