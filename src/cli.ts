@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "250.0.0";
+const VERSION = "260.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -86,6 +86,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}scan-all${RESET()}        Scan all projects under a directory
   ${CYAN()}check${RESET()}           Quick compliance pass/fail check
   ${CYAN()}count${RESET()}           Quick stats: services, documents, score
+  ${CYAN()}stats${RESET()}           Alias for count (supports --detailed)
   ${CYAN()}lint${RESET()}            Check existing docs for completeness
   ${CYAN()}validate${RESET()}        Validate all generated docs for completeness
   ${CYAN()}diff${RESET()}            Show changes since last generation
@@ -152,6 +153,7 @@ ${BOLD()}Options:${RESET()}
   ${DIM()}--quiet, -q${RESET()}           Minimal output
   ${DIM()}--watch, -w${RESET()}           Watch mode (auto re-scan on changes)
   ${DIM()}--verbose, -v${RESET()}         Show per-scanner timing breakdown
+  ${DIM()}--detailed${RESET()}            Show detailed stats (for count/stats command)
   ${DIM()}--no-color${RESET()}            Disable colored output
   ${DIM()}--port <number>${RESET()}        Port for serve command (default: 3939)
   ${DIM()}--version, -V${RESET()}         Print version and exit
@@ -651,12 +653,14 @@ Output is machine-friendly (key=value pairs) for use in scripts and CI.
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--json${RESET()}                Output as JSON
+  ${DIM()}--detailed${RESET()}            Show per-scanner timing, per-generator output size, detection confidence
   ${DIM()}--no-color${RESET()}            Disable colored output
 
 ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant count${RESET()}                     Quick stats for current project
   ${CYAN()}codepliant count ./my-app${RESET()}             Stats for a specific project
   ${CYAN()}codepliant count --json${RESET()}               JSON output for CI
+  ${CYAN()}codepliant stats --detailed${RESET()}           Detailed breakdown of all metrics
 `,
 
   notify: `${BOLD()}codepliant notify${RESET()} [path] [options]
@@ -1017,6 +1021,7 @@ function main() {
   let apiFlag = false;
   let frequencyFlag: ScheduleFrequency = "weekly";
   let forceFlag = false;
+  let detailedFlag = false;
 
   for (let i = 1; i < args.length; i++) {
     const arg = args[i];
@@ -1034,6 +1039,8 @@ function main() {
       // already handled by initColor
     } else if (arg === "--force") {
       forceFlag = true;
+    } else if (arg === "--detailed") {
+      detailedFlag = true;
     } else if (arg === "--executive-summary") {
       executiveSummaryFlag = true;
     } else if (arg === "--api") {
@@ -1155,7 +1162,12 @@ function main() {
     }
 
     if (command === "count") {
-      runCount(absProjectPath, absOutputDir, jsonOutput);
+      runCount(absProjectPath, absOutputDir, jsonOutput, detailedFlag);
+      return;
+    }
+
+    if (command === "stats") {
+      runCount(absProjectPath, absOutputDir, jsonOutput, detailedFlag);
       return;
     }
 
@@ -2190,10 +2202,17 @@ function runCount(
   absProjectPath: string,
   absOutputDir: string,
   jsonOutput: boolean,
+  detailed: boolean = false,
 ) {
   const config = loadConfig(absProjectPath);
-  const result = scan(absProjectPath);
+  const scanStart = Date.now();
+  const result = scan(absProjectPath, { verbose: detailed });
+  const scanDuration = Date.now() - scanStart;
+  const timings = (result as ScanResult & { timings?: ScanTimings }).timings;
+
+  const genStart = Date.now();
   const docs = generateDocuments(result, config);
+  const genDuration = Date.now() - genStart;
 
   // Compute compliance score
   const scoreInput: ScoreInput = {
@@ -2204,18 +2223,89 @@ function runCount(
   };
   const fullScore = computeFullComplianceScore(scoreInput);
 
+  if (!detailed) {
+    if (jsonOutput) {
+      console.log(JSON.stringify({
+        services: result.services.length,
+        documents: docs.length,
+        score: fullScore.total,
+        grade: fullScore.grade,
+      }, null, 2));
+      process.exit(0);
+    }
+
+    // One-line output for scripting
+    console.log(`services=${result.services.length} documents=${docs.length} score=${fullScore.total} grade=${fullScore.grade}`);
+    process.exit(0);
+  }
+
+  // --detailed output
   if (jsonOutput) {
-    console.log(JSON.stringify({
+    const detailedJson: Record<string, unknown> = {
       services: result.services.length,
       documents: docs.length,
       score: fullScore.total,
       grade: fullScore.grade,
-    }, null, 2));
+      scanDurationMs: scanDuration,
+      generationDurationMs: genDuration,
+      scannerTimings: timings || {},
+      generatorOutputs: docs.map((d) => ({
+        name: d.name,
+        filename: d.filename,
+        sizeBytes: Buffer.byteLength(d.content, "utf-8"),
+      })),
+      serviceConfidence: result.services.map((s) => ({
+        name: s.name,
+        category: s.category,
+        evidenceCount: s.evidence.length,
+        evidenceTypes: [...new Set(s.evidence.map((e) => e.type))],
+        confidence: s.evidence.length >= 3 ? "high" : s.evidence.length >= 2 ? "medium" : "low",
+      })),
+    };
+    console.log(JSON.stringify(detailedJson, null, 2));
     process.exit(0);
   }
 
-  // One-line output for scripting
-  console.log(`services=${result.services.length} documents=${docs.length} score=${fullScore.total} grade=${fullScore.grade}`);
+  printBanner();
+  console.log(`${BOLD()}Detailed Statistics${RESET()}\n`);
+
+  // Overview
+  console.log(`  Services: ${result.services.length}   Documents: ${docs.length}   Score: ${fullScore.total}% (${fullScore.grade})`);
+  console.log(`  Scan: ${scanDuration}ms   Generation: ${genDuration}ms   Total: ${scanDuration + genDuration}ms\n`);
+
+  // Per-scanner timing breakdown
+  if (timings) {
+    console.log(`  ${BOLD()}Scanner Timing Breakdown:${RESET()}\n`);
+    for (const [name, ms] of Object.entries(timings)) {
+      const bar = ms > 0 ? "█".repeat(Math.max(1, Math.round(ms / 2))) : "";
+      console.log(`    ${DIM()}${name.padEnd(14)}${RESET()} ${String(ms).padStart(4)}ms ${DIM()}${bar}${RESET()}`);
+    }
+    console.log(`    ${"─".repeat(28)}`);
+    console.log(`    ${BOLD()}${"Total".padEnd(14)}${RESET()} ${BOLD()}${String(scanDuration).padStart(4)}ms${RESET()}\n`);
+  }
+
+  // Per-generator output size
+  console.log(`  ${BOLD()}Generator Output Sizes:${RESET()}\n`);
+  let totalSize = 0;
+  for (const doc of docs) {
+    const size = Buffer.byteLength(doc.content, "utf-8");
+    totalSize += size;
+    console.log(`    ${doc.filename.padEnd(44)} ${DIM()}${formatFileSize(size)}${RESET()}`);
+  }
+  console.log(`    ${"─".repeat(52)}`);
+  console.log(`    ${"Total".padEnd(44)} ${BOLD()}${formatFileSize(totalSize)}${RESET()}\n`);
+
+  // Detection confidence per service
+  console.log(`  ${BOLD()}Detection Confidence:${RESET()}\n`);
+  for (const service of result.services) {
+    const evidenceCount = service.evidence.length;
+    const confidence = evidenceCount >= 3 ? "high" : evidenceCount >= 2 ? "medium" : "low";
+    const color = confidence === "high" ? GREEN() : confidence === "medium" ? YELLOW() : RED();
+    const evidenceTypes = [...new Set(service.evidence.map((e) => e.type))].join(", ");
+    console.log(`    ${service.name.padEnd(24)} ${color}${confidence.padEnd(7)}${RESET()} ${DIM()}(${evidenceCount} evidence: ${evidenceTypes})${RESET()}`);
+  }
+  console.log();
+
   process.exit(0);
 }
 

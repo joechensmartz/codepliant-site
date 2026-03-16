@@ -95,6 +95,9 @@ import { generateTrainingRecord } from "./training-record.js";
 import { generateConsentRecordTemplate } from "./consent-record-template.js";
 import { generateDataDeletionProcedures } from "./data-deletion-procedures.js";
 import { generateSecurityAwarenessProgram } from "./security-awareness-program.js";
+import { generatePrivacyRiskMatrix } from "./privacy-risk-matrix.js";
+import { generateDataMappingRegister } from "./data-mapping-register.js";
+import { generateComplianceMaturityModel } from "./compliance-maturity-model.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -948,6 +951,36 @@ export function generateDocuments(
     });
   }
 
+  // Privacy Risk Matrix — visual likelihood x impact matrix for all data processing
+  const privacyRiskMatrix = generatePrivacyRiskMatrix(docScan, ctx);
+  if (privacyRiskMatrix) {
+    docs.push({
+      name: "Privacy Risk Matrix",
+      filename: "PRIVACY_RISK_MATRIX.md",
+      content: privacyRiskMatrix,
+    });
+  }
+
+  // Data Mapping Register — GDPR Art. 30 complete data inventory
+  const dataMappingRegister = generateDataMappingRegister(docScan, ctx);
+  if (dataMappingRegister) {
+    docs.push({
+      name: "Data Mapping Register",
+      filename: "DATA_MAPPING_REGISTER.md",
+      content: dataMappingRegister,
+    });
+  }
+
+  // Compliance Maturity Model — 5-level auto-assessed maturity with roadmap
+  const complianceMaturityModel = generateComplianceMaturityModel(docScan, ctx, docs);
+  if (complianceMaturityModel) {
+    docs.push({
+      name: "Compliance Maturity Model",
+      filename: "COMPLIANCE_MATURITY_MODEL.md",
+      content: complianceMaturityModel,
+    });
+  }
+
   // Compliance Certificate — self-attestation certificate (generated after all other docs)
   // Note: score is not available at this point; it will show 0/N/A.
   // The certificate is primarily about documenting which docs were generated.
@@ -1036,6 +1069,54 @@ export function generateDocuments(
       } else {
         // Append at the end
         doc.content += insertion;
+      }
+    }
+  }
+
+  // Inject document metadata headers (Document Version, Next Review Date, Document Owner)
+  // into any document that doesn't already contain them.
+  const metaDate = new Date().toISOString().split("T")[0];
+  const nextReviewDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  const documentOwner = ctx.companyName;
+
+  for (const doc of docs) {
+    // Skip JSON files and docs that already have Document Version
+    if (doc.filename.endsWith(".json") || doc.content.includes("Document Version")) {
+      continue;
+    }
+
+    // Insert metadata block after the first header line (# Title) and any
+    // existing blockquote lines that follow it.
+    const headerMatch = doc.content.match(/^(# .+\n(?:\n(?:>.*\n)*)?)/);
+    if (headerMatch) {
+      const metaBlock =
+        `> **Document Version:** 1.0  \n` +
+        `> **Document Owner:** ${documentOwner}  \n` +
+        `> **Next Review Date:** ${nextReviewDate}\n\n`;
+
+      // If the header already has blockquote lines, append to them
+      const headerEnd = headerMatch[0];
+      if (headerEnd.includes(">")) {
+        // Insert before the blank line after blockquotes
+        const lastQuoteIdx = doc.content.lastIndexOf(">", headerMatch[0].length - 1);
+        const lineEnd = doc.content.indexOf("\n", lastQuoteIdx);
+        if (lineEnd !== -1) {
+          doc.content =
+            doc.content.slice(0, lineEnd + 1) +
+            `> **Document Version:** 1.0  \n` +
+            `> **Document Owner:** ${documentOwner}  \n` +
+            `> **Next Review Date:** ${nextReviewDate}\n` +
+            doc.content.slice(lineEnd + 1);
+        }
+      } else {
+        // No blockquotes: insert after the title line + blank line
+        const titleEnd = doc.content.indexOf("\n");
+        if (titleEnd !== -1) {
+          doc.content =
+            doc.content.slice(0, titleEnd + 1) +
+            "\n" + metaBlock +
+            doc.content.slice(titleEnd + 1);
+        }
       }
     }
   }
