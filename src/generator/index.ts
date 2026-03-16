@@ -98,6 +98,8 @@ import { generateSecurityAwarenessProgram } from "./security-awareness-program.j
 import { generatePrivacyRiskMatrix } from "./privacy-risk-matrix.js";
 import { generateDataMappingRegister } from "./data-mapping-register.js";
 import { generateComplianceMaturityModel } from "./compliance-maturity-model.js";
+import { generateAIEthicsStatement } from "./ai-ethics-statement.js";
+import { generateDataBreachResponseDrill } from "./data-breach-response-drill.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -968,6 +970,26 @@ export function generateDocuments(
       name: "Data Mapping Register",
       filename: "DATA_MAPPING_REGISTER.md",
       content: dataMappingRegister,
+    });
+  }
+
+  // AI Ethics Statement — UNESCO AI Ethics Recommendation aligned, when AI services detected
+  const aiEthicsStatement = generateAIEthicsStatement(docScan, ctx);
+  if (aiEthicsStatement) {
+    docs.push({
+      name: "AI Ethics Statement",
+      filename: "AI_ETHICS_STATEMENT.md",
+      content: aiEthicsStatement,
+    });
+  }
+
+  // Data Breach Response Drill — tabletop exercise template for breach response
+  const breachDrill = generateDataBreachResponseDrill(docScan, ctx);
+  if (breachDrill) {
+    docs.push({
+      name: "Data Breach Response Drill Template",
+      filename: "DATA_BREACH_DRILL_TEMPLATE.md",
+      content: breachDrill,
     });
   }
 

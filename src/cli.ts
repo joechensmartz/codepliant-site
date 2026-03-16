@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "260.0.0";
+const VERSION = "270.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -144,6 +144,8 @@ ${BOLD()}Diagnostics:${RESET()}
 
 ${BOLD()}Info:${RESET()}
   ${CYAN()}version${RESET()}         Print version and exit
+  ${CYAN()}version-check${RESET()}   Check if a newer version is available
+  ${CYAN()}list-docs${RESET()}       List all document types codepliant can generate
   ${CYAN()}help${RESET()}            Show this help message
 
 ${BOLD()}Options:${RESET()}
@@ -1389,6 +1391,16 @@ function main() {
 
     if (command === "clean") {
       runClean(absOutputDir, quiet, forceFlag);
+      return;
+    }
+
+    if (command === "version-check") {
+      runVersionCheck(quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "list-docs") {
+      runListDocs(absProjectPath, absOutputDir, quiet, jsonOutput);
       return;
     }
 
@@ -5004,6 +5016,8 @@ const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
   "COMPLIANCE_ROADMAP.md": "medium",
   "SECURITY_AWARENESS_PROGRAM.md": "medium",
   "TRAINING_RECORD.md": "medium",
+  "AI_ETHICS_STATEMENT.md": "medium",
+  "DATA_BREACH_DRILL_TEMPLATE.md": "medium",
 };
 
 function runCompleteness(
@@ -5106,6 +5120,13 @@ const VERSION_HISTORY: Array<{
   docs: Array<{ filename: string; name: string; description: string }>;
 }> = [
   {
+    version: "270.0.0",
+    docs: [
+      { filename: "AI_ETHICS_STATEMENT.md", name: "AI Ethics Statement", description: "UNESCO-aligned AI ethics principles, fairness, transparency, human oversight" },
+      { filename: "DATA_BREACH_DRILL_TEMPLATE.md", name: "Data Breach Response Drill", description: "Tabletop exercise template with scenarios, roles, timeline, evaluation criteria" },
+    ],
+  },
+  {
     version: "241.0.0",
     docs: [
       { filename: "DATA_DELETION_PROCEDURES.md", name: "Data Deletion Procedures", description: "Per-service GDPR Art. 17 right to erasure instructions" },
@@ -5198,6 +5219,237 @@ function runMigrate(
 
   console.log(`\n${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to generate all new document types.${RESET()}`);
   console.log(`${DIM()}Run ${CYAN()}codepliant update${RESET()}${DIM()} to regenerate and see what changed.${RESET()}\n`);
+  process.exit(0);
+}
+
+// --- `codepliant version-check` command ---
+
+function runVersionCheck(quiet: boolean, jsonOutput: boolean) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  const currentVersion = VERSION;
+
+  // Attempt to check npm registry (offline-safe: if fetch fails, just show current version)
+  let latestVersion: string | null = null;
+  let updateAvailable = false;
+
+  try {
+    const { execSync } = require("child_process");
+    const result = execSync("npm view codepliant version 2>/dev/null", {
+      encoding: "utf-8",
+      timeout: 5000,
+    }).trim();
+    if (result && /^\d+\.\d+\.\d+/.test(result)) {
+      latestVersion = result;
+      // Simple version comparison (works for semver with numeric-only parts)
+      const currentParts = currentVersion.split(".").map(Number);
+      const latestParts = latestVersion!.split(".").map(Number);
+      for (let i = 0; i < 3; i++) {
+        if ((latestParts[i] || 0) > (currentParts[i] || 0)) {
+          updateAvailable = true;
+          break;
+        } else if ((latestParts[i] || 0) < (currentParts[i] || 0)) {
+          break;
+        }
+      }
+    }
+  } catch {
+    // Offline or npm not available — that's fine
+  }
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      currentVersion,
+      latestVersion: latestVersion || "unknown",
+      updateAvailable,
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}Version Check${RESET()}\n`);
+  console.log(`  ${BOLD()}Current version:${RESET()} v${currentVersion}`);
+
+  if (latestVersion) {
+    console.log(`  ${BOLD()}Latest version:${RESET()}  v${latestVersion}`);
+    if (updateAvailable) {
+      console.log(`\n  ${YELLOW()}${BOLD()}Update available!${RESET()} Run ${CYAN()}npm install -g codepliant${RESET()} to upgrade.`);
+    } else {
+      console.log(`\n  ${GREEN()}${BOLD()}You're up to date!${RESET()}`);
+    }
+  } else {
+    console.log(`  ${DIM()}Latest version:  Unable to check (offline or npm not available)${RESET()}`);
+    console.log(`\n  ${DIM()}Run ${CYAN()}npm outdated -g codepliant${RESET()}${DIM()} when online to check for updates.${RESET()}`);
+  }
+
+  console.log();
+  process.exit(0);
+}
+
+// --- `codepliant list-docs` command ---
+
+function runListDocs(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+  const docs = generateDocuments(result, config);
+
+  // What codepliant would generate for this project
+  const generatedFilenames = new Map<string, string>();
+  for (const doc of docs) {
+    generatedFilenames.set(doc.filename, doc.name);
+  }
+
+  // What already exists on disk
+  const existingFilenames = new Set<string>();
+  if (fs.existsSync(absOutputDir)) {
+    for (const f of fs.readdirSync(absOutputDir)) {
+      existingFilenames.add(f);
+    }
+  }
+
+  // Complete catalog of ALL document types codepliant can generate
+  const ALL_DOCUMENT_TYPES: Array<{ filename: string; name: string; conditional: string }> = [
+    { filename: "PRIVACY_POLICY.md", name: "Privacy Policy", conditional: "When services detected" },
+    { filename: "TERMS_OF_SERVICE.md", name: "Terms of Service", conditional: "Always" },
+    { filename: "SECURITY.md", name: "Security Policy", conditional: "Always" },
+    { filename: "INCIDENT_RESPONSE_PLAN.md", name: "Incident Response Plan", conditional: "Always" },
+    { filename: "AI_DISCLOSURE.md", name: "AI Disclosure", conditional: "When AI services detected" },
+    { filename: "AI_ACT_CHECKLIST.md", name: "AI Act Compliance Checklist", conditional: "When AI services detected" },
+    { filename: "AI_MODEL_CARD.md", name: "AI Model Card", conditional: "When AI services detected" },
+    { filename: "AI_GOVERNANCE_FRAMEWORK.md", name: "AI Governance Framework", conditional: "When AI services detected" },
+    { filename: "AI_ETHICS_STATEMENT.md", name: "AI Ethics Statement", conditional: "When AI services detected" },
+    { filename: "ACCEPTABLE_AI_USE_POLICY.md", name: "Acceptable AI Use Policy", conditional: "When AI services detected" },
+    { filename: "AI_TRAINING_DATA_NOTICE.md", name: "AI Training Data Notice", conditional: "When AI services detected" },
+    { filename: "COOKIE_POLICY.md", name: "Cookie Policy", conditional: "When analytics/auth detected" },
+    { filename: "COOKIE_INVENTORY.md", name: "Cookie Inventory", conditional: "When analytics detected" },
+    { filename: "COOKIE_CONSENT_CONFIG.json", name: "Cookie Consent Configuration", conditional: "When analytics detected" },
+    { filename: "THIRD_PARTY_COOKIE_NOTICE.md", name: "Third-Party Cookie Notice", conditional: "When third-party analytics detected" },
+    { filename: "CONSENT_MANAGEMENT_GUIDE.md", name: "Consent Management Guide", conditional: "When analytics/advertising detected" },
+    { filename: "DATA_PROCESSING_AGREEMENT.md", name: "Data Processing Agreement", conditional: "When third-party processors detected" },
+    { filename: "SUBPROCESSOR_LIST.md", name: "Sub-Processor List", conditional: "When 3+ third-party services detected" },
+    { filename: "SUBPROCESSOR_CHANGE_NOTIFICATION.md", name: "Sub-Processor Change Notification", conditional: "When third-party services detected" },
+    { filename: "DATA_RETENTION_POLICY.md", name: "Data Retention Policy", conditional: "When 3+ services detected" },
+    { filename: "DSAR_HANDLING_GUIDE.md", name: "DSAR Handling Guide", conditional: "When services detected" },
+    { filename: "DATA_FLOW_MAP.md", name: "Data Flow Map", conditional: "When services detected" },
+    { filename: "DATA_FLOW_DIAGRAM.md", name: "Data Flow Diagram", conditional: "When services detected" },
+    { filename: "DATA_CLASSIFICATION.md", name: "Data Classification Report", conditional: "When data detected" },
+    { filename: "DATA_DICTIONARY.md", name: "Data Dictionary", conditional: "When data detected" },
+    { filename: "DATA_SUBJECT_CATEGORIES.md", name: "Data Subject Categories", conditional: "When services detected" },
+    { filename: "DATA_MAPPING_REGISTER.md", name: "Data Mapping Register", conditional: "When services detected" },
+    { filename: "DATA_PROTECTION_POLICY.md", name: "Data Protection Policy", conditional: "When services detected" },
+    { filename: "DATA_PORTABILITY_GUIDE.md", name: "Data Portability Guide", conditional: "When services detected" },
+    { filename: "DATA_DELETION_PROCEDURES.md", name: "Data Deletion Procedures", conditional: "When services detected" },
+    { filename: "DATA_BREACH_NOTIFICATION_TEMPLATE.md", name: "Data Breach Notification Templates", conditional: "When services detected" },
+    { filename: "DATA_BREACH_DRILL_TEMPLATE.md", name: "Data Breach Response Drill Template", conditional: "When services detected" },
+    { filename: "COMPLIANCE_NOTES.md", name: "Compliance Notes", conditional: "When services detected" },
+    { filename: "COMPLIANCE_TIMELINE.md", name: "Compliance Timeline", conditional: "When services detected" },
+    { filename: "COMPLIANCE_ROADMAP.md", name: "Compliance Roadmap", conditional: "Always" },
+    { filename: "COMPLIANCE_MATURITY_MODEL.md", name: "Compliance Maturity Model", conditional: "When services detected" },
+    { filename: "COMPLIANCE_CERTIFICATE.md", name: "Compliance Certificate", conditional: "After all docs generated" },
+    { filename: "SOC2_READINESS_CHECKLIST.md", name: "SOC 2 Readiness Checklist", conditional: "When 5+ services detected" },
+    { filename: "ISO_27001_CHECKLIST.md", name: "ISO 27001 Compliance Checklist", conditional: "When 5+ services detected" },
+    { filename: "THIRD_PARTY_RISK_ASSESSMENT.md", name: "Third-Party Risk Assessment", conditional: "When 3+ third-party services detected" },
+    { filename: "PRIVACY_IMPACT_ASSESSMENT.md", name: "Privacy Impact Assessment", conditional: "When AI or analytics detected" },
+    { filename: "PRIVACY_BY_DESIGN_CHECKLIST.md", name: "Privacy by Design Checklist", conditional: "When services detected" },
+    { filename: "PRIVACY_RISK_MATRIX.md", name: "Privacy Risk Matrix", conditional: "When services detected" },
+    { filename: "PRIVACY_NOTICE_SHORT.md", name: "Privacy Notice (Short)", conditional: "When services detected" },
+    { filename: "PRIVACY_DASHBOARD_CONFIG.json", name: "Privacy Dashboard Configuration", conditional: "When services detected" },
+    { filename: "ENV_AUDIT.md", name: "Environment Variable Audit", conditional: "When .env files detected" },
+    { filename: "VULNERABILITY_SCAN.md", name: "Dependency Vulnerability Scan", conditional: "When package manager detected" },
+    { filename: "LICENSE_COMPLIANCE.md", name: "License Compliance Report", conditional: "When dependencies detected" },
+    { filename: "VENDOR_CONTACTS.md", name: "Vendor Contacts Directory", conditional: "When services detected" },
+    { filename: "VENDOR_SECURITY_QUESTIONNAIRE.md", name: "Vendor Security Questionnaire", conditional: "When services detected" },
+    { filename: "VENDOR_ONBOARDING_CHECKLIST.md", name: "Vendor Onboarding Checklist", conditional: "When services detected" },
+    { filename: "ACCEPTABLE_USE_POLICY.md", name: "Acceptable Use Policy", conditional: "Always" },
+    { filename: "REFUND_POLICY.md", name: "Refund Policy", conditional: "When payment services detected" },
+    { filename: "SERVICE_LEVEL_AGREEMENT.md", name: "Service Level Agreement", conditional: "When monitoring detected" },
+    { filename: "AUDIT_LOG_POLICY.md", name: "Audit Log Policy", conditional: "When services detected" },
+    { filename: "RISK_REGISTER.md", name: "Risk Register", conditional: "When services detected" },
+    { filename: "TRANSPARENCY_REPORT.md", name: "Transparency Report", conditional: "When services detected" },
+    { filename: "RECORD_OF_PROCESSING_ACTIVITIES.md", name: "Record of Processing Activities", conditional: "When services detected" },
+    { filename: "TRANSFER_IMPACT_ASSESSMENT.md", name: "Transfer Impact Assessment", conditional: "When EU-to-US transfers detected" },
+    { filename: "LAWFUL_BASIS_ASSESSMENT.md", name: "Lawful Basis Assessment", conditional: "When services detected" },
+    { filename: "ANNUAL_REVIEW_CHECKLIST.md", name: "Annual Review Checklist", conditional: "When services detected" },
+    { filename: "ACCESS_CONTROL_POLICY.md", name: "Access Control Policy", conditional: "When auth detected" },
+    { filename: "CHANGE_MANAGEMENT_POLICY.md", name: "Change Management Policy", conditional: "Always" },
+    { filename: "WHISTLEBLOWER_POLICY.md", name: "Whistleblower Policy", conditional: "EU jurisdictions" },
+    { filename: "EMPLOYEE_PRIVACY_NOTICE.md", name: "Employee Privacy Notice", conditional: "When config enabled" },
+    { filename: "EMPLOYEE_HANDBOOK_PRIVACY_SECTION.md", name: "Employee Handbook Privacy Section", conditional: "When services detected" },
+    { filename: "REGULATORY_UPDATES.md", name: "Regulatory Updates", conditional: "When services detected" },
+    { filename: "ENCRYPTION_POLICY.md", name: "Encryption Policy", conditional: "When databases/cloud detected" },
+    { filename: "BACKUP_POLICY.md", name: "Backup Policy", conditional: "When databases detected" },
+    { filename: "DISASTER_RECOVERY_PLAN.md", name: "Disaster Recovery Plan", conditional: "When cloud/CI detected" },
+    { filename: "BUSINESS_CONTINUITY_PLAN.md", name: "Business Continuity Plan", conditional: "When cloud detected" },
+    { filename: "INFORMATION_SECURITY_POLICY.md", name: "Information Security Policy", conditional: "When CI/CD detected" },
+    { filename: "SECURITY_AWARENESS_PROGRAM.md", name: "Security Awareness Program", conditional: "When services detected" },
+    { filename: "RESPONSIBLE_DISCLOSURE_POLICY.md", name: "Responsible Disclosure Policy", conditional: "When services detected" },
+    { filename: "API_PRIVACY_DOCUMENTATION.md", name: "API Privacy Documentation", conditional: "When API framework detected" },
+    { filename: "API_TERMS_OF_USE.md", name: "API Terms of Use", conditional: "When API framework detected" },
+    { filename: "SUPPLIER_CODE_OF_CONDUCT.md", name: "Supplier Code of Conduct", conditional: "When services detected" },
+    { filename: "PENTEST_SCOPE.md", name: "Penetration Test Scope", conditional: "When services detected" },
+    { filename: "OPEN_SOURCE_NOTICE.md", name: "Open Source Notice", conditional: "When dependencies detected" },
+    { filename: "MEDIA_CONSENT_FORM.md", name: "Media Consent Form", conditional: "When storage detected" },
+    { filename: "CONSENT_RECORD_TEMPLATE.md", name: "Consent Record Template", conditional: "When services detected" },
+    { filename: "TRAINING_RECORD.md", name: "Training Record", conditional: "When services detected" },
+    { filename: "INCIDENT_COMMUNICATION_TEMPLATES.md", name: "Incident Communication Templates", conditional: "When services detected" },
+    { filename: "DPO_HANDBOOK.md", name: "DPO Handbook", conditional: "When DPO configured" },
+    { filename: "EXECUTIVE_DASHBOARD.md", name: "Executive Dashboard", conditional: "When services detected" },
+    { filename: "QUICK_START_COMPLIANCE_GUIDE.md", name: "Quick Start Compliance Guide", conditional: "Always" },
+  ];
+
+  if (jsonOutput) {
+    const docList = ALL_DOCUMENT_TYPES.map((dt) => ({
+      filename: dt.filename,
+      name: dt.name,
+      condition: dt.conditional,
+      appliesTo: generatedFilenames.has(dt.filename),
+      exists: existingFilenames.has(dt.filename),
+    }));
+    console.log(JSON.stringify({
+      totalDocumentTypes: ALL_DOCUMENT_TYPES.length,
+      applicableToProject: generatedFilenames.size,
+      existingOnDisk: [...generatedFilenames.keys()].filter((f) => existingFilenames.has(f)).length,
+      documents: docList,
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}All Document Types${RESET()} (${ALL_DOCUMENT_TYPES.length} total)\n`);
+
+  const applicableCount = generatedFilenames.size;
+  const existingCount = [...generatedFilenames.keys()].filter((f) => existingFilenames.has(f)).length;
+  console.log(`  ${BOLD()}Applicable to this project:${RESET()} ${applicableCount}`);
+  console.log(`  ${BOLD()}Already generated:${RESET()} ${existingCount}`);
+  console.log();
+
+  for (const dt of ALL_DOCUMENT_TYPES) {
+    const applies = generatedFilenames.has(dt.filename);
+    const exists = existingFilenames.has(dt.filename);
+
+    let icon: string;
+    let statusText: string;
+    if (exists) {
+      icon = `${GREEN()}✓${RESET()}`;
+      statusText = `${GREEN()}generated${RESET()}`;
+    } else if (applies) {
+      icon = `${YELLOW()}○${RESET()}`;
+      statusText = `${YELLOW()}applicable${RESET()}`;
+    } else {
+      icon = `${DIM()}·${RESET()}`;
+      statusText = `${DIM()}n/a${RESET()}`;
+    }
+
+    console.log(`  ${icon} ${BOLD()}${dt.name}${RESET()} ${DIM()}(${dt.filename})${RESET()}`);
+    console.log(`    ${statusText} — ${DIM()}${dt.conditional}${RESET()}`);
+  }
+
+  console.log(`\n${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to generate all applicable documents.${RESET()}\n`);
   process.exit(0);
 }
 

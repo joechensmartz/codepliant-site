@@ -1,61 +1,64 @@
-# Overnight Progress: v211-220 (FINAL)
+# Overnight Progress: v261-270 (FINAL)
 
 ## Summary
-Final polish batch — Quick Start Guide, Compliance Roadmap, quickstart CLI command, README deep-dive section, version 220.0.0.
+AI Ethics Statement, Data Breach Response Drill, version-check command, list-docs command, version 270.0.0.
 
-## Changes (v211-220)
+## Changes (v261-270)
 
-### v211-215: Quick Start Guide & Compliance Roadmap
+### v261-265: New Generators
 
-- **Quick Start Compliance Guide** (`src/generator/quick-start-guide.ts`)
-  - "You just ran codepliant. Here's what to do next."
-  - Step 1: Review Privacy Policy (with specific review instructions)
-  - Step 2: Add to your website (framework-specific instructions for Next.js, Nuxt, Vue, Angular, SvelteKit, Rails, Django, Laravel, Express, React)
-  - Step 3: Set up cookie consent (CMP platform comparison, banner config)
-  - Step 4: Configure CI/CD (GitHub Actions, GitLab CI, pre-commit hook)
-  - Step 5: Ongoing maintenance schedule
-  - Always generated, personalized to detected stack and services
-  - Output: `QUICK_START_COMPLIANCE_GUIDE.md`
+- **AI Ethics Statement** (`src/generator/ai-ethics-statement.ts`)
+  - Generated when AI services detected
+  - Aligned with UNESCO Recommendation on the Ethics of AI (2021)
+  - Core principles: proportionality, fairness, transparency, accountability, privacy, human oversight, safety, sustainability
+  - Human oversight commitments table with frequencies
+  - UNESCO principle mapping table
+  - AI Ethics Governance Structure with review process
+  - Reporting concerns and redress mechanisms
+  - Output: `AI_ETHICS_STATEMENT.md`
 
-- **Compliance Roadmap** (`src/generator/compliance-roadmap.ts`)
-  - Phased implementation plan from zero to fully compliant
-  - Phase 1 (Week 1): Essential documents — Privacy Policy, ToS, Cookie Policy, AI Disclosure
-  - Phase 2 (Weeks 2-4): Security — Security Policy, Incident Response, Access Control, Change Management
-  - Phase 3 (Month 2): Advanced — SOC 2, ISO 27001, DPA, PIA, Vendor Management
-  - Phase 4 (Ongoing): Monitoring, CI/CD, review cadence, trigger-based updates
-  - Progress tracker with checklists per phase
-  - Regulatory deadline calendar
-  - Output: `COMPLIANCE_ROADMAP.md`
+- **Data Breach Response Drill Template** (`src/generator/data-breach-response-drill.ts`)
+  - Tabletop exercise template for breach response preparedness
+  - Role assignments: Incident Commander, Technical Lead, DPO, Legal, Comms, Executive, IT Security, Customer Support, Observer
+  - Context-aware scenarios: Credential Stuffing, Exposed Database, AI Data Leak, Supply Chain Compromise
+  - Timed injects per scenario for realistic exercise flow
+  - 7-phase exercise timeline with facilitator guidance
+  - Discussion questions per incident response phase
+  - Evaluation scoring rubric (8 criteria, 4-point scale, 32-point total)
+  - After-action review template with gap tracking
+  - Pre-drill preparation checklist
+  - Output: `DATA_BREACH_DRILL_TEMPLATE.md`
 
-### v216-218: Quickstart Command & README Enhancement
+### v266-268: New CLI Commands
 
-- **`codepliant quickstart` command**
-  - Scans project and prints quick start guide to terminal
-  - Color-formatted output with section headers, checkboxes, tips
-  - Shows next steps based on actual scan results
-  - Added to CLI help text
+- **`codepliant version-check` command**
+  - Checks if a newer version is available on npm registry
+  - Offline-safe: gracefully shows current version if npm unreachable
+  - Supports `--json` output for CI/scripting
+  - 5-second timeout to prevent blocking
 
-- **README "What happens when you run codepliant go" section**
-  - Step-by-step explanation of the scan process
-  - Documents all 7 scanner phases: dependencies, imports, env vars, schemas, infrastructure, specialized scanners, document generation, output & scoring
-  - Lists every scanner file with its purpose
-  - Explains how documents are personalized to detected services
+- **`codepliant list-docs` command**
+  - Lists ALL 86 document types codepliant can generate
+  - Shows which ones apply to the current project (context-aware scan)
+  - Shows which are already generated on disk
+  - Color-coded status: green checkmark (generated), yellow circle (applicable), dim dot (n/a)
+  - Supports `--json` output with full metadata
 
-### v219-220: Version Bump & Final Polish
-- Version bumped to 220.0.0 in package.json and CLI
-- GitHub Action reference updated to v220
-- Generator index wired up with Quick Start Guide and Compliance Roadmap
-- All existing tests continue to pass
-- Build successful
+### v269-270: Version Bump & Final Polish
+- Version bumped to 270.0.0 in package.json and CLI
+- Generator index wired up with AI Ethics Statement and Data Breach Response Drill
+- VERSION_HISTORY updated for migrate command
+- DOC_PRIORITY updated for new document types
+- Help text updated with new commands
+- Build successful, all commands tested
 
 ## Files Changed
-- `package.json` — version 210.0.0 -> 220.0.0
-- `src/cli.ts` — version bump, quickstart command, help text update
-- `src/generator/quick-start-guide.ts` — NEW: Quick Start Compliance Guide generator
-- `src/generator/compliance-roadmap.ts` — NEW: Compliance Roadmap generator
-- `src/generator/index.ts` — wire up Quick Start Guide and Compliance Roadmap
-- `README.md` — added "What happens when you run codepliant go" section, v220 action ref
-- `overnight-progress.md` — updated with FINAL status
+- `package.json` — version 260.0.0 -> 270.0.0
+- `src/cli.ts` — version bump, version-check command, list-docs command, help text, VERSION_HISTORY, DOC_PRIORITY
+- `src/generator/ai-ethics-statement.ts` — NEW: AI Ethics Statement generator
+- `src/generator/data-breach-response-drill.ts` — NEW: Data Breach Response Drill generator
+- `src/generator/index.ts` — wire up AI Ethics Statement and Data Breach Response Drill
+- `overnight-progress.md` — updated with complete final summary
 
 ## Status: FINAL
 All tasks complete. Ready for review.
