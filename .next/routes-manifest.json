@@ -53,10 +53,34 @@
       "namedRegex": "^/ai\\-governance(?:/)?$"
     },
     {
+      "page": "/blog/colorado-ai-act",
+      "regex": "^/blog/colorado\\-ai\\-act(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/colorado\\-ai\\-act(?:/)?$"
+    },
+    {
       "page": "/blog/eu-ai-act-deadline",
       "regex": "^/blog/eu\\-ai\\-act\\-deadline(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/eu\\-ai\\-act\\-deadline(?:/)?$"
+    },
+    {
+      "page": "/blog/gdpr-for-developers",
+      "regex": "^/blog/gdpr\\-for\\-developers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/gdpr\\-for\\-developers(?:/)?$"
+    },
+    {
+      "page": "/blog/privacy-policy-for-saas",
+      "regex": "^/blog/privacy\\-policy\\-for\\-saas(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/privacy\\-policy\\-for\\-saas(?:/)?$"
+    },
+    {
+      "page": "/compare",
+      "regex": "^/compare(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/compare(?:/)?$"
     },
     {
       "page": "/cookie-policy-generator",

@@ -54,10 +54,46 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../src/app/blog/colorado-ai-act/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/blog/colorado-ai-act">> = Specific
+  const handler = {} as typeof import("../../src/app/blog/colorado-ai-act/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/blog/eu-ai-act-deadline/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/blog/eu-ai-act-deadline">> = Specific
   const handler = {} as typeof import("../../src/app/blog/eu-ai-act-deadline/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/blog/gdpr-for-developers/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/blog/gdpr-for-developers">> = Specific
+  const handler = {} as typeof import("../../src/app/blog/gdpr-for-developers/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/blog/privacy-policy-for-saas/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/blog/privacy-policy-for-saas">> = Specific
+  const handler = {} as typeof import("../../src/app/blog/privacy-policy-for-saas/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/compare/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/compare">> = Specific
+  const handler = {} as typeof import("../../src/app/compare/page.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
