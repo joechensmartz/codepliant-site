@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "290.0.0";
+const VERSION = "300.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -71,7 +71,7 @@ function printBanner() {
   const ecosystemCount = getEcosystemCount();
   console.log(`
 ${CYAN()}${BOLD()}  ╔═══════════════════════════════════════╗
-  ║           CODEPLIANT v${VERSION}            ║
+  ║          CODEPLIANT v${VERSION}            ║
   ║   Compliance documents from your code  ║
   ║   ${ecosystemCount} services across 10+ ecosystems   ║
   ╚═══════════════════════════════════════╝${RESET()}
@@ -148,6 +148,7 @@ ${BOLD()}Info:${RESET()}
   ${CYAN()}version${RESET()}         Print version and exit
   ${CYAN()}version-check${RESET()}   Check if a newer version is available
   ${CYAN()}list-docs${RESET()}       List all document types codepliant can generate
+  ${CYAN()}changelog${RESET()}       Show version history of codepliant
   ${CYAN()}help${RESET()}            Show this help message
 
 ${BOLD()}Options:${RESET()}
@@ -1449,6 +1450,11 @@ function main() {
 
     if (command === "tree") {
       runTree(absProjectPath, absOutputDir, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "changelog") {
+      runChangelog(quiet, jsonOutput);
       return;
     }
 
@@ -5133,6 +5139,7 @@ const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
   "DATA_BREACH_DRILL_TEMPLATE.md": "medium",
   "REGULATORY_CORRESPONDENCE_LOG.md": "medium",
   "PRIVACY_POLICY_CHANGELOG.md": "medium",
+  "COMPLIANCE_SUMMARY_EMAIL.md": "high",
 };
 
 function runCompleteness(
@@ -5234,6 +5241,12 @@ const VERSION_HISTORY: Array<{
   version: string;
   docs: Array<{ filename: string; name: string; description: string }>;
 }> = [
+  {
+    version: "300.0.0",
+    docs: [
+      { filename: "COMPLIANCE_SUMMARY_EMAIL.md", name: "Compliance Summary Email", description: "Email-ready compliance status summary for stakeholders, board members, and executives" },
+    ],
+  },
   {
     version: "280.0.0",
     docs: [
@@ -5404,6 +5417,141 @@ function runVersionCheck(quiet: boolean, jsonOutput: boolean) {
   }
 
   console.log();
+  process.exit(0);
+}
+
+// --- `codepliant changelog` command ---
+
+const CODEPLIANT_CHANGELOG: Array<{
+  version: string;
+  date: string;
+  highlights: string[];
+}> = [
+  {
+    version: "300.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "FINAL MILESTONE: v300",
+      "Compliance Summary Email generator for stakeholder/board distribution",
+      "changelog command — view codepliant version history",
+      "90+ document types, 50+ CLI commands, 1200+ repos tested",
+    ],
+  },
+  {
+    version: "290.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "Privacy Program Charter generator",
+      "Third-Party Due Diligence Template generator",
+      "Compliance Maturity Model with 5-level auto-assessment",
+    ],
+  },
+  {
+    version: "280.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "Regulatory Correspondence Log generator",
+      "Privacy Policy Changelog generator",
+    ],
+  },
+  {
+    version: "270.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "AI Ethics Statement (UNESCO-aligned)",
+      "Data Breach Response Drill template",
+      "version-check command",
+      "list-docs command",
+    ],
+  },
+  {
+    version: "250.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "Data Deletion Procedures generator",
+      "Security Awareness Program generator",
+      "Privacy Risk Matrix generator",
+      "Data Mapping Register generator",
+    ],
+  },
+  {
+    version: "200.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "DPO Handbook generator",
+      "Incident Communication Templates",
+      "Training Record generator",
+      "Consent Record Template",
+    ],
+  },
+  {
+    version: "180.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "Executive Dashboard generator",
+      "Privacy Notice (Short) for in-app display",
+      "Cookie Consent Config (JSON) for CMP integration",
+      "Compliance Roadmap generator",
+      "Environment scanner",
+      "validate command",
+    ],
+  },
+  {
+    version: "150.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "MCP server for Claude Code / Cursor integration",
+      "GitHub Actions integration",
+      "Plugin system for custom generators",
+      "Custom template engine",
+    ],
+  },
+  {
+    version: "100.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "50+ document types",
+      "10+ ecosystem support (JS, Python, Go, Ruby, Elixir, PHP, Rust, Java, .NET, Django)",
+      "Cloud provider scanning (AWS, GCP, Azure)",
+      "CI/CD scanning (GitHub Actions, GitLab CI, CircleCI)",
+    ],
+  },
+  {
+    version: "70.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "Initial overnight build started",
+      "Core scanners: dependencies, imports, env, schema",
+      "Core generators: Privacy Policy, Terms of Service, AI Disclosure, Cookie Policy, DPA",
+      "Scoring engine with per-regulation breakdown",
+    ],
+  },
+];
+
+function runChangelog(quiet: boolean, jsonOutput: boolean) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      currentVersion: VERSION,
+      entries: CODEPLIANT_CHANGELOG,
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}Codepliant Changelog${RESET()} ${DIM()}(last 10 versions)${RESET()}\n`);
+
+  for (const entry of CODEPLIANT_CHANGELOG) {
+    const isCurrent = entry.version === VERSION;
+    const marker = isCurrent ? ` ${GREEN()}${BOLD()}(current)${RESET()}` : "";
+    console.log(`  ${CYAN()}${BOLD()}v${entry.version}${RESET()}${marker} ${DIM()}— ${entry.date}${RESET()}`);
+    for (const h of entry.highlights) {
+      console.log(`    ${GREEN()}+${RESET()} ${h}`);
+    }
+    console.log();
+  }
+
+  console.log(`${DIM()}Showing last 10 major versions. Full changelog: https://github.com/joechensmartz/codepliant/blob/main/CHANGELOG.md${RESET()}\n`);
   process.exit(0);
 }
 

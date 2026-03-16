@@ -15,7 +15,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/tests-761%20passed-brightgreen?style=flat-square" alt="tests" />
   <img src="https://img.shields.io/badge/precision-100%25-brightgreen?style=flat-square" alt="precision" />
-  <img src="https://img.shields.io/badge/docs-59%2B%20types-blue?style=flat-square" alt="docs" />
+  <img src="https://img.shields.io/badge/docs-90%2B%20types-blue?style=flat-square" alt="docs" />
   <img src="https://img.shields.io/badge/ecosystems-10%2B-blue?style=flat-square" alt="ecosystems" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
 </p>
@@ -46,7 +46,7 @@ Scanning source imports...   ✓ OpenAI, Stripe found in code
 Scanning .env...             ✓ 9 API keys detected
 Scanning Prisma schema...    ✓ User model: email, phone, passwordHash
 
-Generated 59+ documents in legal/
+Generated 90+ documents in legal/
 
   PRIVACY_POLICY.md                  — mentions Stripe, OpenAI, Supabase by name
   AI_DISCLOSURE.md                   — EU AI Act Art. 50 compliant
@@ -63,9 +63,9 @@ Generated 59+ documents in legal/
   ... and 40+ more
 
 Generation Summary
-  Total documents: 59
+  Total documents: 90+
   Total lines generated: 12,000+
-  Estimated lawyer equivalent: Generated 59 documents (~$59,000 lawyer equivalent)
+  Estimated lawyer equivalent: Generated 90+ documents (~$90,000 lawyer equivalent)
 
 Compliance score: 100% (A)
 Done in 24ms.
@@ -87,7 +87,7 @@ Done in 24ms.
 | "Do you use cookies?" — *Probably?* | Finds PostHog, Google Analytics, Supabase Auth in your code |
 | "Do you use AI?" — *Yes but what do I disclose?* | Detects OpenAI + Anthropic, generates Article 50 disclosure |
 | "List your sub-processors" — *Uhh...* | Finds Stripe, Sentry, Resend, generates the full list with their DPA URLs |
-| 30 minutes of forms → generic template | 30 seconds → 59+ documents tailored to your code |
+| 30 minutes of forms → generic template | 30 seconds → 90+ documents tailored to your code |
 
 ---
 
@@ -196,7 +196,7 @@ Reads `.env`, `.env.local`, `.env.example`, and similar files. Matches variable 
 - **License** (`src/scanner/license-scanner.ts`) — open source license compliance
 
 ### Step 7: Document Generation (`src/generator/index.ts`)
-Based on scan results, generates 59+ documents — each personalized to your actual services. A project using Stripe, OpenAI, and Supabase gets documents that mention those services by name, list their specific data collection practices, and link to their DPA pages.
+Based on scan results, generates 90+ documents — each personalized to your actual services. A project using Stripe, OpenAI, and Supabase gets documents that mention those services by name, list their specific data collection practices, and link to their DPA pages.
 
 ### Step 8: Output & Scoring
 Writes all documents to `legal/` (or your configured output directory), computes a compliance score, and shows a generation summary with estimated lawyer-equivalent value.
@@ -234,6 +234,9 @@ npx codepliant completeness
 
 # Check what's new after upgrading
 npx codepliant migrate
+
+# View codepliant version history
+npx codepliant changelog
 ```
 
 ### Configuration
@@ -250,7 +253,7 @@ npx codepliant migrate
 ### CI/CD
 
 ```yaml
-- uses: codepliant/codepliant@v250
+- uses: codepliant/codepliant@v300
   with:
     fail-on-missing: true
 ```
@@ -265,7 +268,7 @@ npx codepliant migrate
 
 ## Built overnight
 
-250 versions. 59+ document types. 1200+ repos tested. Built in a single night with Claude Code.
+v300 — Built overnight: 230 versions, 90+ doc types, 1200+ repos tested. Built in a single night with Claude Code.
 
 Every feature ships with tests. Every detection is deterministic. Zero network calls.
 
@@ -273,7 +276,7 @@ Every feature ships with tests. Every detection is deterministic. Zero network c
 
 ## Links
 
-- [Example Output](./examples/sample-output/) — 59+ generated documents
+- [Example Output](./examples/sample-output/) — 90+ generated documents
 - [Real Project Scans](./examples/real-projects/) — 10 open-source projects
 - [Contributing](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)

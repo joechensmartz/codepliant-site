@@ -104,6 +104,7 @@ import { generateRegulatoryCorrespondenceLog } from "./regulatory-correspondence
 import { generatePrivacyPolicyChangelog } from "./privacy-policy-changelog.js";
 import { generatePrivacyProgramCharter } from "./privacy-program-charter.js";
 import { generateThirdPartyDueDiligence } from "./third-party-due-diligence.js";
+import { generateComplianceSummaryEmail } from "./compliance-summary-email.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1044,6 +1045,16 @@ export function generateDocuments(
       name: "Compliance Maturity Model",
       filename: "COMPLIANCE_MATURITY_MODEL.md",
       content: complianceMaturityModel,
+    });
+  }
+
+  // Compliance Summary Email — stakeholder/board-ready compliance status email
+  const complianceSummaryEmail = generateComplianceSummaryEmail(docScan, ctx, docs);
+  if (complianceSummaryEmail) {
+    docs.push({
+      name: "Compliance Summary Email",
+      filename: "COMPLIANCE_SUMMARY_EMAIL.md",
+      content: complianceSummaryEmail,
     });
   }
 
