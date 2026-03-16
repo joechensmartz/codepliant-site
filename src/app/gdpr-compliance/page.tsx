@@ -202,6 +202,40 @@ export default function GdprCompliance() {
             </div>
           </section>
 
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold tracking-tight mb-6">
+              Related resources
+            </h2>
+            <div className="space-y-3">
+              {[
+                {
+                  title: "Data Privacy Compliance Hub",
+                  href: "/data-privacy",
+                  desc: "Overview of all compliance frameworks Codepliant supports.",
+                },
+                {
+                  title: "Codepliant vs Termly vs Iubenda",
+                  href: "/compare",
+                  desc: "See how code-based scanning compares to form builders for GDPR compliance.",
+                },
+                {
+                  title: "EU AI Act Developer Guide",
+                  href: "/blog/eu-ai-act-deadline",
+                  desc: "Everything developers need to know about the August 2026 deadline.",
+                },
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="block bg-surface rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                >
+                  <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
+                  <p className="text-xs text-muted">{link.desc}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+
           <section>
             <h2 className="text-2xl font-bold tracking-tight mb-8">
               Frequently asked questions

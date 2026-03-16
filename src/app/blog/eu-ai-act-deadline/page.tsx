@@ -654,6 +654,11 @@ export default function EuAiActDeadline() {
                   desc: "Generate Article 50 compliant AI transparency disclosures.",
                 },
                 {
+                  title: "Codepliant vs Termly vs Iubenda",
+                  href: "/compare",
+                  desc: "Compare compliance tools: code scanning vs form builders.",
+                },
+                {
                   title: "Data Privacy Compliance Hub",
                   href: "/data-privacy",
                   desc: "Overview of all compliance frameworks Codepliant supports.",

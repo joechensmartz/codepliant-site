@@ -222,6 +222,27 @@ export default function DataPrivacy() {
             </div>
           </section>
 
+          {/* Compare */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold tracking-tight mb-6">
+              How Codepliant compares
+            </h2>
+            <a
+              href="/compare"
+              className="block bg-surface rounded-xl p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
+            >
+              <h3 className="font-semibold mb-2">
+                Codepliant vs Termly vs Iubenda
+              </h3>
+              <p className="text-sm text-muted">
+                See how code-based scanning compares to form builders and cookie
+                consent platforms for compliance documentation. Feature-by-feature
+                comparison across privacy policies, GDPR, SOC 2, HIPAA, and AI
+                Act coverage.
+              </p>
+            </a>
+          </section>
+
           {/* CTA */}
           <section className="bg-surface rounded-2xl p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">

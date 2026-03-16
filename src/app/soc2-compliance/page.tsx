@@ -236,6 +236,41 @@ export default function Soc2Compliance() {
             </div>
           </section>
 
+          {/* Related pages */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold tracking-tight mb-6">
+              Related resources
+            </h2>
+            <div className="space-y-3">
+              {[
+                {
+                  title: "Data Privacy Compliance Hub",
+                  href: "/data-privacy",
+                  desc: "Overview of all compliance frameworks Codepliant supports.",
+                },
+                {
+                  title: "Codepliant vs Termly vs Iubenda",
+                  href: "/compare",
+                  desc: "See how code-based scanning compares to form builders for compliance documentation.",
+                },
+                {
+                  title: "HIPAA Compliance Tool",
+                  href: "/hipaa-compliance",
+                  desc: "Detect PHI in your code and generate HIPAA documentation.",
+                },
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="block bg-surface rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                >
+                  <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
+                  <p className="text-xs text-muted">{link.desc}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+
           {/* FAQ */}
           <section>
             <h2 className="text-2xl font-bold tracking-tight mb-8">
