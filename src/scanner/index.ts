@@ -36,6 +36,7 @@ import { scanGitHubActions } from "./github-actions-scanner.js";
 import { scanWebSockets } from "./websocket-scanner.js";
 import { scanFileUploads } from "./file-upload-scanner.js";
 import { scanCaching } from "./caching-scanner.js";
+import { scanTurboRepo } from "./turbo-scanner.js";
 import { walkDirectory, ALL_EXTENSIONS } from "./file-walker.js";
 import type {
   ComplianceNeed,
@@ -126,8 +127,12 @@ export function detectMonorepo(absPath: string): MonorepoInfo {
   // 4. turbo.json (Turborepo)
   const turboPath = path.join(absPath, "turbo.json");
   if (fs.existsSync(turboPath)) {
-    // Turborepo typically relies on npm/yarn/pnpm workspaces for package discovery.
-    // If turbo.json exists but we haven't found workspaces above, look for convention dirs.
+    // Use dedicated turbo scanner for comprehensive package discovery
+    const turboResult = scanTurboRepo(absPath);
+    if (turboResult.packages.length > 0) {
+      return { detected: true, type: "turbo", workspaces: turboResult.packages };
+    }
+    // Fallback to convention dirs
     const resolved = resolveConventionDirs(absPath);
     if (resolved.length > 0) {
       return { detected: true, type: "turbo", workspaces: resolved };
@@ -465,15 +470,28 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
     mergeServicesIntoMap(serviceMap, svcList);
   }
 
-  // If monorepo detected, scan each workspace separately and merge
+  // If monorepo detected, ensure root package.json is scanned, then scan each workspace
   if (monorepoInfo.detected) {
+    // Always scan root package.json deps (many monorepos put shared deps like stripe, sentry at root)
+    const rootDeps = safeRun("Monorepo root deps", () => scanDependencies(absPath), []);
+    // Tag root deps evidence to show they come from the root
+    for (const svc of rootDeps) {
+      for (const ev of svc.evidence) {
+        if (ev.file === "package.json") {
+          ev.file = "package.json (root)";
+        }
+      }
+    }
+    mergeServicesIntoMap(serviceMap, rootDeps);
+
     for (const workspace of monorepoInfo.workspaces) {
       try {
         const wsPath = workspace.path;
         const wsFiles = walkDirectory(wsPath, { extensions: ALL_EXTENSIONS, skipTests: true });
 
         const allWsServices = [
-          ...safeRun(`WS:${workspace.name}:deps`, () => scanDependencies(wsPath), []),
+          // Pass absPath as rootPath so workspace dep scan also picks up shared root deps
+          ...safeRun(`WS:${workspace.name}:deps`, () => scanDependencies(wsPath, absPath), []),
           ...safeRun(`WS:${workspace.name}:python`, () => scanPythonDependencies(wsPath), []),
           ...safeRun(`WS:${workspace.name}:go`, () => scanGoDependencies(wsPath), []),
           ...safeRun(`WS:${workspace.name}:ruby`, () => scanRubyDependencies(wsPath), []),

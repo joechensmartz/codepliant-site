@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { type DetectedService, type Evidence, SERVICE_SIGNATURES } from "./types.js";
 
-export function scanDependencies(projectPath: string): DetectedService[] {
+export function scanDependencies(projectPath: string, rootPath?: string): DetectedService[] {
   const pkgPath = path.join(projectPath, "package.json");
 
   if (!fs.existsSync(pkgPath)) {
@@ -20,6 +20,30 @@ export function scanDependencies(projectPath: string): DetectedService[] {
     ...(pkg.dependencies as Record<string, string> | undefined),
     ...(pkg.devDependencies as Record<string, string> | undefined),
   };
+
+  // If a rootPath is provided and differs from projectPath, also include
+  // shared dependencies from the root package.json (common in monorepos
+  // where stripe, sentry, etc. live at the root level).
+  if (rootPath && path.resolve(rootPath) !== path.resolve(projectPath)) {
+    const rootPkgPath = path.join(rootPath, "package.json");
+    if (fs.existsSync(rootPkgPath)) {
+      try {
+        const rootPkg = JSON.parse(fs.readFileSync(rootPkgPath, "utf-8"));
+        const rootDeps: Record<string, string> = {
+          ...(rootPkg.dependencies as Record<string, string> | undefined),
+          ...(rootPkg.devDependencies as Record<string, string> | undefined),
+        };
+        // Only add root deps that are not already present in the workspace
+        for (const [dep, version] of Object.entries(rootDeps)) {
+          if (!(dep in allDeps)) {
+            allDeps[dep] = version;
+          }
+        }
+      } catch {
+        // ignore root package.json parse errors
+      }
+    }
+  }
 
   const detected: DetectedService[] = [];
 

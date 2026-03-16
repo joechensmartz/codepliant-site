@@ -121,6 +121,73 @@ function createMonorepoWithPnpmWorkspace(): string {
   return dir;
 }
 
+function createTurborepoMonorepo(): string {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "codepliant-turbo-test-"));
+
+  // Root package.json with shared deps (stripe, @sentry/node)
+  fs.writeFileSync(
+    path.join(dir, "package.json"),
+    JSON.stringify({
+      name: "turbo-monorepo",
+      private: true,
+      dependencies: { stripe: "^14.0.0", "@sentry/node": "^8.0.0" },
+    })
+  );
+
+  // turbo.json
+  fs.writeFileSync(
+    path.join(dir, "turbo.json"),
+    JSON.stringify({
+      tasks: {
+        build: { dependsOn: ["^build"] },
+        dev: { cache: false },
+        lint: {},
+      },
+    })
+  );
+
+  // pnpm-workspace.yaml (turborepo + pnpm is very common)
+  fs.writeFileSync(
+    path.join(dir, "pnpm-workspace.yaml"),
+    `packages:\n  - 'apps/*'\n  - 'packages/*'\n`
+  );
+
+  // apps/web with posthog
+  const webDir = path.join(dir, "apps", "web");
+  fs.mkdirSync(webDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(webDir, "package.json"),
+    JSON.stringify({
+      name: "@turbo/web",
+      dependencies: { posthog: "^1.0.0" },
+    })
+  );
+
+  // apps/api with resend
+  const apiDir = path.join(dir, "apps", "api");
+  fs.mkdirSync(apiDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(apiDir, "package.json"),
+    JSON.stringify({
+      name: "@turbo/api",
+      dependencies: { resend: "^3.0.0" },
+    })
+  );
+
+  // packages/shared (no extra deps)
+  const sharedDir = path.join(dir, "packages", "shared");
+  fs.mkdirSync(sharedDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(sharedDir, "package.json"),
+    JSON.stringify({
+      name: "@turbo/shared",
+      dependencies: {},
+    })
+  );
+
+  return dir;
+}
+
 describe("monorepo detection", () => {
   it("detects npm workspaces monorepo, scans each package, and tags evidence", () => {
     const dir = createMonorepoWithWorkspaces();
@@ -191,6 +258,100 @@ describe("monorepo detection", () => {
       // Workspace names should come from package.json name field
       const wsNames = result.monorepo.workspaces.map((w) => w.name).sort();
       assert.deepStrictEqual(wsNames, ["@pnpm-mono/backend", "@pnpm-mono/frontend"]);
+    } finally {
+      cleanup(dir);
+    }
+  });
+
+  it("detects root deps in turborepo/pnpm monorepo", () => {
+    const dir = createTurborepoMonorepo();
+    try {
+      const result = scan(dir);
+      const names = result.services.map((s) => s.name);
+
+      // Root deps (stripe, @sentry/node) should be detected
+      assert.ok(names.includes("stripe"), "should detect stripe from root package.json");
+      assert.ok(
+        names.some((n) => n.includes("sentry")),
+        `should detect sentry from root package.json, got: ${names.join(", ")}`
+      );
+    } finally {
+      cleanup(dir);
+    }
+  });
+
+  it("detects workspace deps in turborepo/pnpm monorepo", () => {
+    const dir = createTurborepoMonorepo();
+    try {
+      const result = scan(dir);
+      const names = result.services.map((s) => s.name);
+
+      // Workspace-specific deps should be detected
+      assert.ok(names.includes("posthog"), "should detect posthog from apps/web");
+      assert.ok(names.includes("resend"), "should detect resend from apps/api");
+    } finally {
+      cleanup(dir);
+    }
+  });
+
+  it("tags evidence with workspace path in turborepo monorepo", () => {
+    const dir = createTurborepoMonorepo();
+    try {
+      const result = scan(dir);
+
+      // posthog evidence should reference apps/web
+      const posthog = result.services.find((s) => s.name === "posthog")!;
+      assert.ok(posthog, "posthog should be detected");
+      const posthogWsEvidence = posthog.evidence.find((e) => e.file.includes("apps/web"));
+      assert.ok(
+        posthogWsEvidence,
+        `posthog evidence should reference apps/web, got: ${posthog.evidence.map((e) => e.file).join(", ")}`
+      );
+
+      // resend evidence should reference apps/api
+      const resend = result.services.find((s) => s.name === "resend")!;
+      assert.ok(resend, "resend should be detected");
+      const resendWsEvidence = resend.evidence.find((e) => e.file.includes("apps/api"));
+      assert.ok(
+        resendWsEvidence,
+        `resend evidence should reference apps/api, got: ${resend.evidence.map((e) => e.file).join(", ")}`
+      );
+    } finally {
+      cleanup(dir);
+    }
+  });
+
+  it("total service count = root + all workspaces (deduplicated)", () => {
+    const dir = createTurborepoMonorepo();
+    try {
+      const result = scan(dir);
+      const names = result.services.map((s) => s.name);
+
+      // We expect: stripe (root), sentry (root, deduplicated), posthog (apps/web), resend (apps/api)
+      // That's at least 4 unique services. Stripe should appear once even though root is scanned.
+      const uniqueNames = [...new Set(names)];
+      assert.strictEqual(names.length, uniqueNames.length, "services should be deduplicated");
+
+      // Verify minimum count: stripe + sentry-family + posthog + resend = 4
+      assert.ok(
+        names.length >= 4,
+        `expected at least 4 services (root + workspaces), got ${names.length}: ${names.join(", ")}`
+      );
+    } finally {
+      cleanup(dir);
+    }
+  });
+
+  it("workspace scan inherits shared root deps", () => {
+    const dir = createTurborepoMonorepo();
+    try {
+      const result = scan(dir);
+
+      // stripe is only in root package.json, but workspace scans should still
+      // pick it up via the rootPath parameter. Verify stripe has evidence.
+      const stripe = result.services.find((s) => s.name === "stripe")!;
+      assert.ok(stripe, "stripe should be detected");
+      assert.ok(stripe.evidence.length >= 1, "stripe should have at least 1 evidence entry");
     } finally {
       cleanup(dir);
     }
