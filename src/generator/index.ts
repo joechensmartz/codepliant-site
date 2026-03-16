@@ -102,6 +102,8 @@ import { generateAIEthicsStatement } from "./ai-ethics-statement.js";
 import { generateDataBreachResponseDrill } from "./data-breach-response-drill.js";
 import { generateRegulatoryCorrespondenceLog } from "./regulatory-correspondence-log.js";
 import { generatePrivacyPolicyChangelog } from "./privacy-policy-changelog.js";
+import { generatePrivacyProgramCharter } from "./privacy-program-charter.js";
+import { generateThirdPartyDueDiligence } from "./third-party-due-diligence.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1012,6 +1014,26 @@ export function generateDocuments(
       name: "Privacy Policy Changelog",
       filename: "PRIVACY_POLICY_CHANGELOG.md",
       content: privacyPolicyChangelog,
+    });
+  }
+
+  // Privacy Program Charter — formal privacy program establishment with governance
+  const privacyProgramCharter = generatePrivacyProgramCharter(docScan, ctx);
+  if (privacyProgramCharter) {
+    docs.push({
+      name: "Privacy Program Charter",
+      filename: "PRIVACY_PROGRAM_CHARTER.md",
+      content: privacyProgramCharter,
+    });
+  }
+
+  // Third-Party Due Diligence Template — vendor evaluation questionnaire
+  const thirdPartyDueDiligence = generateThirdPartyDueDiligence(docScan, ctx);
+  if (thirdPartyDueDiligence) {
+    docs.push({
+      name: "Third-Party Due Diligence Template",
+      filename: "THIRD_PARTY_DUE_DILIGENCE_TEMPLATE.md",
+      content: thirdPartyDueDiligence,
     });
   }
 

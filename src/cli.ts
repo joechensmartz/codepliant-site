@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "280.0.0";
+const VERSION = "290.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -141,6 +141,7 @@ ${BOLD()}AI (optional):${RESET()}
 ${BOLD()}Diagnostics:${RESET()}
   ${CYAN()}doctor${RESET()}          Diagnose common issues and suggest fixes
   ${CYAN()}health${RESET()}          Quick health check of compliance setup
+  ${CYAN()}archive${RESET()}         Archive current legal/ directory with timestamp
   ${CYAN()}clean${RESET()}           Remove all generated files in legal/
 
 ${BOLD()}Info:${RESET()}
@@ -307,6 +308,7 @@ Compares current documents on disk with freshly generated versions.
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--output, -o <dir>${RESET()}    Document directory to compare (default: ./legal)
+  ${DIM()}--since <date>${RESET()}        Show changelog entries since a date (YYYY-MM-DD)
   ${DIM()}--json${RESET()}                Output diff as JSON
   ${DIM()}--quiet, -q${RESET()}           Minimal output
   ${DIM()}--no-color${RESET()}            Disable colored output
@@ -314,6 +316,7 @@ ${BOLD()}Options:${RESET()}
 ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant diff${RESET()}                     Show pending changes
   ${CYAN()}codepliant diff --json${RESET()}               JSON output for scripts
+  ${CYAN()}codepliant diff --since 2025-01-01${RESET()}   Show changes since a date
 `,
 
   page: `${BOLD()}codepliant page${RESET()} [path] [options]
@@ -1046,6 +1049,7 @@ function main() {
   let forceFlag = false;
   let detailedFlag = false;
   let ecosystemFlag: string | undefined;
+  let sinceFlag: string | undefined;
 
   for (let i = 1; i < args.length; i++) {
     const arg = args[i];
@@ -1087,6 +1091,8 @@ function main() {
       }
     } else if (arg === "--ecosystem") {
       ecosystemFlag = args[++i];
+    } else if (arg === "--since") {
+      sinceFlag = args[++i];
     } else if (arg === "--port") {
       const p = parseInt(args[++i], 10);
       if (!isNaN(p) && p > 0 && p < 65536) {
@@ -1236,7 +1242,7 @@ function main() {
     }
 
     if (command === "diff") {
-      runDiff(absProjectPath, absOutputDir, quiet, jsonOutput, formatFlag);
+      runDiff(absProjectPath, absOutputDir, quiet, jsonOutput, formatFlag, sinceFlag);
       return;
     }
 
@@ -1423,6 +1429,11 @@ function main() {
 
     if (command === "clean") {
       runClean(absOutputDir, quiet, forceFlag);
+      return;
+    }
+
+    if (command === "archive") {
+      runArchive(absProjectPath, absOutputDir, quiet);
       return;
     }
 
@@ -2587,8 +2598,66 @@ function runDiff(
   absOutputDir: string,
   quiet: boolean,
   jsonOutput: boolean,
-  _formatFlag?: OutputFormat
+  _formatFlag?: OutputFormat,
+  sinceDate?: string,
 ) {
+  // --since mode: show changelog entries since a given date
+  if (sinceDate) {
+    const changelogPath = path.join(absOutputDir, "DOCUMENT_CHANGELOG.md");
+    if (!fs.existsSync(changelogPath)) {
+      console.error(`${RED()}Error: No changelog found at "${changelogPath}".${RESET()}`);
+      console.error(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} first to generate documents and create a changelog.${RESET()}`);
+      process.exit(1);
+    }
+
+    const sinceTs = new Date(sinceDate).getTime();
+    if (isNaN(sinceTs)) {
+      console.error(`${RED()}Error: Invalid date "${sinceDate}". Use YYYY-MM-DD format.${RESET()}`);
+      process.exit(1);
+    }
+
+    const changelog = fs.readFileSync(changelogPath, "utf-8");
+    // Parse changelog entries (## YYYY-MM-DD HH:MM:SS UTC)
+    const entryPattern = /^## (\d{4}-\d{2}-\d{2}[\s\S]*?UTC)/gm;
+    const entries: { date: string; ts: number; block: string }[] = [];
+    const blocks = changelog.split(/(?=^## \d{4})/m);
+    for (const block of blocks) {
+      const dateMatch = block.match(/^## (\d{4}-\d{2}-\d{2})/);
+      if (dateMatch) {
+        const ts = new Date(dateMatch[1]).getTime();
+        entries.push({ date: dateMatch[1], ts, block: block.trim() });
+      }
+    }
+
+    const filteredEntries = entries.filter((e) => e.ts >= sinceTs);
+
+    if (jsonOutput) {
+      console.log(JSON.stringify({
+        since: sinceDate,
+        entriesFound: filteredEntries.length,
+        entries: filteredEntries.map((e) => ({ date: e.date, content: e.block })),
+      }, null, 2));
+      process.exit(filteredEntries.length > 0 ? 1 : 0);
+    }
+
+    if (!quiet) {
+      console.log(`\n${BOLD()}Changes since ${sinceDate}:${RESET()}\n`);
+    }
+
+    if (filteredEntries.length === 0) {
+      console.log(`${GREEN()}No changes recorded since ${sinceDate}.${RESET()}\n`);
+      process.exit(0);
+    }
+
+    for (const entry of filteredEntries) {
+      console.log(entry.block);
+      console.log();
+    }
+
+    console.log(`${DIM()}${filteredEntries.length} changelog entry/entries since ${sinceDate}.${RESET()}\n`);
+    process.exit(1);
+  }
+
   if (!fs.existsSync(absOutputDir)) {
     console.error(`${RED()}Error: Output directory "${absOutputDir}" does not exist.${RESET()}`);
     console.error(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} first to generate documents.${RESET()}`);
@@ -5509,6 +5578,62 @@ function runListDocs(
 }
 
 // --- `codepliant clean` command ---
+
+// --- `codepliant archive` command ---
+
+function runArchive(absProjectPath: string, absOutputDir: string, quiet: boolean) {
+  if (!quiet) printBanner();
+
+  if (!fs.existsSync(absOutputDir)) {
+    console.error(`${RED()}Error: Output directory "${absOutputDir}" does not exist.${RESET()}`);
+    console.error(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} first to generate documents.${RESET()}`);
+    process.exit(1);
+  }
+
+  const files = fs.readdirSync(absOutputDir);
+  const generatedFiles = files.filter((f: string) => f.endsWith(".md") || f.endsWith(".json") || f.endsWith(".html"));
+
+  if (generatedFiles.length === 0) {
+    console.log(`${YELLOW()}No generated files found in ${absOutputDir}.${RESET()}`);
+    process.exit(0);
+  }
+
+  const dateStamp = new Date().toISOString().split("T")[0];
+  const archiveDirName = `legal-archive-${dateStamp}`;
+  const archiveDir = path.resolve(absProjectPath, archiveDirName);
+
+  // If archive dir already exists for today, append a counter
+  let finalArchiveDir = archiveDir;
+  let counter = 1;
+  while (fs.existsSync(finalArchiveDir)) {
+    finalArchiveDir = `${archiveDir}-${counter}`;
+    counter++;
+  }
+
+  fs.mkdirSync(finalArchiveDir, { recursive: true });
+
+  let copied = 0;
+  for (const file of generatedFiles) {
+    const src = path.join(absOutputDir, file);
+    const dest = path.join(finalArchiveDir, file);
+    fs.copyFileSync(src, dest);
+    copied++;
+  }
+
+  const relativePath = path.relative(absProjectPath, finalArchiveDir);
+
+  if (!quiet) {
+    console.log(`${GREEN()}${BOLD()}Archived!${RESET()} ${copied} file(s) copied to ${relativePath}/\n`);
+    console.log(`${DIM()}Contents:${RESET()}`);
+    for (const file of generatedFiles) {
+      console.log(`  ${DIM()}• ${file}${RESET()}`);
+    }
+    console.log();
+    console.log(`${DIM()}You can now safely run ${CYAN()}codepliant go${RESET()}${DIM()} to regenerate fresh documents.${RESET()}\n`);
+  }
+
+  process.exit(0);
+}
 
 function runClean(absOutputDir: string, quiet: boolean, force: boolean) {
   if (!fs.existsSync(absOutputDir)) {
