@@ -21,7 +21,7 @@ export type OutputFormat = "markdown" | "html" | "pdf" | "json" | "notion" | "co
 export type { PdfResult };
 export { writeCompliancePage } from "./compliance-page.js";
 export { writeGithubWiki } from "./github-wiki.js";
-export { generateComplianceReport, writeComplianceReport } from "./compliance-report.js";
+export { generateComplianceReport, writeComplianceReport, generateExecutiveSummary, writeExecutiveSummary } from "./compliance-report.js";
 export type { ComplianceReportOptions } from "./compliance-report.js";
 export { enhanceMarkdownDocuments, type EnhanceOptions } from "./markdown-enhanced.js";
 

@@ -152,7 +152,7 @@ function walkDir(
 /** All source code extensions used by the import scanner */
 export const SOURCE_EXTENSIONS = new Set([
   ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts",
-  ".py", ".go",
+  ".py", ".go", ".rb",
 ]);
 
 /** Extensions used by the tracking scanner */

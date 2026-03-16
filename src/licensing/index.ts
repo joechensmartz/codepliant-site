@@ -26,6 +26,9 @@ export type ProFeature =
   | "confluence-export"
   | "cookie-banner"
   | "compliance-report"
+  | "compliance-api"
+  | "executive-summary"
+  | "scheduled-scans"
   | "api-server"
   | "watch-mode"
   | "all-output-formats"
@@ -43,6 +46,9 @@ const PRO_FEATURES = new Set<LicensedFeature>([
   "confluence-export",
   "cookie-banner",
   "compliance-report",
+  "compliance-api",
+  "executive-summary",
+  "scheduled-scans",
   "api-server",
   "watch-mode",
   "all-output-formats",
@@ -136,9 +142,25 @@ export function hasFeatureAccess(
   return tierRank[license.tier] >= tierRank[needed];
 }
 
+const FEATURE_FRIENDLY_NAMES: Partial<Record<LicensedFeature, string>> = {
+  "notion-export": "Notion export",
+  "confluence-export": "Confluence export",
+  "cookie-banner": "Cookie consent banner",
+  "compliance-report": "Compliance report",
+  "compliance-api": "Compliance API",
+  "api-server": "API server",
+  "watch-mode": "Watch mode",
+  "all-output-formats": "HTML export",
+  "unlimited-doc-types": "Unlimited document types",
+  "scan-all": "Multi-project scanning",
+  "generate-all": "Multi-project generation",
+  "webhook-notifications": "Webhook notifications",
+};
+
 /**
  * Build a human-readable upgrade hint for a feature.
  * Returns null if the user already has access.
+ * Includes usage count when the feature has been used 3+ times.
  */
 export function getUpgradeHint(
   license: LicenseInfo,
@@ -148,6 +170,14 @@ export function getUpgradeHint(
 
   const needed = requiredTier(feature);
   const tierLabel = needed.charAt(0).toUpperCase() + needed.slice(1);
+  const friendlyName = FEATURE_FRIENDLY_NAMES[feature] || feature;
+
+  // Check usage to provide more compelling hints
+  const usageCount = getFeatureUsageCount(feature);
+  if (usageCount >= 3) {
+    return `You've used ${friendlyName} ${usageCount} times. This is a ${tierLabel} feature. Get your key at ${PRICING_URL}`;
+  }
+
   return `This is a ${tierLabel} feature. Get your key at ${PRICING_URL}`;
 }
 
@@ -155,3 +185,79 @@ export function getUpgradeHint(
  * The URL to show for the `codepliant upgrade` command.
  */
 export const UPGRADE_URL = PRICING_URL;
+
+// --- Feature Usage Tracking ---
+
+import * as fs from "fs";
+import * as path from "path";
+import * as os from "os";
+
+const USAGE_DIR = path.join(os.homedir(), ".codepliant");
+const USAGE_FILE = path.join(USAGE_DIR, "usage.json");
+
+type UsageData = Record<string, number>;
+
+function ensureUsageDir(): void {
+  if (!fs.existsSync(USAGE_DIR)) {
+    fs.mkdirSync(USAGE_DIR, { recursive: true });
+  }
+}
+
+/**
+ * Load usage data from disk. Returns a flat record of feature -> count.
+ */
+export function loadUsage(): UsageData {
+  try {
+    if (fs.existsSync(USAGE_FILE)) {
+      return JSON.parse(fs.readFileSync(USAGE_FILE, "utf-8"));
+    }
+  } catch { /* ignore corrupt files */ }
+  return {};
+}
+
+/**
+ * Save usage data to disk.
+ */
+export function saveUsage(data: UsageData): void {
+  ensureUsageDir();
+  fs.writeFileSync(USAGE_FILE, JSON.stringify(data, null, 2), "utf-8");
+}
+
+/**
+ * Reset usage data.
+ */
+export function resetUsage(): void {
+  saveUsage({});
+}
+
+/**
+ * Track usage of a feature. Returns the new count.
+ */
+export function trackFeatureUsage(feature: LicensedFeature): number {
+  const data = loadUsage();
+  data[feature] = (data[feature] || 0) + 1;
+  const count = data[feature];
+  saveUsage(data);
+  return count;
+}
+
+/**
+ * Get usage count for a specific feature.
+ */
+export function getFeatureUsageCount(feature: LicensedFeature): number {
+  const data = loadUsage();
+  return data[feature] || 0;
+}
+
+/**
+ * Check if a feature is accessible and track its usage.
+ * Returns null if the user has access, or a hint string if not.
+ */
+export function checkAndTrackFeature(
+  license: LicenseInfo,
+  feature: LicensedFeature,
+): string | null {
+  trackFeatureUsage(feature);
+  if (hasFeatureAccess(license, feature)) return null;
+  return getUpgradeHint(license, feature);
+}

@@ -107,6 +107,62 @@ const TRACKING_SIGNATURES: TrackingSignature[] = [
     patterns: ["usefathom.com"],
     dataCollected: ["page views", "referrer data", "device information"],
   },
+  {
+    name: "Google Tag Manager",
+    category: "analytics",
+    patterns: ["gtm.js", "googletagmanager.com/gtm.js", "GTM-"],
+    dataCollected: [
+      "page views",
+      "user behavior",
+      "custom events",
+      "device information",
+      "third-party tag data",
+    ],
+  },
+  {
+    name: "Pinterest Tag",
+    category: "advertising",
+    patterns: ["pintrk(", "pintrk (", "s.pinimg.com/ct/core.js"],
+    dataCollected: [
+      "page views",
+      "conversion events",
+      "user behavior",
+      "device information",
+    ],
+  },
+  {
+    name: "Snapchat Pixel",
+    category: "advertising",
+    patterns: ["sc-static.net/scevent.min.js", "snaptr(", "snaptr ("],
+    dataCollected: [
+      "page views",
+      "conversion events",
+      "user behavior",
+      "device information",
+    ],
+  },
+  {
+    name: "Reddit Pixel",
+    category: "advertising",
+    patterns: ["rdt(", "rdt (", "alb.reddit.com/snoo.js"],
+    dataCollected: [
+      "page views",
+      "conversion events",
+      "user behavior",
+      "device information",
+    ],
+  },
+  {
+    name: "Bing UET",
+    category: "advertising",
+    patterns: ["bat.bing.com/bat.js", "uetq.push(", "uetq.push (", "UET tag"],
+    dataCollected: [
+      "page views",
+      "conversion events",
+      "search behavior",
+      "device information",
+    ],
+  },
 ];
 
 function matchesPattern(content: string, pattern: string | RegExp): boolean {

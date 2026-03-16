@@ -56,6 +56,28 @@ import { generateCookieInventory } from "./cookie-inventory.js";
 import { generateAIGovernanceFramework } from "./ai-governance.js";
 import { generateBusinessContinuityPlan } from "./business-continuity.js";
 import { scanCloudProviders } from "../scanner/cloud-scanner.js";
+import { generateEncryptionPolicy } from "./encryption-policy.js";
+import { generateBackupPolicy } from "./backup-policy.js";
+import { generateDisasterRecoveryPlan } from "./disaster-recovery.js";
+import { generateInformationSecurityPolicy } from "./information-security-policy.js";
+import { scanDatabases } from "../scanner/database-scanner.js";
+import { scanCiCd } from "../scanner/ci-cd-scanner.js";
+import { generateDataSubjectCategories } from "./data-subject-categories.js";
+import { generateLawfulBasisAssessment } from "./lawful-basis-assessment.js";
+import { generateAnnualReviewChecklist } from "./annual-review-checklist.js";
+import {
+  buildReviewNotes,
+  buildRelatedDocuments,
+  getRelatedDocuments,
+  getReviewNotes,
+} from "./review-notes.js";
+import { generateSubprocessorChangeNotification } from "./subprocessor-notification.js";
+import { generateDataProtectionPolicy } from "./data-protection-policy.js";
+import { generateMediaConsentForm } from "./media-consent.js";
+import { generateComplianceCertificate } from "./compliance-certificate.js";
+import { generateResponsibleDisclosurePolicy } from "./responsible-disclosure.js";
+import { generateApiTermsOfUse } from "./api-terms.js";
+import { generateOpenSourceNotice } from "./open-source-notice.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -607,6 +629,156 @@ export function generateDocuments(
     });
   }
 
+  // Shared scanner results for security docs
+  const dbScan = scanDatabases(docScan.projectPath);
+  const cicdScan = scanCiCd(docScan.projectPath);
+
+  // Encryption Policy — at-rest, in-transit, key management
+  const encryptionPolicy = generateEncryptionPolicy(docScan, ctx, dbScan, cloudScan);
+  if (encryptionPolicy) {
+    docs.push({
+      name: "Encryption Policy",
+      filename: "ENCRYPTION_POLICY.md",
+      content: encryptionPolicy,
+    });
+  }
+
+  // Backup Policy — schedules, retention, recovery testing
+  const backupPolicy = generateBackupPolicy(docScan, ctx, dbScan);
+  if (backupPolicy) {
+    docs.push({
+      name: "Backup Policy",
+      filename: "BACKUP_POLICY.md",
+      content: backupPolicy,
+    });
+  }
+
+  // Disaster Recovery Plan — recovery procedures, communication, testing
+  const drp = generateDisasterRecoveryPlan(docScan, ctx, cloudScan, cicdScan);
+  if (drp) {
+    docs.push({
+      name: "Disaster Recovery Plan",
+      filename: "DISASTER_RECOVERY_PLAN.md",
+      content: drp,
+    });
+  }
+
+  // Information Security Policy — umbrella ISMS policy (ISO 27001 / NIST CSF)
+  const isp = generateInformationSecurityPolicy(docScan, ctx, cicdScan);
+  if (isp) {
+    docs.push({
+      name: "Information Security Policy",
+      filename: "INFORMATION_SECURITY_POLICY.md",
+      content: isp,
+    });
+  }
+
+  // Data Subject Categories — GDPR Art. 30 requirement
+  const dataSubjectCategories = generateDataSubjectCategories(
+    docScan,
+    ctx,
+    config?.generateEmployeeNotice
+  );
+  if (dataSubjectCategories) {
+    docs.push({
+      name: "Data Subject Categories",
+      filename: "DATA_SUBJECT_CATEGORIES.md",
+      content: dataSubjectCategories,
+    });
+  }
+
+  // Lawful Basis Assessment — per-processing-activity GDPR Art. 6 assessment
+  const lawfulBasisAssessment = generateLawfulBasisAssessment(docScan, ctx);
+  if (lawfulBasisAssessment) {
+    docs.push({
+      name: "Lawful Basis Assessment",
+      filename: "LAWFUL_BASIS_ASSESSMENT.md",
+      content: lawfulBasisAssessment,
+    });
+  }
+
+  // Annual Review Checklist — yearly compliance review
+  const annualReview = generateAnnualReviewChecklist(docScan, ctx);
+  if (annualReview) {
+    docs.push({
+      name: "Annual Review Checklist",
+      filename: "ANNUAL_REVIEW_CHECKLIST.md",
+      content: annualReview,
+    });
+  }
+
+  // Sub-Processor Change Notification — template for notifying customers of sub-processor changes
+  const subprocessorNotification = generateSubprocessorChangeNotification(docScan, ctx);
+  if (subprocessorNotification) {
+    docs.push({
+      name: "Sub-Processor Change Notification",
+      filename: "SUBPROCESSOR_CHANGE_NOTIFICATION.md",
+      content: subprocessorNotification,
+    });
+  }
+
+  // Data Protection Policy — internal policy covering classification, handling, access, disposal
+  const dataProtectionPolicy = generateDataProtectionPolicy(docScan, ctx);
+  if (dataProtectionPolicy) {
+    docs.push({
+      name: "Data Protection Policy",
+      filename: "DATA_PROTECTION_POLICY.md",
+      content: dataProtectionPolicy,
+    });
+  }
+
+  // Media Consent Form — user media consent template when storage services detected
+  const mediaConsent = generateMediaConsentForm(docScan, ctx);
+  if (mediaConsent) {
+    docs.push({
+      name: "Media Consent Form",
+      filename: "MEDIA_CONSENT_FORM.md",
+      content: mediaConsent,
+    });
+  }
+
+  // Responsible Disclosure Policy — bug bounty, reporting process, safe harbor
+  const responsibleDisclosure = generateResponsibleDisclosurePolicy(docScan, ctx);
+  if (responsibleDisclosure) {
+    docs.push({
+      name: "Responsible Disclosure Policy",
+      filename: "RESPONSIBLE_DISCLOSURE_POLICY.md",
+      content: responsibleDisclosure,
+    });
+  }
+
+  // API Terms of Use — rate limits, authentication, SLA for API consumers
+  const apiTerms = generateApiTermsOfUse(docScan, ctx);
+  if (apiTerms) {
+    docs.push({
+      name: "API Terms of Use",
+      filename: "API_TERMS_OF_USE.md",
+      content: apiTerms,
+    });
+  }
+
+  // Open Source Notice — attribution notices, license text summaries
+  const openSourceNotice = generateOpenSourceNotice(docScan, ctx);
+  if (openSourceNotice) {
+    docs.push({
+      name: "Open Source Notice",
+      filename: "OPEN_SOURCE_NOTICE.md",
+      content: openSourceNotice,
+    });
+  }
+
+  // Compliance Certificate — self-attestation certificate (generated after all other docs)
+  // Note: score is not available at this point; it will show 0/N/A.
+  // The certificate is primarily about documenting which docs were generated.
+  const complianceCertificate = generateComplianceCertificate(docScan, ctx, docs);
+  if (complianceCertificate) {
+    docs.push({
+      name: "Compliance Certificate",
+      filename: "COMPLIANCE_CERTIFICATE.md",
+      content: complianceCertificate,
+    });
+  }
+
   // Run custom generators from plugins
   if (plugins) {
     for (const plugin of plugins) {
@@ -641,6 +813,49 @@ export function generateDocuments(
   if (ctx.sectionOverrides && Object.keys(ctx.sectionOverrides).length > 0) {
     for (const doc of docs) {
       doc.content = applyOverrides(doc.content, ctx.sectionOverrides);
+    }
+  }
+
+  // Append Review Notes and Related Documents sections to all generated docs.
+  // Only add if the document doesn't already include these sections (the new
+  // generators like data-subject-categories, lawful-basis-assessment, and
+  // annual-review-checklist embed them inline).
+  for (const doc of docs) {
+    const hasReviewNotes = doc.content.includes("## Review Notes");
+    const hasRelatedDocs = doc.content.includes("## Related Documents");
+
+    // Insert before the footer divider (---) at the end if present
+    const footerMatch = doc.content.match(/\n---\n(?=[^]*$)/);
+
+    let reviewNotesBlock = "";
+    let relatedDocsBlock = "";
+
+    if (!hasReviewNotes) {
+      const reviewData = getReviewNotes(doc.filename);
+      if (reviewData) {
+        reviewNotesBlock = buildReviewNotes(reviewData);
+      }
+    }
+
+    if (!hasRelatedDocs) {
+      const relatedDocs = getRelatedDocuments(doc.filename);
+      if (relatedDocs.length > 0) {
+        relatedDocsBlock = buildRelatedDocuments(relatedDocs);
+      }
+    }
+
+    if (reviewNotesBlock || relatedDocsBlock) {
+      const insertion = "\n" + reviewNotesBlock + relatedDocsBlock;
+      if (footerMatch && footerMatch.index !== undefined) {
+        // Insert before the final footer divider
+        doc.content =
+          doc.content.slice(0, footerMatch.index) +
+          insertion +
+          doc.content.slice(footerMatch.index);
+      } else {
+        // Append at the end
+        doc.content += insertion;
+      }
     }
   }
 

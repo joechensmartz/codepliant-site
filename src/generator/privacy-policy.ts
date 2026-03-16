@@ -598,6 +598,72 @@ ${t("privacy.dataProvisionText", lang)}
     }
   }
 
+  // ── How We Protect Your Data ─────────────────────────────────────
+
+  {
+    const hasEncryption = scan.services.some(
+      (s) =>
+        s.category === "payment" ||
+        s.category === "auth" ||
+        s.category === "database" ||
+        s.category === "storage",
+    );
+    const hasAccessControls = scan.services.some(
+      (s) => s.category === "auth",
+    );
+    const hasMonitoringService = scan.services.some(
+      (s) => s.category === "monitoring",
+    );
+    const hasDatabaseService = scan.services.some(
+      (s) => s.category === "database",
+    );
+
+    // Only add the section if at least one relevant control is detected
+    if (hasEncryption || hasAccessControls || hasMonitoringService || hasDatabaseService) {
+      let protectSection = `\n## ${nextSection()}. How We Protect Your Data\n\n`;
+      protectSection += `We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.\n`;
+
+      if (hasEncryption) {
+        protectSection += `\n### Encryption\n\n`;
+        protectSection += `- All data transmitted between your browser and our servers is encrypted using TLS 1.2 or higher\n`;
+        protectSection += `- Sensitive data (such as payment information and credentials) is encrypted at rest using industry-standard encryption algorithms\n`;
+        protectSection += `- Encryption keys are managed through secure key management practices with regular rotation\n`;
+      }
+
+      if (hasAccessControls) {
+        protectSection += `\n### Access Controls\n\n`;
+        protectSection += `- Access to personal data is restricted to authorized personnel on a need-to-know basis\n`;
+        protectSection += `- We implement role-based access control (RBAC) to limit data access by job function\n`;
+        protectSection += `- Multi-factor authentication is required for administrative access to systems containing personal data\n`;
+        protectSection += `- Access permissions are reviewed regularly and revoked promptly when no longer needed\n`;
+      }
+
+      if (hasMonitoringService) {
+        const monitoringProviders = scan.services
+          .filter((s) => s.category === "monitoring")
+          .map((s) => s.name);
+        protectSection += `\n### Monitoring and Incident Detection\n\n`;
+        protectSection += `- We use error tracking and performance monitoring (${monitoringProviders.join(", ")}) to detect anomalies and potential security incidents\n`;
+        protectSection += `- Automated alerts are configured for suspicious activity and system errors\n`;
+        protectSection += `- Security events are logged and reviewed to identify potential threats\n`;
+      }
+
+      if (hasDatabaseService) {
+        protectSection += `\n### Backups and Recovery\n\n`;
+        protectSection += `- Regular automated backups of all databases containing personal data\n`;
+        protectSection += `- Backups are encrypted and stored in secure, geographically separate locations\n`;
+        protectSection += `- Recovery procedures are tested periodically to ensure data can be restored in the event of an incident\n`;
+      }
+
+      protectSection += `\n### Security Assessments\n\n`;
+      protectSection += `- Regular security reviews and vulnerability assessments are conducted\n`;
+      protectSection += `- Third-party services are evaluated for security before integration\n`;
+      protectSection += `- We maintain an incident response plan for handling data breaches (see \`INCIDENT_RESPONSE_PLAN.md\`)\n`;
+
+      sections.push(protectSection);
+    }
+  }
+
   // ── Changes to This Policy ───────────────────────────────────────
 
   sections.push(`\n## ${nextSection()}. ${t("privacy.changesToPolicy", lang)}

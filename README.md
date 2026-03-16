@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-709%20passed-brightgreen?style=flat-square" alt="tests" />
+  <img src="https://img.shields.io/badge/tests-769%20passed-brightgreen?style=flat-square" alt="tests" />
   <img src="https://img.shields.io/badge/precision-100%25-brightgreen?style=flat-square" alt="precision" />
-  <img src="https://img.shields.io/badge/docs-40%2B%20types-blue?style=flat-square" alt="docs" />
+  <img src="https://img.shields.io/badge/docs-55%2B%20types-blue?style=flat-square" alt="docs" />
   <img src="https://img.shields.io/badge/ecosystems-10%2B-blue?style=flat-square" alt="ecosystems" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
 </p>
@@ -46,18 +46,26 @@ Scanning source imports...   ✓ OpenAI, Stripe found in code
 Scanning .env...             ✓ 9 API keys detected
 Scanning Prisma schema...    ✓ User model: email, phone, passwordHash
 
-Generated 40+ documents in legal/
+Generated 55+ documents in legal/
 
-  PRIVACY_POLICY.md             — mentions Stripe, OpenAI, Supabase by name
-  AI_DISCLOSURE.md              — EU AI Act Art. 50 compliant
-  TERMS_OF_SERVICE.md           — SaaS terms with arbitration clause
-  COOKIE_POLICY.md              — PostHog cookies listed specifically
-  DATA_PROCESSING_AGREEMENT.md  — GDPR Art. 28, lists your sub-processors
-  INCIDENT_RESPONSE_PLAN.md     — 72-hour GDPR breach notification
-  DATA_DICTIONARY.md            — every data field cataloged with sensitivity
-  ACCESS_CONTROL_POLICY.md      — RBAC, password policy, MFA requirements
-  CHANGE_MANAGEMENT_POLICY.md   — code review, deployment, rollback procedures
-  ... and 30+ more
+  PRIVACY_POLICY.md                  — mentions Stripe, OpenAI, Supabase by name
+  AI_DISCLOSURE.md                   — EU AI Act Art. 50 compliant
+  TERMS_OF_SERVICE.md                — SaaS terms with arbitration clause
+  COOKIE_POLICY.md                   — PostHog cookies listed specifically
+  DATA_PROCESSING_AGREEMENT.md       — GDPR Art. 28, lists your sub-processors
+  RESPONSIBLE_DISCLOSURE_POLICY.md   — bug bounty scope, safe harbor, response timeline
+  API_TERMS_OF_USE.md                — rate limits, auth, SLA for API consumers
+  OPEN_SOURCE_NOTICE.md              — OSS attribution, license summaries
+  INCIDENT_RESPONSE_PLAN.md          — 72-hour GDPR breach notification
+  DATA_DICTIONARY.md                 — every data field cataloged with sensitivity
+  ACCESS_CONTROL_POLICY.md           — RBAC, password policy, MFA requirements
+  CHANGE_MANAGEMENT_POLICY.md        — code review, deployment, rollback procedures
+  ... and 40+ more
+
+Generation Summary
+  Total documents: 55
+  Total lines generated: 12,000+
+  Estimated lawyer equivalent: Generated 55 documents (~$55,000 lawyer equivalent)
 
 Compliance score: 100% (A)
 Done in 24ms.
@@ -79,7 +87,7 @@ Done in 24ms.
 | "Do you use cookies?" — *Probably?* | Finds PostHog, Google Analytics, Supabase Auth in your code |
 | "Do you use AI?" — *Yes but what do I disclose?* | Detects OpenAI + Anthropic, generates Article 50 disclosure |
 | "List your sub-processors" — *Uhh...* | Finds Stripe, Sentry, Resend, generates the full list with their DPA URLs |
-| 30 minutes of forms → generic template | 30 seconds → 40+ documents tailored to your code |
+| 30 minutes of forms → generic template | 30 seconds → 55+ documents tailored to your code |
 
 ---
 
@@ -110,15 +118,17 @@ Supports: JavaScript/TypeScript, Python, Go, Ruby, Elixir, PHP, Rust, Java, .NET
 
 ## What it generates
 
-**Legal** — Privacy Policy (GDPR Art. 13), Terms of Service, Cookie Policy, Data Processing Agreement
+**Legal** — Privacy Policy (GDPR Art. 13), Terms of Service, Cookie Policy, Data Processing Agreement, API Terms of Use, Refund Policy, SLA
 
-**AI Compliance** — AI Disclosure (EU AI Act Art. 50), AI Model Card (Art. 53), AI Act Checklist
+**AI Compliance** — AI Disclosure (EU AI Act Art. 50), AI Model Card (Art. 53), AI Act Checklist, AI Governance Framework, Acceptable AI Use Policy
 
-**Security** — Security Policy, Incident Response Plan, Vulnerability Scan, Access Control Policy, Change Management Policy
+**Security** — Security Policy, Incident Response Plan, Vulnerability Scan, Access Control Policy, Change Management Policy, Responsible Disclosure Policy, Encryption Policy, Backup Policy, Disaster Recovery, Penetration Test Scope
 
-**Operations** — DSAR Handling Guide, Consent Management Guide, Data Retention Policy, Data Dictionary
+**Privacy** — DSAR Handling Guide, Consent Management Guide, Data Retention Policy, Data Dictionary, Privacy by Design Checklist, Cookie Inventory, Data Subject Categories, Lawful Basis Assessment
 
-**Audit** — SOC 2 Checklist, ISO 27001 Checklist, Privacy Impact Assessment, Third-Party Risk Assessment, Data Classification, Risk Register
+**Operations** — Open Source Notice, License Compliance, Sub-Processor List, Vendor Contacts, Data Flow Map, Record of Processing, Transfer Impact Assessment, Regulatory Updates
+
+**Audit** — SOC 2 Checklist, ISO 27001 Checklist, Privacy Impact Assessment, Third-Party Risk Assessment, Data Classification, Risk Register, Compliance Certificate, Annual Review Checklist
 
 **Output formats** — Markdown, HTML, PDF, JSON, Notion, Confluence, cookie consent banner, embeddable widget, 12+ formats total
 
@@ -160,6 +170,9 @@ npx codepliant init
 # Just scan (no files generated)
 npx codepliant scan
 
+# Quick stats (one-line, scriptable)
+npx codepliant count
+
 # HTML compliance page for your website
 npx codepliant go --format html
 
@@ -184,7 +197,7 @@ npx codepliant dashboard
 ### CI/CD
 
 ```yaml
-- uses: codepliant/codepliant@v50
+- uses: codepliant/codepliant@v141
   with:
     fail-on-missing: true
 ```
@@ -199,7 +212,7 @@ npx codepliant dashboard
 
 ## Links
 
-- [Example Output](./examples/sample-output/) — 40+ generated documents
+- [Example Output](./examples/sample-output/) — 55+ generated documents
 - [Real Project Scans](./examples/real-projects/) — 10 open-source projects
 - [Contributing](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)

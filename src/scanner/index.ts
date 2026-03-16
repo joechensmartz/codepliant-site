@@ -31,6 +31,11 @@ import { scanLicenses, generateLicenseCompliance, type LicenseScanResult } from 
 import { scanCors, deriveCorsComplianceNeeds } from "./cors-scanner.js";
 import { scanAuth, deriveAuthComplianceNeeds } from "./auth-scanner.js";
 import { scanLogging } from "./logging-scanner.js";
+import { scanDockerComposeServices } from "./docker-compose-services.js";
+import { scanGitHubActions } from "./github-actions-scanner.js";
+import { scanWebSockets } from "./websocket-scanner.js";
+import { scanFileUploads } from "./file-upload-scanner.js";
+import { scanCaching } from "./caching-scanner.js";
 import { walkDirectory, ALL_EXTENSIONS } from "./file-walker.js";
 import type {
   ComplianceNeed,
@@ -433,6 +438,11 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
   const envServices = safeRun("Env vars", () => scanEnvFiles(absPath), []);
   const trackingServices = safeRun("Tracking", () => scanTracking(absPath, allFiles), []);
   const frameworkImplicitServices = safeRun("Framework implicit", () => scanFrameworkImplicit(absPath), []);
+  const dockerComposeServices = safeRun("Docker Compose services", () => scanDockerComposeServices(absPath), []);
+  const githubActionsServices = safeRun("GitHub Actions", () => scanGitHubActions(absPath), []);
+  const webSocketServices = safeRun("WebSockets", () => scanWebSockets(absPath, allFiles), []);
+  const fileUploadServices = safeRun("File uploads", () => scanFileUploads(absPath, allFiles), []);
+  const cachingServices = safeRun("Caching", () => scanCaching(absPath, allFiles), []);
 
   // Merge results (deduplicate by service name, combine evidence)
   const serviceMap = new Map<string, DetectedService>();
@@ -451,7 +461,7 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
     }
   }
 
-  for (const svcList of [depServices, pythonServices, goServices, rubyServices, elixirServices, phpServices, rustServices, javaServices, dotnetServices, importServices, envServices, trackingServices, frameworkImplicitServices, ...pluginScanResults]) {
+  for (const svcList of [depServices, pythonServices, goServices, rubyServices, elixirServices, phpServices, rustServices, javaServices, dotnetServices, importServices, envServices, trackingServices, frameworkImplicitServices, dockerComposeServices, githubActionsServices, webSocketServices, fileUploadServices, cachingServices, ...pluginScanResults]) {
     mergeServicesIntoMap(serviceMap, svcList);
   }
 

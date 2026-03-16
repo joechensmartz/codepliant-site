@@ -15,7 +15,7 @@ export type { GeneratedDocument, GeneratorContext } from "./generator/index.js";
 export { loadConfig, saveConfig, configExists, validateConfig } from "./config.js";
 export type { CodepliantConfig, ConfigWarning } from "./config.js";
 
-export { writeMarkdown, writeHtml, writeDocumentsInFormat, getOutputFormat, generateComplianceReport, writeComplianceReport } from "./output/index.js";
+export { writeMarkdown, writeHtml, writeDocumentsInFormat, getOutputFormat, generateComplianceReport, writeComplianceReport, generateExecutiveSummary, writeExecutiveSummary } from "./output/index.js";
 export type { OutputFormat, ComplianceReportOptions } from "./output/index.js";
 
 export { generateBadge, writeBadges } from "./output/badge.js";
@@ -76,6 +76,27 @@ export { generateRiskRegister } from "./generator/risk-register.js";
 export { writeGithubWiki } from "./output/github-wiki.js";
 
 export { generateTransparencyReport } from "./generator/transparency-report.js";
+
+export { generateApiSpec, writeApiSpec } from "./cloud/compliance-api.js";
+export type { ComplianceApiSpec, ComplianceApiStatus, ComplianceApiDocument, GenerateApiSpecOptions } from "./cloud/compliance-api.js";
+
+export { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription } from "./cloud/schedule.js";
+export type { ScheduleOptions, ScheduleResult, UnscheduleResult, ScheduleStatus, ScheduleFrequency } from "./cloud/schedule.js";
+
+export { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
+export type { BillingStatus, BillingUsage, FeatureUsageStat, BillingPortalResult } from "./cloud/billing.js";
+
+export {
+  checkLicense,
+  getLicenseInfo,
+  hasFeatureAccess,
+  getUpgradeHint,
+  checkAndTrackFeature,
+  trackFeatureUsage,
+  loadUsage,
+  resetUsage,
+} from "./licensing/index.js";
+export type { LicenseTier, LicenseInfo as LicensingLicenseInfo, LicensedFeature, FeatureUsage } from "./licensing/index.js";
 
 export {
   listAllSignatures,

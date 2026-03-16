@@ -6,7 +6,7 @@ import * as readline from "readline";
 import { scan } from "./scanner/index.js";
 import { generateDocuments, writeDocuments } from "./generator/index.js";
 import { loadConfig, saveConfig, configExists, validateConfig, VALID_JURISDICTIONS, type CodepliantConfig } from "./config.js";
-import { writeDocumentsInFormat, getOutputFormat, getLastPdfResult, writeCompliancePage, writeComplianceReport, type OutputFormat } from "./output/index.js";
+import { writeDocumentsInFormat, getOutputFormat, getLastPdfResult, writeCompliancePage, writeComplianceReport, writeExecutiveSummary, type OutputFormat } from "./output/index.js";
 import { writeBadges } from "./output/badge.js";
 import { diffDocuments, appendChangelog } from "./output/diff.js";
 import { SERVICE_SIGNATURES } from "./scanner/types.js";
@@ -27,7 +27,13 @@ import { lintDocuments } from "./lint.js";
 import { handleAuthLogin } from "./cloud/sso.js";
 import { handleAuditTrail, logAuditEntry } from "./cloud/audit-trail.js";
 import { handleTeamConfigInit } from "./cloud/team-config.js";
-const VERSION = "50.0.0";
+import { handleUpgrade, handleActivate, handleDeactivate, PLAN_DETAILS, validateLicenseKey, type PlanName } from "./cloud/stripe-checkout.js";
+import { generateApiSpec, writeApiSpec } from "./cloud/compliance-api.js";
+import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription, type ScheduleFrequency } from "./cloud/schedule.js";
+import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
+import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
+import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
+const VERSION = "141.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -77,6 +83,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}scan${RESET()}            Scan project (no document generation)
   ${CYAN()}scan-all${RESET()}        Scan all projects under a directory
   ${CYAN()}check${RESET()}           Quick compliance pass/fail check
+  ${CYAN()}count${RESET()}           Quick stats: services, documents, score
   ${CYAN()}lint${RESET()}            Check existing docs for completeness
   ${CYAN()}diff${RESET()}            Show changes since last generation
   ${CYAN()}dashboard${RESET()}       Show compliance status dashboard
@@ -93,15 +100,23 @@ ${BOLD()}Generation:${RESET()}
 
 ${BOLD()}Notifications:${RESET()}
   ${CYAN()}notify${RESET()}          Send compliance status notification
+  ${CYAN()}schedule${RESET()}        Schedule periodic scans (daily/weekly/monthly)
 
 ${BOLD()}Server:${RESET()}
   ${CYAN()}serve${RESET()}           Start HTTP API server
+  ${CYAN()}publish${RESET()}         Generate compliance API endpoint spec
 
 ${BOLD()}Setup:${RESET()}
   ${CYAN()}init${RESET()}            Interactive setup wizard
   ${CYAN()}wizard${RESET()}          Step-by-step compliance wizard
   ${CYAN()}hook${RESET()}            Install/uninstall pre-commit hook
   ${CYAN()}template${RESET()}        Manage custom document templates
+
+${BOLD()}Account:${RESET()}
+  ${CYAN()}upgrade${RESET()}         Upgrade to Pro or Team plan
+  ${CYAN()}activate${RESET()}        Activate a license key
+  ${CYAN()}deactivate${RESET()}      Remove license key
+  ${CYAN()}billing${RESET()}         View plan, usage stats, or open billing portal
 
 ${BOLD()}Community:${RESET()}
   ${CYAN()}signatures${RESET()}      List, export, or import service signatures
@@ -166,6 +181,7 @@ Designed for CTO/CISO review, investor due diligence, and audit trail.
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
+  ${DIM()}--executive-summary${RESET()}   Also generate a one-page EXECUTIVE_SUMMARY.md (Pro)
   ${DIM()}--quiet, -q${RESET()}           Minimal output
   ${DIM()}--verbose, -v${RESET()}         Show per-scanner timing breakdown
   ${DIM()}--no-color${RESET()}            Disable colored output
@@ -476,6 +492,60 @@ Compare compliance status of two projects side by side.
   \${CYAN()}codepliant compare ./app1 ./app2\${RESET()}      Compare two projects
   \${CYAN()}codepliant compare ./app1 ./app2 --json\${RESET()}  JSON output
 `,
+
+  publish: `${BOLD()}codepliant publish${RESET()} [path] [options]
+
+Generate a compliance API endpoint spec (compliance-api.json).
+Creates a JSON file describing REST endpoints for compliance status,
+document list, and score — for integration with dashboards, Slack bots, etc.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
+  ${DIM()}--api${RESET()}                 Generate API endpoint spec (required)
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant publish --api${RESET()}                  Generate API spec
+  ${CYAN()}codepliant publish --api -o ./public${RESET()}      Output to public directory
+`,
+
+  schedule: `${BOLD()}codepliant schedule${RESET()} <install|uninstall|status> [options]
+
+Schedule periodic compliance scans using OS-native scheduling
+(launchd on macOS, cron on Linux).
+
+${BOLD()}Subcommands:${RESET()}
+  ${CYAN()}install${RESET()}       Install scheduled scan (default: weekly)
+  ${CYAN()}uninstall${RESET()}     Remove scheduled scan
+  ${CYAN()}status${RESET()}        Show current schedule status
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--frequency <freq>${RESET()}    daily, weekly (default), or monthly
+  ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant schedule install${RESET()}                  Weekly scan
+  ${CYAN()}codepliant schedule install --frequency daily${RESET()}  Daily scan
+  ${CYAN()}codepliant schedule uninstall${RESET()}                Remove schedule
+  ${CYAN()}codepliant schedule status${RESET()}                   Show schedule info
+`,
+
+  billing: `${BOLD()}codepliant billing${RESET()} <status|usage|portal>
+
+View billing information and manage your subscription.
+
+${BOLD()}Subcommands:${RESET()}
+  ${CYAN()}status${RESET()}        Show current plan details
+  ${CYAN()}usage${RESET()}         Show feature usage statistics
+  ${CYAN()}portal${RESET()}        Open Stripe customer portal in browser
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant billing status${RESET()}                    View plan details
+  ${CYAN()}codepliant billing usage${RESET()}                     View feature usage
+  ${CYAN()}codepliant billing portal${RESET()}                    Open billing portal
+`,
   };
 }
 
@@ -539,6 +609,17 @@ function formatFileSize(bytes: number): string {
 
 function countLines(content: string): number {
   return content.split("\n").length;
+}
+
+function classifyDocCategory(docName: string): string {
+  const lower = docName.toLowerCase();
+  if (lower.includes("ai ") || lower.includes("ai-") || lower.includes("model card")) return "AI Compliance";
+  if (lower.includes("privacy") || lower.includes("cookie") || lower.includes("consent") || lower.includes("dsar") || lower.includes("data subject") || lower.includes("data protection") || lower.includes("media consent")) return "Privacy";
+  if (lower.includes("security") || lower.includes("incident") || lower.includes("vulnerability") || lower.includes("access control") || lower.includes("encryption") || lower.includes("penetration") || lower.includes("disclosure") || lower.includes("backup") || lower.includes("disaster")) return "Security";
+  if (lower.includes("terms") || lower.includes("acceptable use") || lower.includes("refund") || lower.includes("sla") || lower.includes("service level") || lower.includes("api terms") || lower.includes("supplier") || lower.includes("whistleblower")) return "Legal";
+  if (lower.includes("soc") || lower.includes("iso") || lower.includes("compliance") || lower.includes("audit") || lower.includes("annual review") || lower.includes("risk")) return "Audit";
+  if (lower.includes("data") || lower.includes("subprocessor") || lower.includes("vendor") || lower.includes("record of") || lower.includes("transfer") || lower.includes("regulatory") || lower.includes("transparency") || lower.includes("open source") || lower.includes("license")) return "Operations";
+  return "Other";
 }
 
 // --- Actionable error messages ---
@@ -710,6 +791,9 @@ function main() {
   let formatFlag: OutputFormat | undefined;
   let verbose = false;
   let port = 3939;
+  let executiveSummaryFlag = false;
+  let apiFlag = false;
+  let frequencyFlag: ScheduleFrequency = "weekly";
 
   for (let i = 1; i < args.length; i++) {
     const arg = args[i];
@@ -725,6 +809,18 @@ function main() {
       watchMode = true;
     } else if (arg === "--no-color") {
       // already handled by initColor
+    } else if (arg === "--executive-summary") {
+      executiveSummaryFlag = true;
+    } else if (arg === "--api") {
+      apiFlag = true;
+    } else if (arg === "--frequency") {
+      const freq = args[++i];
+      if (freq === "daily" || freq === "weekly" || freq === "monthly") {
+        frequencyFlag = freq;
+      } else {
+        console.error(`${RED()}Error: Invalid frequency "${freq}". Use: daily, weekly, monthly${RESET()}`);
+        process.exit(1);
+      }
     } else if (arg === "--format") {
       const fmt = args[++i];
       if (fmt === "markdown" || fmt === "html" || fmt === "pdf" || fmt === "json" || fmt === "notion" || fmt === "confluence" || fmt === "wiki" || fmt === "docx" || fmt === "all") {
@@ -741,7 +837,7 @@ function main() {
         console.error(`${RED()}Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
         process.exit(1);
       }
-    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login")) {
+    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login")) {
       projectPath = arg;
     }
   }
@@ -750,7 +846,7 @@ function main() {
   const absOutputDir = path.resolve(absProjectPath, outputDir);
 
   // Validate project path with actionable error messages
-  if (command !== "help" && command !== "init" && command !== "wizard" && command !== "serve" && command !== "auth" && command !== "audit-trail" && command !== "explain") {
+  if (command !== "help" && command !== "init" && command !== "wizard" && command !== "serve" && command !== "auth" && command !== "audit-trail" && command !== "explain" && command !== "upgrade" && command !== "activate" && command !== "deactivate" && command !== "onboard" && command !== "billing") {
     if (!fs.existsSync(absProjectPath)) {
       console.error(`${RED()}Error: "${absProjectPath}" does not exist.${RESET()}`);
       console.error(`${DIM()}Check the path and try again.${RESET()}`);
@@ -824,12 +920,17 @@ function main() {
     }
 
     if (command === "report") {
-      runReport(absProjectPath, absOutputDir, quiet, verbose);
+      runReport(absProjectPath, absOutputDir, quiet, verbose, executiveSummaryFlag);
       return;
     }
 
     if (command === "check") {
       runCheck(absProjectPath, absOutputDir, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "count") {
+      runCount(absProjectPath, absOutputDir, jsonOutput);
       return;
     }
 
@@ -987,6 +1088,23 @@ function main() {
       return;
     }
 
+    if (command === "publish") {
+      runPublish(absProjectPath, absOutputDir, quiet, verbose, apiFlag);
+      return;
+    }
+
+    if (command === "schedule") {
+      const subCmd = args[1];
+      runSchedule(absProjectPath, absOutputDir, subCmd, frequencyFlag, quiet);
+      return;
+    }
+
+    if (command === "billing") {
+      const subCmd = args[1];
+      runBilling(absProjectPath, subCmd, quiet);
+      return;
+    }
+
     console.error(`${RED()}Unknown command: "${command}"${RESET()}`);
     console.error(`${DIM()}Run ${CYAN()}codepliant help${RESET()}${DIM()} to see available commands.${RESET()}`);
     process.exit(1);
@@ -1098,13 +1216,40 @@ function runScanAndGenerate(
     writtenFiles.push(changelogPath);
   }
 
+  // Collect per-file stats and category counts
+  let totalLinesGenerated = 0;
+  const docCategoryMap = new Map<string, number>();
   for (const file of writtenFiles) {
     const relativePath = path.relative(absProjectPath, file);
     const content = fs.readFileSync(file, "utf-8");
     const size = Buffer.byteLength(content, "utf-8");
     const lines = countLines(content);
+    totalLinesGenerated += lines;
     const docName = docs.find(d => file.endsWith(d.filename))?.name || path.basename(file);
     console.log(`  ${GREEN()}✓${RESET()} ${relativePath} ${DIM()}(${docName}: ${formatFileSize(size)}, ${lines} lines)${RESET()}`);
+
+    // Categorize the document
+    const cat = classifyDocCategory(docName);
+    docCategoryMap.set(cat, (docCategoryMap.get(cat) || 0) + 1);
+  }
+
+  // --- Generation Summary ---
+  if (!quiet) {
+    console.log();
+    console.log(`${CYAN()}${"─".repeat(50)}${RESET()}`);
+    console.log(`${CYAN()}${BOLD()}Generation Summary${RESET()}`);
+    console.log(`${CYAN()}${"─".repeat(50)}${RESET()}`);
+    console.log();
+    console.log(`  ${BOLD()}Total documents:${RESET()} ${writtenFiles.length}`);
+    for (const [cat, count] of [...docCategoryMap.entries()].sort((a, b) => b[1] - a[1])) {
+      console.log(`    ${DIM()}${cat}:${RESET()} ${count}`);
+    }
+    console.log(`  ${BOLD()}Total lines generated:${RESET()} ${totalLinesGenerated.toLocaleString()}`);
+    const estimatedCostPerDoc = 1000;
+    const estimatedCostSaved = writtenFiles.length * estimatedCostPerDoc;
+    const costK = Math.round(estimatedCostSaved / 1000);
+    console.log(`  ${GREEN()}${BOLD()}Estimated lawyer equivalent:${RESET()} Generated ${writtenFiles.length} documents (~$${costK},000 lawyer equivalent)`);
+    console.log();
   }
 
   console.log(
@@ -1580,6 +1725,7 @@ function runReport(
   absOutputDir: string,
   quiet: boolean,
   verbose: boolean,
+  executiveSummary: boolean = false,
 ) {
   if (!quiet) printBanner();
 
@@ -1622,6 +1768,29 @@ function runReport(
   const lines = countLines(content);
 
   console.log(`  ${GREEN()}✓${RESET()} ${relativePath} ${DIM()}(${formatFileSize(size)}, ${lines} lines)${RESET()}`);
+
+  // Executive summary (Pro feature)
+  if (executiveSummary) {
+    const license = checkLicense(config.licenseKey);
+    const hint = checkAndTrackFeature(license, "executive-summary");
+    if (hint) {
+      console.log(`\n  ${YELLOW()}${hint}${RESET()}`);
+    }
+
+    const summaryPath = writeExecutiveSummary({
+      scanResult: result,
+      docs,
+      config,
+      outputDir: absOutputDir,
+    });
+    const summaryRelative = path.relative(absProjectPath, summaryPath);
+    const summaryContent = fs.readFileSync(summaryPath, "utf-8");
+    const summarySize = Buffer.byteLength(summaryContent, "utf-8");
+    const summaryLines = countLines(summaryContent);
+
+    console.log(`  ${GREEN()}✓${RESET()} ${summaryRelative} ${DIM()}(${formatFileSize(summarySize)}, ${summaryLines} lines)${RESET()}`);
+  }
+
   console.log(
     `\n${GREEN()}${BOLD()}Done!${RESET()} Compliance report generated in ${path.relative(absProjectPath, absOutputDir)}/\n`
   );
@@ -1704,6 +1873,41 @@ function runCheck(
   }
 
   process.exit(allPass ? 0 : 1);
+}
+
+// --- `codepliant count` command ---
+
+function runCount(
+  absProjectPath: string,
+  absOutputDir: string,
+  jsonOutput: boolean,
+) {
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+  const docs = generateDocuments(result, config);
+
+  // Compute compliance score
+  const scoreInput: ScoreInput = {
+    scanResult: result,
+    docs,
+    config,
+    outputDir: absOutputDir,
+  };
+  const fullScore = computeFullComplianceScore(scoreInput);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      services: result.services.length,
+      documents: docs.length,
+      score: fullScore.total,
+      grade: fullScore.grade,
+    }, null, 2));
+    process.exit(0);
+  }
+
+  // One-line output for scripting
+  console.log(`services=${result.services.length} documents=${docs.length} score=${fullScore.total} grade=${fullScore.grade}`);
+  process.exit(0);
 }
 
 // --- `codepliant lint` command ---
@@ -3451,6 +3655,382 @@ function runDoctor(absProjectPath: string, absOutputDir: string, quiet: boolean)
     console.log(`\n${GREEN()}${BOLD()}All checks passed! Your Codepliant setup looks good.${RESET()}\n`);
     process.exit(0);
   }
+}
+
+// --- `codepliant onboard` command ---
+
+async function runOnboard(projectPath: string) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  const absProjectPath = path.resolve(projectPath);
+
+  console.log(`  ${CYAN()}${BOLD()}Welcome to Codepliant!${RESET()}`);
+  console.log(`  ${DIM()}Let's set up compliance for your project in just a few steps.${RESET()}\n`);
+
+  // --- Step 1: What kind of project? ---
+  console.log(`  ${GREEN()}${BOLD()}Step 1/5:${RESET()} ${BOLD()}What kind of project is this?${RESET()}\n`);
+
+  const projectTypes = ["SaaS", "API", "Mobile App", "Library/Package"];
+  const projectType = await askSelect(rl, `  ${BOLD()}Project type${RESET()}`, projectTypes, "SaaS");
+  console.log(`  ${GREEN()}✓${RESET()} ${projectType}\n`);
+
+  // --- Step 2: Where are you based? ---
+  console.log(`  ${GREEN()}${BOLD()}Step 2/5:${RESET()} ${BOLD()}Where are you based?${RESET()}\n`);
+
+  const locationOptions = [
+    "United States",
+    "European Union",
+    "United Kingdom",
+    "Canada",
+    "Australia",
+    "Other",
+  ];
+  const location = await askSelect(rl, `  ${BOLD()}Primary location${RESET()}`, locationOptions, "United States");
+  console.log(`  ${GREEN()}✓${RESET()} ${location}\n`);
+
+  // Auto-select jurisdictions based on location
+  const autoJurisdictions: string[] = [];
+  if (location === "European Union") {
+    autoJurisdictions.push("GDPR");
+  } else if (location === "United Kingdom") {
+    autoJurisdictions.push("UK GDPR");
+    autoJurisdictions.push("GDPR"); // Most UK companies also need GDPR
+  } else if (location === "United States") {
+    autoJurisdictions.push("CCPA");
+  } else if (location === "Canada" || location === "Australia" || location === "Other") {
+    // Suggest GDPR if they serve EU customers
+    const servesEU = await askYesNo(rl, `  ${BOLD()}Do you serve customers in the EU?${RESET()}`, false);
+    if (servesEU) autoJurisdictions.push("GDPR");
+    const servesUS = await askYesNo(rl, `  ${BOLD()}Do you serve customers in California/US?${RESET()}`, false);
+    if (servesUS) autoJurisdictions.push("CCPA");
+    const servesUK = await askYesNo(rl, `  ${BOLD()}Do you serve customers in the UK?${RESET()}`, false);
+    if (servesUK) autoJurisdictions.push("UK GDPR");
+  }
+
+  // Also check if US-based companies serve EU
+  if (location === "United States") {
+    const servesEU = await askYesNo(rl, `\n  ${BOLD()}Do you serve customers in the EU?${RESET()}`, false);
+    if (servesEU) autoJurisdictions.push("GDPR");
+  }
+
+  if (autoJurisdictions.length > 0) {
+    console.log(`  ${GREEN()}Auto-selected jurisdictions:${RESET()} ${autoJurisdictions.join(", ")}`);
+  }
+
+  // Let them adjust
+  const allJurisdictions = ["GDPR", "CCPA", "UK GDPR"];
+  const selectedJurisdictions = await askMultiSelect(
+    rl,
+    `\n  ${BOLD()}Confirm jurisdictions${RESET()} (edit if needed)`,
+    allJurisdictions,
+    autoJurisdictions,
+  );
+
+  // --- Step 3: Do you use AI? ---
+  console.log(`\n  ${GREEN()}${BOLD()}Step 3/5:${RESET()} ${BOLD()}Do you use AI in your product?${RESET()}\n`);
+
+  const usesAI = await askYesNo(rl, `  ${BOLD()}Does your project use AI or machine learning?${RESET()}`, false);
+  let aiRiskLevel: "minimal" | "limited" | "high" | undefined;
+
+  if (usesAI) {
+    console.log(`\n  ${DIM()}The EU AI Act requires AI risk classification:${RESET()}`);
+    console.log(`    ${DIM()}minimal${RESET()}  - No significant risk (e.g., spam filters, recommendation engines)`);
+    console.log(`    ${DIM()}limited${RESET()}  - Transparency obligations (e.g., chatbots, content generation)`);
+    console.log(`    ${DIM()}high${RESET()}     - Strict requirements (e.g., biometric ID, credit scoring, HR tools)\n`);
+
+    const riskOptions = ["minimal", "limited", "high"];
+    aiRiskLevel = await askSelect(rl, `  ${BOLD()}AI risk level${RESET()}`, riskOptions, "limited") as "minimal" | "limited" | "high";
+    console.log(`  ${GREEN()}✓${RESET()} AI risk level: ${aiRiskLevel}`);
+  }
+
+  // --- Step 4: Company info (quick) ---
+  console.log(`\n  ${GREEN()}${BOLD()}Step 4/5:${RESET()} ${BOLD()}Company details${RESET()}\n`);
+
+  // Try auto-detect from package.json
+  let detectedName: string | undefined;
+  let detectedEmail: string | undefined;
+  const pkgPath = path.join(absProjectPath, "package.json");
+  if (fs.existsSync(pkgPath)) {
+    try {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+      if (pkg.author) {
+        if (typeof pkg.author === "string") {
+          const nameMatch = pkg.author.match(/^([^<(]+)/);
+          if (nameMatch) detectedName = nameMatch[1].trim();
+          const emailMatch = pkg.author.match(/<([^>]+)>/);
+          if (emailMatch) detectedEmail = emailMatch[1].trim();
+        } else if (typeof pkg.author === "object") {
+          detectedName = pkg.author.name;
+          detectedEmail = pkg.author.email;
+        }
+      }
+    } catch { /* ignore */ }
+  }
+
+  const companyName = await ask(rl, `  ${BOLD()}Company name${RESET()}`, detectedName || "");
+  const contactEmail = await ask(rl, `  ${BOLD()}Contact email${RESET()}`, detectedEmail || "");
+
+  rl.close();
+
+  // --- Build and save config ---
+  const config: CodepliantConfig = {
+    companyName: companyName || "[Your Company Name]",
+    contactEmail: contactEmail || "[your-email@example.com]",
+    outputDir: "legal",
+    ...(selectedJurisdictions.length > 0 && { jurisdictions: selectedJurisdictions }),
+    ...(location && { companyLocation: location }),
+    ...(usesAI && aiRiskLevel && { aiRiskLevel }),
+  };
+
+  const configPath = saveConfig(absProjectPath, config);
+  console.log(`\n  ${GREEN()}✓${RESET()} Config saved to ${path.relative(absProjectPath, configPath)}`);
+
+  // --- Step 5: First scan ---
+  console.log(`\n  ${GREEN()}${BOLD()}Step 5/5:${RESET()} ${BOLD()}Running first scan${RESET()}\n`);
+
+  const absOutputDir = path.resolve(absProjectPath, "legal");
+  const scanStart = Date.now();
+  const spinner = startSpinner("Scanning your project");
+
+  const result = scan(absProjectPath);
+  const scanMs = Date.now() - scanStart;
+  spinner.stop(true);
+
+  console.log(`    ${DIM()}Found ${result.services.length} service(s) in ${formatDuration(scanMs)}${RESET()}`);
+
+  // Generate documents
+  const genSpinner = startSpinner("Generating compliance documents");
+  const reloadedConfig = loadConfig(absProjectPath);
+  const docs = generateDocuments(result, reloadedConfig);
+  const writtenFiles = writeDocumentsInFormat(docs, absOutputDir, "markdown", reloadedConfig, result);
+  genSpinner.stop(true);
+
+  console.log(`    ${DIM()}Generated ${writtenFiles.length} document(s)${RESET()}\n`);
+
+  for (const file of writtenFiles) {
+    const relPath = path.relative(absProjectPath, file);
+    console.log(`    ${GREEN()}✓${RESET()} ${relPath}`);
+  }
+
+  // --- Summary ---
+  console.log(`
+  ${CYAN()}${"═".repeat(50)}${RESET()}
+  ${CYAN()}${BOLD()}  Onboarding complete!${RESET()}
+  ${CYAN()}${"═".repeat(50)}${RESET()}
+
+  ${BOLD()}Project type:${RESET()}     ${projectType}
+  ${BOLD()}Location:${RESET()}         ${location}
+  ${BOLD()}Jurisdictions:${RESET()}    ${selectedJurisdictions.length > 0 ? selectedJurisdictions.join(", ") : "None"}
+  ${BOLD()}AI enabled:${RESET()}       ${usesAI ? `Yes (risk: ${aiRiskLevel})` : "No"}
+  ${BOLD()}Documents:${RESET()}        ${writtenFiles.length} generated
+  ${BOLD()}Output:${RESET()}           legal/
+
+  ${BOLD()}What to do next:${RESET()}
+
+    1. Review generated documents in ${CYAN()}legal/${RESET()}
+    2. Run ${CYAN()}codepliant dashboard${RESET()} for a compliance overview
+    3. Run ${CYAN()}codepliant go${RESET()} after making code changes
+    4. Run ${CYAN()}codepliant doctor${RESET()} to check for issues
+
+  ${DIM()}Documents are generated from code analysis. Have them reviewed by legal counsel.${RESET()}
+`);
+}
+
+// --- `codepliant publish` command ---
+
+function runPublish(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  verbose: boolean,
+  apiFlag: boolean,
+) {
+  if (!apiFlag) {
+    console.error(`${RED()}Error: --api flag is required.${RESET()}`);
+    console.error(`${DIM()}Usage: codepliant publish --api [path]${RESET()}`);
+    process.exit(1);
+  }
+
+  if (!quiet) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const license = checkLicense(config.licenseKey);
+  const hint = checkAndTrackFeature(license, "compliance-api");
+  if (hint && !quiet) {
+    console.log(`  ${YELLOW()}${hint}${RESET()}\n`);
+  }
+
+  const plugins = config.plugins ? loadPlugins(absProjectPath, config.plugins) : [];
+  const { result } = scanWithProgress(absProjectPath, quiet, verbose, plugins);
+  const docs = generateDocuments(result, config, plugins);
+
+  const score = computeFullComplianceScore({
+    scanResult: result,
+    docs,
+    config,
+    outputDir: absOutputDir,
+  });
+
+  if (!quiet) {
+    console.log(`\n${BOLD()}Generating compliance API spec...${RESET()}\n`);
+  }
+
+  const specPath = writeApiSpec({
+    scanResult: result,
+    docs,
+    score,
+    outputDir: absOutputDir,
+  });
+
+  const relativePath = path.relative(absProjectPath, specPath);
+  const content = fs.readFileSync(specPath, "utf-8");
+  const size = Buffer.byteLength(content, "utf-8");
+
+  console.log(`  ${GREEN()}✓${RESET()} ${relativePath} ${DIM()}(${formatFileSize(size)})${RESET()}`);
+  console.log(
+    `\n${GREEN()}${BOLD()}Done!${RESET()} API spec generated. Integrate with dashboards, Slack bots, CI/CD.\n`
+  );
+
+  process.exit(0);
+}
+
+// --- `codepliant schedule` command ---
+
+function runSchedule(
+  absProjectPath: string,
+  absOutputDir: string,
+  subCommand: string | undefined,
+  frequency: ScheduleFrequency,
+  quiet: boolean,
+) {
+  if (!quiet) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const license = checkLicense(config.licenseKey);
+  const hint = checkAndTrackFeature(license, "scheduled-scans");
+  if (hint && !quiet) {
+    console.log(`  ${YELLOW()}${hint}${RESET()}\n`);
+  }
+
+  if (subCommand === "uninstall") {
+    const result = unscheduleScans();
+    if (result.success) {
+      console.log(`  ${GREEN()}✓${RESET()} ${result.message}`);
+    } else {
+      console.log(`  ${YELLOW()}${result.message}${RESET()}`);
+    }
+    process.exit(0);
+  }
+
+  if (subCommand === "status") {
+    const status = getScheduleStatus();
+    if (status.scheduled) {
+      console.log(`  ${GREEN()}✓${RESET()} Scheduled scan active`);
+      console.log(`    ${DIM()}Frequency:${RESET()} ${status.frequency}`);
+      console.log(`    ${DIM()}Method:${RESET()} ${status.method}`);
+      if (status.configPath) {
+        console.log(`    ${DIM()}Config:${RESET()} ${status.configPath}`);
+      }
+    } else {
+      console.log(`  ${DIM()}No scheduled scan configured.${RESET()}`);
+      console.log(`  ${DIM()}Run ${CYAN()}codepliant schedule install${RESET()}${DIM()} to set one up.${RESET()}`);
+    }
+    process.exit(0);
+  }
+
+  if (subCommand === "install" || !subCommand) {
+    const result = scheduleScans({
+      projectPath: absProjectPath,
+      outputDir: absOutputDir,
+      frequency,
+      webhookUrl: config.webhookUrl,
+    });
+
+    if (result.success) {
+      console.log(`  ${GREEN()}✓${RESET()} ${result.message}`);
+      console.log(`    ${DIM()}Runs ${frequencyDescription(frequency)}${RESET()}`);
+      if (config.webhookUrl) {
+        console.log(`    ${DIM()}Webhook notifications enabled${RESET()}`);
+      }
+    } else {
+      console.error(`  ${RED()}${result.message}${RESET()}`);
+      process.exit(1);
+    }
+    process.exit(0);
+  }
+
+  console.error(`${RED()}Unknown schedule subcommand: "${subCommand || ""}". Use: install, uninstall, status${RESET()}`);
+  process.exit(1);
+}
+
+// --- `codepliant billing` command ---
+
+function runBilling(
+  absProjectPath: string,
+  subCommand: string | undefined,
+  quiet: boolean,
+) {
+  if (!quiet) printBanner();
+
+  const config = loadConfig(absProjectPath);
+
+  if (subCommand === "status" || !subCommand) {
+    const status = getBillingStatus(config.licenseKey);
+
+    console.log(`\n  ${BOLD()}Plan: ${CYAN()}${status.planName}${RESET()} ${DIM()}${status.price}${RESET()}\n`);
+
+    if (status.licenseKeyPrefix) {
+      console.log(`  ${DIM()}License: ${status.licenseKeyPrefix}${RESET()}`);
+    }
+
+    console.log(`  ${BOLD()}Features:${RESET()}`);
+    for (const feature of status.features) {
+      console.log(`    ${GREEN()}✓${RESET()} ${feature}`);
+    }
+    console.log();
+
+    if (status.tier === "free") {
+      console.log(`  ${DIM()}Upgrade: ${CYAN()}codepliant upgrade${RESET()}\n`);
+    }
+
+    process.exit(0);
+  }
+
+  if (subCommand === "usage") {
+    const usage = getBillingUsage(config.licenseKey);
+
+    console.log(`\n  ${BOLD()}Feature Usage Statistics${RESET()} ${DIM()}(${usage.tier} tier)${RESET()}\n`);
+
+    if (usage.features.length === 0) {
+      console.log(`  ${DIM()}No paid feature usage recorded yet.${RESET()}\n`);
+    } else {
+      console.log(`  ${BOLD()}Feature${RESET()}                    ${BOLD()}Uses${RESET()}    ${BOLD()}Tier${RESET()}`);
+      console.log(`  ${"─".repeat(50)}`);
+
+      for (const stat of usage.features) {
+        const name = stat.feature.padEnd(28);
+        const count = String(stat.count).padStart(4);
+        console.log(`  ${name}${count}    ${DIM()}${stat.requiredTier}${RESET()}`);
+      }
+
+      console.log(`\n  ${DIM()}Total attempts: ${usage.totalAttempts}${RESET()}\n`);
+    }
+
+    process.exit(0);
+  }
+
+  if (subCommand === "portal") {
+    const result = openBillingPortal();
+    console.log(`\n  ${BOLD()}Opening billing portal...${RESET()}`);
+    console.log(`  ${DIM()}URL: ${result.url}${RESET()}\n`);
+    process.exit(0);
+  }
+
+  console.error(`${RED()}Unknown billing subcommand: "${subCommand || ""}". Use: status, usage, portal${RESET()}`);
+  process.exit(1);
 }
 
 main();
