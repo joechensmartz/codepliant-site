@@ -115,6 +115,8 @@ import { generateRegulatoryReadinessScorecard } from "./regulatory-readiness-sco
 import { generateDataLifecycleDiagram } from "./data-lifecycle-diagram.js";
 import { generateComplianceBudgetTemplate } from "./compliance-budget-template.js";
 import { generateIncidentSeverityMatrix } from "./incident-severity-matrix.js";
+import { generateDataSubjectRightsPortal } from "./data-subject-rights-portal.js";
+import { generateComplianceAutomationGuide } from "./compliance-automation-guide.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1160,6 +1162,23 @@ export function generateDocuments(
     name: "Incident Severity Matrix",
     filename: "INCIDENT_SEVERITY_MATRIX.md",
     content: generateIncidentSeverityMatrix(docScan, ctx),
+  });
+
+  // Data Subject Rights Portal — self-service privacy portal specification
+  const dataSubjectRightsPortal = generateDataSubjectRightsPortal(docScan, ctx);
+  if (dataSubjectRightsPortal) {
+    docs.push({
+      name: "Data Subject Rights Portal",
+      filename: "DATA_SUBJECT_RIGHTS_PORTAL.md",
+      content: dataSubjectRightsPortal,
+    });
+  }
+
+  // Compliance Automation Guide — CI/CD integration, cron scanning, webhook alerts
+  docs.push({
+    name: "Compliance Automation Guide",
+    filename: "COMPLIANCE_AUTOMATION_GUIDE.md",
+    content: generateComplianceAutomationGuide(docScan, ctx),
   });
 
   // Compliance Certificate — self-attestation certificate (generated after all other docs)

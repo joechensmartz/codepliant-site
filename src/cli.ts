@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "350.0.0";
+const VERSION = "360.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -157,6 +157,7 @@ ${BOLD()}Diagnostics:${RESET()}
 ${BOLD()}Info:${RESET()}
   ${CYAN()}version${RESET()}         Print version and exit
   ${CYAN()}version-check${RESET()}   Check if a newer version is available
+  ${CYAN()}info${RESET()}            Show installation info, environment, available scanners
   ${CYAN()}list-docs${RESET()}       List all document types codepliant can generate
   ${CYAN()}changelog${RESET()}       Show version history of codepliant
   ${CYAN()}help${RESET()}            Show this help message
@@ -952,6 +953,35 @@ function classifyDocCategory(docName: string): string {
 
 // --- Actionable error messages ---
 
+// Error codes — searchable in docs at https://codepliant.dev/errors
+// CP001: Permission denied
+// CP002: Disk full
+// CP003: Read-only filesystem
+// CP004: Too many open files
+// CP005: Circular symlink
+// CP006: Path not found
+// CP007: Not a directory
+// CP008: Unknown command
+// CP009: Invalid argument
+// CP010: Config error
+// CP011: Init error
+// CP012: Server error
+// CP013: Review error
+// CP014: Compare error
+// CP015: Missing argument
+// CP016: Template error
+// CP017: Notification error
+// CP018: Fix error
+// CP019: Hook error
+// CP020: Scan error
+// CP021: Export error
+// CP022: Changelog error
+// CP023: Validation error
+// CP024: Schedule error
+// CP025: Auth error
+// CP026: Billing error
+// CP027: General error
+
 function formatError(err: unknown): string {
   if (!(err instanceof Error)) return String(err);
 
@@ -959,24 +989,24 @@ function formatError(err: unknown): string {
 
   if (e.code === "EACCES" || e.code === "EPERM") {
     const target = e.path ? `"${e.path}"` : "the target path";
-    return `Permission denied accessing ${target}.\n  Try: sudo chmod -R u+rw ${e.path || "<path>"}`;
+    return `[CP001] Permission denied accessing ${target}.\n  Try: sudo chmod -R u+rw ${e.path || "<path>"}`;
   }
 
   if (e.code === "ENOSPC") {
-    return "Not enough disk space to write documents.\n  Free up space and try again.";
+    return "[CP002] Not enough disk space to write documents.\n  Free up space and try again.";
   }
 
   if (e.code === "EROFS") {
-    return "File system is read-only. Cannot write documents.";
+    return "[CP003] File system is read-only. Cannot write documents.";
   }
 
   if (e.code === "EMFILE" || e.code === "ENFILE") {
-    return "Too many open files. Try increasing the file descriptor limit:\n  ulimit -n 4096";
+    return "[CP004] Too many open files. Try increasing the file descriptor limit:\n  ulimit -n 4096";
   }
 
   if (e.code === "ELOOP") {
     const target = e.path ? ` at "${e.path}"` : "";
-    return `Circular symlink detected${target}. Resolve the symlink loop and try again.`;
+    return `[CP005] Circular symlink detected${target}. Resolve the symlink loop and try again.`;
   }
 
   return e.message;
@@ -1074,6 +1104,51 @@ function printVersion() {
   console.log(`codepliant v${VERSION}`);
 }
 
+function printInfo() {
+  const nodeVersion = process.version;
+  const platform = process.platform;
+  const arch = process.arch;
+  const installPath = path.dirname(path.dirname(new URL(import.meta.url).pathname));
+  const configPath = path.resolve(".codepliantrc.json");
+  const outputPath = path.resolve("legal");
+  const hasConfig = fs.existsSync(configPath);
+  const hasOutput = fs.existsSync(outputPath);
+
+  const scannerList = [
+    "dependencies (package.json, requirements.txt, go.mod, Cargo.toml, Gemfile, pom.xml, build.gradle, composer.json, mix.exs)",
+    "imports (source code import/require analysis)",
+    "env (.env file scanner)",
+    "ORM (Prisma, Drizzle, Mongoose, TypeORM, Sequelize, Django, SQLAlchemy, GraphQL)",
+    "cloud (AWS, GCP, Azure provider detection)",
+    "database (PostgreSQL, MySQL, MongoDB, Redis, etc.)",
+    "CI/CD (GitHub Actions, GitLab CI, CircleCI, etc.)",
+    "license (open source license compliance)",
+    "vulnerability (known vulnerability patterns)",
+    "data-flow (data flow mapping)",
+    "data-classification (GDPR sensitivity classification)",
+  ];
+
+  console.log(`
+${BOLD()}Codepliant Installation Info${RESET()}
+${"─".repeat(40)}
+
+${BOLD()}Version:${RESET()}        ${VERSION}
+${BOLD()}Node.js:${RESET()}        ${nodeVersion}
+${BOLD()}Platform:${RESET()}       ${platform} (${arch})
+${BOLD()}Install path:${RESET()}   ${installPath}
+${BOLD()}Config path:${RESET()}    ${configPath} ${hasConfig ? `${GREEN()}(found)${RESET()}` : `${DIM()}(not found)${RESET()}`}
+${BOLD()}Output path:${RESET()}    ${outputPath} ${hasOutput ? `${GREEN()}(exists)${RESET()}` : `${DIM()}(not created yet)${RESET()}`}
+
+${BOLD()}Available Scanners:${RESET()}
+${scannerList.map((s) => `  ${CYAN()}•${RESET()} ${s}`).join("\n")}
+
+${BOLD()}Ecosystems:${RESET()}     JS/TS, Python, Go, Ruby, Elixir, PHP, Rust, Java, .NET, Django
+${BOLD()}ORM Scanners:${RESET()}   Prisma, Drizzle, Mongoose, TypeORM, Sequelize, Django, SQLAlchemy, GraphQL
+${BOLD()}Output Formats:${RESET()} Markdown, HTML, PDF, JSON, Notion, Confluence, Wiki, DOCX
+${BOLD()}Languages:${RESET()}      EN, DE, FR, ES
+`);
+}
+
 function main() {
   const args = process.argv.slice(2);
 
@@ -1097,6 +1172,12 @@ function main() {
   // `codepliant version` command
   if (command === "version") {
     printVersion();
+    process.exit(0);
+  }
+
+  // `codepliant info` command — installation & environment info
+  if (command === "info") {
+    printInfo();
     process.exit(0);
   }
 
@@ -1160,7 +1241,7 @@ function main() {
       if (freq === "daily" || freq === "weekly" || freq === "monthly") {
         frequencyFlag = freq;
       } else {
-        console.error(`${RED()}Error: Invalid frequency "${freq}". Use: daily, weekly, monthly${RESET()}`);
+        console.error(`${RED()}[CP009] Error: Invalid frequency "${freq}". Use: daily, weekly, monthly${RESET()}`);
         process.exit(1);
       }
     } else if (arg === "--format") {
@@ -1168,7 +1249,7 @@ function main() {
       if (fmt === "markdown" || fmt === "html" || fmt === "pdf" || fmt === "json" || fmt === "notion" || fmt === "confluence" || fmt === "wiki" || fmt === "docx" || fmt === "all") {
         formatFlag = fmt;
       } else {
-        console.error(`${RED()}Error: Invalid format "${fmt}". Use: markdown, html, pdf, json, notion, confluence, wiki, docx, all${RESET()}`);
+        console.error(`${RED()}[CP009] Error: Invalid format "${fmt}". Use: markdown, html, pdf, json, notion, confluence, wiki, docx, all${RESET()}`);
         process.exit(1);
       }
     } else if (arg === "--ecosystem") {
@@ -1182,7 +1263,7 @@ function main() {
       if (!isNaN(p) && p > 0 && p < 65536) {
         port = p;
       } else {
-        console.error(`${RED()}Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
+        console.error(`${RED()}[CP009] Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
         process.exit(1);
       }
     } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show") && !(command === "fix" && (arg === "missing-dpo" || arg === "stale-docs" || arg === "missing-consent")) && !(command === "preview") && !(command === "search")) {
@@ -1196,7 +1277,7 @@ function main() {
   // Validate project path with actionable error messages
   if (command !== "help" && command !== "init" && command !== "wizard" && command !== "serve" && command !== "auth" && command !== "audit-trail" && command !== "explain" && command !== "upgrade" && command !== "activate" && command !== "deactivate" && command !== "onboard" && command !== "billing") {
     if (!fs.existsSync(absProjectPath)) {
-      console.error(`${RED()}Error: "${absProjectPath}" does not exist.${RESET()}`);
+      console.error(`${RED()}[CP006] Error: "${absProjectPath}" does not exist.${RESET()}`);
       console.error(`${DIM()}Check the path and try again.${RESET()}`);
       process.exit(1);
     }
@@ -1205,12 +1286,12 @@ function main() {
     try {
       stat = fs.statSync(absProjectPath);
     } catch (err) {
-      console.error(`${RED()}Error: ${formatError(err)}${RESET()}`);
+      console.error(`${RED()}[CP006] Error: ${formatError(err)}${RESET()}`);
       process.exit(1);
     }
 
     if (!stat.isDirectory()) {
-      console.error(`${RED()}Error: "${absProjectPath}" is not a directory.${RESET()}`);
+      console.error(`${RED()}[CP007] Error: "${absProjectPath}" is not a directory.${RESET()}`);
       console.error(`${DIM()}Codepliant scans project directories, not individual files.${RESET()}`);
       process.exit(1);
     }
@@ -1366,14 +1447,14 @@ function main() {
         runConfigShow(absProjectPath);
         process.exit(0);
       }
-      console.error(`${RED()}Unknown config subcommand: "${subCmd || ""}". Use: codepliant config show${RESET()}`);
+      console.error(`${RED()}[CP010] Unknown config subcommand: "${subCmd || ""}". Use: codepliant config show${RESET()}`);
       process.exit(1);
     }
 
     if (command === "init") {
       printBanner();
       runInit(absProjectPath).then(() => process.exit(0)).catch((err) => {
-        console.error(`${RED()}Error during init: ${formatError(err)}${RESET()}`);
+        console.error(`${RED()}[CP011] Error during init: ${formatError(err)}${RESET()}`);
         process.exit(1);
       });
       return;
@@ -1396,7 +1477,7 @@ function main() {
         console.log(`  ${CYAN()}POST /api/generate${RESET()}        Generate documents\n`);
         console.log(`${DIM()}Press Ctrl+C to stop.${RESET()}\n`);
       }).catch((err) => {
-        console.error(`${RED()}Failed to start server: ${formatError(err)}${RESET()}`);
+        console.error(`${RED()}[CP012] Failed to start server: ${formatError(err)}${RESET()}`);
         process.exit(1);
       });
       return;
@@ -1404,7 +1485,7 @@ function main() {
 
     if (command === "template") {
       // TODO: implement runTemplate
-      console.error(`${RED()}The "template" command is not yet implemented.${RESET()}`);
+      console.error(`${RED()}[CP016] The "template" command is not yet implemented.${RESET()}`);
       process.exit(1);
     }
 
@@ -1430,7 +1511,7 @@ function main() {
         handleAuthLogin();
         process.exit(0);
       }
-      console.error(`${RED()}Unknown auth subcommand: "${subCmd || ""}". Use: codepliant auth login${RESET()}`);
+      console.error(`${RED()}[CP025] Unknown auth subcommand: "${subCmd || ""}". Use: codepliant auth login${RESET()}`);
       process.exit(1);
     }
 
@@ -1445,7 +1526,7 @@ function main() {
         handleTeamConfigInit(absProjectPath);
         process.exit(0);
       }
-      console.error(`${RED()}Unknown team-config subcommand: "${subCmd || ""}". Use: codepliant team-config init${RESET()}`);
+      console.error(`${RED()}[CP010] Unknown team-config subcommand: "${subCmd || ""}". Use: codepliant team-config init${RESET()}`);
       process.exit(1);
     }
 
@@ -1453,7 +1534,7 @@ function main() {
       runReview(absProjectPath, absOutputDir, quiet, jsonOutput, verbose).then(() => {
         process.exit(0);
       }).catch((err) => {
-        console.error(`${RED()}Error during review: ${formatError(err)}${RESET()}`);
+        console.error(`${RED()}[CP013] Error during review: ${formatError(err)}${RESET()}`);
         process.exit(1);
       });
       return;
@@ -1486,7 +1567,7 @@ function main() {
         comparePaths.push(a);
       }
       if (comparePaths.length < 2) {
-        console.error(`${RED()}Error: compare requires two project paths.${RESET()}`);
+        console.error(`${RED()}[CP014] Error: compare requires two project paths.${RESET()}`);
         console.error(`${DIM()}Usage: codepliant compare <path1> <path2>${RESET()}`);
         process.exit(1);
       }
@@ -1582,11 +1663,11 @@ function main() {
       return;
     }
 
-    console.error(`${RED()}Unknown command: "${command}"${RESET()}`);
+    console.error(`${RED()}[CP008] Unknown command: "${command}"${RESET()}`);
     console.error(`${DIM()}Run ${CYAN()}codepliant help${RESET()}${DIM()} to see available commands.${RESET()}`);
     process.exit(1);
   } catch (err) {
-    console.error(`\n${RED()}${BOLD()}Error:${RESET()} ${formatError(err)}`);
+    console.error(`\n${RED()}${BOLD()}[CP027] Error:${RESET()} ${formatError(err)}`);
     process.exit(1);
   }
 }
@@ -1870,7 +1951,7 @@ function startWatchMode(
 
         lastResult = newResult;
       } catch (err) {
-        console.error(`  ${RED()}Error during re-scan: ${formatError(err)}${RESET()}`);
+        console.error(`  ${RED()}[CP020] Error during re-scan: ${formatError(err)}${RESET()}`);
       }
     }, 500);
   }
@@ -2735,14 +2816,14 @@ function runDiff(
   if (sinceDate) {
     const changelogPath = path.join(absOutputDir, "DOCUMENT_CHANGELOG.md");
     if (!fs.existsSync(changelogPath)) {
-      console.error(`${RED()}Error: No changelog found at "${changelogPath}".${RESET()}`);
+      console.error(`${RED()}[CP022] Error: No changelog found at "${changelogPath}".${RESET()}`);
       console.error(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} first to generate documents and create a changelog.${RESET()}`);
       process.exit(1);
     }
 
     const sinceTs = new Date(sinceDate).getTime();
     if (isNaN(sinceTs)) {
-      console.error(`${RED()}Error: Invalid date "${sinceDate}". Use YYYY-MM-DD format.${RESET()}`);
+      console.error(`${RED()}[CP009] Error: Invalid date "${sinceDate}". Use YYYY-MM-DD format.${RESET()}`);
       process.exit(1);
     }
 
@@ -2789,7 +2870,7 @@ function runDiff(
   }
 
   if (!fs.existsSync(absOutputDir)) {
-    console.error(`${RED()}Error: Output directory "${absOutputDir}" does not exist.${RESET()}`);
+    console.error(`${RED()}[CP006] Error: Output directory "${absOutputDir}" does not exist.${RESET()}`);
     console.error(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} first to generate documents.${RESET()}`);
     process.exit(1);
   }
@@ -3022,7 +3103,7 @@ function runNotify(
       process.exit(1);
     }
   }).catch((err) => {
-    console.error(`${RED()}Notification error: ${formatError(err)}${RESET()}`);
+    console.error(`${RED()}[CP017] Notification error: ${formatError(err)}${RESET()}`);
     process.exit(1);
   });
 }
@@ -3039,7 +3120,7 @@ function runFix(
   const issue = args[1];
 
   if (!issue) {
-    console.error(`\n${RED()}${BOLD()}Error:${RESET()} Please specify an issue to fix.\n`);
+    console.error(`\n${RED()}${BOLD()}[CP018] Error:${RESET()} Please specify an issue to fix.\n`);
     console.log(`${BOLD()}Available fixes:${RESET()}`);
     console.log(`  ${CYAN()}codepliant fix missing-dpo${RESET()}       Set up DPO information`);
     console.log(`  ${CYAN()}codepliant fix stale-docs${RESET()}        Regenerate all documents`);
@@ -3139,7 +3220,7 @@ function runFix(
     process.exit(0);
   }
 
-  console.error(`${RED()}Unknown fix issue: "${issue}"${RESET()}`);
+  console.error(`${RED()}[CP018] Unknown fix issue: "${issue}"${RESET()}`);
   console.error(`${DIM()}Available: missing-dpo, stale-docs, missing-consent${RESET()}`);
   process.exit(1);
 }
@@ -3449,7 +3530,7 @@ function runHook(projectPath: string, args: string[]) {
     return;
   }
 
-  console.error(`${RED()}Unknown hook subcommand: "${subcommand || ""}"${RESET()}`);
+  console.error(`${RED()}[CP019] Unknown hook subcommand: "${subcommand || ""}"${RESET()}`);
   console.error(`${DIM()}Usage: codepliant hook install | codepliant hook uninstall${RESET()}`);
   process.exit(1);
 }
@@ -3476,7 +3557,7 @@ function runTemplate(projectPath: string, args: string[]) {
     return;
   }
 
-  console.error(`${RED()}Unknown template subcommand: "${subcommand || ""}"${RESET()}`);
+  console.error(`${RED()}[CP016] Unknown template subcommand: "${subcommand || ""}"${RESET()}`);
   console.error(`${DIM()}Usage: codepliant template init${RESET()}`);
   process.exit(1);
 }
@@ -4109,7 +4190,7 @@ function runExplain(absProjectPath: string, args: string[], quiet: boolean, json
   }
 
   if (nonFlags.length === 0) {
-    console.error(`${RED()}Error: Missing document argument.${RESET()}`);
+    console.error(`${RED()}[CP015] Error: Missing document argument.${RESET()}`);
     console.error(`${DIM()}Usage: codepliant explain <document> [path]${RESET()}`);
     console.error(`${DIM()}Example: codepliant explain "Privacy Policy"${RESET()}`);
     process.exit(1);
@@ -4138,7 +4219,7 @@ function runExplain(absProjectPath: string, args: string[], quiet: boolean, json
     if (jsonOutput) {
       console.log(JSON.stringify({ found: false, query: docQuery, availableDocuments: docs.map(d => d.name) }, null, 2));
     } else {
-      console.error(`${RED()}Document not found: "${docQuery}"${RESET()}\n`);
+      console.error(`${RED()}[CP015] Document not found: "${docQuery}"${RESET()}\n`);
       console.log(`${BOLD()}Available documents for this project:${RESET()}\n`);
       for (const d of docs) {
         console.log(`  ${CYAN()}*${RESET()} ${d.name} ${DIM()}(${d.filename})${RESET()}`);
@@ -4191,7 +4272,7 @@ function runWhy(absProjectPath: string, args: string[], quiet: boolean, jsonOutp
   }
 
   if (nonFlags.length === 0) {
-    console.error(`${RED()}Error: Missing service name.${RESET()}`);
+    console.error(`${RED()}[CP015] Error: Missing service name.${RESET()}`);
     console.error(`${DIM()}Usage: codepliant why <service> [path]${RESET()}`);
     console.error(`${DIM()}Example: codepliant why stripe${RESET()}`);
     process.exit(1);
@@ -4223,7 +4304,7 @@ function runWhy(absProjectPath: string, args: string[], quiet: boolean, jsonOutp
         detectedServices: scanResult.services.map((s) => s.name),
       }, null, 2));
     } else {
-      console.error(`${RED()}Service not found: "${serviceQuery}"${RESET()}\n`);
+      console.error(`${RED()}[CP015] Service not found: "${serviceQuery}"${RESET()}\n`);
       console.log(`${BOLD()}Detected services in this project:${RESET()}\n`);
       for (const s of scanResult.services) {
         console.log(`  ${CYAN()}*${RESET()} ${s.name} ${DIM()}(${s.category})${RESET()}`);
@@ -4288,7 +4369,7 @@ function runIgnore(absProjectPath: string, args: string[], quiet: boolean, jsonO
   }
 
   if (nonFlags.length === 0) {
-    console.error(`${RED()}Error: Missing service name.${RESET()}`);
+    console.error(`${RED()}[CP015] Error: Missing service name.${RESET()}`);
     console.error(`${DIM()}Usage: codepliant ignore <service> [path]${RESET()}`);
     console.error(`${DIM()}Example: codepliant ignore zod${RESET()}`);
     process.exit(1);
@@ -4482,11 +4563,11 @@ function buildDocExplanation(
 function runCompare(path1: string, path2: string, quiet: boolean, jsonOutput: boolean) {
   for (const p of [path1, path2]) {
     if (!fs.existsSync(p)) {
-      console.error(`${RED()}Error: "${p}" does not exist.${RESET()}`);
+      console.error(`${RED()}[CP006] Error: "${p}" does not exist.${RESET()}`);
       process.exit(1);
     }
     if (!fs.statSync(p).isDirectory()) {
-      console.error(`${RED()}Error: "${p}" is not a directory.${RESET()}`);
+      console.error(`${RED()}[CP007] Error: "${p}" is not a directory.${RESET()}`);
       process.exit(1);
     }
   }
@@ -4639,7 +4720,7 @@ function runSignatures(absProjectPath: string, args: string[]) {
   if (subcommand === "import") {
     const importFile = args[2];
     if (!importFile) {
-      console.error(`${RED()}Error: Please specify a file to import.${RESET()}`);
+      console.error(`${RED()}[CP015] Error: Please specify a file to import.${RESET()}`);
       console.error(`${DIM()}Usage: codepliant signatures import <file.json>${RESET()}`);
       process.exit(1);
     }
@@ -4652,12 +4733,12 @@ function runSignatures(absProjectPath: string, args: string[]) {
       console.log();
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      console.error(`${RED()}Error: ${message}${RESET()}`);
+      console.error(`${RED()}[CP021] Error: ${message}${RESET()}`);
       process.exit(1);
     }
     process.exit(0);
   }
-  console.error(`${RED()}Unknown signatures subcommand: "${subcommand}"${RESET()}`);
+  console.error(`${RED()}[CP008] Unknown signatures subcommand: "${subcommand}"${RESET()}`);
   console.error(`${DIM()}Use: codepliant signatures list|export|import${RESET()}`);
   process.exit(1);
 }
@@ -5194,7 +5275,7 @@ function runPublish(
   apiFlag: boolean,
 ) {
   if (!apiFlag) {
-    console.error(`${RED()}Error: --api flag is required.${RESET()}`);
+    console.error(`${RED()}[CP015] Error: --api flag is required.${RESET()}`);
     console.error(`${DIM()}Usage: codepliant publish --api [path]${RESET()}`);
     process.exit(1);
   }
@@ -5307,7 +5388,7 @@ function runSchedule(
     process.exit(0);
   }
 
-  console.error(`${RED()}Unknown schedule subcommand: "${subCommand || ""}". Use: install, uninstall, status${RESET()}`);
+  console.error(`${RED()}[CP024] Unknown schedule subcommand: "${subCommand || ""}". Use: install, uninstall, status${RESET()}`);
   process.exit(1);
 }
 
@@ -5374,7 +5455,7 @@ function runBilling(
     process.exit(0);
   }
 
-  console.error(`${RED()}Unknown billing subcommand: "${subCommand || ""}". Use: status, usage, portal${RESET()}`);
+  console.error(`${RED()}[CP026] Unknown billing subcommand: "${subCommand || ""}". Use: status, usage, portal${RESET()}`);
   process.exit(1);
 }
 
@@ -6197,7 +6278,7 @@ function runArchive(absProjectPath: string, absOutputDir: string, quiet: boolean
   if (!quiet) printBanner();
 
   if (!fs.existsSync(absOutputDir)) {
-    console.error(`${RED()}Error: Output directory "${absOutputDir}" does not exist.${RESET()}`);
+    console.error(`${RED()}[CP006] Error: Output directory "${absOutputDir}" does not exist.${RESET()}`);
     console.error(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} first to generate documents.${RESET()}`);
     process.exit(1);
   }
