@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "340.0.0";
+const VERSION = "350.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -100,6 +100,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}fix${RESET()}             Auto-fix common compliance issues
   ${CYAN()}todo${RESET()}            Show all actionable compliance items as a todo list
   ${CYAN()}benchmark${RESET()}       Compare your compliance score against industry average
+  ${CYAN()}search${RESET()}          Search across all generated documents
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -837,6 +838,24 @@ ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant summary ./my-app${RESET()}           Summary for a specific project
   ${CYAN()}codepliant summary --json${RESET()}             JSON output for scripts
 `,
+
+  search: `${BOLD()}codepliant search${RESET()} <keyword> [options]
+
+Search across all generated compliance documents for a keyword.
+Shows matching lines with file names and line numbers.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Document directory to search (default: ./legal)
+  ${DIM()}--json${RESET()}                Output results as JSON
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant search email${RESET()}                Search for 'email' in all docs
+  ${CYAN()}codepliant search "data retention"${RESET()}     Search for a phrase
+  ${CYAN()}codepliant search GDPR --json${RESET()}          JSON output for scripting
+  ${CYAN()}codepliant search cookie -o ./docs${RESET()}     Search in custom output dir
+`,
   };
 }
 
@@ -1166,7 +1185,7 @@ function main() {
         console.error(`${RED()}Error: Invalid port number. Use a value between 1 and 65535.${RESET()}`);
         process.exit(1);
       }
-    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show") && !(command === "fix" && (arg === "missing-dpo" || arg === "stale-docs" || arg === "missing-consent")) && !(command === "preview")) {
+    } else if (!arg.startsWith("-") && !(command === "hook" && (arg === "install" || arg === "uninstall")) && !(command === "schedule" && (arg === "install" || arg === "uninstall" || arg === "status")) && !(command === "billing" && (arg === "status" || arg === "usage" || arg === "portal")) && !(command === "template" && arg === "init") && !(command === "team-config" && arg === "init") && !(command === "auth" && arg === "login") && !(command === "config" && arg === "show") && !(command === "fix" && (arg === "missing-dpo" || arg === "stale-docs" || arg === "missing-consent")) && !(command === "preview") && !(command === "search")) {
       projectPath = arg;
     }
   }
@@ -1555,6 +1574,11 @@ function main() {
 
     if (command === "reset") {
       runReset(absProjectPath, absOutputDir, args, quiet, forceFlag);
+      return;
+    }
+
+    if (command === "search") {
+      runSearch(absOutputDir, args, quiet);
       return;
     }
 
@@ -5564,6 +5588,8 @@ const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
   "COMPLIANCE_SUMMARY_EMAIL.md": "high",
   "COMPLIANCE_GAP_ANALYSIS.md": "high",
   "KEY_PERSON_RISK_ASSESSMENT.md": "medium",
+  "COMPLIANCE_BUDGET_TEMPLATE.md": "medium",
+  "INCIDENT_SEVERITY_MATRIX.md": "high",
 };
 
 function runCompleteness(
@@ -5665,6 +5691,13 @@ const VERSION_HISTORY: Array<{
   version: string;
   docs: Array<{ filename: string; name: string; description: string }>;
 }> = [
+  {
+    version: "350.0.0",
+    docs: [
+      { filename: "COMPLIANCE_BUDGET_TEMPLATE.md", name: "Compliance Budget Template", description: "Estimated annual costs for compliance program — tools, legal, training, audit, insurance — scaled by detected services and jurisdictions" },
+      { filename: "INCIDENT_SEVERITY_MATRIX.md", name: "Incident Severity Matrix", description: "P0-P4 severity levels with response times, escalation paths, communication requirements, and per-service impact assessment" },
+    ],
+  },
   {
     version: "330.0.0",
     docs: [
@@ -7127,6 +7160,174 @@ function runReset(
       }
     },
   );
+}
+
+function runSearch(absOutputDir: string, args: string[], quiet: boolean) {
+  // Extract keyword from args (first non-flag arg after "search")
+  let keyword = "";
+  let contextLines = 1;
+  for (let i = 1; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === "--context" || arg === "-C") {
+      const n = parseInt(args[++i], 10);
+      if (!isNaN(n) && n >= 0) contextLines = n;
+    } else if (arg === "--json") {
+      // handled elsewhere
+    } else if (arg === "--quiet" || arg === "-q") {
+      // handled elsewhere
+    } else if (arg === "--no-color") {
+      // handled elsewhere
+    } else if (arg === "--output" || arg === "-o") {
+      i++; // skip value
+    } else if (!arg.startsWith("-")) {
+      keyword = arg;
+    }
+  }
+
+  if (!keyword) {
+    console.error(`${RED()}Usage: codepliant search <keyword>${RESET()}`);
+    console.error(`${DIM()}Example: codepliant search email${RESET()}`);
+    process.exit(1);
+  }
+
+  if (!fs.existsSync(absOutputDir)) {
+    console.error(
+      `${RED()}No documents found at "${absOutputDir}".${RESET()}`
+    );
+    console.error(
+      `${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} first to generate documents.${RESET()}`
+    );
+    process.exit(1);
+  }
+
+  const files = fs
+    .readdirSync(absOutputDir)
+    .filter(
+      (f: string) => f.endsWith(".md") || f.endsWith(".json") || f.endsWith(".txt")
+    );
+
+  if (files.length === 0) {
+    console.error(
+      `${RED()}No documents found in "${absOutputDir}".${RESET()}`
+    );
+    process.exit(1);
+  }
+
+  const keywordLower = keyword.toLowerCase();
+  let totalMatches = 0;
+  let docMatches = 0;
+  const results: Array<{
+    file: string;
+    matches: Array<{ lineNum: number; line: string; context: string[] }>;
+  }> = [];
+
+  for (const file of files) {
+    const filePath = path.join(absOutputDir, file);
+    let content: string;
+    try {
+      content = fs.readFileSync(filePath, "utf-8");
+    } catch {
+      continue;
+    }
+
+    const lines = content.split("\n");
+    const fileMatches: Array<{
+      lineNum: number;
+      line: string;
+      context: string[];
+    }> = [];
+
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].toLowerCase().includes(keywordLower)) {
+        const ctxStart = Math.max(0, i - contextLines);
+        const ctxEnd = Math.min(lines.length - 1, i + contextLines);
+        const context: string[] = [];
+        for (let j = ctxStart; j <= ctxEnd; j++) {
+          if (j !== i) context.push(lines[j]);
+        }
+        fileMatches.push({
+          lineNum: i + 1,
+          line: lines[i],
+          context,
+        });
+        totalMatches++;
+      }
+    }
+
+    if (fileMatches.length > 0) {
+      docMatches++;
+      results.push({ file, matches: fileMatches });
+    }
+  }
+
+  const jsonOutput = args.includes("--json");
+
+  if (jsonOutput) {
+    console.log(
+      JSON.stringify(
+        {
+          keyword,
+          totalMatches,
+          documentsMatched: docMatches,
+          documentsSearched: files.length,
+          results: results.map((r) => ({
+            file: r.file,
+            matchCount: r.matches.length,
+            matches: r.matches.map((m) => ({
+              line: m.lineNum,
+              text: m.line.trim(),
+            })),
+          })),
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  if (!quiet) {
+    console.log("");
+  }
+
+  if (totalMatches === 0) {
+    console.log(
+      `${YELLOW()}No matches for '${keyword}' in ${files.length} documents.${RESET()}`
+    );
+    return;
+  }
+
+  console.log(
+    `${GREEN()}${BOLD()}Found '${keyword}' in ${docMatches} document${docMatches !== 1 ? "s" : ""} (${totalMatches} match${totalMatches !== 1 ? "es" : ""})${RESET()}`
+  );
+  console.log("");
+
+  for (const result of results) {
+    console.log(
+      `${CYAN()}${BOLD()}${result.file}${RESET()} ${DIM()}(${result.matches.length} match${result.matches.length !== 1 ? "es" : ""})${RESET()}`
+    );
+
+    const maxShow = 5;
+    const shown = result.matches.slice(0, maxShow);
+    for (const match of shown) {
+      // Highlight the keyword in the line
+      const highlighted = match.line.replace(
+        new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi"),
+        `${YELLOW()}${BOLD()}$1${RESET()}`
+      );
+      console.log(
+        `  ${DIM()}L${match.lineNum}:${RESET()} ${highlighted.trim()}`
+      );
+    }
+
+    if (result.matches.length > maxShow) {
+      console.log(
+        `  ${DIM()}... and ${result.matches.length - maxShow} more match${result.matches.length - maxShow !== 1 ? "es" : ""}${RESET()}`
+      );
+    }
+
+    console.log("");
+  }
 }
 
 main();

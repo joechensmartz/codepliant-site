@@ -113,6 +113,8 @@ import { generateComplianceGapAnalysis } from "./compliance-gap-analysis.js";
 import { generateKeyPersonRiskAssessment } from "./key-person-risk.js";
 import { generateRegulatoryReadinessScorecard } from "./regulatory-readiness-scorecard.js";
 import { generateDataLifecycleDiagram } from "./data-lifecycle-diagram.js";
+import { generateComplianceBudgetTemplate } from "./compliance-budget-template.js";
+import { generateIncidentSeverityMatrix } from "./incident-severity-matrix.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1145,6 +1147,20 @@ export function generateDocuments(
       content: dataLifecycle,
     });
   }
+
+  // Compliance Budget Template — estimated costs for compliance program
+  docs.push({
+    name: "Compliance Budget Template",
+    filename: "COMPLIANCE_BUDGET_TEMPLATE.md",
+    content: generateComplianceBudgetTemplate(docScan, ctx),
+  });
+
+  // Incident Severity Matrix — P0-P4 severity levels with response times and escalation
+  docs.push({
+    name: "Incident Severity Matrix",
+    filename: "INCIDENT_SEVERITY_MATRIX.md",
+    content: generateIncidentSeverityMatrix(docScan, ctx),
+  });
 
   // Compliance Certificate — self-attestation certificate (generated after all other docs)
   // Note: score is not available at this point; it will show 0/N/A.
