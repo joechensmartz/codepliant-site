@@ -78,6 +78,9 @@ import { generateComplianceCertificate } from "./compliance-certificate.js";
 import { generateResponsibleDisclosurePolicy } from "./responsible-disclosure.js";
 import { generateApiTermsOfUse } from "./api-terms.js";
 import { generateOpenSourceNotice } from "./open-source-notice.js";
+import { generateThirdPartyCookieNotice } from "./third-party-cookie-notice.js";
+import { generateDataPortabilityGuide } from "./data-portability-guide.js";
+import { generateAITrainingDataNotice } from "./ai-training-data-notice.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -764,6 +767,36 @@ export function generateDocuments(
       name: "Open Source Notice",
       filename: "OPEN_SOURCE_NOTICE.md",
       content: openSourceNotice,
+    });
+  }
+
+  // Third-Party Cookie Notice — per-provider cookie notice with opt-out URLs
+  const thirdPartyCookieNotice = generateThirdPartyCookieNotice(docScan, ctx);
+  if (thirdPartyCookieNotice) {
+    docs.push({
+      name: "Third-Party Cookie Notice",
+      filename: "THIRD_PARTY_COOKIE_NOTICE.md",
+      content: thirdPartyCookieNotice,
+    });
+  }
+
+  // Data Portability Guide — GDPR Art. 20 right to data portability
+  const dataPortabilityGuide = generateDataPortabilityGuide(docScan, ctx);
+  if (dataPortabilityGuide) {
+    docs.push({
+      name: "Data Portability Guide",
+      filename: "DATA_PORTABILITY_GUIDE.md",
+      content: dataPortabilityGuide,
+    });
+  }
+
+  // AI Training Data Notice — when AI services detected, disclose training data usage
+  const aiTrainingDataNotice = generateAITrainingDataNotice(docScan, ctx);
+  if (aiTrainingDataNotice) {
+    docs.push({
+      name: "AI Training Data Notice",
+      filename: "AI_TRAINING_DATA_NOTICE.md",
+      content: aiTrainingDataNotice,
     });
   }
 

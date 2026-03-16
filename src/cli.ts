@@ -33,7 +33,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "141.0.0";
+const VERSION = "160.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -87,9 +87,12 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}lint${RESET()}            Check existing docs for completeness
   ${CYAN()}diff${RESET()}            Show changes since last generation
   ${CYAN()}dashboard${RESET()}       Show compliance status dashboard
+  ${CYAN()}status${RESET()}          Alias for dashboard
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
+  ${CYAN()}generate${RESET()}        Alias for go
+  ${CYAN()}update${RESET()}          Re-scan + regenerate, show diff
   ${CYAN()}generate-all${RESET()}    Generate docs for all projects under a directory
   ${CYAN()}report${RESET()}          Generate comprehensive compliance report
   ${CYAN()}env${RESET()}             Generate .env.example from scan
@@ -546,6 +549,37 @@ ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant billing usage${RESET()}                     View feature usage
   ${CYAN()}codepliant billing portal${RESET()}                    Open billing portal
 `,
+
+  update: `${BOLD()}codepliant update${RESET()} [path] [options]
+
+Re-scan the project, regenerate compliance documents, and show what changed.
+
+Combines scan + diff + go in a single command: detects changes in your codebase,
+shows a diff of what documents will be updated, then writes the updated documents.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
+  ${DIM()}--format <fmt>${RESET()}         Output format: markdown, html, pdf, json, notion, confluence, wiki, all
+  ${DIM()}--json${RESET()}                Output results as JSON
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--verbose, -v${RESET()}         Show per-scanner timing breakdown
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant update${RESET()}                      Re-scan and update documents
+  ${CYAN()}codepliant update ./my-app${RESET()}              Update a specific project
+  ${CYAN()}codepliant update --format html${RESET()}         Update in HTML format
+`,
+
+  status: `${BOLD()}codepliant status${RESET()} [path] [options]
+
+Alias for ${CYAN()}codepliant dashboard${RESET()}. Show compliance status dashboard.
+`,
+
+  generate: `${BOLD()}codepliant generate${RESET()} [path] [options]
+
+Alias for ${CYAN()}codepliant go${RESET()}. Scan + generate compliance documents.
+`,
   };
 }
 
@@ -752,7 +786,13 @@ function main() {
   // Initialize color support before anything prints
   initColor(args);
 
-  const command = args[0];
+  // Command aliases
+  const COMMAND_ALIASES: Record<string, string> = {
+    status: "dashboard",
+    generate: "go",
+  };
+
+  const command = COMMAND_ALIASES[args[0]] || args[0];
 
   // --version / -V anywhere in args
   if (args.includes("--version") || args.includes("-V")) {
@@ -1102,6 +1142,11 @@ function main() {
     if (command === "billing") {
       const subCmd = args[1];
       runBilling(absProjectPath, subCmd, quiet);
+      return;
+    }
+
+    if (command === "update") {
+      runUpdate(absProjectPath, absOutputDir, quiet, jsonOutput, formatFlag, verbose);
       return;
     }
 
@@ -2036,6 +2081,122 @@ function runDiff(
   console.log();
   console.log(`${YELLOW()}Documents are out of date.${RESET()} Run ${CYAN()}codepliant go${RESET()} to regenerate.\n`);
   process.exit(1);
+}
+
+// --- `codepliant update` command ---
+
+function runUpdate(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+  formatFlag?: OutputFormat,
+  verbose: boolean = false,
+) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const outputFormat = formatFlag || getOutputFormat(config);
+  const plugins = config.plugins ? loadPlugins(absProjectPath, config.plugins) : [];
+
+  // Step 1: Show diff (before regeneration)
+  const existingDocs = fs.existsSync(absOutputDir);
+
+  if (!quiet) {
+    console.log(`${BOLD()}Step 1: Scanning project...${RESET()}\n`);
+  }
+
+  const { result, durationMs, timings } = scanWithProgress(absProjectPath, quiet || jsonOutput, verbose, plugins);
+
+  if (!quiet && !jsonOutput) {
+    console.log(`\n  ${DIM()}Scanned in ${formatDuration(durationMs)}${RESET()}\n`);
+  }
+
+  if (verbose && timings && !quiet && !jsonOutput) {
+    printTimings(timings, durationMs);
+  }
+
+  const docs = generateDocuments(result, config, plugins);
+
+  // Step 2: Show diff if existing docs present
+  if (existingDocs) {
+    const diff = diffDocuments(docs, absOutputDir, outputFormat);
+
+    if (!quiet) {
+      console.log(`\n${BOLD()}Step 2: Changes detected:${RESET()}\n`);
+    }
+
+    if (!diff.hasChanges) {
+      if (!quiet) {
+        console.log(`  ${GREEN()}All documents are already up to date.${RESET()}\n`);
+      }
+      if (jsonOutput) {
+        console.log(JSON.stringify({ hasChanges: false, documentsWritten: 0 }, null, 2));
+      }
+      process.exit(0);
+    }
+
+    const changedFilenames = new Set(diff.changes.map(ch => ch.filename));
+    for (const doc of docs) {
+      if (!changedFilenames.has(doc.filename)) {
+        if (!quiet) console.log(`  ${DIM()}= ${doc.filename} (no changes)${RESET()}`);
+      }
+    }
+
+    for (const change of diff.changes) {
+      switch (change.type) {
+        case "added":
+          if (!quiet) console.log(`  ${GREEN()}+ ${change.filename}${RESET()} ${DIM()}(new)${RESET()}`);
+          break;
+        case "updated":
+          if (!quiet) console.log(`  ${YELLOW()}~ ${change.filename}${RESET()}`);
+          break;
+        case "removed":
+          if (!quiet) console.log(`  ${RED()}- ${change.filename}${RESET()} ${DIM()}(removed)${RESET()}`);
+          break;
+      }
+      for (const detail of change.details) {
+        if (!quiet) console.log(`    ${DIM()}- ${detail}${RESET()}`);
+      }
+    }
+  } else {
+    if (!quiet) {
+      console.log(`\n${BOLD()}Step 2: No existing documents — generating fresh set${RESET()}\n`);
+    }
+  }
+
+  // Step 3: Write updated documents
+  if (!quiet) {
+    console.log(`\n${BOLD()}Step 3: Writing updated documents...${RESET()}\n`);
+  }
+
+  const writtenFiles = writeDocumentsInFormat(docs, absOutputDir, outputFormat, config, result);
+
+  // Append changelog
+  const changelogPath = appendChangelog(absOutputDir, diffDocuments(docs, absOutputDir, outputFormat));
+  if (changelogPath) {
+    writtenFiles.push(changelogPath);
+  }
+
+  for (const file of writtenFiles) {
+    const relativePath = path.relative(absProjectPath, file);
+    if (!quiet) console.log(`  ${GREEN()}✓${RESET()} ${relativePath}`);
+  }
+
+  if (!quiet) {
+    console.log();
+    console.log(`${GREEN()}${BOLD()}Update complete.${RESET()} ${writtenFiles.length} document(s) written to ${path.relative(absProjectPath, absOutputDir)}/\n`);
+  }
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      hasChanges: true,
+      documentsWritten: writtenFiles.length,
+      files: writtenFiles.map(f => path.relative(absProjectPath, f)),
+    }, null, 2));
+  }
+
+  process.exit(0);
 }
 
 // --- `codepliant notify` command ---

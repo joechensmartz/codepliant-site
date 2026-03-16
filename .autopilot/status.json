@@ -1,26 +1,57 @@
 {
   "project": "codepliant",
-  "version": "50.0.0",
-  "phase": "v50.0-stable",
-  "lastUpdated": "2026-03-15T23:59:00Z",
+  "version": "160.0.0",
+  "logicalVersion": "v160",
+  "phase": "pre-launch",
+  "lastUpdated": "2026-03-16T12:00:00Z",
   "buildStatus": "passing",
-  "testStatus": "564/564 passing",
-  "testSuites": 100,
+  "testStatus": "727/727 passing",
+  "testSuites": 124,
+  "testFiles": 67,
+  "e2eTests": 21,
+  "sourceFiles": 155,
+  "scannerModules": 48,
+  "generatorModules": 58,
+  "documentTypes": "53+",
   "precision": "97.8%",
-  "ecosystems": "10+",
-  "documentTypes": "25+",
+  "repoDetectionRate": "74-83%",
+  "ecosystems": "15+",
   "outputFormats": "10+",
+  "cliCommands": 37,
   "commands": [
     "scan", "go", "check", "diff", "badge", "hook", "init",
     "page", "dashboard", "report", "env", "serve", "scan-all",
-    "generate-all", "notify", "template", "wizard", "version", "help"
+    "generate-all", "notify", "template", "wizard", "version", "help",
+    "signatures", "export", "doctor", "auth", "audit-trail",
+    "team-config", "upgrade", "activate", "deactivate", "onboard",
+    "review", "explain", "compare", "publish", "schedule", "billing",
+    "count", "update"
   ],
+  "commandAliases": {
+    "status": "dashboard",
+    "generate": "go"
+  },
+  "website": {
+    "framework": "Next.js",
+    "pages": 14,
+    "sourceFiles": 202
+  },
+  "research": {
+    "competitorAnalysis": "complete",
+    "euAiAct": "tracked (Aug 2026 deadline)",
+    "coloradoAiAct": "tracked (Jun 30 2026 deadline)",
+    "productStrategy": "freemium — free scan, paid compliance page/badge"
+  },
+  "realWorldTesting": {
+    "round1": "99 repos, 82.8% detection, avg 5.4 services",
+    "round2": "87/100 repos, 74% detection (SaaS-focused)"
+  },
   "completedFeatures": [
     "3-layer scanner: package.json + source imports + .env",
-    "10+ ecosystems: JS/TS, Python, Go, Ruby, Elixir, PHP, Java, Rust, .NET, Django",
-    "25+ document types: Privacy Policy, ToS, AI Disclosure, Cookie Policy, DPA, Security Policy, PIA, SOC 2, DSAR Guide, AI Model Card, and more",
+    "15+ ecosystems: JS/TS, Python, Go, Ruby, Elixir, PHP, Java, Rust, .NET, Django, Drizzle, Mongoose, TypeORM, SQLAlchemy",
+    "53+ document types: Privacy Policy, ToS, AI Disclosure, Cookie Policy, DPA, Security Policy, PIA, SOC 2, BCP, DR, ISMS, and more",
     "10+ output formats: Markdown, HTML, PDF, JSON, Notion, Confluence, compliance page, badge, widget, report",
-    "Compliance scoring engine (100pt scale, A-F grades)",
+    "Compliance scoring engine (100pt scale, A-F grades, multi-regulation)",
     "HTTP API server (serve command)",
     "Multi-project scan-all / generate-all with project discovery",
     "Slack webhook notifications",
@@ -30,19 +61,38 @@
     "GitHub Action PR bot with compliance score",
     "Pre-commit hook support (husky/lefthook/raw git hooks)",
     "Cookie consent banner with GPC, dark mode",
-    "EU AI Act compliance (AI Disclosure + AI Act Checklist)",
+    "EU AI Act compliance (AI Disclosure + AI Act Checklist + AI Governance + AI Training Data Notice)",
     "HIPAA, PCI DSS, COPPA, CCPA/CPRA, UK GDPR detection",
-    "Vulnerability scanner, OpenAPI scanning, infra scanning",
-    "ORM scanning: TypeORM, Sequelize, Prisma, SQLAlchemy, Django models",
+    "48 scanner modules including secrets, CORS, auth, CI/CD, cloud, vulnerability, file upload, caching, websocket, payment, logging",
+    "ORM scanning: TypeORM, Sequelize, Prisma, SQLAlchemy, Django, Mongoose, Drizzle, Go structs",
     "GraphQL schema scanning, API route scanning, tracking pixel detection",
     "Interactive wizard, init command, config system",
-    "564 tests across 100 suites, all passing",
-    "97.8% detection precision (88/90 true positives across 7 repos)"
+    "Stripe checkout integration (upgrade/activate/deactivate)",
+    "Onboarding wizard, dashboard v2",
+    "Cloud features: SSO auth, audit trail, team config, scheduling, billing",
+    "AI document review",
+    "Licensing system with feature gating",
+    "i18n support",
+    "Community signatures repo with import/export",
+    "GitHub Wiki export",
+    "Third-party cookie notice with per-provider opt-out URLs",
+    "Data portability guide (GDPR Art. 20) with per-service export instructions",
+    "AI training data notice with per-provider training policies and opt-out",
+    "CLI aliases: status (dashboard), generate (go)",
+    "codepliant update command (re-scan + regenerate + diff)",
+    "727 tests across 124 suites, all passing",
+    "21 Playwright e2e tests",
+    "97.8% detection precision, 74-83% real-world detection rate"
+  ],
+  "knownIssues": [
+    "vitest config exists but tests use node:test — running vitest fails",
+    "Not yet published to npm"
   ],
   "blockers": [],
   "nextUp": [
     "npm publish",
-    "GitHub repo creation",
-    "Product Hunt launch"
+    "CI/CD pipeline",
+    "Colorado AI Act template (deadline June 30)",
+    "Product Hunt / Show HN launch"
   ]
 }
