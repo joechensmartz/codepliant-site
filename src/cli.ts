@@ -23,6 +23,7 @@ import { listAllSignatures, exportSignatures, importSignatures } from "./communi
 import { writeGithubWiki } from "./output/github-wiki.js";
 import { reviewDocuments, formatReviewResults, isReviewAvailable, type AIReviewConfig } from "./ai/review.js";
 import { lintDocuments } from "./lint.js";
+import { validateDocuments, type ValidateResult } from "./validate.js";
 
 import { handleAuthLogin } from "./cloud/sso.js";
 import { handleAuditTrail, logAuditEntry } from "./cloud/audit-trail.js";
@@ -33,7 +34,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "170.0.0";
+const VERSION = "180.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -85,6 +86,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}check${RESET()}           Quick compliance pass/fail check
   ${CYAN()}count${RESET()}           Quick stats: services, documents, score
   ${CYAN()}lint${RESET()}            Check existing docs for completeness
+  ${CYAN()}validate${RESET()}        Validate all generated docs for completeness
   ${CYAN()}diff${RESET()}            Show changes since last generation
   ${CYAN()}dashboard${RESET()}       Show compliance status dashboard
   ${CYAN()}status${RESET()}          Alias for dashboard
@@ -247,6 +249,24 @@ ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant lint${RESET()}                     Lint current project
   ${CYAN()}codepliant lint --json${RESET()}               JSON output for CI
   ${CYAN()}codepliant lint -o ./docs${RESET()}             Lint a custom output dir
+`,
+
+  validate: `${BOLD()}codepliant validate${RESET()} [path] [options]
+
+Validate ALL generated documents for completeness.
+Checks each section has content (not just headers).
+Reports per-document section completion.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Document directory to validate (default: ./legal)
+  ${DIM()}--json${RESET()}                Output results as JSON
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant validate${RESET()}                  Validate current project docs
+  ${CYAN()}codepliant validate --json${RESET()}            JSON output for CI
+  ${CYAN()}codepliant validate -o ./docs${RESET()}         Validate a custom output dir
 `,
 
   diff: `${BOLD()}codepliant diff${RESET()} [path] [options]
@@ -1094,6 +1114,11 @@ function main() {
 
     if (command === "lint") {
       runLint(absProjectPath, outputDir, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "validate") {
+      runValidate(absProjectPath, absOutputDir, quiet, jsonOutput);
       return;
     }
 
@@ -2184,6 +2209,60 @@ function runLint(
   }
 
   process.exit(result.passed ? 0 : 1);
+}
+
+// --- `codepliant validate` command ---
+
+function runValidate(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+) {
+  if (!quiet && !jsonOutput) {
+    printBanner();
+    console.log(`${BOLD()}Validating generated compliance documents...${RESET()}\n`);
+  }
+
+  const result = validateDocuments(absOutputDir);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify(result, null, 2));
+    process.exit(result.allComplete ? 0 : 1);
+  }
+
+  if (!quiet) {
+    console.log(`  ${DIM()}Documents found: ${result.documents.length}${RESET()}\n`);
+  }
+
+  if (result.documents.length === 0) {
+    console.log(`${YELLOW()}No documents found in ${absOutputDir}.${RESET()}`);
+    console.log(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to generate documents first.${RESET()}\n`);
+    process.exit(1);
+  }
+
+  for (const doc of result.documents) {
+    const complete = doc.completeSections === doc.totalSections;
+    const icon = complete ? `${GREEN()}✓${RESET()}` : `${YELLOW()}⚠${RESET()}`;
+    console.log(`  ${icon} ${doc.name}: ${doc.completeSections}/${doc.totalSections} sections complete`);
+
+    if (!quiet && doc.emptySections.length > 0) {
+      for (const section of doc.emptySections) {
+        console.log(`    ${DIM()}${RED()}Missing content:${RESET()} ${DIM()}${section}${RESET()}`);
+      }
+    }
+  }
+
+  console.log();
+
+  if (result.allComplete) {
+    console.log(`${GREEN()}${BOLD()}PASS${RESET()} All ${result.documents.length} document(s) are complete.\n`);
+  } else {
+    const incomplete = result.documents.filter((d) => d.completeSections < d.totalSections).length;
+    console.log(`${YELLOW()}${BOLD()}INCOMPLETE${RESET()} ${incomplete} document(s) have sections without content.\n`);
+  }
+
+  process.exit(result.allComplete ? 0 : 1);
 }
 
 // --- `codepliant diff` command ---

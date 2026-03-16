@@ -1,0 +1,34 @@
+{
+  "version": "180.0.0",
+  "previousVersion": "170.0.0",
+  "batch": "v171-180",
+  "status": "complete",
+  "timestamp": "2026-03-16",
+  "summary": "Quality polish — executive dashboard, environment scanner, validate command, footer standardization",
+  "changes": {
+    "newFiles": [
+      "src/generator/executive-dashboard.ts",
+      "src/scanner/environment-scanner.ts",
+      "src/validate.ts"
+    ],
+    "modifiedFiles": [
+      "package.json",
+      "src/cli.ts",
+      "src/generator/index.ts"
+    ]
+  },
+  "features": [
+    "Executive Dashboard generator (EXECUTIVE_DASHBOARD.md) — C-suite compliance overview",
+    "Environment scanner — detect production/staging/development from env vars",
+    "codepliant validate command — check all docs for section completeness",
+    "Standardized footer with version, date, disclaimer, and related doc links"
+  ],
+  "metrics": {
+    "totalTests": 756,
+    "testsPassing": 756,
+    "testsFailing": 0,
+    "documentsGenerated": 66,
+    "servicesSupported": 85,
+    "ecosystems": "10+"
+  }
+}

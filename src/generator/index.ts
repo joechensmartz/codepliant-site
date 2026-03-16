@@ -83,6 +83,7 @@ import { generateDataPortabilityGuide } from "./data-portability-guide.js";
 import { generateAITrainingDataNotice } from "./ai-training-data-notice.js";
 import { generateEmployeeHandbookPrivacySection } from "./employee-handbook-privacy.js";
 import { generateVendorOnboardingChecklist } from "./vendor-onboarding-checklist.js";
+import { generateExecutiveDashboard } from "./executive-dashboard.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -819,6 +820,16 @@ export function generateDocuments(
       name: "Vendor Onboarding Checklist",
       filename: "VENDOR_ONBOARDING_CHECKLIST.md",
       content: vendorOnboardingChecklist,
+    });
+  }
+
+  // Executive Dashboard — one-page C-suite compliance overview
+  const executiveDashboard = generateExecutiveDashboard(docScan, ctx);
+  if (executiveDashboard) {
+    docs.push({
+      name: "Executive Dashboard",
+      filename: "EXECUTIVE_DASHBOARD.md",
+      content: executiveDashboard,
     });
   }
 
