@@ -64,3 +64,24 @@ export { generateDocx, writeDocx } from "./output/docx.js";
 
 export { lintDocuments } from "./lint.js";
 export type { LintResult, LintIssue } from "./lint.js";
+
+export { reviewDocument, reviewDocuments, isReviewAvailable, formatReviewResults } from "./ai/review.js";
+export type { ReviewSuggestion, ReviewResult, AIReviewConfig } from "./ai/review.js";
+
+export { verifyServices, applyVerifications, isSuggestAvailable, formatVerifications } from "./ai/suggest.js";
+export type { ServiceVerification, SuggestResult, AISuggestConfig } from "./ai/suggest.js";
+
+export { generateRiskRegister } from "./generator/risk-register.js";
+
+export { writeGithubWiki } from "./output/github-wiki.js";
+
+export { generateTransparencyReport } from "./generator/transparency-report.js";
+
+export {
+  listAllSignatures,
+  loadCustomSignatures,
+  saveCustomSignatures,
+  exportSignatures,
+  importSignatures,
+} from "./community/signatures-repo.js";
+export type { CommunitySignature, SignatureRepo } from "./community/signatures-repo.js";

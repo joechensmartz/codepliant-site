@@ -2715,23 +2715,213 @@ function runExplain(projectPath: string, args: string[], quiet: boolean, jsonOut
 }
 
 function runCompare(path1: string, path2: string, quiet: boolean, jsonOutput: boolean) {
-  console.log("Project comparison coming soon.");
+  if (!quiet) printBanner();
+  const config1 = loadConfig(path1);
+  const config2 = loadConfig(path2);
+  const result1 = scan(path1);
+  const result2 = scan(path2);
+  if (jsonOutput) {
+    console.log(JSON.stringify({ project1: { path: path1, services: result1.services.length }, project2: { path: path2, services: result2.services.length } }, null, 2));
+  } else {
+    console.log(`${BOLD()}Comparison:${RESET()}\n`);
+    console.log(`  ${CYAN()}${path.basename(path1)}${RESET()}: ${result1.services.length} service(s)`);
+    console.log(`  ${CYAN()}${path.basename(path2)}${RESET()}: ${result2.services.length} service(s)`);
+    const names1 = new Set(result1.services.map(s => s.name));
+    const names2 = new Set(result2.services.map(s => s.name));
+    const onlyIn1 = [...names1].filter(n => !names2.has(n));
+    const onlyIn2 = [...names2].filter(n => !names1.has(n));
+    if (onlyIn1.length > 0) console.log(`\n  ${YELLOW()}Only in ${path.basename(path1)}:${RESET()} ${onlyIn1.join(", ")}`);
+    if (onlyIn2.length > 0) console.log(`\n  ${YELLOW()}Only in ${path.basename(path2)}:${RESET()} ${onlyIn2.join(", ")}`);
+    if (onlyIn1.length === 0 && onlyIn2.length === 0) console.log(`\n  ${GREEN()}Both projects detect the same services.${RESET()}`);
+    console.log();
+  }
   process.exit(0);
 }
 
-function runSignatures(projectPath: string, args: string[]) {
-  console.log("Community signatures management coming soon.");
+function runSignatures(absProjectPath: string, args: string[]) {
+  const subcommand = args[1];
+  if (!subcommand || subcommand === "list") {
+    printBanner();
+    const { builtIn, community } = listAllSignatures(absProjectPath);
+    console.log(`${BOLD()}Built-in signatures (${builtIn.length}):${RESET()}\n`);
+    for (const sig of builtIn) {
+      console.log(`  ${GREEN()}●${RESET()} ${BOLD()}${sig.name}${RESET()} ${DIM()}(${sig.category})${RESET()}`);
+      console.log(`    ${DIM()}Data: ${sig.dataCollected.join(", ")}${RESET()}`);
+    }
+    if (community.length > 0) {
+      console.log(`\n${BOLD()}Community signatures (${community.length}):${RESET()}\n`);
+      for (const sig of community) {
+        console.log(`  ${CYAN()}●${RESET()} ${BOLD()}${sig.name}${RESET()} ${DIM()}(${sig.category})${RESET()}`);
+        console.log(`    ${DIM()}Data: ${sig.dataCollected.join(", ")}${RESET()}`);
+        if (sig.author) console.log(`    ${DIM()}Author: ${sig.author}${RESET()}`);
+      }
+    } else {
+      console.log(`\n${DIM()}No community signatures found. Import some with: codepliant signatures import <file>${RESET()}`);
+    }
+    console.log();
+    process.exit(0);
+  }
+  if (subcommand === "export") {
+    const outputFile = args[2] || "codepliant-signatures.json";
+    const filePath = exportSignatures(absProjectPath, outputFile);
+    console.log(`${GREEN()}${BOLD()}Signatures exported to ${filePath}${RESET()}\n`);
+    process.exit(0);
+  }
+  if (subcommand === "import") {
+    const importFile = args[2];
+    if (!importFile) {
+      console.error(`${RED()}Error: Please specify a file to import.${RESET()}`);
+      console.error(`${DIM()}Usage: codepliant signatures import <file.json>${RESET()}`);
+      process.exit(1);
+    }
+    try {
+      const importResult = importSignatures(absProjectPath, importFile);
+      console.log(`${GREEN()}${BOLD()}Import complete!${RESET()}`);
+      console.log(`  Imported: ${importResult.imported} signature(s)`);
+      console.log(`  Skipped: ${importResult.skipped} (duplicates or invalid)`);
+      console.log(`  Total custom signatures: ${importResult.total}`);
+      console.log();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`${RED()}Error: ${message}${RESET()}`);
+      process.exit(1);
+    }
+    process.exit(0);
+  }
+  console.error(`${RED()}Unknown signatures subcommand: "${subcommand}"${RESET()}`);
+  console.error(`${DIM()}Use: codepliant signatures list|export|import${RESET()}`);
+  process.exit(1);
+}
+
+function runExport(absProjectPath: string, absOutputDir: string, quiet: boolean, formatFlag: OutputFormat | undefined, verbose: boolean = false) {
+  if (!quiet) printBanner();
+  const config = loadConfig(absProjectPath);
+  const format = formatFlag || getOutputFormat(config);
+  const plugins = config.plugins ? loadPlugins(absProjectPath, config.plugins) : [];
+  const { result, durationMs } = scanWithProgress(absProjectPath, quiet, verbose, plugins);
+  if (!quiet) console.log(`\n  ${DIM()}Scanned in ${formatDuration(durationMs)}${RESET()}\n`);
+  const docs = generateDocuments(result, config, plugins);
+  let writtenFiles: string[];
+  if (format === "wiki") {
+    writtenFiles = writeGithubWiki(docs, absOutputDir, config);
+  } else {
+    writtenFiles = writeDocumentsInFormat(docs, absOutputDir, format, config, result);
+  }
+  if (!quiet) {
+    for (const file of writtenFiles) {
+      const relativePath = path.relative(absProjectPath, file);
+      console.log(`  ${GREEN()}✓${RESET()} ${relativePath}`);
+    }
+    console.log(`\n${GREEN()}${BOLD()}Done!${RESET()} ${writtenFiles.length} file(s) exported in ${format} format.\n`);
+    if (format === "wiki") {
+      const wikiDir = path.relative(absProjectPath, path.join(absOutputDir, "wiki"));
+      console.log(`${DIM()}To publish to your GitHub Wiki:${RESET()}`);
+      console.log(`  ${CYAN()}cd ${wikiDir}${RESET()}`);
+      console.log(`  ${CYAN()}git init && git remote add origin <project>.wiki.git${RESET()}`);
+      console.log(`  ${CYAN()}git add . && git commit -m "Update compliance docs" && git push${RESET()}\n`);
+    }
+  }
   process.exit(0);
 }
 
-function runExport(projectPath: string, outputDir: string, quiet: boolean, formatFlag: OutputFormat | undefined, verbose: boolean) {
-  console.log("Document export coming soon.");
-  process.exit(0);
-}
-
-function runDoctor(projectPath: string, outputDir: string, quiet: boolean) {
-  console.log("Doctor diagnostics coming soon.");
-  process.exit(0);
+function runDoctor(absProjectPath: string, absOutputDir: string, quiet: boolean) {
+  if (!quiet) printBanner();
+  console.log(`${BOLD()}Running diagnostics...${RESET()}\n`);
+  interface DiagCheck { name: string; status: "pass" | "warn" | "fail"; message: string; fix?: string; }
+  const checks: DiagCheck[] = [];
+  const hasConfig = configExists(absProjectPath);
+  if (hasConfig) {
+    checks.push({ name: "Configuration", status: "pass", message: "Config file found (.codepliantrc.json)" });
+  } else {
+    checks.push({ name: "Configuration", status: "warn", message: "No config file found", fix: "Run 'codepliant init' to create a configuration file" });
+  }
+  if (hasConfig) {
+    const config = loadConfig(absProjectPath);
+    const warnings = validateConfig(config);
+    if (warnings.length === 0) {
+      checks.push({ name: "Config validation", status: "pass", message: "All config fields are valid" });
+    } else {
+      checks.push({ name: "Config validation", status: "warn", message: `${warnings.length} warning(s): ${warnings.map(w => w.message).join("; ")}`, fix: "Run 'codepliant init' to update your configuration" });
+    }
+  }
+  if (fs.existsSync(absOutputDir)) {
+    const mdFiles = fs.readdirSync(absOutputDir).filter(f => f.endsWith(".md"));
+    if (mdFiles.length > 0) {
+      checks.push({ name: "Generated documents", status: "pass", message: `${mdFiles.length} document(s) found in output directory` });
+    } else {
+      checks.push({ name: "Generated documents", status: "warn", message: "Output directory exists but contains no .md files", fix: "Run 'codepliant go' to generate documents" });
+    }
+  } else {
+    checks.push({ name: "Generated documents", status: "fail", message: "Output directory does not exist", fix: "Run 'codepliant go' to scan and generate documents" });
+  }
+  if (fs.existsSync(absOutputDir)) {
+    try {
+      const config = loadConfig(absProjectPath);
+      const scanResult = scan(absProjectPath);
+      const docs = generateDocuments(scanResult, config);
+      const docDiff = diffDocuments(docs, absOutputDir);
+      if (docDiff.hasChanges) {
+        checks.push({ name: "Documents freshness", status: "warn", message: `${docDiff.changes.length} document(s) are out of date`, fix: "Run 'codepliant go' to regenerate documents" });
+      } else {
+        checks.push({ name: "Documents freshness", status: "pass", message: "All documents are up to date" });
+      }
+    } catch {
+      checks.push({ name: "Documents freshness", status: "warn", message: "Could not compare documents (scan may have failed)" });
+    }
+  }
+  const manifestFiles = ["package.json", "requirements.txt", "go.mod", "Cargo.toml", "Gemfile", "pom.xml", "build.gradle"];
+  const foundManifests = manifestFiles.filter(f => fs.existsSync(path.join(absProjectPath, f)));
+  if (foundManifests.length > 0) {
+    checks.push({ name: "Package manifest", status: "pass", message: `Found: ${foundManifests.join(", ")}` });
+  } else {
+    checks.push({ name: "Package manifest", status: "warn", message: "No package manifest found", fix: "Ensure you are running codepliant in the project root directory" });
+  }
+  const nodeVersion = process.versions.node;
+  const nodeMajor = parseInt(nodeVersion.split(".")[0], 10);
+  if (nodeMajor >= 18) {
+    checks.push({ name: "Node.js version", status: "pass", message: `Node.js v${nodeVersion} (>= 18 required)` });
+  } else {
+    checks.push({ name: "Node.js version", status: "fail", message: `Node.js v${nodeVersion} is below minimum v18`, fix: "Upgrade to Node.js 18 or later" });
+  }
+  checks.push({ name: "Codepliant version", status: "pass", message: `v${VERSION} (run 'npm outdated -g codepliant' to check for updates)` });
+  const codepliantDir = path.join(absProjectPath, ".codepliant");
+  if (fs.existsSync(codepliantDir)) {
+    const customSigsPath = path.join(codepliantDir, "custom-signatures.json");
+    if (fs.existsSync(customSigsPath)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(customSigsPath, "utf-8"));
+        const count = Array.isArray(raw.signatures) ? raw.signatures.length : 0;
+        checks.push({ name: "Custom signatures", status: "pass", message: `${count} custom signature(s) loaded` });
+      } catch {
+        checks.push({ name: "Custom signatures", status: "warn", message: "custom-signatures.json is malformed", fix: "Fix or delete .codepliant/custom-signatures.json" });
+      }
+    }
+  }
+  const passCount = checks.filter(c => c.status === "pass").length;
+  const warnCount = checks.filter(c => c.status === "warn").length;
+  const failCount = checks.filter(c => c.status === "fail").length;
+  for (const check of checks) {
+    let icon: string; let statusColor: string;
+    switch (check.status) {
+      case "pass": icon = `${GREEN()}✓${RESET()}`; statusColor = GREEN(); break;
+      case "warn": icon = `${YELLOW()}⚠${RESET()}`; statusColor = YELLOW(); break;
+      case "fail": icon = `${RED()}✗${RESET()}`; statusColor = RED(); break;
+    }
+    console.log(`  ${icon} ${BOLD()}${check.name}${RESET()}: ${statusColor}${check.message}${RESET()}`);
+    if (check.fix) console.log(`    ${DIM()}Fix: ${check.fix}${RESET()}`);
+  }
+  console.log();
+  console.log(`${BOLD()}Summary:${RESET()} ${GREEN()}${passCount} passed${RESET()}, ${YELLOW()}${warnCount} warning(s)${RESET()}, ${RED()}${failCount} error(s)${RESET()}`);
+  if (failCount > 0) {
+    console.log(`\n${RED()}Some checks failed. Please address the issues above.${RESET()}\n`);
+    process.exit(1);
+  } else if (warnCount > 0) {
+    console.log(`\n${YELLOW()}Some warnings found. Consider addressing them for optimal setup.${RESET()}\n`);
+    process.exit(0);
+  } else {
+    console.log(`\n${GREEN()}${BOLD()}All checks passed! Your Codepliant setup looks good.${RESET()}\n`);
+    process.exit(0);
+  }
 }
 
 main();
