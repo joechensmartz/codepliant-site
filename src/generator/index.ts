@@ -43,6 +43,15 @@ import { generateLicenseCompliance } from "../scanner/license-scanner.js";
 import { generateWhistleblowerPolicy } from "./whistleblower.js";
 import { generateRecordOfProcessing } from "./record-of-processing.js";
 import { generateTransferImpactAssessment } from "./international-transfer-impact.js";
+import { generateDataDictionary } from "./data-dictionary.js";
+import { generateAccessControlPolicy } from "./access-control-policy.js";
+import { generateChangeManagementPolicy } from "./change-management.js";
+import { generateDataBreachNotificationTemplates } from "./data-breach-notification.js";
+import { generateVendorSecurityQuestionnaire } from "./vendor-questionnaire.js";
+import { generateApiPrivacyDocumentation } from "./api-documentation.js";
+import { generateSupplierCodeOfConduct } from "./supplier-code-of-conduct.js";
+import { generatePrivacyByDesignChecklist } from "./privacy-by-design.js";
+import { generatePenetrationTestScope } from "./penetration-test-scope.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -473,6 +482,93 @@ export function generateDocuments(
       name: "Transfer Impact Assessment",
       filename: "TRANSFER_IMPACT_ASSESSMENT.md",
       content: transferImpact,
+    });
+  }
+
+  // Data Dictionary — catalog of every data field across all scanners
+  const dataDictionary = generateDataDictionary(docScan, ctx);
+  if (dataDictionary) {
+    docs.push({
+      name: "Data Dictionary",
+      filename: "DATA_DICTIONARY.md",
+      content: dataDictionary,
+    });
+  }
+
+  // Access Control Policy — RBAC, password policy, session management, MFA
+  const accessControlPolicy = generateAccessControlPolicy(docScan, ctx);
+  if (accessControlPolicy) {
+    docs.push({
+      name: "Access Control Policy",
+      filename: "ACCESS_CONTROL_POLICY.md",
+      content: accessControlPolicy,
+    });
+  }
+
+  // Change Management Policy — code review, deployment, rollback procedures
+  docs.push({
+    name: "Change Management Policy",
+    filename: "CHANGE_MANAGEMENT_POLICY.md",
+    content: generateChangeManagementPolicy(docScan, ctx),
+  });
+
+  // Data Breach Notification Templates — pre-filled templates per jurisdiction
+  const breachNotification = generateDataBreachNotificationTemplates(docScan, ctx);
+  if (breachNotification) {
+    docs.push({
+      name: "Data Breach Notification Templates",
+      filename: "DATA_BREACH_NOTIFICATION_TEMPLATE.md",
+      content: breachNotification,
+    });
+  }
+
+  // Vendor Security Questionnaire — SIG Lite format, pre-answered from detected controls
+  const vendorQuestionnaire = generateVendorSecurityQuestionnaire(docScan, ctx);
+  if (vendorQuestionnaire) {
+    docs.push({
+      name: "Vendor Security Questionnaire",
+      filename: "VENDOR_SECURITY_QUESTIONNAIRE.md",
+      content: vendorQuestionnaire,
+    });
+  }
+
+  // API Privacy Documentation — endpoint-level data mapping for API-first companies
+  const apiPrivacyDoc = generateApiPrivacyDocumentation(docScan, ctx);
+  if (apiPrivacyDoc) {
+    docs.push({
+      name: "API Privacy Documentation",
+      filename: "API_PRIVACY_DOCUMENTATION.md",
+      content: apiPrivacyDoc,
+    });
+  }
+
+  // Supplier Code of Conduct — data protection requirements for vendors/suppliers
+  const supplierCodeOfConduct = generateSupplierCodeOfConduct(docScan, ctx);
+  if (supplierCodeOfConduct) {
+    docs.push({
+      name: "Supplier Code of Conduct",
+      filename: "SUPPLIER_CODE_OF_CONDUCT.md",
+      content: supplierCodeOfConduct,
+    });
+  }
+
+  // Privacy by Design Checklist — GDPR Article 25 requirements
+  const privacyByDesign = generatePrivacyByDesignChecklist(docScan, ctx);
+  if (privacyByDesign) {
+    docs.push({
+      name: "Privacy by Design Checklist",
+      filename: "PRIVACY_BY_DESIGN_CHECKLIST.md",
+      content: privacyByDesign,
+    });
+  }
+
+  // Penetration Test Scope — recommended pentest scope based on detected services
+  const pentestScope = generatePenetrationTestScope(docScan, ctx);
+  if (pentestScope) {
+    docs.push({
+      name: "Penetration Test Scope",
+      filename: "PENTEST_SCOPE.md",
+      content: pentestScope,
     });
   }
 

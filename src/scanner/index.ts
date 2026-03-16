@@ -28,6 +28,9 @@ import { scanAccessibility, deriveAccessibilityComplianceNeeds } from "./accessi
 import { scanVulnerabilities } from "./vulnerability.js";
 import { scanInfrastructure } from "./infrastructure.js";
 import { scanLicenses, generateLicenseCompliance, type LicenseScanResult } from "./license-scanner.js";
+import { scanCors, deriveCorsComplianceNeeds } from "./cors-scanner.js";
+import { scanAuth, deriveAuthComplianceNeeds } from "./auth-scanner.js";
+import { scanLogging } from "./logging-scanner.js";
 import { walkDirectory, ALL_EXTENSIONS } from "./file-walker.js";
 import type {
   ComplianceNeed,
@@ -672,6 +675,16 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
   const accessibilityNeeds = deriveAccessibilityComplianceNeeds(accessibilityResult);
   complianceNeeds.push(...accessibilityNeeds);
 
+  // Scan for CORS configuration issues
+  const corsResult = safeRun("CORS", () => scanCors(absPath, allFiles), { detected: false, findings: [], hasWildcardOrigin: false });
+  const corsNeeds = deriveCorsComplianceNeeds(corsResult);
+  complianceNeeds.push(...corsNeeds);
+
+  // Scan for authentication patterns (JWT, sessions, OAuth, password hashing, MFA)
+  const authResult = safeRun("Auth patterns", () => scanAuth(absPath, allFiles), { jwt: [], sessionManagement: [], oauth: [], passwordHashing: [], mfa: [] });
+  const authNeeds = deriveAuthComplianceNeeds(authResult);
+  complianceNeeds.push(...authNeeds);
+
   // Scan infrastructure files (Dockerfile, docker-compose, Kubernetes)
   const infraResult = safeRun("Infrastructure", () => scanInfrastructure(absPath), { findings: [], complianceNeeds: [] });
   complianceNeeds.push(...infraResult.complianceNeeds);
@@ -682,6 +695,16 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
     complianceNeeds.push({
       document: "Security Policy",
       reason: `${vulnResult.findings.length} package(s) may have known vulnerabilities. Run npm audit to check for security issues.`,
+      priority: "required",
+    });
+  }
+
+  // Scan for logging practices and potential PII exposure in logs
+  const loggingResult = safeRun("Logging scan", () => scanLogging(absPath, allFiles), { libraries: [], totalLogCalls: 0, piiFindings: [], findings: [] });
+  if (loggingResult.piiFindings.length > 0) {
+    complianceNeeds.push({
+      document: "Security Policy",
+      reason: `${loggingResult.piiFindings.length} log statement(s) may expose PII. Review logging practices to prevent data leakage.`,
       priority: "required",
     });
   }

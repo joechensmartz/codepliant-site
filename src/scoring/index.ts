@@ -26,6 +26,40 @@ export interface ComplianceScore {
   components: ScoreComponent[];
   /** ISO timestamp of when the score was computed */
   computedAt: string;
+  /** Per-regulation scores */
+  regulationScores?: RegulationScore[];
+  /** Trend comparison with previous scan */
+  trend?: ScoreTrend;
+  /** Actionable recommendations sorted by impact */
+  recommendations?: Recommendation[];
+}
+
+export interface RegulationScore {
+  regulation: string;
+  score: number;
+  maxPoints: number;
+  grade: Grade;
+  details: string[];
+}
+
+export interface ScoreTrend {
+  previousScore: number | null;
+  previousGrade: Grade | null;
+  previousComputedAt: string | null;
+  delta: number;
+  direction: "improved" | "declined" | "unchanged" | "no-baseline";
+}
+
+export type RecommendationImpact = "critical" | "high" | "medium" | "low";
+
+export interface Recommendation {
+  title: string;
+  description: string;
+  impact: RecommendationImpact;
+  /** Estimated score improvement if addressed */
+  estimatedPointsGain: number;
+  /** Which regulation(s) this addresses */
+  regulations: string[];
 }
 
 export interface ScoreInput {
@@ -411,6 +445,372 @@ function scoreRegulatoryCoverage(input: ScoreInput): ScoreComponent {
 }
 
 // ---------------------------------------------------------------------------
+// Per-regulation scoring
+// ---------------------------------------------------------------------------
+
+interface RegCheckDef {
+  regulation: string;
+  applies: (input: ScoreInput) => boolean;
+  requiredDocs: string[];
+  configChecks: ((input: ScoreInput) => { points: number; max: number; detail: string })[];
+}
+
+const REGULATION_DEFS: RegCheckDef[] = [
+  {
+    regulation: "GDPR",
+    applies: (input) => input.scanResult.services.length > 0,
+    requiredDocs: ["Privacy Policy", "Data Processing Agreement", "Data Flow Map", "DSAR Handling Guide"],
+    configChecks: [
+      (input) => {
+        const hasDpo = !!(input.config?.dpoName && input.config?.dpoEmail);
+        return { points: hasDpo ? 10 : 0, max: 10, detail: hasDpo ? "DPO configured" : "DPO not configured (GDPR Art. 37)" };
+      },
+      (input) => {
+        const hasEUJurisdiction = input.config?.jurisdictions?.some(
+          (j) => j.toUpperCase().includes("GDPR") || j.toUpperCase().includes("EU") || j.toUpperCase().includes("EEA")
+        );
+        return { points: hasEUJurisdiction ? 10 : 0, max: 10, detail: hasEUJurisdiction ? "EU jurisdiction configured" : "EU jurisdiction not declared" };
+      },
+    ],
+  },
+  {
+    regulation: "CCPA/CPRA",
+    applies: (input) => input.scanResult.services.length > 0,
+    requiredDocs: ["Privacy Policy"],
+    configChecks: [
+      (input) => {
+        const hasCCPA = input.config?.jurisdictions?.some(
+          (j) => j.toUpperCase().includes("CCPA") || j.toUpperCase().includes("CPRA") || j.toUpperCase().includes("CALIFORNIA")
+        );
+        return { points: hasCCPA ? 15 : 0, max: 15, detail: hasCCPA ? "California jurisdiction configured" : "CCPA jurisdiction not declared" };
+      },
+      (input) => {
+        const hasTollFree = !!input.config?.tollFreeNumber;
+        return { points: hasTollFree ? 10 : 0, max: 10, detail: hasTollFree ? "Toll-free number provided" : "No toll-free number (CCPA § 1798.130 recommended)" };
+      },
+    ],
+  },
+  {
+    regulation: "EU AI Act",
+    applies: (input) => input.scanResult.services.some((s) => s.category === "ai"),
+    requiredDocs: ["AI Disclosure", "AI Act Compliance Checklist"],
+    configChecks: [
+      (input) => {
+        const hasRiskLevel = !!input.config?.aiRiskLevel;
+        return { points: hasRiskLevel ? 15 : 0, max: 15, detail: hasRiskLevel ? `AI risk level set: ${input.config!.aiRiskLevel}` : "AI risk level not classified" };
+      },
+    ],
+  },
+  {
+    regulation: "ePrivacy Directive",
+    applies: (input) =>
+      input.scanResult.services.some(
+        (s) => s.category === "analytics" || s.category === "advertising"
+      ),
+    requiredDocs: ["Cookie Policy", "Cookie Inventory"],
+    configChecks: [],
+  },
+  {
+    regulation: "PCI DSS",
+    applies: (input) => input.scanResult.services.some((s) => s.category === "payment"),
+    requiredDocs: ["Security Policy"],
+    configChecks: [
+      (input) => {
+        const hasSecurityEmail = !!input.config?.securityEmail;
+        return { points: hasSecurityEmail ? 10 : 0, max: 10, detail: hasSecurityEmail ? "Security contact configured" : "No security contact email" };
+      },
+    ],
+  },
+];
+
+function computeRegulationScores(input: ScoreInput): RegulationScore[] {
+  const generatedNames = new Set(input.docs.map((d) => d.name));
+  const scores: RegulationScore[] = [];
+
+  for (const def of REGULATION_DEFS) {
+    if (!def.applies(input)) continue;
+
+    let totalPoints = 0;
+    let maxPoints = 0;
+    const details: string[] = [];
+
+    // Document presence: each doc is worth equal share of 50 points
+    const docPoints = def.requiredDocs.length > 0 ? Math.round(50 / def.requiredDocs.length) : 50;
+    for (const docName of def.requiredDocs) {
+      maxPoints += docPoints;
+      if (generatedNames.has(docName)) {
+        totalPoints += docPoints;
+      } else {
+        details.push(`Missing document: ${docName}`);
+      }
+    }
+
+    // Config checks: remaining 50 points (or all 100 if no docs required)
+    const configMaxBase = def.configChecks.length > 0
+      ? def.configChecks.reduce((sum, check) => sum + check(input).max, 0)
+      : 0;
+
+    for (const check of def.configChecks) {
+      const result = check(input);
+      // Normalize config check points to fit within 50-point budget
+      const normalizedMax = configMaxBase > 0 ? Math.round((result.max / configMaxBase) * 50) : 0;
+      const normalizedPoints = configMaxBase > 0 ? Math.round((result.points / configMaxBase) * 50) : 0;
+      maxPoints += normalizedMax;
+      totalPoints += normalizedPoints;
+      details.push(result.detail);
+    }
+
+    // If no config checks, add 50 to max and award based on doc coverage
+    if (def.configChecks.length === 0) {
+      maxPoints += 50;
+      const docRatio = def.requiredDocs.length > 0
+        ? def.requiredDocs.filter((d) => generatedNames.has(d)).length / def.requiredDocs.length
+        : 1;
+      totalPoints += Math.round(docRatio * 50);
+    }
+
+    // Normalize to 0-100
+    const normalized = maxPoints > 0 ? Math.round((totalPoints / maxPoints) * 100) : 100;
+
+    if (details.length === 0) {
+      details.push("Fully addressed");
+    }
+
+    scores.push({
+      regulation: def.regulation,
+      score: normalized,
+      maxPoints: 100,
+      grade: gradeFromScore(normalized),
+      details,
+    });
+  }
+
+  return scores;
+}
+
+// ---------------------------------------------------------------------------
+// Trend tracking
+// ---------------------------------------------------------------------------
+
+const SCORE_HISTORY_FILE = ".codepliant-scores.json";
+
+interface ScoreHistoryEntry {
+  total: number;
+  grade: Grade;
+  computedAt: string;
+}
+
+function loadPreviousScore(outputDir: string): ScoreHistoryEntry | null {
+  const historyPath = path.join(outputDir, SCORE_HISTORY_FILE);
+  if (!fs.existsSync(historyPath)) return null;
+
+  try {
+    const content = fs.readFileSync(historyPath, "utf-8");
+    const entries: ScoreHistoryEntry[] = JSON.parse(content);
+    if (Array.isArray(entries) && entries.length > 0) {
+      return entries[entries.length - 1];
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return null;
+}
+
+function saveScoreHistory(outputDir: string, entry: ScoreHistoryEntry): void {
+  const historyPath = path.join(outputDir, SCORE_HISTORY_FILE);
+  let entries: ScoreHistoryEntry[] = [];
+
+  if (fs.existsSync(historyPath)) {
+    try {
+      entries = JSON.parse(fs.readFileSync(historyPath, "utf-8"));
+      if (!Array.isArray(entries)) entries = [];
+    } catch {
+      entries = [];
+    }
+  }
+
+  // Keep last 50 entries
+  entries.push(entry);
+  if (entries.length > 50) entries = entries.slice(-50);
+
+  try {
+    fs.writeFileSync(historyPath, JSON.stringify(entries, null, 2), "utf-8");
+  } catch {
+    // Silently fail — score history is optional
+  }
+}
+
+function computeTrend(currentTotal: number, outputDir: string): ScoreTrend {
+  const previous = loadPreviousScore(outputDir);
+
+  if (!previous) {
+    return {
+      previousScore: null,
+      previousGrade: null,
+      previousComputedAt: null,
+      delta: 0,
+      direction: "no-baseline",
+    };
+  }
+
+  const delta = currentTotal - previous.total;
+  let direction: ScoreTrend["direction"];
+  if (delta > 0) direction = "improved";
+  else if (delta < 0) direction = "declined";
+  else direction = "unchanged";
+
+  return {
+    previousScore: previous.total,
+    previousGrade: previous.grade,
+    previousComputedAt: previous.computedAt,
+    delta,
+    direction,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Recommendations engine
+// ---------------------------------------------------------------------------
+
+function generateRecommendations(input: ScoreInput, score: ComplianceScore): Recommendation[] {
+  const recommendations: Recommendation[] = [];
+  const generatedNames = new Set(input.docs.map((d) => d.name));
+  const config = input.config;
+  const { scanResult } = input;
+
+  const hasAI = scanResult.services.some((s) => s.category === "ai");
+  const hasAnalytics = scanResult.services.some(
+    (s) => s.category === "analytics" || s.category === "advertising"
+  );
+  const hasPayment = scanResult.services.some((s) => s.category === "payment");
+  const hasServices = scanResult.services.length > 0;
+
+  // Config-based recommendations
+  if (!config?.companyName || isPlaceholder(config.companyName)) {
+    recommendations.push({
+      title: "Set company name in configuration",
+      description: "Replace the placeholder company name with your actual organization name. This populates all generated compliance documents.",
+      impact: "high",
+      estimatedPointsGain: 3,
+      regulations: ["GDPR", "CCPA/CPRA"],
+    });
+  }
+
+  if (!config?.contactEmail || isPlaceholder(config.contactEmail)) {
+    recommendations.push({
+      title: "Set contact email in configuration",
+      description: "Provide a real contact email for privacy and compliance inquiries. Required by GDPR Article 13.",
+      impact: "high",
+      estimatedPointsGain: 2,
+      regulations: ["GDPR", "CCPA/CPRA"],
+    });
+  }
+
+  if (!config?.dpoName || !config?.dpoEmail) {
+    recommendations.push({
+      title: "Configure Data Protection Officer (DPO)",
+      description: "Designate a DPO and provide their contact information. Required by GDPR Article 37 for organizations that process personal data at scale.",
+      impact: "high",
+      estimatedPointsGain: 3,
+      regulations: ["GDPR"],
+    });
+  }
+
+  if (!config?.jurisdictions || config.jurisdictions.length === 0) {
+    recommendations.push({
+      title: "Declare applicable jurisdictions",
+      description: "Configure which privacy regulations apply to your project (e.g., GDPR, CCPA). This enables jurisdiction-specific document generation.",
+      impact: "medium",
+      estimatedPointsGain: 2,
+      regulations: ["GDPR", "CCPA/CPRA"],
+    });
+  }
+
+  // Missing document recommendations
+  if (hasServices && !generatedNames.has("Privacy Policy")) {
+    recommendations.push({
+      title: "Generate Privacy Policy",
+      description: "A privacy policy is legally required when collecting user data. Run codepliant to generate one based on detected services.",
+      impact: "critical",
+      estimatedPointsGain: 15,
+      regulations: ["GDPR", "CCPA/CPRA"],
+    });
+  }
+
+  if (hasServices && !generatedNames.has("Data Processing Agreement")) {
+    recommendations.push({
+      title: "Generate Data Processing Agreement",
+      description: "GDPR Article 28 requires a DPA with each third-party processor. Generate one to document your processor relationships.",
+      impact: "high",
+      estimatedPointsGain: 8,
+      regulations: ["GDPR"],
+    });
+  }
+
+  if (hasAI && !generatedNames.has("AI Disclosure")) {
+    recommendations.push({
+      title: "Generate AI Disclosure document",
+      description: "The EU AI Act requires transparency about AI usage. Generate an AI Disclosure to document AI services, data processing, and risk classification.",
+      impact: "critical",
+      estimatedPointsGain: 10,
+      regulations: ["EU AI Act"],
+    });
+  }
+
+  if (hasAI && !config?.aiRiskLevel) {
+    recommendations.push({
+      title: "Classify AI risk level",
+      description: "Set aiRiskLevel in your configuration (minimal, limited, or high). The EU AI Act imposes different requirements based on risk classification.",
+      impact: "high",
+      estimatedPointsGain: 5,
+      regulations: ["EU AI Act"],
+    });
+  }
+
+  if (hasAnalytics && !generatedNames.has("Cookie Policy")) {
+    recommendations.push({
+      title: "Generate Cookie Policy",
+      description: "Analytics and advertising cookies require a Cookie Policy under the ePrivacy Directive. Generate one to document cookie usage and consent mechanisms.",
+      impact: "critical",
+      estimatedPointsGain: 10,
+      regulations: ["ePrivacy Directive", "GDPR"],
+    });
+  }
+
+  if (hasPayment && !config?.securityEmail) {
+    recommendations.push({
+      title: "Set security contact email",
+      description: "PCI DSS requires a security contact for vulnerability disclosure. Set securityEmail in your configuration.",
+      impact: "medium",
+      estimatedPointsGain: 3,
+      regulations: ["PCI DSS"],
+    });
+  }
+
+  // Component-based recommendations
+  const freshnessComp = score.components.find((c) => c.name === "Document Freshness");
+  if (freshnessComp && freshnessComp.score < freshnessComp.maxPoints) {
+    recommendations.push({
+      title: "Re-generate stale compliance documents",
+      description: "Some compliance documents are older than 30 days. Run codepliant again to refresh them with the latest scan results.",
+      impact: "medium",
+      estimatedPointsGain: freshnessComp.maxPoints - freshnessComp.score,
+      regulations: ["GDPR", "CCPA/CPRA"],
+    });
+  }
+
+  // Sort by impact (critical > high > medium > low), then by estimatedPointsGain descending
+  const impactOrder: Record<RecommendationImpact, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+  recommendations.sort((a, b) => {
+    const impactDiff = impactOrder[a.impact] - impactOrder[b.impact];
+    if (impactDiff !== 0) return impactDiff;
+    return b.estimatedPointsGain - a.estimatedPointsGain;
+  });
+
+  return recommendations;
+}
+
+// ---------------------------------------------------------------------------
 // Grade computation
 // ---------------------------------------------------------------------------
 
@@ -448,13 +848,30 @@ export function computeComplianceScore(input: ScoreInput): ComplianceScore {
 
   const total = components.reduce((sum, c) => sum + c.score, 0);
   const grade = gradeFromScore(total);
+  const computedAt = (input.now ?? new Date()).toISOString();
 
-  return {
+  // Per-regulation scores
+  const regulationScores = computeRegulationScores(input);
+
+  // Trend tracking
+  const trend = computeTrend(total, input.outputDir);
+
+  const baseScore: ComplianceScore = {
     total,
     grade,
     components,
-    computedAt: (input.now ?? new Date()).toISOString(),
+    computedAt,
+    regulationScores,
+    trend,
   };
+
+  // Generate recommendations
+  baseScore.recommendations = generateRecommendations(input, baseScore);
+
+  // Save score history for future trend tracking
+  saveScoreHistory(input.outputDir, { total, grade, computedAt });
+
+  return baseScore;
 }
 
 // ---------------------------------------------------------------------------

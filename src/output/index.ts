@@ -23,6 +23,7 @@ export { writeCompliancePage } from "./compliance-page.js";
 export { writeGithubWiki } from "./github-wiki.js";
 export { generateComplianceReport, writeComplianceReport } from "./compliance-report.js";
 export type { ComplianceReportOptions } from "./compliance-report.js";
+export { enhanceMarkdownDocuments, type EnhanceOptions } from "./markdown-enhanced.js";
 
 let _lastPdfResult: PdfResult | null = null;
 

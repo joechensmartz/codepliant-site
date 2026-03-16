@@ -284,10 +284,20 @@ function parseTableAlignments(line: string): string[] {
 }
 
 /**
+ * Estimate reading time in minutes based on word count.
+ * Average reading speed: ~200 words per minute for dense/legal text.
+ */
+function estimateReadingTime(text: string): number {
+  const wordCount = text.split(/\s+/).filter((w) => w.length > 0).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+}
+
+/**
  * Generates a single self-contained HTML page from an array of generated documents.
  *
  * Design: Apple-inspired single-column layout. Typography-driven hierarchy,
- * no sidebar, no JavaScript, no visual chrome. The content IS the design.
+ * with table of contents, back-to-top button, copy-to-clipboard for code blocks,
+ * and estimated reading time per document.
  */
 export function generateHtml(
   docs: GeneratedDocument[],
@@ -298,6 +308,19 @@ export function generateHtml(
 ): string {
   const companyName = options.companyName || "Your Company";
   const lastUpdated = options.lastUpdated || new Date().toISOString().split("T")[0];
+
+  // Calculate total reading time
+  const totalWords = docs.reduce((sum, doc) => sum + doc.content.split(/\s+/).length, 0);
+  const totalReadingTime = Math.max(1, Math.ceil(totalWords / 200));
+
+  // Build table of contents with reading times
+  const tocEntries = docs
+    .map((doc) => {
+      const id = slugify(doc.name);
+      const readingTime = estimateReadingTime(doc.content);
+      return `<li><a href="#${id}">${escapeHtml(doc.name)}</a> <span class="reading-time">${readingTime} min read</span></li>`;
+    })
+    .join("\n          ");
 
   // Build document navigation (simple text links at the top)
   const navLinks = docs
@@ -312,9 +335,14 @@ export function generateHtml(
     .map((doc) => {
       const id = slugify(doc.name);
       const htmlContent = markdownToHtml(doc.content);
+      const readingTime = estimateReadingTime(doc.content);
 
       return `
       <section id="${id}">
+        <div class="section-meta">
+          <span class="reading-time">${readingTime} min read</span>
+          <a href="#top" class="back-to-top">Back to top</a>
+        </div>
         ${htmlContent}
       </section>`;
     })
@@ -382,6 +410,47 @@ export function generateHtml(
       color: var(--text-secondary);
     }
 
+    /* Table of Contents */
+    .toc {
+      margin-bottom: 64px;
+      padding: 24px;
+      background: var(--bg-alt);
+      border-radius: 12px;
+    }
+
+    .toc h2 {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+      color: var(--text);
+    }
+
+    .toc ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin-bottom: 6px;
+      font-size: 15px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .toc li a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .toc li a:hover { text-decoration: underline; }
+
+    .reading-time {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
     .doc-nav {
       display: flex;
       flex-wrap: wrap;
@@ -398,6 +467,77 @@ export function generateHtml(
     }
 
     .doc-nav a:hover { text-decoration: underline; }
+
+    /* Section meta (reading time + back to top) */
+    .section-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back-to-top {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .back-to-top:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    /* Floating back-to-top button */
+    .back-to-top-float {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .back-to-top-float.visible { opacity: 1; }
+    .back-to-top-float:hover { transform: scale(1.1); }
+
+    /* Code block with copy button */
+    .code-block-wrapper {
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-family: inherit;
+      background: var(--bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .code-block-wrapper:hover .copy-btn { opacity: 1; }
+    .copy-btn:hover { color: var(--text); border-color: var(--text-secondary); }
+    .copy-btn.copied { color: #34c759; border-color: #34c759; }
 
     section { margin-bottom: 80px; }
 
@@ -489,6 +629,8 @@ export function generateHtml(
       h1 { font-size: 32px; }
       h2 { font-size: 24px; margin-top: 40px; }
       h3 { font-size: 19px; margin-top: 32px; }
+      .back-to-top-float { bottom: 16px; right: 16px; }
+      .toc { padding: 16px; }
     }
 
     @media print {
@@ -500,20 +642,28 @@ export function generateHtml(
         background: #fff;
       }
       .page { max-width: 100%; padding: 0; }
-      .doc-nav, .footer { display: none; }
+      .doc-nav, .footer, .back-to-top-float, .copy-btn, .back-to-top { display: none; }
       h1 { font-size: 18pt; }
       h2 { font-size: 14pt; }
       section { page-break-inside: avoid; }
       a { color: #000; }
+      .toc { background: none; border: 1px solid #ccc; }
     }
   </style>
 </head>
-<body>
+<body id="top">
   <div class="page">
     <header class="page-header">
       <h1>${escapeHtml(companyName)}</h1>
-      <p class="meta">Compliance Documents &middot; Last updated ${escapeHtml(lastUpdated)}</p>
+      <p class="meta">Compliance Documents &middot; Last updated ${escapeHtml(lastUpdated)} &middot; ~${totalReadingTime} min total read</p>
     </header>
+
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+          ${tocEntries}
+      </ol>
+    </div>
 
     <nav class="doc-nav">
       ${navLinks}
@@ -524,6 +674,52 @@ ${documentSections}
       Generated by Codepliant
     </footer>
   </div>
+
+  <button class="back-to-top-float" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&uarr;</button>
+
+  <script>
+    // Back-to-top button visibility
+    (function() {
+      var btn = document.querySelector('.back-to-top-float');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+      });
+    })();
+
+    // Copy-to-clipboard for code blocks
+    (function() {
+      var pres = document.querySelectorAll('pre');
+      pres.forEach(function(pre) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.setAttribute('aria-label', 'Copy code to clipboard');
+        wrapper.appendChild(btn);
+
+        btn.addEventListener('click', function() {
+          var code = pre.querySelector('code');
+          var text = code ? code.textContent : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied';
+            btn.classList.add('copied');
+            setTimeout(function() {
+              btn.textContent = 'Copy';
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>`;
 }
