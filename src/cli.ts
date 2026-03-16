@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "270.0.0";
+const VERSION = "280.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -96,6 +96,7 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}quickstart${RESET()}      Show quick start guide based on scan results
   ${CYAN()}completeness${RESET()}    Show percentage of recommended docs that exist
   ${CYAN()}migrate${RESET()}         Show new document types available after upgrade
+  ${CYAN()}tree${RESET()}            Show generated files as a tree with sizes and categories
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -156,6 +157,7 @@ ${BOLD()}Options:${RESET()}
   ${DIM()}--watch, -w${RESET()}           Watch mode (auto re-scan on changes)
   ${DIM()}--verbose, -v${RESET()}         Show per-scanner timing breakdown
   ${DIM()}--detailed${RESET()}            Show detailed stats (for count/stats command)
+  ${DIM()}--ecosystem <name>${RESET()}    Filter scan to specific ecosystem (js, python, go, ruby, etc.)
   ${DIM()}--no-color${RESET()}            Disable colored output
   ${DIM()}--port <number>${RESET()}        Port for serve command (default: 3939)
   ${DIM()}--version, -V${RESET()}         Print version and exit
@@ -216,15 +218,33 @@ Does not generate any documents.
 
 ${BOLD()}Options:${RESET()}
   ${DIM()}--json${RESET()}                Output results as JSON (useful for piping)
+  ${DIM()}--ecosystem <name>${RESET()}    Filter to a specific ecosystem (js, python, go, ruby, etc.)
   ${DIM()}--quiet, -q${RESET()}           Minimal output
   ${DIM()}--verbose, -v${RESET()}         Show per-scanner timing breakdown
   ${DIM()}--no-color${RESET()}            Disable colored output
 
 ${BOLD()}Examples:${RESET()}
-  ${CYAN()}codepliant scan${RESET()}                     Scan current directory
-  ${CYAN()}codepliant scan ./my-app${RESET()}             Scan a specific directory
-  ${CYAN()}codepliant scan --json${RESET()}               JSON output for CI/scripts
+  ${CYAN()}codepliant scan${RESET()}                           Scan current directory
+  ${CYAN()}codepliant scan ./my-app${RESET()}                   Scan a specific directory
+  ${CYAN()}codepliant scan --ecosystem python${RESET()}          Only show Python ecosystem results
+  ${CYAN()}codepliant scan --json${RESET()}                     JSON output for CI/scripts
   ${CYAN()}codepliant scan --json | jq '.services'${RESET()}
+`,
+
+  tree: `${BOLD()}codepliant tree${RESET()} [path] [options]
+
+Show all generated compliance files as a tree structure, organized by
+category with file sizes.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--output, -o <dir>${RESET()}    Document directory to display (default: ./legal)
+  ${DIM()}--json${RESET()}                Output tree as JSON
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant tree${RESET()}                     Show generated file tree
+  ${CYAN()}codepliant tree --json${RESET()}               JSON output for tooling
+  ${CYAN()}codepliant tree -o ./docs${RESET()}             Show tree for custom output dir
 `,
 
   check: `${BOLD()}codepliant check${RESET()} [path] [options]
@@ -825,7 +845,8 @@ function formatDuration(ms: number): string {
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
-  return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function countLines(content: string): number {
@@ -1024,6 +1045,7 @@ function main() {
   let frequencyFlag: ScheduleFrequency = "weekly";
   let forceFlag = false;
   let detailedFlag = false;
+  let ecosystemFlag: string | undefined;
 
   for (let i = 1; i < args.length; i++) {
     const arg = args[i];
@@ -1063,6 +1085,8 @@ function main() {
         console.error(`${RED()}Error: Invalid format "${fmt}". Use: markdown, html, pdf, json, notion, confluence, wiki, docx, all${RESET()}`);
         process.exit(1);
       }
+    } else if (arg === "--ecosystem") {
+      ecosystemFlag = args[++i];
     } else if (arg === "--port") {
       const p = parseInt(args[++i], 10);
       if (!isNaN(p) && p > 0 && p < 65536) {
@@ -1107,6 +1131,14 @@ function main() {
       if (!quiet && !jsonOutput) printBanner();
 
       const { result, durationMs, timings } = scanWithProgress(absProjectPath, quiet || jsonOutput, verbose);
+
+      // Apply --ecosystem filter if specified
+      if (ecosystemFlag) {
+        filterByEcosystem(result, ecosystemFlag);
+        if (!quiet && !jsonOutput) {
+          console.log(`  ${CYAN()}Filtered to ecosystem: ${ecosystemFlag}${RESET()}\n`);
+        }
+      }
 
       if (!quiet && !jsonOutput) {
         console.log(`\n  ${DIM()}Scanned in ${formatDuration(durationMs)}${RESET()}\n`);
@@ -1401,6 +1433,11 @@ function main() {
 
     if (command === "list-docs") {
       runListDocs(absProjectPath, absOutputDir, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "tree") {
+      runTree(absProjectPath, absOutputDir, quiet, jsonOutput);
       return;
     }
 
@@ -4991,6 +5028,13 @@ const ALL_RECOMMENDED_DOCS = [
   "CONSENT_RECORD_TEMPLATE.md",
   "DATA_DELETION_PROCEDURES.md",
   "SECURITY_AWARENESS_PROGRAM.md",
+  "PRIVACY_RISK_MATRIX.md",
+  "DATA_MAPPING_REGISTER.md",
+  "AI_ETHICS_STATEMENT.md",
+  "DATA_BREACH_DRILL_TEMPLATE.md",
+  "COMPLIANCE_MATURITY_MODEL.md",
+  "REGULATORY_CORRESPONDENCE_LOG.md",
+  "PRIVACY_POLICY_CHANGELOG.md",
 ];
 
 const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
@@ -5018,6 +5062,8 @@ const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
   "TRAINING_RECORD.md": "medium",
   "AI_ETHICS_STATEMENT.md": "medium",
   "DATA_BREACH_DRILL_TEMPLATE.md": "medium",
+  "REGULATORY_CORRESPONDENCE_LOG.md": "medium",
+  "PRIVACY_POLICY_CHANGELOG.md": "medium",
 };
 
 function runCompleteness(
@@ -5119,6 +5165,13 @@ const VERSION_HISTORY: Array<{
   version: string;
   docs: Array<{ filename: string; name: string; description: string }>;
 }> = [
+  {
+    version: "280.0.0",
+    docs: [
+      { filename: "REGULATORY_CORRESPONDENCE_LOG.md", name: "Regulatory Correspondence Log", description: "Track communications with regulatory authorities — date, authority, topic, outcome, follow-up" },
+      { filename: "PRIVACY_POLICY_CHANGELOG.md", name: "Privacy Policy Changelog", description: "Track all privacy policy changes over time, GDPR material change notifications" },
+    ],
+  },
   {
     version: "270.0.0",
     docs: [
@@ -5401,6 +5454,8 @@ function runListDocs(
     { filename: "DPO_HANDBOOK.md", name: "DPO Handbook", conditional: "When DPO configured" },
     { filename: "EXECUTIVE_DASHBOARD.md", name: "Executive Dashboard", conditional: "When services detected" },
     { filename: "QUICK_START_COMPLIANCE_GUIDE.md", name: "Quick Start Compliance Guide", conditional: "Always" },
+    { filename: "REGULATORY_CORRESPONDENCE_LOG.md", name: "Regulatory Correspondence Log", conditional: "When services detected" },
+    { filename: "PRIVACY_POLICY_CHANGELOG.md", name: "Privacy Policy Changelog", conditional: "When services detected" },
   ];
 
   if (jsonOutput) {
@@ -5503,6 +5558,170 @@ function runClean(absOutputDir: string, quiet: boolean, force: boolean) {
       }
     },
   );
+}
+
+// --- `codepliant tree` command ---
+
+function runTree(absProjectPath: string, absOutputDir: string, quiet: boolean, jsonOutput: boolean) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  if (!fs.existsSync(absOutputDir)) {
+    console.log(`${YELLOW()}No generated files found. Run ${CYAN()}codepliant go${RESET()}${YELLOW()} first.${RESET()}`);
+    process.exit(0);
+  }
+
+  const files = fs.readdirSync(absOutputDir).filter(
+    (f: string) => f.endsWith(".md") || f.endsWith(".json") || f.endsWith(".svg") || f.endsWith(".html"),
+  );
+
+  if (files.length === 0) {
+    console.log(`${YELLOW()}No generated files found in ${path.basename(absOutputDir)}/.${RESET()}`);
+    process.exit(0);
+  }
+
+  // Categorize files
+  const categories: Record<string, { files: { name: string; size: number }[] }> = {
+    "Privacy & Data Protection": { files: [] },
+    "Security": { files: [] },
+    "AI & Ethics": { files: [] },
+    "Legal & Terms": { files: [] },
+    "Compliance Frameworks": { files: [] },
+    "Operations & Governance": { files: [] },
+    "Vendor & Third-Party": { files: [] },
+    "Reporting & Dashboards": { files: [] },
+    "Configuration": { files: [] },
+  };
+
+  const privacyKeywords = ["PRIVACY", "DATA_PROTECTION", "DATA_SUBJECT", "DATA_MAPPING", "DATA_DICTIONARY", "DATA_CLASSIFICATION", "DATA_FLOW", "DATA_RETENTION", "DATA_DELETION", "DATA_PORTABILITY", "DATA_BREACH", "DSAR", "CONSENT", "COOKIE", "RECORD_OF_PROCESSING", "LAWFUL_BASIS", "TRANSFER_IMPACT", "MEDIA_CONSENT", "PRIVACY_RISK", "PRIVACY_DASHBOARD", "PRIVACY_NOTICE", "PRIVACY_POLICY_CHANGELOG"];
+  const securityKeywords = ["SECURITY", "INCIDENT", "ACCESS_CONTROL", "ENCRYPTION", "BACKUP", "DISASTER_RECOVERY", "PENETRATION", "VULNERABILITY", "RESPONSIBLE_DISCLOSURE", "AUDIT_LOG", "BUSINESS_CONTINUITY", "INFORMATION_SECURITY"];
+  const aiKeywords = ["AI_", "AI_ACT", "AI_MODEL", "AI_GOVERNANCE", "AI_ETHICS", "AI_TRAINING"];
+  const legalKeywords = ["TERMS_OF_SERVICE", "ACCEPTABLE_USE", "REFUND", "SLA", "SERVICE_LEVEL", "API_TERMS", "OPEN_SOURCE_NOTICE", "LICENSE_COMPLIANCE", "WHISTLEBLOWER", "DPA", "DATA_PROCESSING_AGREEMENT"];
+  const frameworkKeywords = ["SOC2", "ISO_27001", "COMPLIANCE_CERTIFICATE", "COMPLIANCE_MATURITY", "COMPLIANCE_TIMELINE", "COMPLIANCE_NOTES", "COMPLIANCE_ROADMAP", "ANNUAL_REVIEW", "CHANGE_MANAGEMENT"];
+  const operationsKeywords = ["DPO_HANDBOOK", "TRAINING_RECORD", "SECURITY_AWARENESS", "EMPLOYEE", "QUICK_START", "REGULATORY", "ENV_AUDIT"];
+  const vendorKeywords = ["VENDOR", "SUBPROCESSOR", "SUPPLIER", "THIRD_PARTY_RISK", "THIRD_PARTY_COOKIE"];
+  const reportingKeywords = ["TRANSPARENCY_REPORT", "EXECUTIVE_DASHBOARD", "RISK_REGISTER", "COMPLIANCE_REPORT", "EXECUTIVE_SUMMARY"];
+
+  function categorize(filename: string): string {
+    const upper = filename.toUpperCase();
+    if (upper.endsWith(".json") || upper.endsWith(".svg")) return "Configuration";
+    if (aiKeywords.some((k) => upper.includes(k))) return "AI & Ethics";
+    if (vendorKeywords.some((k) => upper.includes(k))) return "Vendor & Third-Party";
+    if (reportingKeywords.some((k) => upper.includes(k))) return "Reporting & Dashboards";
+    if (privacyKeywords.some((k) => upper.includes(k))) return "Privacy & Data Protection";
+    if (securityKeywords.some((k) => upper.includes(k))) return "Security";
+    if (legalKeywords.some((k) => upper.includes(k))) return "Legal & Terms";
+    if (frameworkKeywords.some((k) => upper.includes(k))) return "Compliance Frameworks";
+    if (operationsKeywords.some((k) => upper.includes(k))) return "Operations & Governance";
+    return "Operations & Governance";
+  }
+
+  let totalSize = 0;
+  for (const file of files) {
+    const filePath = path.join(absOutputDir, file);
+    const stat = fs.statSync(filePath);
+    const category = categorize(file);
+    categories[category].files.push({ name: file, size: stat.size });
+    totalSize += stat.size;
+  }
+
+  if (jsonOutput) {
+    const result: Record<string, unknown> = {
+      outputDir: absOutputDir,
+      totalFiles: files.length,
+      totalSize,
+      totalSizeFormatted: formatFileSize(totalSize),
+      categories: Object.fromEntries(
+        Object.entries(categories)
+          .filter(([, v]) => v.files.length > 0)
+          .map(([k, v]) => [k, v.files.map((f) => ({ filename: f.name, size: f.size, sizeFormatted: formatFileSize(f.size) }))]),
+      ),
+    };
+    console.log(JSON.stringify(result, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}Compliance Document Tree${RESET()} ${DIM()}(${files.length} files, ${formatFileSize(totalSize)})${RESET()}`);
+  console.log(`${DIM()}${absOutputDir}/${RESET()}\n`);
+
+  const nonEmptyCategories = Object.entries(categories).filter(([, v]) => v.files.length > 0);
+  for (let ci = 0; ci < nonEmptyCategories.length; ci++) {
+    const [catName, catData] = nonEmptyCategories[ci];
+    const isLastCat = ci === nonEmptyCategories.length - 1;
+    const catPrefix = isLastCat ? "└── " : "├── ";
+    const childPrefix = isLastCat ? "    " : "│   ";
+
+    const catSize = catData.files.reduce((sum, f) => sum + f.size, 0);
+    console.log(`${catPrefix}${BOLD()}${CYAN()}${catName}${RESET()} ${DIM()}(${catData.files.length} files, ${formatFileSize(catSize)})${RESET()}`);
+
+    const sorted = catData.files.sort((a, b) => a.name.localeCompare(b.name));
+    for (let fi = 0; fi < sorted.length; fi++) {
+      const f = sorted[fi];
+      const isLastFile = fi === sorted.length - 1;
+      const filePrefix = isLastFile ? "└── " : "├── ";
+      console.log(`${childPrefix}${filePrefix}${f.name} ${DIM()}(${formatFileSize(f.size)})${RESET()}`);
+    }
+  }
+
+  console.log(`\n${DIM()}Run ${CYAN()}codepliant list-docs${RESET()}${DIM()} to see all available document types.${RESET()}\n`);
+  process.exit(0);
+}
+
+// --- `codepliant scan --ecosystem <name>` filter ---
+
+const ECOSYSTEM_EXTENSIONS: Record<string, string[]> = {
+  js: [".js", ".ts", ".jsx", ".tsx", ".mjs", ".cjs"],
+  javascript: [".js", ".ts", ".jsx", ".tsx", ".mjs", ".cjs"],
+  typescript: [".js", ".ts", ".jsx", ".tsx", ".mjs", ".cjs"],
+  python: [".py"],
+  go: [".go"],
+  golang: [".go"],
+  ruby: [".rb"],
+  elixir: [".ex", ".exs"],
+  php: [".php"],
+  rust: [".rs"],
+  java: [".java", ".kt", ".scala"],
+  dotnet: [".cs", ".fs", ".vb"],
+  csharp: [".cs", ".fs", ".vb"],
+};
+
+function filterByEcosystem(result: ScanResult, ecosystem: string): void {
+  const ecoKey = ecosystem.toLowerCase();
+  const extensions = ECOSYSTEM_EXTENSIONS[ecoKey];
+  if (!extensions) {
+    const valid = [...new Set(Object.keys(ECOSYSTEM_EXTENSIONS))].sort().join(", ");
+    console.error(`${RED()}Unknown ecosystem: "${ecosystem}"${RESET()}`);
+    console.error(`${DIM()}Valid ecosystems: ${valid}${RESET()}`);
+    process.exit(1);
+  }
+
+  // Manifest files that indicate a specific ecosystem
+  const manifests: Record<string, string[]> = {
+    js: ["package.json", "node_modules"],
+    javascript: ["package.json", "node_modules"],
+    typescript: ["package.json", "node_modules"],
+    python: ["requirements", "pyproject", "setup.py", "pipfile"],
+    go: ["go.mod", "go.sum"],
+    golang: ["go.mod", "go.sum"],
+    ruby: ["gemfile"],
+    elixir: ["mix.exs"],
+    php: ["composer.json"],
+    rust: ["cargo.toml"],
+    java: ["pom.xml", "build.gradle"],
+    dotnet: [".csproj", ".fsproj", "nuget"],
+    csharp: [".csproj", ".fsproj", "nuget"],
+  };
+  const ecoManifests = manifests[ecoKey] || [];
+
+  // Filter services: keep only those with evidence from this ecosystem
+  result.services = result.services.filter((s) => {
+    return s.evidence.some((ev) => {
+      const lower = ev.file.toLowerCase();
+      if (extensions.some((ext) => lower.endsWith(ext))) return true;
+      if (ecoManifests.some((m) => lower.includes(m))) return true;
+      if (ev.type === "env_var") return true;
+      return false;
+    });
+  });
 }
 
 main();

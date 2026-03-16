@@ -100,6 +100,8 @@ import { generateDataMappingRegister } from "./data-mapping-register.js";
 import { generateComplianceMaturityModel } from "./compliance-maturity-model.js";
 import { generateAIEthicsStatement } from "./ai-ethics-statement.js";
 import { generateDataBreachResponseDrill } from "./data-breach-response-drill.js";
+import { generateRegulatoryCorrespondenceLog } from "./regulatory-correspondence-log.js";
+import { generatePrivacyPolicyChangelog } from "./privacy-policy-changelog.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -990,6 +992,26 @@ export function generateDocuments(
       name: "Data Breach Response Drill Template",
       filename: "DATA_BREACH_DRILL_TEMPLATE.md",
       content: breachDrill,
+    });
+  }
+
+  // Regulatory Correspondence Log — tracking communications with regulators
+  const regulatoryCorrespondenceLog = generateRegulatoryCorrespondenceLog(docScan, ctx);
+  if (regulatoryCorrespondenceLog) {
+    docs.push({
+      name: "Regulatory Correspondence Log",
+      filename: "REGULATORY_CORRESPONDENCE_LOG.md",
+      content: regulatoryCorrespondenceLog,
+    });
+  }
+
+  // Privacy Policy Changelog — tracking all changes to privacy policy over time
+  const privacyPolicyChangelog = generatePrivacyPolicyChangelog(docScan, ctx);
+  if (privacyPolicyChangelog) {
+    docs.push({
+      name: "Privacy Policy Changelog",
+      filename: "PRIVACY_POLICY_CHANGELOG.md",
+      content: privacyPolicyChangelog,
     });
   }
 
