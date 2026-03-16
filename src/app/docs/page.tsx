@@ -119,5 +119,6 @@ export default function Docs() {
         </section>
       </div>
     </article>
+    </>
   );
 }
