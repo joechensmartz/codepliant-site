@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "240.0.0";
+const VERSION = "250.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -93,6 +93,8 @@ ${BOLD()}Scanning:${RESET()}
   ${CYAN()}status${RESET()}          Alias for dashboard
   ${CYAN()}summary${RESET()}         One-paragraph plain English compliance summary
   ${CYAN()}quickstart${RESET()}      Show quick start guide based on scan results
+  ${CYAN()}completeness${RESET()}    Show percentage of recommended docs that exist
+  ${CYAN()}migrate${RESET()}         Show new document types available after upgrade
 
 ${BOLD()}Generation:${RESET()}
   ${CYAN()}go${RESET()}              Scan + generate documents
@@ -1164,6 +1166,16 @@ function main() {
 
     if (command === "quickstart") {
       runQuickstart(absProjectPath, quiet);
+      return;
+    }
+
+    if (command === "completeness") {
+      runCompleteness(absProjectPath, absOutputDir, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "migrate") {
+      runMigrate(absProjectPath, absOutputDir, quiet, jsonOutput);
       return;
     }
 
@@ -4787,6 +4799,316 @@ function runHealth(absProjectPath: string, absOutputDir: string, quiet: boolean)
     console.log(`${YELLOW()}Issues found. Run ${CYAN()}codepliant doctor${RESET()}${YELLOW()} for details.${RESET()}\n`);
     process.exit(1);
   }
+}
+
+// --- `codepliant completeness` command ---
+
+/**
+ * All document types that codepliant can generate — the "recommended set".
+ * This list drives the completeness command.
+ */
+const ALL_RECOMMENDED_DOCS = [
+  "PRIVACY_POLICY.md",
+  "TERMS_OF_SERVICE.md",
+  "SECURITY.md",
+  "INCIDENT_RESPONSE_PLAN.md",
+  "AI_DISCLOSURE.md",
+  "AI_ACT_CHECKLIST.md",
+  "AI_MODEL_CARD.md",
+  "COOKIE_POLICY.md",
+  "CONSENT_MANAGEMENT_GUIDE.md",
+  "DATA_PROCESSING_AGREEMENT.md",
+  "SUBPROCESSOR_LIST.md",
+  "DATA_RETENTION_POLICY.md",
+  "DSAR_HANDLING_GUIDE.md",
+  "VENDOR_CONTACTS.md",
+  "DATA_FLOW_MAP.md",
+  "COMPLIANCE_NOTES.md",
+  "COMPLIANCE_TIMELINE.md",
+  "SOC2_READINESS_CHECKLIST.md",
+  "ISO_27001_CHECKLIST.md",
+  "THIRD_PARTY_RISK_ASSESSMENT.md",
+  "PRIVACY_IMPACT_ASSESSMENT.md",
+  "ENV_AUDIT.md",
+  "DATA_CLASSIFICATION.md",
+  "VULNERABILITY_SCAN.md",
+  "EMPLOYEE_PRIVACY_NOTICE.md",
+  "REGULATORY_UPDATES.md",
+  "TRANSPARENCY_REPORT.md",
+  "ACCEPTABLE_USE_POLICY.md",
+  "REFUND_POLICY.md",
+  "SERVICE_LEVEL_AGREEMENT.md",
+  "DATA_FLOW_DIAGRAM.md",
+  "AUDIT_LOG_POLICY.md",
+  "ACCEPTABLE_AI_USE_POLICY.md",
+  "RISK_REGISTER.md",
+  "LICENSE_COMPLIANCE.md",
+  "WHISTLEBLOWER_POLICY.md",
+  "RECORD_OF_PROCESSING_ACTIVITIES.md",
+  "TRANSFER_IMPACT_ASSESSMENT.md",
+  "DATA_DICTIONARY.md",
+  "ACCESS_CONTROL_POLICY.md",
+  "CHANGE_MANAGEMENT_POLICY.md",
+  "DATA_BREACH_NOTIFICATION_TEMPLATE.md",
+  "VENDOR_SECURITY_QUESTIONNAIRE.md",
+  "API_PRIVACY_DOCUMENTATION.md",
+  "SUPPLIER_CODE_OF_CONDUCT.md",
+  "PRIVACY_BY_DESIGN_CHECKLIST.md",
+  "PENTEST_SCOPE.md",
+  "COOKIE_INVENTORY.md",
+  "AI_GOVERNANCE_FRAMEWORK.md",
+  "BUSINESS_CONTINUITY_PLAN.md",
+  "ENCRYPTION_POLICY.md",
+  "BACKUP_POLICY.md",
+  "DISASTER_RECOVERY_PLAN.md",
+  "INFORMATION_SECURITY_POLICY.md",
+  "DATA_SUBJECT_CATEGORIES.md",
+  "LAWFUL_BASIS_ASSESSMENT.md",
+  "ANNUAL_REVIEW_CHECKLIST.md",
+  "SUBPROCESSOR_CHANGE_NOTIFICATION.md",
+  "DATA_PROTECTION_POLICY.md",
+  "MEDIA_CONSENT_FORM.md",
+  "COMPLIANCE_CERTIFICATE.md",
+  "RESPONSIBLE_DISCLOSURE_POLICY.md",
+  "API_TERMS_OF_USE.md",
+  "OPEN_SOURCE_NOTICE.md",
+  "THIRD_PARTY_COOKIE_NOTICE.md",
+  "DATA_PORTABILITY_GUIDE.md",
+  "AI_TRAINING_DATA_NOTICE.md",
+  "EMPLOYEE_HANDBOOK_PRIVACY_SECTION.md",
+  "VENDOR_ONBOARDING_CHECKLIST.md",
+  "EXECUTIVE_DASHBOARD.md",
+  "PRIVACY_NOTICE_SHORT.md",
+  "COOKIE_CONSENT_CONFIG.json",
+  "QUICK_START_COMPLIANCE_GUIDE.md",
+  "COMPLIANCE_ROADMAP.md",
+  "PRIVACY_DASHBOARD_CONFIG.json",
+  "DPO_HANDBOOK.md",
+  "INCIDENT_COMMUNICATION_TEMPLATES.md",
+  "TRAINING_RECORD.md",
+  "CONSENT_RECORD_TEMPLATE.md",
+  "DATA_DELETION_PROCEDURES.md",
+  "SECURITY_AWARENESS_PROGRAM.md",
+];
+
+const DOC_PRIORITY: Record<string, "critical" | "high" | "medium" | "low"> = {
+  "PRIVACY_POLICY.md": "critical",
+  "TERMS_OF_SERVICE.md": "critical",
+  "SECURITY.md": "critical",
+  "INCIDENT_RESPONSE_PLAN.md": "critical",
+  "DATA_PROCESSING_AGREEMENT.md": "critical",
+  "DATA_RETENTION_POLICY.md": "high",
+  "DSAR_HANDLING_GUIDE.md": "high",
+  "COOKIE_POLICY.md": "high",
+  "ACCESS_CONTROL_POLICY.md": "high",
+  "RECORD_OF_PROCESSING_ACTIVITIES.md": "high",
+  "DATA_DELETION_PROCEDURES.md": "high",
+  "DATA_BREACH_NOTIFICATION_TEMPLATE.md": "high",
+  "ENCRYPTION_POLICY.md": "high",
+  "INFORMATION_SECURITY_POLICY.md": "high",
+  "BACKUP_POLICY.md": "medium",
+  "DISASTER_RECOVERY_PLAN.md": "medium",
+  "BUSINESS_CONTINUITY_PLAN.md": "medium",
+  "CHANGE_MANAGEMENT_POLICY.md": "medium",
+  "RISK_REGISTER.md": "medium",
+  "COMPLIANCE_ROADMAP.md": "medium",
+  "SECURITY_AWARENESS_PROGRAM.md": "medium",
+  "TRAINING_RECORD.md": "medium",
+};
+
+function runCompleteness(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+) {
+  if (!quiet) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+  const docs = generateDocuments(result, config);
+
+  // What codepliant would generate for this project
+  const generatedFilenames = new Set(docs.map((d) => d.filename));
+
+  // What already exists on disk
+  const existingFilenames = new Set<string>();
+  if (fs.existsSync(absOutputDir)) {
+    for (const f of fs.readdirSync(absOutputDir)) {
+      existingFilenames.add(f);
+    }
+  }
+
+  // Recommended = what codepliant generates for this project (context-aware)
+  const recommended = [...generatedFilenames];
+  const existing = recommended.filter((f) => existingFilenames.has(f));
+  const missing = recommended.filter((f) => !existingFilenames.has(f));
+
+  const pct = recommended.length > 0
+    ? Math.round((existing.length / recommended.length) * 100)
+    : 0;
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      recommended: recommended.length,
+      existing: existing.length,
+      missing: missing.length,
+      percentage: pct,
+      missingDocs: missing.map((f) => ({
+        filename: f,
+        priority: DOC_PRIORITY[f] || "low",
+      })),
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}Document Completeness${RESET()}\n`);
+  console.log(`  You have ${GREEN()}${BOLD()}${existing.length}/${recommended.length}${RESET()} recommended documents (${BOLD()}${pct}%${RESET()})\n`);
+
+  // Progress bar
+  const barWidth = 40;
+  const filled = Math.round((pct / 100) * barWidth);
+  const bar = "█".repeat(filled) + "░".repeat(barWidth - filled);
+  const barColor = pct >= 80 ? GREEN() : pct >= 50 ? YELLOW() : RED();
+  console.log(`  ${barColor}${bar}${RESET()} ${pct}%\n`);
+
+  if (missing.length > 0) {
+    console.log(`${BOLD()}Missing documents:${RESET()}\n`);
+
+    // Sort by priority
+    const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+    const sorted = missing.sort((a, b) => {
+      const pa = priorityOrder[DOC_PRIORITY[a] || "low"];
+      const pb = priorityOrder[DOC_PRIORITY[b] || "low"];
+      return pa - pb;
+    });
+
+    for (const f of sorted) {
+      const priority = DOC_PRIORITY[f] || "low";
+      let icon: string;
+      let color: string;
+      switch (priority) {
+        case "critical": icon = "🔴"; color = RED(); break;
+        case "high": icon = "🟠"; color = YELLOW(); break;
+        case "medium": icon = "🟡"; color = DIM(); break;
+        default: icon = "⚪"; color = DIM(); break;
+      }
+      console.log(`  ${icon} ${color}${f}${RESET()} ${DIM()}(${priority})${RESET()}`);
+    }
+
+    console.log(`\n${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to generate all missing documents.${RESET()}`);
+  } else {
+    console.log(`${GREEN()}${BOLD()}All recommended documents are present!${RESET()}`);
+  }
+
+  console.log();
+  process.exit(0);
+}
+
+// --- `codepliant migrate` command ---
+
+/**
+ * Documents added in each version range. Used by the migrate command
+ * to show what's new when upgrading.
+ */
+const VERSION_HISTORY: Array<{
+  version: string;
+  docs: Array<{ filename: string; name: string; description: string }>;
+}> = [
+  {
+    version: "241.0.0",
+    docs: [
+      { filename: "DATA_DELETION_PROCEDURES.md", name: "Data Deletion Procedures", description: "Per-service GDPR Art. 17 right to erasure instructions" },
+      { filename: "SECURITY_AWARENESS_PROGRAM.md", name: "Security Awareness Program", description: "Employee security training program with phishing, password hygiene, incident reporting" },
+    ],
+  },
+  {
+    version: "200.0.0",
+    docs: [
+      { filename: "DPO_HANDBOOK.md", name: "DPO Handbook", description: "Guide for appointed Data Protection Officers" },
+      { filename: "INCIDENT_COMMUNICATION_TEMPLATES.md", name: "Incident Communication Templates", description: "Pre-written templates for incident lifecycle" },
+      { filename: "TRAINING_RECORD.md", name: "Training Record", description: "GDPR Art. 39(1)(b) staff training record" },
+      { filename: "CONSENT_RECORD_TEMPLATE.md", name: "Consent Record Template", description: "GDPR Art. 7 consent evidence logging" },
+    ],
+  },
+  {
+    version: "180.0.0",
+    docs: [
+      { filename: "EXECUTIVE_DASHBOARD.md", name: "Executive Dashboard", description: "One-page C-suite compliance overview" },
+      { filename: "PRIVACY_NOTICE_SHORT.md", name: "Privacy Notice (Short)", description: "One-page simplified privacy notice" },
+      { filename: "COOKIE_CONSENT_CONFIG.json", name: "Cookie Consent Configuration", description: "Machine-readable CMP config" },
+      { filename: "QUICK_START_COMPLIANCE_GUIDE.md", name: "Quick Start Guide", description: "Personalized compliance quick start" },
+      { filename: "COMPLIANCE_ROADMAP.md", name: "Compliance Roadmap", description: "Phased implementation plan" },
+      { filename: "PRIVACY_DASHBOARD_CONFIG.json", name: "Privacy Dashboard Config", description: "Machine-readable 'My Data' page config" },
+    ],
+  },
+];
+
+function runMigrate(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+) {
+  if (!quiet) printBanner();
+
+  // Check what's on disk
+  const existingFilenames = new Set<string>();
+  if (fs.existsSync(absOutputDir)) {
+    for (const f of fs.readdirSync(absOutputDir)) {
+      existingFilenames.add(f);
+    }
+  }
+
+  // Find document types that exist in our catalog but not on disk
+  const newDocs: Array<{
+    version: string;
+    filename: string;
+    name: string;
+    description: string;
+  }> = [];
+
+  for (const entry of VERSION_HISTORY) {
+    for (const doc of entry.docs) {
+      if (!existingFilenames.has(doc.filename)) {
+        newDocs.push({ version: entry.version, ...doc });
+      }
+    }
+  }
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      currentVersion: VERSION,
+      newDocumentTypes: newDocs.length,
+      docs: newDocs,
+    }, null, 2));
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}Codepliant Migration Guide${RESET()}`);
+  console.log(`${DIM()}Current version: v${VERSION}${RESET()}\n`);
+
+  if (newDocs.length === 0) {
+    console.log(`${GREEN()}${BOLD()}You're up to date!${RESET()} All available document types have been generated.\n`);
+    console.log(`${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to regenerate and pick up any content improvements.${RESET()}\n`);
+    process.exit(0);
+  }
+
+  console.log(`${BOLD()}${newDocs.length} new document type(s) available:${RESET()}\n`);
+
+  let lastVersion = "";
+  for (const doc of newDocs) {
+    if (doc.version !== lastVersion) {
+      console.log(`  ${CYAN()}${BOLD()}v${doc.version}${RESET()}`);
+      lastVersion = doc.version;
+    }
+    console.log(`    ${GREEN()}+${RESET()} ${BOLD()}${doc.name}${RESET()} ${DIM()}(${doc.filename})${RESET()}`);
+    console.log(`      ${DIM()}${doc.description}${RESET()}`);
+  }
+
+  console.log(`\n${DIM()}Run ${CYAN()}codepliant go${RESET()}${DIM()} to generate all new document types.${RESET()}`);
+  console.log(`${DIM()}Run ${CYAN()}codepliant update${RESET()}${DIM()} to regenerate and see what changed.${RESET()}\n`);
+  process.exit(0);
 }
 
 // --- `codepliant clean` command ---

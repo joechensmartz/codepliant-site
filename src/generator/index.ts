@@ -93,6 +93,8 @@ import { generateDPOHandbook } from "./dpo-handbook.js";
 import { generateIncidentCommunicationTemplates } from "./incident-communication-templates.js";
 import { generateTrainingRecord } from "./training-record.js";
 import { generateConsentRecordTemplate } from "./consent-record-template.js";
+import { generateDataDeletionProcedures } from "./data-deletion-procedures.js";
+import { generateSecurityAwarenessProgram } from "./security-awareness-program.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -923,6 +925,26 @@ export function generateDocuments(
       name: "Consent Record Template",
       filename: "CONSENT_RECORD_TEMPLATE.md",
       content: consentRecordTemplate,
+    });
+  }
+
+  // Data Deletion Procedures — GDPR Art. 17 right to erasure per-service instructions
+  const dataDeletionProcedures = generateDataDeletionProcedures(docScan, ctx);
+  if (dataDeletionProcedures) {
+    docs.push({
+      name: "Data Deletion Procedures",
+      filename: "DATA_DELETION_PROCEDURES.md",
+      content: dataDeletionProcedures,
+    });
+  }
+
+  // Security Awareness Program — employee security training program outline
+  const securityAwarenessProgram = generateSecurityAwarenessProgram(docScan, ctx);
+  if (securityAwarenessProgram) {
+    docs.push({
+      name: "Security Awareness Program",
+      filename: "SECURITY_AWARENESS_PROGRAM.md",
+      content: securityAwarenessProgram,
     });
   }
 

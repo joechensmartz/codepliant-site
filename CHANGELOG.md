@@ -5,6 +5,19 @@ All notable changes to Codepliant are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [241.0.0 – 250.0.0] - 2026-03-16
+
+### Added
+- Data Deletion Procedures generator — per-service GDPR Art. 17 right to erasure instructions with API calls, admin panel steps, and retention exceptions (`DATA_DELETION_PROCEDURES.md`)
+- Security Awareness Program generator — employee security training outline covering phishing awareness, password hygiene, incident reporting, monthly/quarterly activities (`SECURITY_AWARENESS_PROGRAM.md`)
+- `codepliant completeness` command — shows percentage of recommended docs that exist, lists missing ones with priority
+- `codepliant migrate` command — shows new document types available after upgrading, suggests regeneration
+
+### Changed
+- Document generation expanded to 59+ document types
+- README updated with v250 stats: 250 versions, 59+ doc types, 1200+ repos tested
+- Version bumped to v250.0.0 milestone
+
 ## [56.0.0 – 60.0.0] - 2026-03-15
 
 ### Added

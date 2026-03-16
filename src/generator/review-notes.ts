@@ -387,6 +387,20 @@ export const DOCUMENT_RELATIONSHIPS: Record<string, DocumentRelationship[]> = {
     { name: "Security Policy", filename: "SECURITY.md" },
     { name: "Business Continuity Plan", filename: "BUSINESS_CONTINUITY_PLAN.md" },
   ],
+  "DATA_DELETION_PROCEDURES.md": [
+    { name: "DSAR Handling Guide", filename: "DSAR_HANDLING_GUIDE.md" },
+    { name: "Data Retention Policy", filename: "DATA_RETENTION_POLICY.md" },
+    { name: "Vendor Contacts Directory", filename: "VENDOR_CONTACTS.md" },
+    { name: "Data Dictionary", filename: "DATA_DICTIONARY.md" },
+    { name: "Privacy Policy", filename: "PRIVACY_POLICY.md" },
+  ],
+  "SECURITY_AWARENESS_PROGRAM.md": [
+    { name: "Training Record", filename: "TRAINING_RECORD.md" },
+    { name: "Incident Response Plan", filename: "INCIDENT_RESPONSE_PLAN.md" },
+    { name: "Access Control Policy", filename: "ACCESS_CONTROL_POLICY.md" },
+    { name: "Information Security Policy", filename: "INFORMATION_SECURITY_POLICY.md" },
+    { name: "Security Policy", filename: "SECURITY.md" },
+  ],
 };
 
 /**
