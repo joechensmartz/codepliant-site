@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-770%2B%20passed-brightgreen?style=flat-square" alt="tests" />
+  <img src="https://img.shields.io/badge/tests-787%20passed-brightgreen?style=flat-square" alt="tests" />
   <img src="https://img.shields.io/badge/precision-100%25-brightgreen?style=flat-square" alt="precision" />
-  <img src="https://img.shields.io/badge/docs-90%2B%20types-blue?style=flat-square" alt="docs" />
+  <img src="https://img.shields.io/badge/docs-105%2B%20types-blue?style=flat-square" alt="docs" />
   <img src="https://img.shields.io/badge/ecosystems-10%2B-blue?style=flat-square" alt="ecosystems" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
 </p>
@@ -46,7 +46,7 @@ Scanning source imports...   ✓ OpenAI, Stripe found in code
 Scanning .env...             ✓ 9 API keys detected
 Scanning Prisma schema...    ✓ User model: email, phone, passwordHash
 
-Generated 90+ documents in legal/
+Generated 105+ documents in legal/
 
   PRIVACY_POLICY.md                  — mentions Stripe, OpenAI, Supabase by name
   AI_DISCLOSURE.md                   — EU AI Act Art. 50 compliant
@@ -63,9 +63,9 @@ Generated 90+ documents in legal/
   ... and 40+ more
 
 Generation Summary
-  Total documents: 90+
+  Total documents: 105+
   Total lines generated: 12,000+
-  Estimated lawyer equivalent: Generated 90+ documents (~$90,000 lawyer equivalent)
+  Estimated lawyer equivalent: Generated 105+ documents (~$105,000 lawyer equivalent)
 
 Compliance score: 100% (A)
 Done in 24ms.
@@ -87,7 +87,7 @@ Done in 24ms.
 | "Do you use cookies?" — *Probably?* | Finds PostHog, Google Analytics, Supabase Auth in your code |
 | "Do you use AI?" — *Yes but what do I disclose?* | Detects OpenAI + Anthropic, generates Article 50 disclosure |
 | "List your sub-processors" — *Uhh...* | Finds Stripe, Sentry, Resend, generates the full list with their DPA URLs |
-| 30 minutes of forms → generic template | 30 seconds → 90+ documents tailored to your code |
+| 30 minutes of forms → generic template | 30 seconds → 105+ documents tailored to your code |
 
 ---
 
@@ -196,7 +196,7 @@ Reads `.env`, `.env.local`, `.env.example`, and similar files. Matches variable 
 - **License** (`src/scanner/license-scanner.ts`) — open source license compliance
 
 ### Step 7: Document Generation (`src/generator/index.ts`)
-Based on scan results, generates 90+ documents — each personalized to your actual services. A project using Stripe, OpenAI, and Supabase gets documents that mention those services by name, list their specific data collection practices, and link to their DPA pages.
+Based on scan results, generates 105+ documents — each personalized to your actual services. A project using Stripe, OpenAI, and Supabase gets documents that mention those services by name, list their specific data collection practices, and link to their DPA pages.
 
 ### Step 8: Output & Scoring
 Writes all documents to `legal/` (or your configured output directory), computes a compliance score, and shows a generation summary with estimated lawyer-equivalent value.
@@ -238,6 +238,9 @@ npx codepliant migrate
 # View codepliant version history
 npx codepliant changelog
 
+# Generate compliance certificate for partners
+npx codepliant certify
+
 # Project info, mission, and credits
 npx codepliant about
 ```
@@ -256,7 +259,7 @@ npx codepliant about
 ### CI/CD
 
 ```yaml
-- uses: codepliant/codepliant@v370
+- uses: codepliant/codepliant@v400
   with:
     fail-on-missing: true
 ```
@@ -271,7 +274,7 @@ npx codepliant about
 
 ## Built overnight
 
-v370 — 300 versions built overnight: 90+ doc types, 50+ CLI commands, 30+ scanners, 12+ output formats. Built in a single night with Claude Code.
+v400 — 330 versions built overnight: 105+ doc types, 55+ CLI commands, 30+ scanners, 12+ output formats, 787 tests. Built in a single night with Claude Code.
 
 Every feature ships with tests. Every detection is deterministic. Zero network calls.
 
@@ -279,7 +282,7 @@ Every feature ships with tests. Every detection is deterministic. Zero network c
 
 ## Links
 
-- [Example Output](./examples/sample-output/) — 90+ generated documents
+- [Example Output](./examples/sample-output/) — 105+ generated documents
 - [Real Project Scans](./examples/real-projects/) — 10 open-source projects
 - [Contributing](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)

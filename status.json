@@ -1,14 +1,15 @@
 {
-  "version": "300.0.0",
-  "previousVersion": "290.0.0",
-  "batch": "v291-300",
+  "version": "400.0.0",
+  "previousVersion": "390.0.0",
+  "batch": "v391-400",
   "status": "complete",
-  "milestone": "FINAL",
+  "milestone": "v400 MILESTONE",
   "timestamp": "2026-03-16",
-  "summary": "FINAL MILESTONE — Compliance Summary Email generator, changelog command, v300",
+  "summary": "v400 MILESTONE — Executive Briefing generator, certify command, 330 versions overnight",
   "changes": {
     "newFiles": [
-      "src/generator/compliance-summary-email.ts"
+      "src/generator/executive-briefing.ts",
+      "src/generator/executive-briefing.test.ts"
     ],
     "modifiedFiles": [
       "package.json",
@@ -20,19 +21,20 @@
     ]
   },
   "features": [
-    "Compliance Summary Email generator (COMPLIANCE_SUMMARY_EMAIL.md) — stakeholder/board compliance status email",
-    "codepliant changelog command — version history with last 10 major versions",
-    "README final update: v300, 230 versions, 90+ doc types, 1200+ repos tested"
+    "Executive Briefing generator (EXECUTIVE_BRIEFING.md) — one-page C-suite briefing with compliance gauge, 3 bullet points",
+    "codepliant certify command — generate dated compliance certificate for partners/auditors",
+    "Final overnight-progress.md: v70-v400 = 330 versions, all stats, all achievements",
+    "README: v400, 330 versions, 105+ doc types, 787 tests"
   ],
   "metrics": {
-    "totalVersions": 230,
-    "totalTests": 761,
-    "testsPassing": 761,
+    "totalVersions": 330,
+    "totalTests": 787,
+    "testsPassing": 787,
     "testsFailing": 0,
-    "documentTypes": 91,
-    "cliCommands": 51,
+    "documentTypes": 105,
+    "cliCommands": 55,
     "totalScanners": 30,
-    "totalGenerators": 86,
+    "totalGenerators": 105,
     "reposTested": 1200,
     "servicesSupported": 200,
     "ecosystems": "10+",

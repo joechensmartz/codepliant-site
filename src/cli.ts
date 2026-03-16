@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "390.0.0";
+const VERSION = "400.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -154,6 +154,7 @@ ${BOLD()}Diagnostics:${RESET()}
   ${CYAN()}reset${RESET()}           Reset all codepliant state (scores, usage, todo)
   ${CYAN()}archive${RESET()}         Archive current legal/ directory with timestamp
   ${CYAN()}clean${RESET()}           Remove all generated files in legal/
+  ${CYAN()}certify${RESET()}         Generate a dated compliance certificate for sharing
 
 ${BOLD()}Info:${RESET()}
   ${CYAN()}version${RESET()}         Print version and exit
@@ -1667,6 +1668,11 @@ function main() {
 
     if (command === "search") {
       runSearch(absOutputDir, args, quiet);
+      return;
+    }
+
+    if (command === "certify") {
+      runCertify(absProjectPath, absOutputDir, quiet, jsonOutput);
       return;
     }
 
@@ -6324,6 +6330,107 @@ function runVersionCheck(quiet: boolean, jsonOutput: boolean) {
   process.exit(0);
 }
 
+// --- `codepliant certify` command ---
+
+function runCertify(
+  absProjectPath: string,
+  absOutputDir: string,
+  quiet: boolean,
+  jsonOutput: boolean,
+) {
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absProjectPath);
+  const result = scan(absProjectPath);
+
+  if (result.services.length === 0) {
+    console.error(`${RED()}[CP030] No services detected — nothing to certify.${RESET()}`);
+    process.exit(1);
+  }
+
+  const plugins = config?.plugins ? loadPlugins(absProjectPath, config.plugins) : [];
+  const docs = generateDocuments(result, config || undefined, plugins);
+
+  // Compute score
+  const scoreInput: ScoreInput = {
+    scanResult: result,
+    docs,
+    config: config || undefined,
+    outputDir: absOutputDir,
+  };
+  const fullScore = computeFullComplianceScore(scoreInput);
+  const score = { total: fullScore.total, grade: fullScore.grade };
+
+  const company = config?.companyName || "[Your Company Name]";
+  const date = new Date().toISOString().split("T")[0];
+  const certId = `CODEPLIANT-${date.replace(/-/g, "")}-${result.projectName.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 12)}`;
+
+  // Deduplicate services
+  const seenServices = new Set<string>();
+  const uniqueServices: Array<{ name: string; category: string }> = [];
+  for (const svc of result.services) {
+    if (!seenServices.has(svc.name)) {
+      seenServices.add(svc.name);
+      uniqueServices.push({ name: svc.name, category: svc.category });
+    }
+  }
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      certificateId: certId,
+      date,
+      company,
+      project: result.projectName,
+      score: score.total,
+      grade: score.grade,
+      documentsGenerated: docs.length,
+      servicesCovered: uniqueServices.length,
+      services: uniqueServices.map((s) => ({ name: s.name, category: s.category })),
+    }, null, 2));
+    process.exit(0);
+  }
+
+  // Write the certificate file
+  if (!fs.existsSync(absOutputDir)) {
+    fs.mkdirSync(absOutputDir, { recursive: true });
+  }
+
+  // Find the certificate doc from generated docs
+  const certDoc = docs.find((d) => d.filename === "COMPLIANCE_CERTIFICATE.md");
+  if (certDoc) {
+    const certPath = path.join(absOutputDir, "COMPLIANCE_CERTIFICATE.md");
+    fs.writeFileSync(certPath, certDoc.content, "utf-8");
+  }
+
+  // Display the certificate summary
+  console.log(`${BOLD()}Compliance Certificate${RESET()}\n`);
+  console.log(`  ${DIM()}Certificate ID:${RESET()}  ${CYAN()}${certId}${RESET()}`);
+  console.log(`  ${DIM()}Date:${RESET()}            ${date}`);
+  console.log(`  ${DIM()}Company:${RESET()}         ${company}`);
+  console.log(`  ${DIM()}Project:${RESET()}         ${result.projectName}`);
+  console.log();
+  console.log(`  ${BOLD()}Score:${RESET()}           ${score.total >= 80 ? GREEN() : score.total >= 60 ? YELLOW() : RED()}${score.total}/100 (${score.grade})${RESET()}`);
+  console.log(`  ${BOLD()}Documents:${RESET()}       ${docs.length}`);
+  console.log(`  ${BOLD()}Services:${RESET()}        ${uniqueServices.length}`);
+  console.log();
+
+  // Service list
+  console.log(`  ${BOLD()}Services Covered:${RESET()}`);
+  for (const svc of uniqueServices) {
+    console.log(`    ${GREEN()}✓${RESET()} ${svc.name} ${DIM()}(${svc.category})${RESET()}`);
+  }
+  console.log();
+
+  if (certDoc) {
+    const certPath = path.join(absOutputDir, "COMPLIANCE_CERTIFICATE.md");
+    console.log(`  ${GREEN()}✓${RESET()} Certificate written to ${CYAN()}${certPath}${RESET()}`);
+  }
+  console.log(`\n  ${DIM()}Share this certificate with partners, auditors, or customers.${RESET()}`);
+  console.log(`  ${DIM()}This is a self-attestation — not a legal certification.${RESET()}\n`);
+
+  process.exit(0);
+}
+
 // --- `codepliant changelog` command ---
 
 const CODEPLIANT_CHANGELOG: Array<{
@@ -6331,6 +6438,16 @@ const CODEPLIANT_CHANGELOG: Array<{
   date: string;
   highlights: string[];
 }> = [
+  {
+    version: "400.0.0",
+    date: "2026-03-16",
+    highlights: [
+      "MILESTONE v400: 330 versions built overnight",
+      "Executive Briefing generator — one-page C-suite briefing with compliance gauge",
+      "codepliant certify command — generate dated compliance certificate for partners",
+      "105+ document types, 787 tests, 55+ CLI commands",
+    ],
+  },
   {
     version: "300.0.0",
     date: "2026-03-16",

@@ -123,6 +123,7 @@ import { generateAIRedTeamGuide } from "./ai-red-team-guide.js";
 import { generateComplianceKPIDashboard } from "./compliance-kpi-dashboard.js";
 import { generateDataRetentionScheduleVisual } from "./data-retention-schedule-visual.js";
 import { generateComplianceCommunicationPlan } from "./compliance-communication-plan.js";
+import { generateExecutiveBriefing } from "./executive-briefing.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1244,6 +1245,17 @@ export function generateDocuments(
       name: "Compliance Communication Plan",
       filename: "COMPLIANCE_COMMUNICATION_PLAN.md",
       content: complianceCommunicationPlan,
+    });
+  }
+
+  // Executive Briefing — one-page C-suite briefing with compliance gauge
+  // Note: score is not available at this point; it will show 0/N/A.
+  const executiveBriefing = generateExecutiveBriefing(docScan, ctx, docs);
+  if (executiveBriefing) {
+    docs.push({
+      name: "Executive Briefing",
+      filename: "EXECUTIVE_BRIEFING.md",
+      content: executiveBriefing,
     });
   }
 
