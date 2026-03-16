@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "300.0.0";
+const VERSION = "310.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -137,6 +137,10 @@ ${BOLD()}Community:${RESET()}
 ${BOLD()}AI (optional):${RESET()}
   ${CYAN()}review${RESET()}          AI-powered review of generated documents
   ${CYAN()}explain${RESET()}         Explain why a document was generated
+
+${BOLD()}Service Management:${RESET()}
+  ${CYAN()}why${RESET()}             Explain why a specific service was detected
+  ${CYAN()}ignore${RESET()}          Add a service to the ignore list in config
 
 ${BOLD()}Diagnostics:${RESET()}
   ${CYAN()}doctor${RESET()}          Diagnose common issues and suggest fixes
@@ -563,6 +567,44 @@ ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant explain "AI Disclosure" ./my-app${RESET()}
   ${CYAN()}codepliant explain --json "Cookie Policy"${RESET()}
 `,
+  why: `${BOLD()}codepliant why${RESET()} <service> [path]
+
+Explain why a specific service was detected in your project.
+Shows all evidence: dependencies, imports, environment variables, and code patterns.
+
+${BOLD()}Arguments:${RESET()}
+  ${CYAN()}<service>${RESET()}   Service name (e.g. "stripe", "openai", "sentry")
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--json${RESET()}                Output evidence as JSON
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant why stripe${RESET()}
+  ${CYAN()}codepliant why openai ./my-app${RESET()}
+  ${CYAN()}codepliant why sentry --json${RESET()}
+`,
+
+  ignore: `${BOLD()}codepliant ignore${RESET()} <service> [path]
+
+Add a service to the ignore list so it won't appear in future scans.
+Useful for utility libraries that are not data processors (e.g. zod, lodash).
+
+${BOLD()}Arguments:${RESET()}
+  ${CYAN()}<service>${RESET()}   Service name to ignore (e.g. "zod", "lodash")
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--quiet, -q${RESET()}           Minimal output
+  ${DIM()}--json${RESET()}                Output result as JSON
+  ${DIM()}--no-color${RESET()}            Disable colored output
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant ignore zod${RESET()}                 Ignore zod (not a data processor)
+  ${CYAN()}codepliant ignore lodash ./my-app${RESET()}      Ignore lodash in specific project
+  ${CYAN()}codepliant ignore --json zod${RESET()}           JSON output
+`,
+
   compare: `${BOLD()}codepliant compare${RESET()} <path1> <path2> [options]
 
 Compare compliance status of two projects side by side.
@@ -1378,6 +1420,16 @@ function main() {
 
     if (command === "explain") {
       runExplain(absProjectPath, args, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "why") {
+      runWhy(absProjectPath, args, quiet, jsonOutput);
+      return;
+    }
+
+    if (command === "ignore") {
+      runIgnore(absProjectPath, args, quiet, jsonOutput);
       return;
     }
 
@@ -3884,6 +3936,158 @@ function runExplain(absProjectPath: string, args: string[], quiet: boolean, json
   }
 
   console.log(`${DIM()}This document was auto-generated based on code analysis. Review and customize for your needs.${RESET()}\n`);
+  process.exit(0);
+}
+
+function runWhy(absProjectPath: string, args: string[], quiet: boolean, jsonOutput: boolean) {
+  const nonFlags: string[] = [];
+
+  for (let i = 1; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === "--json" || arg === "--quiet" || arg === "-q" || arg === "--no-color") continue;
+    if (arg === "--output" || arg === "-o") { i++; continue; }
+    if (arg.startsWith("-")) continue;
+    nonFlags.push(arg);
+  }
+
+  if (nonFlags.length === 0) {
+    console.error(`${RED()}Error: Missing service name.${RESET()}`);
+    console.error(`${DIM()}Usage: codepliant why <service> [path]${RESET()}`);
+    console.error(`${DIM()}Example: codepliant why stripe${RESET()}`);
+    process.exit(1);
+  }
+
+  const serviceQuery = nonFlags[0].toLowerCase();
+  const projPath = nonFlags.length > 1 ? nonFlags[1] : absProjectPath;
+  const absPath = path.resolve(projPath);
+
+  if (!quiet && !jsonOutput) printBanner();
+
+  const config = loadConfig(absPath);
+  const plugins = config.plugins ? loadPlugins(absPath, config.plugins) : [];
+  const scanResult = scan(absPath, { plugins });
+
+  // Find matching service(s) — fuzzy match on name or provider name
+  const matched = scanResult.services.filter((s) => {
+    const nameLower = s.name.toLowerCase();
+    return nameLower === serviceQuery ||
+      nameLower.includes(serviceQuery) ||
+      serviceQuery.includes(nameLower.replace(/^@.*\//, ""));
+  });
+
+  if (matched.length === 0) {
+    if (jsonOutput) {
+      console.log(JSON.stringify({
+        found: false,
+        query: serviceQuery,
+        detectedServices: scanResult.services.map((s) => s.name),
+      }, null, 2));
+    } else {
+      console.error(`${RED()}Service not found: "${serviceQuery}"${RESET()}\n`);
+      console.log(`${BOLD()}Detected services in this project:${RESET()}\n`);
+      for (const s of scanResult.services) {
+        console.log(`  ${CYAN()}*${RESET()} ${s.name} ${DIM()}(${s.category})${RESET()}`);
+      }
+      console.log();
+    }
+    process.exit(1);
+  }
+
+  if (jsonOutput) {
+    const results = matched.map((s) => ({
+      service: s.name,
+      category: s.category,
+      isDataProcessor: s.isDataProcessor !== false,
+      dataCollected: s.dataCollected,
+      evidence: s.evidence,
+    }));
+    console.log(JSON.stringify({ found: true, services: results }, null, 2));
+    process.exit(0);
+  }
+
+  for (const service of matched) {
+    console.log(`${BOLD()}Why was "${service.name}" detected?${RESET()}\n`);
+    console.log(`  ${DIM()}Service:${RESET()}  ${service.name}`);
+    console.log(`  ${DIM()}Category:${RESET()} ${service.category}`);
+    console.log(`  ${DIM()}Is data processor:${RESET()} ${service.isDataProcessor !== false ? "yes" : "no (utility/dev tool)"}`);
+
+    if (service.dataCollected.length > 0) {
+      console.log(`  ${DIM()}Data collected:${RESET()} ${service.dataCollected.join(", ")}`);
+    }
+
+    console.log();
+    console.log(`${BOLD()}Evidence:${RESET()}\n`);
+
+    if (service.evidence.length === 0) {
+      console.log(`  ${DIM()}(no detailed evidence recorded)${RESET()}`);
+    } else {
+      for (const ev of service.evidence) {
+        const typeLabel = ev.type === "dependency" ? "dependency" :
+          ev.type === "import" ? "import" :
+          ev.type === "env_var" ? "env var" :
+          ev.type === "code_pattern" ? "code pattern" : ev.type;
+        console.log(`  ${CYAN()}[${typeLabel}]${RESET()} ${ev.detail}${ev.file ? ` ${DIM()}(${ev.file})${RESET()}` : ""}`);
+      }
+    }
+    console.log();
+  }
+
+  console.log(`${DIM()}To exclude this service from future scans: codepliant ignore ${matched[0].name}${RESET()}\n`);
+  process.exit(0);
+}
+
+function runIgnore(absProjectPath: string, args: string[], quiet: boolean, jsonOutput: boolean) {
+  const nonFlags: string[] = [];
+
+  for (let i = 1; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === "--json" || arg === "--quiet" || arg === "-q" || arg === "--no-color") continue;
+    if (arg === "--output" || arg === "-o") { i++; continue; }
+    if (arg.startsWith("-")) continue;
+    nonFlags.push(arg);
+  }
+
+  if (nonFlags.length === 0) {
+    console.error(`${RED()}Error: Missing service name.${RESET()}`);
+    console.error(`${DIM()}Usage: codepliant ignore <service> [path]${RESET()}`);
+    console.error(`${DIM()}Example: codepliant ignore zod${RESET()}`);
+    process.exit(1);
+  }
+
+  const serviceName = nonFlags[0];
+  const projPath = nonFlags.length > 1 ? nonFlags[1] : absProjectPath;
+  const absPath = path.resolve(projPath);
+
+  const config = loadConfig(absPath);
+
+  // Add to excludeServices
+  const currentExcluded = config.excludeServices || [];
+  if (currentExcluded.includes(serviceName)) {
+    if (jsonOutput) {
+      console.log(JSON.stringify({ ignored: true, service: serviceName, alreadyIgnored: true }, null, 2));
+    } else {
+      console.log(`${YELLOW()}Already ignored: ${serviceName}${RESET()}`);
+    }
+    process.exit(0);
+  }
+
+  config.excludeServices = [...currentExcluded, serviceName];
+  const configPath = saveConfig(absPath, config);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      ignored: true,
+      service: serviceName,
+      alreadyIgnored: false,
+      excludeServices: config.excludeServices,
+      configPath,
+    }, null, 2));
+  } else {
+    console.log(`${GREEN()}Ignored: ${serviceName} (not a data processor)${RESET()}`);
+    console.log(`${DIM()}Added to excludeServices in ${path.basename(configPath)}${RESET()}`);
+    console.log(`${DIM()}This service won't appear in future scans.${RESET()}`);
+  }
+
   process.exit(0);
 }
 

@@ -105,6 +105,8 @@ import { generatePrivacyPolicyChangelog } from "./privacy-policy-changelog.js";
 import { generatePrivacyProgramCharter } from "./privacy-program-charter.js";
 import { generateThirdPartyDueDiligence } from "./third-party-due-diligence.js";
 import { generateComplianceSummaryEmail } from "./compliance-summary-email.js";
+import { generateVendorExitPlan } from "./vendor-exit-plan.js";
+import { generatePrivacyPolicyComparison } from "./privacy-policy-comparison.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1055,6 +1057,26 @@ export function generateDocuments(
       name: "Compliance Summary Email",
       filename: "COMPLIANCE_SUMMARY_EMAIL.md",
       content: complianceSummaryEmail,
+    });
+  }
+
+  // Vendor Exit Plan — migration strategies for each detected third-party service (enterprise DPA requirement)
+  const vendorExitPlan = generateVendorExitPlan(docScan, ctx);
+  if (vendorExitPlan) {
+    docs.push({
+      name: "Vendor Exit Plan",
+      filename: "VENDOR_EXIT_PLAN.md",
+      content: vendorExitPlan,
+    });
+  }
+
+  // Privacy Policy Comparison — benchmark against industry standards (Stripe, Vercel, Linear, etc.)
+  const privacyPolicyComparison = generatePrivacyPolicyComparison(docScan, ctx);
+  if (privacyPolicyComparison) {
+    docs.push({
+      name: "Privacy Policy Comparison",
+      filename: "PRIVACY_POLICY_COMPARISON.md",
+      content: privacyPolicyComparison,
     });
   }
 
