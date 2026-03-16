@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-769%20passed-brightgreen?style=flat-square" alt="tests" />
+  <img src="https://img.shields.io/badge/tests-761%20passed-brightgreen?style=flat-square" alt="tests" />
   <img src="https://img.shields.io/badge/precision-100%25-brightgreen?style=flat-square" alt="precision" />
-  <img src="https://img.shields.io/badge/docs-55%2B%20types-blue?style=flat-square" alt="docs" />
+  <img src="https://img.shields.io/badge/docs-57%2B%20types-blue?style=flat-square" alt="docs" />
   <img src="https://img.shields.io/badge/ecosystems-10%2B-blue?style=flat-square" alt="ecosystems" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
 </p>
@@ -46,7 +46,7 @@ Scanning source imports...   ✓ OpenAI, Stripe found in code
 Scanning .env...             ✓ 9 API keys detected
 Scanning Prisma schema...    ✓ User model: email, phone, passwordHash
 
-Generated 55+ documents in legal/
+Generated 57+ documents in legal/
 
   PRIVACY_POLICY.md                  — mentions Stripe, OpenAI, Supabase by name
   AI_DISCLOSURE.md                   — EU AI Act Art. 50 compliant
@@ -63,9 +63,9 @@ Generated 55+ documents in legal/
   ... and 40+ more
 
 Generation Summary
-  Total documents: 55
+  Total documents: 57
   Total lines generated: 12,000+
-  Estimated lawyer equivalent: Generated 55 documents (~$55,000 lawyer equivalent)
+  Estimated lawyer equivalent: Generated 57 documents (~$57,000 lawyer equivalent)
 
 Compliance score: 100% (A)
 Done in 24ms.
@@ -87,7 +87,7 @@ Done in 24ms.
 | "Do you use cookies?" — *Probably?* | Finds PostHog, Google Analytics, Supabase Auth in your code |
 | "Do you use AI?" — *Yes but what do I disclose?* | Detects OpenAI + Anthropic, generates Article 50 disclosure |
 | "List your sub-processors" — *Uhh...* | Finds Stripe, Sentry, Resend, generates the full list with their DPA URLs |
-| 30 minutes of forms → generic template | 30 seconds → 55+ documents tailored to your code |
+| 30 minutes of forms → generic template | 30 seconds → 57+ documents tailored to your code |
 
 ---
 
@@ -129,6 +129,8 @@ Supports: JavaScript/TypeScript, Python, Go, Ruby, Elixir, PHP, Rust, Java, .NET
 **Operations** — Open Source Notice, License Compliance, Sub-Processor List, Vendor Contacts, Data Flow Map, Record of Processing, Transfer Impact Assessment, Regulatory Updates
 
 **Audit** — SOC 2 Checklist, ISO 27001 Checklist, Privacy Impact Assessment, Third-Party Risk Assessment, Data Classification, Risk Register, Compliance Certificate, Annual Review Checklist
+
+**Privacy UX** — Privacy Notice (Short) for in-app display, Cookie Consent Config (JSON) for CMP integration (OneTrust, CookieYes, Cookiebot)
 
 **Output formats** — Markdown, HTML, PDF, JSON, Notion, Confluence, cookie consent banner, embeddable widget, 12+ formats total
 
@@ -197,7 +199,7 @@ npx codepliant dashboard
 ### CI/CD
 
 ```yaml
-- uses: codepliant/codepliant@v141
+- uses: codepliant/codepliant@v200
   with:
     fail-on-missing: true
 ```
@@ -212,7 +214,7 @@ npx codepliant dashboard
 
 ## Links
 
-- [Example Output](./examples/sample-output/) — 55+ generated documents
+- [Example Output](./examples/sample-output/) — 57+ generated documents
 - [Real Project Scans](./examples/real-projects/) — 10 open-source projects
 - [Contributing](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)

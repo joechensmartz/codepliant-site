@@ -762,6 +762,22 @@ function printStepDone() {
   process.stdout.write(` ${GREEN()}✓${RESET()}\n`);
 }
 
+function startSpinner(message: string): { stop: (success?: boolean) => void } {
+  const frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+  let i = 0;
+  const id = setInterval(() => {
+    process.stdout.write(`\r  ${frames[i % frames.length]} ${message}`);
+    i++;
+  }, 80);
+  return {
+    stop(success?: boolean) {
+      clearInterval(id);
+      const icon = success ? `${GREEN()}✓${RESET()}` : `${RED()}✗${RESET()}`;
+      process.stdout.write(`\r  ${icon} ${message}\n`);
+    },
+  };
+}
+
 // --- Formatting helpers ---
 
 function formatDuration(ms: number): string {

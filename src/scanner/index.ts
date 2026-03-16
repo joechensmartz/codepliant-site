@@ -36,6 +36,7 @@ import { scanGitHubActions } from "./github-actions-scanner.js";
 import { scanWebSockets } from "./websocket-scanner.js";
 import { scanFileUploads } from "./file-upload-scanner.js";
 import { scanCaching } from "./caching-scanner.js";
+import { scanGraphQLEndpoints } from "./graphql-endpoint-scanner.js";
 import { scanTurboRepo } from "./turbo-scanner.js";
 import { walkDirectory, ALL_EXTENSIONS } from "./file-walker.js";
 import type {
@@ -448,6 +449,8 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
   const webSocketServices = safeRun("WebSockets", () => scanWebSockets(absPath, allFiles), []);
   const fileUploadServices = safeRun("File uploads", () => scanFileUploads(absPath, allFiles), []);
   const cachingServices = safeRun("Caching", () => scanCaching(absPath, allFiles), []);
+  const graphqlEndpointResult = safeRun("GraphQL endpoints", () => scanGraphQLEndpoints(absPath, allFiles), { endpoints: [], services: [] });
+  const graphqlEndpointServices = graphqlEndpointResult.services;
 
   // Merge results (deduplicate by service name, combine evidence)
   const serviceMap = new Map<string, DetectedService>();
@@ -466,7 +469,7 @@ export function scan(projectPath: string, options?: ScanOptions): ScanResult & {
     }
   }
 
-  for (const svcList of [depServices, pythonServices, goServices, rubyServices, elixirServices, phpServices, rustServices, javaServices, dotnetServices, importServices, envServices, trackingServices, frameworkImplicitServices, dockerComposeServices, githubActionsServices, webSocketServices, fileUploadServices, cachingServices, ...pluginScanResults]) {
+  for (const svcList of [depServices, pythonServices, goServices, rubyServices, elixirServices, phpServices, rustServices, javaServices, dotnetServices, importServices, envServices, trackingServices, frameworkImplicitServices, dockerComposeServices, githubActionsServices, webSocketServices, fileUploadServices, cachingServices, graphqlEndpointServices, ...pluginScanResults]) {
     mergeServicesIntoMap(serviceMap, svcList);
   }
 

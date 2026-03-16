@@ -2,11 +2,17 @@ import type { ScanResult } from "../scanner/index.js";
 import type { GeneratorContext } from "./index.js";
 
 interface CiCdScanResult {
-  provider: string;
-  hasTests: boolean;
-  hasLinting: boolean;
-  hasSecurityScanning: boolean;
-  hasDependencyScanning: boolean;
+  platforms?: { name: string }[];
+  provider?: string;
+  hasTests?: boolean;
+  hasLinting?: boolean;
+  hasAutomatedTests?: boolean;
+  hasSecurityScanning?: boolean;
+  hasDependencyScanning?: boolean;
+  hasDependencyUpdates?: boolean;
+  hasDeploymentPipeline?: boolean;
+  hasVersionControl?: boolean;
+  vcsProvider?: string | null;
 }
 
 /**
@@ -81,12 +87,15 @@ export function generateInformationSecurityPolicy(
   if (cicdScan) {
     sections.push("## 6. Development Security");
     sections.push("");
-    sections.push(`CI/CD provider: **${cicdScan.provider}**`);
+    const providerName = cicdScan.provider || (cicdScan.platforms && cicdScan.platforms.length > 0 ? cicdScan.platforms.map(p => p.name).join(", ") : "Unknown");
+    sections.push(`CI/CD provider: **${providerName}**`);
     sections.push("");
-    sections.push(`- Automated testing: ${cicdScan.hasTests ? "Enabled" : "Not detected — recommended"}`);
+    const hasTests = cicdScan.hasTests ?? cicdScan.hasAutomatedTests ?? false;
+    sections.push(`- Automated testing: ${hasTests ? "Enabled" : "Not detected — recommended"}`);
     sections.push(`- Linting: ${cicdScan.hasLinting ? "Enabled" : "Not detected — recommended"}`);
     sections.push(`- Security scanning: ${cicdScan.hasSecurityScanning ? "Enabled" : "Not detected — recommended"}`);
-    sections.push(`- Dependency scanning: ${cicdScan.hasDependencyScanning ? "Enabled" : "Not detected — recommended"}`);
+    const hasDeps = cicdScan.hasDependencyScanning ?? cicdScan.hasDependencyUpdates ?? false;
+    sections.push(`- Dependency scanning: ${hasDeps ? "Enabled" : "Not detected — recommended"}`);
     sections.push("");
   }
 

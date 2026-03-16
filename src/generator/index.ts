@@ -84,6 +84,8 @@ import { generateAITrainingDataNotice } from "./ai-training-data-notice.js";
 import { generateEmployeeHandbookPrivacySection } from "./employee-handbook-privacy.js";
 import { generateVendorOnboardingChecklist } from "./vendor-onboarding-checklist.js";
 import { generateExecutiveDashboard } from "./executive-dashboard.js";
+import { generatePrivacyNoticeShort } from "./privacy-notice-short.js";
+import { generateCookieConsentConfig } from "./cookie-consent-config.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -830,6 +832,26 @@ export function generateDocuments(
       name: "Executive Dashboard",
       filename: "EXECUTIVE_DASHBOARD.md",
       content: executiveDashboard,
+    });
+  }
+
+  // Privacy Notice (Short) — one-page simplified privacy notice for app/website display
+  const privacyNoticeShort = generatePrivacyNoticeShort(docScan, ctx);
+  if (privacyNoticeShort) {
+    docs.push({
+      name: "Privacy Notice (Short)",
+      filename: "PRIVACY_NOTICE_SHORT.md",
+      content: privacyNoticeShort,
+    });
+  }
+
+  // Cookie Consent Config — machine-readable cookie configuration for CMP integration
+  const cookieConsentConfig = generateCookieConsentConfig(docScan, ctx);
+  if (cookieConsentConfig) {
+    docs.push({
+      name: "Cookie Consent Configuration",
+      filename: "COOKIE_CONSENT_CONFIG.json",
+      content: cookieConsentConfig,
     });
   }
 

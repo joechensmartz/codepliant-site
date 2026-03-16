@@ -78,7 +78,7 @@ export { writeGithubWiki } from "./output/github-wiki.js";
 export { generateTransparencyReport } from "./generator/transparency-report.js";
 
 export { generateApiSpec, writeApiSpec } from "./cloud/compliance-api.js";
-export type { ComplianceApiSpec, ComplianceApiStatus, ComplianceApiDocument, GenerateApiSpecOptions } from "./cloud/compliance-api.js";
+export type { GenerateApiSpecOptions } from "./cloud/compliance-api.js";
 
 export { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription } from "./cloud/schedule.js";
 export type { ScheduleOptions, ScheduleResult, UnscheduleResult, ScheduleStatus, ScheduleFrequency } from "./cloud/schedule.js";
@@ -96,7 +96,14 @@ export {
   loadUsage,
   resetUsage,
 } from "./licensing/index.js";
-export type { LicenseTier, LicenseInfo as LicensingLicenseInfo, LicensedFeature, FeatureUsage } from "./licensing/index.js";
+export type { LicenseTier, LicenseInfo as LicensingLicenseInfo, LicensedFeature } from "./licensing/index.js";
+
+export { generatePrivacyNoticeShort } from "./generator/privacy-notice-short.js";
+
+export { generateCookieConsentConfig } from "./generator/cookie-consent-config.js";
+
+export { scanGraphQLEndpoints } from "./scanner/graphql-endpoint-scanner.js";
+export type { GraphQLEndpointResult, GraphQLEndpoint } from "./scanner/graphql-endpoint-scanner.js";
 
 export {
   listAllSignatures,
