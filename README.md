@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-564%20passed-brightgreen?style=flat-square" alt="tests" />
-  <img src="https://img.shields.io/badge/precision-97.8%25-brightgreen?style=flat-square" alt="precision" />
-  <img src="https://img.shields.io/badge/docs-25%2B%20types-blue?style=flat-square" alt="docs" />
+  <img src="https://img.shields.io/badge/tests-709%20passed-brightgreen?style=flat-square" alt="tests" />
+  <img src="https://img.shields.io/badge/precision-100%25-brightgreen?style=flat-square" alt="precision" />
+  <img src="https://img.shields.io/badge/docs-40%2B%20types-blue?style=flat-square" alt="docs" />
   <img src="https://img.shields.io/badge/ecosystems-10%2B-blue?style=flat-square" alt="ecosystems" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
 </p>
@@ -46,7 +46,7 @@ Scanning source imports...   ✓ OpenAI, Stripe found in code
 Scanning .env...             ✓ 9 API keys detected
 Scanning Prisma schema...    ✓ User model: email, phone, passwordHash
 
-Generated 25 documents in legal/
+Generated 40+ documents in legal/
 
   PRIVACY_POLICY.md             — mentions Stripe, OpenAI, Supabase by name
   AI_DISCLOSURE.md              — EU AI Act Art. 50 compliant
@@ -54,7 +54,10 @@ Generated 25 documents in legal/
   COOKIE_POLICY.md              — PostHog cookies listed specifically
   DATA_PROCESSING_AGREEMENT.md  — GDPR Art. 28, lists your sub-processors
   INCIDENT_RESPONSE_PLAN.md     — 72-hour GDPR breach notification
-  ... and 19 more
+  DATA_DICTIONARY.md            — every data field cataloged with sensitivity
+  ACCESS_CONTROL_POLICY.md      — RBAC, password policy, MFA requirements
+  CHANGE_MANAGEMENT_POLICY.md   — code review, deployment, rollback procedures
+  ... and 30+ more
 
 Compliance score: 100% (A)
 Done in 24ms.
@@ -76,7 +79,7 @@ Done in 24ms.
 | "Do you use cookies?" — *Probably?* | Finds PostHog, Google Analytics, Supabase Auth in your code |
 | "Do you use AI?" — *Yes but what do I disclose?* | Detects OpenAI + Anthropic, generates Article 50 disclosure |
 | "List your sub-processors" — *Uhh...* | Finds Stripe, Sentry, Resend, generates the full list with their DPA URLs |
-| 30 minutes of forms → generic template | 30 seconds → 25 documents tailored to your code |
+| 30 minutes of forms → generic template | 30 seconds → 40+ documents tailored to your code |
 
 ---
 
@@ -111,13 +114,13 @@ Supports: JavaScript/TypeScript, Python, Go, Ruby, Elixir, PHP, Rust, Java, .NET
 
 **AI Compliance** — AI Disclosure (EU AI Act Art. 50), AI Model Card (Art. 53), AI Act Checklist
 
-**Security** — Security Policy, Incident Response Plan, Vulnerability Scan
+**Security** — Security Policy, Incident Response Plan, Vulnerability Scan, Access Control Policy, Change Management Policy
 
-**Operations** — DSAR Handling Guide, Consent Management Guide, Data Retention Policy
+**Operations** — DSAR Handling Guide, Consent Management Guide, Data Retention Policy, Data Dictionary
 
-**Audit** — SOC 2 Checklist, Privacy Impact Assessment, Third-Party Risk Assessment, Data Classification
+**Audit** — SOC 2 Checklist, ISO 27001 Checklist, Privacy Impact Assessment, Third-Party Risk Assessment, Data Classification, Risk Register
 
-**Output formats** — Markdown, HTML, PDF, JSON, Notion, Confluence, cookie consent banner, embeddable widget
+**Output formats** — Markdown, HTML, PDF, JSON, Notion, Confluence, cookie consent banner, embeddable widget, 12+ formats total
 
 [See example output from a real SaaS project →](./examples/sample-output/)
 
@@ -139,7 +142,7 @@ We scanned 100 open-source projects. Here are 10:
 | [formbricks](./examples/real-projects/formbricks/) | Next.js | 13 services |
 | [saleor](./examples/real-projects/saleor/) | Django | 5 services |
 
-97.8% precision — when we detect something, it's real.
+100% precision — when we detect something, it's real.
 
 [See all scan results →](./examples/real-projects/)
 
@@ -196,7 +199,7 @@ npx codepliant dashboard
 
 ## Links
 
-- [Example Output](./examples/sample-output/) — 25 generated documents
+- [Example Output](./examples/sample-output/) — 40+ generated documents
 - [Real Project Scans](./examples/real-projects/) — 10 open-source projects
 - [Contributing](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)

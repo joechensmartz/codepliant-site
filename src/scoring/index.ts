@@ -884,12 +884,37 @@ export function computeComplianceScore(input: ScoreInput): ComplianceScore {
 export function formatScoreBreakdown(score: ComplianceScore): string {
   const lines: string[] = [];
   lines.push(`Compliance Score: ${score.total}/100 (${score.grade})`);
+
+  // Trend
+  if (score.trend && score.trend.direction !== "no-baseline") {
+    const arrow = score.trend.direction === "improved" ? "+" : score.trend.direction === "declined" ? "" : "";
+    lines.push(`  Trend: ${arrow}${score.trend.delta} points (${score.trend.direction} from ${score.trend.previousScore})`);
+  }
+
   lines.push("");
 
   for (const comp of score.components) {
     lines.push(`  ${comp.name}: ${comp.score}/${comp.maxPoints}`);
     for (const detail of comp.details) {
       lines.push(`    - ${detail}`);
+    }
+  }
+
+  // Per-regulation scores
+  if (score.regulationScores && score.regulationScores.length > 0) {
+    lines.push("");
+    lines.push("  Per-Regulation Scores:");
+    for (const reg of score.regulationScores) {
+      lines.push(`    ${reg.regulation}: ${reg.score}/100 (${reg.grade})`);
+    }
+  }
+
+  // Recommendations
+  if (score.recommendations && score.recommendations.length > 0) {
+    lines.push("");
+    lines.push("  Recommendations (sorted by impact):");
+    for (const rec of score.recommendations) {
+      lines.push(`    [${rec.impact.toUpperCase()}] ${rec.title} (+${rec.estimatedPointsGain} pts)`);
     }
   }
 
@@ -902,6 +927,13 @@ export function formatScoreBreakdown(score: ComplianceScore): string {
 export function formatScoreMarkdown(score: ComplianceScore): string {
   let md = `## Compliance Score\n\n`;
   md += `**${score.total}/100** (Grade: **${score.grade}**)\n\n`;
+
+  // Trend
+  if (score.trend && score.trend.direction !== "no-baseline") {
+    const arrow = score.trend.direction === "improved" ? "+" : "";
+    md += `**Trend:** ${arrow}${score.trend.delta} points (${score.trend.direction} from ${score.trend.previousScore})\n\n`;
+  }
+
   md += `| Component | Score | Max | Details |\n`;
   md += `|-----------|-------|-----|----------|\n`;
 
@@ -911,6 +943,28 @@ export function formatScoreMarkdown(score: ComplianceScore): string {
   }
 
   md += "\n";
+
+  // Per-regulation scores
+  if (score.regulationScores && score.regulationScores.length > 0) {
+    md += `### Per-Regulation Scores\n\n`;
+    md += `| Regulation | Score | Grade | Details |\n`;
+    md += `|------------|-------|-------|----------|\n`;
+    for (const reg of score.regulationScores) {
+      const details = reg.details.join("; ");
+      md += `| ${reg.regulation} | ${reg.score}/100 | ${reg.grade} | ${details} |\n`;
+    }
+    md += "\n";
+  }
+
+  // Recommendations
+  if (score.recommendations && score.recommendations.length > 0) {
+    md += `### Recommendations\n\n`;
+    for (const rec of score.recommendations) {
+      md += `- **[${rec.impact.toUpperCase()}]** ${rec.title} *(+${rec.estimatedPointsGain} pts)* — ${rec.description}\n`;
+    }
+    md += "\n";
+  }
+
   return md;
 }
 

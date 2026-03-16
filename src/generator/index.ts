@@ -52,6 +52,10 @@ import { generateApiPrivacyDocumentation } from "./api-documentation.js";
 import { generateSupplierCodeOfConduct } from "./supplier-code-of-conduct.js";
 import { generatePrivacyByDesignChecklist } from "./privacy-by-design.js";
 import { generatePenetrationTestScope } from "./penetration-test-scope.js";
+import { generateCookieInventory } from "./cookie-inventory.js";
+import { generateAIGovernanceFramework } from "./ai-governance.js";
+import { generateBusinessContinuityPlan } from "./business-continuity.js";
+import { scanCloudProviders } from "../scanner/cloud-scanner.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -569,6 +573,37 @@ export function generateDocuments(
       name: "Penetration Test Scope",
       filename: "PENTEST_SCOPE.md",
       content: pentestScope,
+    });
+  }
+
+  // Cookie Inventory — detailed inventory of all cookies (ePrivacy Directive)
+  const cookieInventory = generateCookieInventory(docScan, ctx);
+  if (cookieInventory) {
+    docs.push({
+      name: "Cookie Inventory",
+      filename: "COOKIE_INVENTORY.md",
+      content: cookieInventory,
+    });
+  }
+
+  // AI Governance Framework — EU AI Act + NIST AI RMF compliance
+  const aiGovernance = generateAIGovernanceFramework(docScan, ctx);
+  if (aiGovernance) {
+    docs.push({
+      name: "AI Governance Framework",
+      filename: "AI_GOVERNANCE_FRAMEWORK.md",
+      content: aiGovernance,
+    });
+  }
+
+  // Business Continuity Plan — RTO/RPO, failover, communication plan
+  const cloudScan = scanCloudProviders(docScan.projectPath);
+  const bcp = generateBusinessContinuityPlan(docScan, ctx, cloudScan);
+  if (bcp) {
+    docs.push({
+      name: "Business Continuity Plan",
+      filename: "BUSINESS_CONTINUITY_PLAN.md",
+      content: bcp,
     });
   }
 
