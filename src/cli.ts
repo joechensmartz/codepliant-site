@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "360.0.0";
+const VERSION = "370.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -160,6 +160,7 @@ ${BOLD()}Info:${RESET()}
   ${CYAN()}info${RESET()}            Show installation info, environment, available scanners
   ${CYAN()}list-docs${RESET()}       List all document types codepliant can generate
   ${CYAN()}changelog${RESET()}       Show version history of codepliant
+  ${CYAN()}about${RESET()}          Show project info, mission, credits, and links
   ${CYAN()}help${RESET()}            Show this help message
 
 ${BOLD()}Options:${RESET()}
@@ -1660,6 +1661,11 @@ function main() {
 
     if (command === "search") {
       runSearch(absOutputDir, args, quiet);
+      return;
+    }
+
+    if (command === "about") {
+      printAbout();
       return;
     }
 
@@ -7409,6 +7415,44 @@ function runSearch(absOutputDir: string, args: string[], quiet: boolean) {
 
     console.log("");
   }
+}
+
+function printAbout() {
+  console.log(`
+${CYAN()}${BOLD()}  ╔═══════════════════════════════════════╗
+  ║             CODEPLIANT                ║
+  ║   Compliance documents from code.     ║
+  ╚═══════════════════════════════════════╝${RESET()}
+
+${BOLD()}Mission:${RESET()}
+  Codepliant scans your actual source code and generates every
+  compliance document your project needs — Privacy Policy, Terms of
+  Service, AI Disclosure, DPA, and 90+ more — in under a second.
+  No questionnaires. No network calls. No AI. Purely deterministic.
+
+${BOLD()}Version:${RESET()}     ${VERSION}
+${BOLD()}License:${RESET()}     MIT — free forever
+${BOLD()}Runtime:${RESET()}     Zero network calls, everything runs locally
+
+${BOLD()}Links:${RESET()}
+  ${CYAN()}GitHub:${RESET()}    https://github.com/joechensmartz/codepliant
+  ${CYAN()}Website:${RESET()}   https://github.com/joechensmartz/codepliant#readme
+  ${CYAN()}Issues:${RESET()}    https://github.com/joechensmartz/codepliant/issues
+  ${CYAN()}NPM:${RESET()}       https://www.npmjs.com/package/codepliant
+
+${BOLD()}Stats:${RESET()}
+  90+ document types | 30+ scanners | 50+ CLI commands
+  10+ ecosystems | 12+ output formats | 4 languages
+
+${BOLD()}Credits:${RESET()}
+  Built with \u2764\uFE0F by the open-source community.
+  ${DIM()}Contributions welcome — see CONTRIBUTING.md${RESET()}
+
+${BOLD()}Quick Start:${RESET()}
+  ${CYAN()}npx codepliant go${RESET()}          Generate all compliance docs
+  ${CYAN()}npx codepliant scan${RESET()}        Scan without generating
+  ${CYAN()}npx codepliant help${RESET()}        See all commands
+`);
 }
 
 main();

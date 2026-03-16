@@ -117,6 +117,8 @@ import { generateComplianceBudgetTemplate } from "./compliance-budget-template.j
 import { generateIncidentSeverityMatrix } from "./incident-severity-matrix.js";
 import { generateDataSubjectRightsPortal } from "./data-subject-rights-portal.js";
 import { generateComplianceAutomationGuide } from "./compliance-automation-guide.js";
+import { generateComplianceOath } from "./compliance-oath.js";
+import { generatePrivacyImpactRegister } from "./privacy-impact-register.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -1180,6 +1182,26 @@ export function generateDocuments(
     filename: "COMPLIANCE_AUTOMATION_GUIDE.md",
     content: generateComplianceAutomationGuide(docScan, ctx),
   });
+
+  // Compliance Oath — management commitment statement (ISO 27001 management commitment)
+  const complianceOath = generateComplianceOath(docScan, ctx);
+  if (complianceOath) {
+    docs.push({
+      name: "Compliance Oath",
+      filename: "COMPLIANCE_OATH.md",
+      content: complianceOath,
+    });
+  }
+
+  // Privacy Impact Register — registry of all PIAs/DPIAs conducted (GDPR Art. 35(1))
+  const privacyImpactRegister = generatePrivacyImpactRegister(docScan, ctx);
+  if (privacyImpactRegister) {
+    docs.push({
+      name: "Privacy Impact Register",
+      filename: "PRIVACY_IMPACT_REGISTER.md",
+      content: privacyImpactRegister,
+    });
+  }
 
   // Compliance Certificate — self-attestation certificate (generated after all other docs)
   // Note: score is not available at this point; it will show 0/N/A.

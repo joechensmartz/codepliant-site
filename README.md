@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-761%20passed-brightgreen?style=flat-square" alt="tests" />
+  <img src="https://img.shields.io/badge/tests-770%2B%20passed-brightgreen?style=flat-square" alt="tests" />
   <img src="https://img.shields.io/badge/precision-100%25-brightgreen?style=flat-square" alt="precision" />
   <img src="https://img.shields.io/badge/docs-90%2B%20types-blue?style=flat-square" alt="docs" />
   <img src="https://img.shields.io/badge/ecosystems-10%2B-blue?style=flat-square" alt="ecosystems" />
@@ -237,6 +237,9 @@ npx codepliant migrate
 
 # View codepliant version history
 npx codepliant changelog
+
+# Project info, mission, and credits
+npx codepliant about
 ```
 
 ### Configuration
@@ -253,7 +256,7 @@ npx codepliant changelog
 ### CI/CD
 
 ```yaml
-- uses: codepliant/codepliant@v300
+- uses: codepliant/codepliant@v370
   with:
     fail-on-missing: true
 ```
@@ -268,7 +271,7 @@ npx codepliant changelog
 
 ## Built overnight
 
-v300 — Built overnight: 230 versions, 90+ doc types, 1200+ repos tested. Built in a single night with Claude Code.
+v370 — 300 versions built overnight: 90+ doc types, 50+ CLI commands, 30+ scanners, 12+ output formats. Built in a single night with Claude Code.
 
 Every feature ships with tests. Every detection is deterministic. Zero network calls.
 
