@@ -1,0 +1,13 @@
+{
+  "project": "saleor",
+  "services": 5,
+  "serviceNames": [
+    "boto3",
+    "django-admin",
+    "django-sessions",
+    "redis",
+    "stripe"
+  ],
+  "dataCategories": 7,
+  "complianceNeeds": 7
+}

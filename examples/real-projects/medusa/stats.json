@@ -1,0 +1,22 @@
+{
+  "project": "root",
+  "services": 14,
+  "serviceNames": [
+    "@aws-sdk/client-s3",
+    "@segment/analytics-next",
+    "@sendgrid/mail",
+    "@tanstack/react-query",
+    "algoliasearch",
+    "bullmq",
+    "cookie-parser",
+    "express-session",
+    "i18next",
+    "ioredis",
+    "openai",
+    "posthog",
+    "stripe",
+    "zod"
+  ],
+  "dataCategories": 7,
+  "complianceNeeds": 8
+}

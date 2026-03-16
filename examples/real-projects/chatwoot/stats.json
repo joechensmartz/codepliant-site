@@ -1,0 +1,32 @@
+{
+  "project": "@chatwoot/chatwoot",
+  "services": 24,
+  "serviceNames": [
+    "@amplitude/analytics-browser",
+    "@aws-sdk/client-s3",
+    "@twilio/voice-sdk",
+    "ActionController::Cookies",
+    "ActionMailer",
+    "ActiveRecord",
+    "ActiveStorage",
+    "aws-sdk-s3",
+    "devise",
+    "google-cloud-storage",
+    "ioredis",
+    "Meta Pixel",
+    "nodemailer",
+    "omniauth",
+    "pg",
+    "puma",
+    "pundit",
+    "rack-attack",
+    "redis",
+    "ruby-openai",
+    "sentry-ruby",
+    "sidekiq",
+    "stripe",
+    "twilio-ruby"
+  ],
+  "dataCategories": 12,
+  "complianceNeeds": 9
+}

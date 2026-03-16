@@ -1,0 +1,27 @@
+{
+  "project": "twenty",
+  "services": 19,
+  "serviceNames": [
+    "@ai-sdk/anthropic",
+    "@ai-sdk/google",
+    "@ai-sdk/openai",
+    "@aws-sdk/client-s3",
+    "@cloudflare/workers-types",
+    "@sentry/node",
+    "@vercel/ai",
+    "bullmq",
+    "drizzle",
+    "googleapis",
+    "ioredis",
+    "nodemailer",
+    "openai",
+    "passport",
+    "passport-google-oauth20",
+    "passport-microsoft",
+    "redis",
+    "stripe",
+    "zod"
+  ],
+  "dataCategories": 10,
+  "complianceNeeds": 7
+}

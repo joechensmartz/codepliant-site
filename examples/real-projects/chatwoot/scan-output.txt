@@ -1,0 +1,103 @@
+  ✓ @amplitude/analytics-browser (📊 Analytics)
+    Data: user behavior, device information, session data
+    Found: [dependency] package.json → @amplitude/analytics-browser@^2.11.10
+    Found: [import] app/javascript/dashboard/helper/AnalyticsHelper/index.js → import * as amplitude from '@amplitude/
+
+  ✓ @aws-sdk/client-s3 (📁 Storage)
+    Data: uploaded files, file metadata
+    Found: [env_var] .env.example → AWS_ACCESS_KEY_ID=***
+
+  ✓ @twilio/voice-sdk (📦 Other)
+    Data: phone numbers, voice call metadata, call recordings, device information
+    Found: [dependency] package.json → @twilio/voice-sdk@^2.12.4
+    Found: [import] app/javascript/dashboard/api/channel/voice/twilioVoiceClient.js → import { Device } from '@twilio/voice-sdk'
+
+  ✓ ActionController::Cookies (📦 Other)
+    Data: session cookies, session data, CSRF tokens
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActionMailer (📧 Email)
+    Data: email addresses, email content
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActiveRecord (🗄️ Database)
+    Data: user data as defined in schema, timestamps, associations
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActiveStorage (📁 Storage)
+    Data: uploaded files, file metadata, storage references
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ aws-sdk-s3 (📁 Storage)
+    Data: uploaded files, file metadata
+    Found: [dependency] Gemfile → gem 'aws-sdk-s3', require: false
+
+  ✓ devise (🔐 Authentication)
+    Data: email, password hash, session data, authentication tokens
+    Found: [dependency] Gemfile → gem 'devise', '>= 4.9.4'
+
+  ✓ google-cloud-storage (📁 Storage)
+    Data: uploaded files, file metadata
+    Found: [dependency] Gemfile → gem 'google-cloud-storage', '>= 1.48.0', require: false
+
+  ✓ ioredis (🗄️ Database)
+    Data: cached data, session data
+    Found: [env_var] .env.example → REDIS_URL=***
+
+  ✓ Meta Pixel (📢 Advertising)
+    Data: page views, conversion events, user behavior, device information
+    Found: [code_pattern] app/javascript/dashboard/routes/dashboard/settings/inbox/channels/Facebook.vue → return loadScript('https://connect.facebook.net/en_US/sdk.js', {
+    Found: [code_pattern] app/javascript/dashboard/routes/dashboard/settings/inbox/facebook/Reauthorize.vue → return loadScript('https://connect.facebook.net/en_US/sdk.js', {
+
+  ✓ nodemailer (📧 Email)
+    Data: email addresses, email content
+    Found: [env_var] .env.example → SMTP_USERNAME=***
+
+  ✓ omniauth (🔐 Authentication)
+    Data: email, name, OAuth tokens, profile data
+    Found: [dependency] Gemfile → gem 'omniauth', '>= 2.1.2'
+    Found: [dependency] Gemfile → gem 'omniauth-google-oauth2', '>= 1.1.3'
+
+  ✓ pg (🗄️ Database)
+    Data: user data as defined in schema
+    Found: [dependency] Gemfile → gem 'pg'
+
+  ✓ puma (📦 Other)
+    Data: HTTP request data, IP address, access logs
+    Found: [dependency] Gemfile → gem 'puma'
+
+  ✓ pundit (🔐 Authentication)
+    Data: user roles, authorization policies, access control data
+    Found: [dependency] Gemfile → gem 'pundit'
+
+  ✓ rack-attack (📦 Other)
+    Data: IP addresses, request metadata
+    Found: [dependency] Gemfile → gem 'rack-attack', '>= 6.7.0'
+
+  ✓ redis (🗄️ Database)
+    Data: cached data, session data
+    Found: [dependency] Gemfile → gem 'redis'
+
+  ✓ ruby-openai (🤖 AI Service)
+    Data: user prompts, conversation history, generated content
+    Found: [dependency] Gemfile → gem 'ruby-openai'
+
+  ✓ sentry-ruby (🔍 Monitoring)
+    Data: error data, stack traces, user context, device information
+    Found: [dependency] Gemfile → gem 'sentry-rails', '>= 5.19.0', require: false
+    Found: [dependency] Gemfile → gem 'sentry-ruby', require: false
+    Found: [dependency] Gemfile → gem 'sentry-sidekiq', '>= 5.19.0', require: false
+
+  ✓ sidekiq (📦 Other)
+    Data: job data, user data processed in background jobs
+    Found: [dependency] Gemfile → gem 'sidekiq', '>= 7.3.1'
+
+  ✓ stripe (💳 Payment)
+    Data: payment information, billing address, email, transaction history
+    Found: [dependency] Gemfile → gem 'stripe', '~> 18.0'
+    Found: [env_var] .env.example → STRIPE_SECRET_KEY=***
+
+  ✓ twilio-ruby (📦 Other)
+    Data: phone numbers, SMS message content, voice call metadata
+    Found: [dependency] Gemfile → gem 'twilio-ruby'
+

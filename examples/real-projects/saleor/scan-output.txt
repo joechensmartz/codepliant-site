@@ -1,0 +1,23 @@
+  ✓ boto3 (📁 Storage)
+    Data: uploaded files, file metadata
+    Found: [dependency] pyproject.toml → "boto3~
+
+  ✓ django-admin (🔐 Authentication)
+    Data: admin panel access, staff user accounts
+    Found: [code_pattern] (framework-implicit) → Django framework includes an admin panel (django.contrib.admin) by default
+
+  ✓ django-sessions (🔐 Authentication)
+    Data: session cookies, CSRF tokens
+    Found: [code_pattern] (framework-implicit) → Django framework includes session middleware and CSRF protection by default
+
+  ✓ redis (🗄️ Database)
+    Data: cached data, session data
+    Found: [import] saleor/webhook/circuit_breaker/storage.py → from redis import
+    Found: [import] saleor/webhook/observability/buffers.py → from redis import
+    Found: [import] saleor/webhook/observability/tests/conftest.py → from redis import
+
+  ✓ stripe (💳 Payment)
+    Data: payment information, billing address, email, transaction history
+    Found: [import] saleor/payment/gateways/stripe/stripe_api.py → import stripe
+    Found: [import] saleor/payment/gateways/stripe/webhooks.py → import stripe
+

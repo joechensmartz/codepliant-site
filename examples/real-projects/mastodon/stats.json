@@ -1,0 +1,22 @@
+{
+  "project": "@mastodon/mastodon",
+  "services": 14,
+  "serviceNames": [
+    "ActionController::Cookies",
+    "ActionMailer",
+    "ActiveRecord",
+    "ActiveStorage",
+    "aws-sdk-s3",
+    "devise",
+    "ioredis",
+    "omniauth",
+    "pg",
+    "puma",
+    "pundit",
+    "rack-attack",
+    "redis",
+    "sidekiq"
+  ],
+  "dataCategories": 4,
+  "complianceNeeds": 7
+}

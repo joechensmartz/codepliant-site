@@ -1,0 +1,24 @@
+{
+  "project": "maybe",
+  "services": 16,
+  "serviceNames": [
+    "ActionController::Cookies",
+    "ActionMailer",
+    "ActiveRecord",
+    "ActiveStorage",
+    "aws-sdk-s3",
+    "intercom-ruby",
+    "nodemailer",
+    "pg",
+    "plaid",
+    "puma",
+    "rack-attack",
+    "redis",
+    "ruby-openai",
+    "sentry-ruby",
+    "sidekiq",
+    "stripe"
+  ],
+  "dataCategories": 6,
+  "complianceNeeds": 7
+}

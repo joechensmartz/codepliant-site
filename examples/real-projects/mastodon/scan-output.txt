@@ -1,0 +1,58 @@
+  ✓ ActionController::Cookies (📦 Other)
+    Data: session cookies, session data, CSRF tokens
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActionMailer (📧 Email)
+    Data: email addresses, email content
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActiveRecord (🗄️ Database)
+    Data: user data as defined in schema, timestamps, associations
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActiveStorage (📁 Storage)
+    Data: uploaded files, file metadata, storage references
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ aws-sdk-s3 (📁 Storage)
+    Data: uploaded files, file metadata
+    Found: [dependency] Gemfile → gem 'aws-sdk-s3', '~> 1.123', require: false
+
+  ✓ devise (🔐 Authentication)
+    Data: email, password hash, session data, authentication tokens
+    Found: [dependency] Gemfile → gem 'devise'
+
+  ✓ ioredis (🗄️ Database)
+    Data: cached data, session data
+    Found: [import] streaming/redis.js → import { Redis } from 'ioredis'
+    Found: [dependency] streaming/package.json → ioredis@^5.3.2
+    Found: [import] streaming/redis.js → import { Redis } from 'ioredis'
+
+  ✓ omniauth (🔐 Authentication)
+    Data: email, name, OAuth tokens, profile data
+    Found: [dependency] Gemfile → gem 'omniauth', '~> 2.0'
+
+  ✓ pg (🗄️ Database)
+    Data: user data as defined in schema
+    Found: [dependency] Gemfile → gem 'pg', '~> 1.5'
+
+  ✓ puma (📦 Other)
+    Data: HTTP request data, IP address, access logs
+    Found: [dependency] Gemfile → gem 'puma', '~> 7.0'
+
+  ✓ pundit (🔐 Authentication)
+    Data: user roles, authorization policies, access control data
+    Found: [dependency] Gemfile → gem 'pundit', '~> 2.3'
+
+  ✓ rack-attack (📦 Other)
+    Data: IP addresses, request metadata
+    Found: [dependency] Gemfile → gem 'rack-attack', '~> 6.6'
+
+  ✓ redis (🗄️ Database)
+    Data: cached data, session data
+    Found: [dependency] Gemfile → gem 'redis', '~> 4.5', require: ['redis', 'redis/connection/hiredis']
+
+  ✓ sidekiq (📦 Other)
+    Data: job data, user data processed in background jobs
+    Found: [dependency] Gemfile → gem 'sidekiq', '< 9'
+

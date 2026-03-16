@@ -1,0 +1,66 @@
+  ✓ ActionController::Cookies (📦 Other)
+    Data: session cookies, session data, CSRF tokens
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActionMailer (📧 Email)
+    Data: email addresses, email content
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActiveRecord (🗄️ Database)
+    Data: user data as defined in schema, timestamps, associations
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ ActiveStorage (📁 Storage)
+    Data: uploaded files, file metadata, storage references
+    Found: [dependency] Gemfile → Framework detected: rails
+
+  ✓ aws-sdk-s3 (📁 Storage)
+    Data: uploaded files, file metadata
+    Found: [dependency] Gemfile → gem "aws-sdk-s3", "~> 1.177.0", require: false
+
+  ✓ intercom-ruby (📦 Other)
+    Data: user profiles, email, name, conversations, user behavior
+    Found: [dependency] Gemfile → gem "intercom-rails"
+
+  ✓ nodemailer (📧 Email)
+    Data: email addresses, email content
+    Found: [env_var] .env.example → SMTP_USERNAME=***
+
+  ✓ pg (🗄️ Database)
+    Data: user data as defined in schema
+    Found: [dependency] Gemfile → gem "pg", "~> 1.5"
+
+  ✓ plaid (💳 Payment)
+    Data: bank account data, transaction history, account balances, financial institution data
+    Found: [dependency] Gemfile → gem "plaid"
+
+  ✓ puma (📦 Other)
+    Data: HTTP request data, IP address, access logs
+    Found: [dependency] Gemfile → gem "puma", ">= 5.0"
+
+  ✓ rack-attack (📦 Other)
+    Data: IP addresses, request metadata
+    Found: [dependency] Gemfile → gem "rack-attack", "~> 6.6"
+
+  ✓ redis (🗄️ Database)
+    Data: cached data, session data
+    Found: [dependency] Gemfile → gem "redis", "~> 5.4"
+
+  ✓ ruby-openai (🤖 AI Service)
+    Data: user prompts, conversation history, generated content
+    Found: [dependency] Gemfile → gem "ruby-openai"
+
+  ✓ sentry-ruby (🔍 Monitoring)
+    Data: error data, stack traces, user context, device information
+    Found: [dependency] Gemfile → gem "sentry-ruby"
+    Found: [dependency] Gemfile → gem "sentry-rails"
+    Found: [dependency] Gemfile → gem "sentry-sidekiq"
+
+  ✓ sidekiq (📦 Other)
+    Data: job data, user data processed in background jobs
+    Found: [dependency] Gemfile → gem "sidekiq"
+
+  ✓ stripe (💳 Payment)
+    Data: payment information, billing address, email, transaction history
+    Found: [dependency] Gemfile → gem "stripe"
+
