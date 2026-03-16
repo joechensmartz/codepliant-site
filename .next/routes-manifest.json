@@ -47,10 +47,28 @@
       "namedRegex": "^/ai\\-disclosure\\-generator(?:/)?$"
     },
     {
+      "page": "/ai-governance",
+      "regex": "^/ai\\-governance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/ai\\-governance(?:/)?$"
+    },
+    {
+      "page": "/blog/eu-ai-act-deadline",
+      "regex": "^/blog/eu\\-ai\\-act\\-deadline(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/eu\\-ai\\-act\\-deadline(?:/)?$"
+    },
+    {
       "page": "/cookie-policy-generator",
       "regex": "^/cookie\\-policy\\-generator(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/cookie\\-policy\\-generator(?:/)?$"
+    },
+    {
+      "page": "/data-privacy",
+      "regex": "^/data\\-privacy(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/data\\-privacy(?:/)?$"
     },
     {
       "page": "/docs",
@@ -59,16 +77,16 @@
       "namedRegex": "^/docs(?:/)?$"
     },
     {
-      "page": "/favicon.ico",
-      "regex": "^/favicon\\.ico(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/favicon\\.ico(?:/)?$"
-    },
-    {
       "page": "/gdpr-compliance",
       "regex": "^/gdpr\\-compliance(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/gdpr\\-compliance(?:/)?$"
+    },
+    {
+      "page": "/hipaa-compliance",
+      "regex": "^/hipaa\\-compliance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/hipaa\\-compliance(?:/)?$"
     },
     {
       "page": "/pricing",
@@ -93,6 +111,12 @@
       "regex": "^/sitemap\\.xml(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/sitemap\\.xml(?:/)?$"
+    },
+    {
+      "page": "/soc2-compliance",
+      "regex": "^/soc2\\-compliance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/soc2\\-compliance(?:/)?$"
     },
     {
       "page": "/terms-of-service-generator",
