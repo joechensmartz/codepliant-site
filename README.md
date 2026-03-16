@@ -1,4 +1,26 @@
-# Codepliant
+<p align="center">
+  <img src="./assets/logo.svg" width="80" alt="Codepliant" />
+</p>
+
+<h1 align="center">Codepliant</h1>
+
+<p align="center">
+  <strong>Compliance documents from your actual code. Not questionnaires.</strong>
+</p>
+
+<p align="center">
+  <code>npx codepliant go</code>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/tests-564%20passed-brightgreen?style=flat-square" alt="tests" />
+  <img src="https://img.shields.io/badge/precision-97.8%25-brightgreen?style=flat-square" alt="precision" />
+  <img src="https://img.shields.io/badge/docs-25%2B%20types-blue?style=flat-square" alt="docs" />
+  <img src="https://img.shields.io/badge/ecosystems-10%2B-blue?style=flat-square" alt="ecosystems" />
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="license" />
+</p>
+
+---
 
 ## Your app collects user data. Where are your legal documents?
 
@@ -39,6 +61,10 @@ Done in 24ms.
 ```
 
 **Every document mentions your actual services by name.** Not "third-party analytics providers" — it says "PostHog" because it found PostHog in your code.
+
+<p align="center">
+  <img src="./assets/demo-screenshot.svg" width="700" alt="Codepliant scanning a SaaS project" />
+</p>
 
 ---
 

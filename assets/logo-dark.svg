@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2997ff"/>
+      <stop offset="100%" stop-color="#0066cc"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="40" fill="url(#bg)"/>
+  <path d="M100 35 L145 55 L145 105 C145 135 125 158 100 170 C75 158 55 135 55 105 L55 55 Z" fill="white" opacity="0.95"/>
+  <path d="M82 105 L95 118 L120 88" stroke="#2997ff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="72" y="155" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="22" font-weight="700" fill="white" opacity="0.9">&lt;/&gt;</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0066cc"/>
+      <stop offset="100%" stop-color="#0040aa"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="200" height="200" rx="40" fill="url(#bg)"/>
+  <!-- Shield icon -->
+  <path d="M100 35 L145 55 L145 105 C145 135 125 158 100 170 C75 158 55 135 55 105 L55 55 Z" fill="white" opacity="0.95"/>
+  <!-- Checkmark inside shield -->
+  <path d="M82 105 L95 118 L120 88" stroke="#0066cc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Code brackets at bottom -->
+  <text x="72" y="155" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="22" font-weight="700" fill="white" opacity="0.9">&lt;/&gt;</text>
+</svg>
