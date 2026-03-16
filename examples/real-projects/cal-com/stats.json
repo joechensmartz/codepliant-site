@@ -1,0 +1,31 @@
+{
+  "project": "calcom-monorepo",
+  "services": 23,
+  "serviceNames": [
+    "@hubspot/api-client",
+    "@prisma/extension-accelerate",
+    "@sendgrid/mail",
+    "@sentry/nextjs",
+    "@tanstack/react-query",
+    "@trpc/server",
+    "@upstash/redis",
+    "Google Analytics",
+    "google-auth-library",
+    "googleapis",
+    "i18next",
+    "intercom",
+    "ioredis",
+    "next-auth",
+    "nodemailer",
+    "passport",
+    "Plausible Analytics",
+    "posthog",
+    "prisma",
+    "stripe",
+    "twilio",
+    "web-push",
+    "zod"
+  ],
+  "dataCategories": 7,
+  "complianceNeeds": 8
+}

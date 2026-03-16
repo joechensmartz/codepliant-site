@@ -1,0 +1,21 @@
+{
+  "project": "formbricks",
+  "services": 13,
+  "serviceNames": [
+    "@aws-sdk/client-s3",
+    "@sentry/nextjs",
+    "@t3-oss/env-nextjs",
+    "googleapis",
+    "i18next",
+    "ioredis",
+    "next-auth",
+    "nodemailer",
+    "posthog",
+    "prisma",
+    "redis",
+    "stripe",
+    "zod"
+  ],
+  "dataCategories": 9,
+  "complianceNeeds": 7
+}

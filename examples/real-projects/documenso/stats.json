@@ -1,0 +1,24 @@
+{
+  "project": "@documenso/root",
+  "services": 16,
+  "serviceNames": [
+    "@ai-sdk/google-vertex",
+    "@aws-sdk/client-ses",
+    "@google-cloud/kms",
+    "@simplewebauthn/server",
+    "@tanstack/react-query",
+    "@trpc/server",
+    "@vercel/ai",
+    "googleapis",
+    "next-auth",
+    "nodemailer",
+    "passport-microsoft",
+    "posthog",
+    "prisma",
+    "resend",
+    "stripe",
+    "zod"
+  ],
+  "dataCategories": 6,
+  "complianceNeeds": 8
+}
