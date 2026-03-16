@@ -190,15 +190,20 @@ export function loadConfig(projectPath: string): CodepliantConfig {
     const raw = JSON.parse(content);
     return { ...DEFAULT_CONFIG, ...raw };
   } catch (err) {
-    // Provide actionable error message with line number
+    // Provide actionable error message with line number and context
     if (err instanceof SyntaxError) {
       const posMatch = err.message.match(/position (\d+)/);
       if (posMatch) {
         const pos = parseInt(posMatch[1], 10);
-        const line = content.substring(0, pos).split("\n").length;
-        console.error(`Warning: Config file ${CONFIG_FILENAME} has invalid JSON at line ${line}. Using defaults.`);
+        const lines = content.substring(0, pos).split("\n");
+        const line = lines.length;
+        const col = (lines[lines.length - 1]?.length || 0) + 1;
+        const snippet = content.split("\n")[line - 1]?.trim() || "";
+        console.error(`Warning: Config file ${CONFIG_FILENAME} has invalid JSON at line ${line}, column ${col}.`);
+        if (snippet) console.error(`  Near: ${snippet}`);
+        console.error(`  Fix: Check for missing commas, quotes, or brackets at that location. Using defaults.`);
       } else {
-        console.error(`Warning: Config file ${CONFIG_FILENAME} has invalid JSON. Using defaults.`);
+        console.error(`Warning: Config file ${CONFIG_FILENAME} has invalid JSON. Check syntax and try again. Using defaults.`);
       }
     }
     return { ...DEFAULT_CONFIG };

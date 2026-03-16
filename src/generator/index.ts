@@ -91,6 +91,8 @@ import { generateComplianceRoadmap } from "./compliance-roadmap.js";
 import { generatePrivacyDashboardConfig } from "./privacy-dashboard-config.js";
 import { generateDPOHandbook } from "./dpo-handbook.js";
 import { generateIncidentCommunicationTemplates } from "./incident-communication-templates.js";
+import { generateTrainingRecord } from "./training-record.js";
+import { generateConsentRecordTemplate } from "./consent-record-template.js";
 
 export interface GeneratedDocument {
   name: string;
@@ -901,6 +903,26 @@ export function generateDocuments(
       name: "Incident Communication Templates",
       filename: "INCIDENT_COMMUNICATION_TEMPLATES.md",
       content: incidentCommTemplates,
+    });
+  }
+
+  // Training Record — GDPR Art. 39(1)(b) staff training record
+  const trainingRecord = generateTrainingRecord(docScan, ctx);
+  if (trainingRecord) {
+    docs.push({
+      name: "Training Record",
+      filename: "TRAINING_RECORD.md",
+      content: trainingRecord,
+    });
+  }
+
+  // Consent Record Template — GDPR Art. 7 consent evidence logging
+  const consentRecordTemplate = generateConsentRecordTemplate(docScan, ctx);
+  if (consentRecordTemplate) {
+    docs.push({
+      name: "Consent Record Template",
+      filename: "CONSENT_RECORD_TEMPLATE.md",
+      content: consentRecordTemplate,
     });
   }
 

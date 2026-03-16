@@ -35,7 +35,7 @@ import { scheduleScans, unscheduleScans, getScheduleStatus, frequencyDescription
 import { getBillingStatus, getBillingUsage, openBillingPortal } from "./cloud/billing.js";
 import { checkLicense, checkAndTrackFeature } from "./licensing/index.js";
 import { computeComplianceScore as computeFullComplianceScore, formatScoreBreakdown, type ScoreInput, type ComplianceScore, type RegulationScore, type Recommendation } from "./scoring/index.js";
-const VERSION = "230.0.0";
+const VERSION = "240.0.0";
 
 // --no-color support: disabled via flag, NO_COLOR env, or non-TTY stdout
 let _noColor = false;
@@ -136,6 +136,8 @@ ${BOLD()}AI (optional):${RESET()}
 
 ${BOLD()}Diagnostics:${RESET()}
   ${CYAN()}doctor${RESET()}          Diagnose common issues and suggest fixes
+  ${CYAN()}health${RESET()}          Quick health check of compliance setup
+  ${CYAN()}clean${RESET()}           Remove all generated files in legal/
 
 ${BOLD()}Info:${RESET()}
   ${CYAN()}version${RESET()}         Print version and exit
@@ -464,6 +466,31 @@ Checks for missing config, outdated docs, build errors, and more.
 ${BOLD()}Examples:${RESET()}
   ${CYAN()}codepliant doctor${RESET()}                     Run diagnostics on current project
   ${CYAN()}codepliant doctor ./my-app${RESET()}             Run diagnostics for a specific project
+`,
+
+  health: `${BOLD()}codepliant health${RESET()} [path]
+
+Quick health check of the entire compliance setup.
+Shows pass/fail for Config, Docs, Freshness, and CI.
+Exit 0 if healthy, exit 1 if issues found.
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant health${RESET()}                     Check current project
+  ${CYAN()}codepliant health ./my-app${RESET()}             Check a specific project
+`,
+
+  clean: `${BOLD()}codepliant clean${RESET()} [path] [options]
+
+Remove all generated files in the legal/ output directory.
+Prompts for confirmation unless --force is used.
+
+${BOLD()}Options:${RESET()}
+  ${DIM()}--force${RESET()}               Skip confirmation prompt
+  ${DIM()}--output, -o <dir>${RESET()}    Output directory (default: ./legal)
+
+${BOLD()}Examples:${RESET()}
+  ${CYAN()}codepliant clean${RESET()}                      Remove generated docs (with confirmation)
+  ${CYAN()}codepliant clean --force${RESET()}               Remove without confirmation
 `,
 
   review: `${BOLD()}codepliant review${RESET()} [path] [options]
@@ -987,6 +1014,7 @@ function main() {
   let executiveSummaryFlag = false;
   let apiFlag = false;
   let frequencyFlag: ScheduleFrequency = "weekly";
+  let forceFlag = false;
 
   for (let i = 1; i < args.length; i++) {
     const arg = args[i];
@@ -1002,6 +1030,8 @@ function main() {
       watchMode = true;
     } else if (arg === "--no-color") {
       // already handled by initColor
+    } else if (arg === "--force") {
+      forceFlag = true;
     } else if (arg === "--executive-summary") {
       executiveSummaryFlag = true;
     } else if (arg === "--api") {
@@ -1328,6 +1358,16 @@ function main() {
       return;
     }
 
+    if (command === "health") {
+      runHealth(absProjectPath, absOutputDir, quiet);
+      return;
+    }
+
+    if (command === "clean") {
+      runClean(absOutputDir, quiet, forceFlag);
+      return;
+    }
+
     console.error(`${RED()}Unknown command: "${command}"${RESET()}`);
     console.error(`${DIM()}Run ${CYAN()}codepliant help${RESET()}${DIM()} to see available commands.${RESET()}`);
     process.exit(1);
@@ -1345,9 +1385,14 @@ function printScanResults(
     console.log(
       `${YELLOW()}No services detected.${RESET()} This project may not collect user data.\n`
     );
-    console.log(
-      `${DIM()}No package.json found? Make sure you're in the right directory.${RESET()}\n`
-    );
+    // Check whether a project manifest exists at all
+    const manifestFiles = ["package.json", "requirements.txt", "go.mod", "Cargo.toml", "Gemfile", "pom.xml", "build.gradle"];
+    const hasManifest = manifestFiles.some((f) => fs.existsSync(path.join(result.projectPath, f)));
+    if (!hasManifest) {
+      console.log(
+        `${RED()}No project found.${RESET()} Run codepliant in your project root.\n`
+      );
+    }
     return;
   }
 
@@ -1382,7 +1427,23 @@ function printScanResults(
 function printConfigWarnings(config: CodepliantConfig): void {
   const warnings = validateConfig(config);
   for (const w of warnings) {
-    console.log(`  ${YELLOW()}Warning:${RESET()} ${w.message}`);
+    console.log(`  ${YELLOW()}Warning [${w.field}]:${RESET()} ${w.message}`);
+    // Add fix suggestion based on field type
+    if (w.field === "companyName") {
+      console.log(`    ${DIM()}Fix: Set "companyName" in .codepliantrc.json or run 'codepliant init'${RESET()}`);
+    } else if (w.field === "contactEmail") {
+      console.log(`    ${DIM()}Fix: Set "contactEmail" to a valid email in .codepliantrc.json${RESET()}`);
+    } else if (w.field === "jurisdictions") {
+      console.log(`    ${DIM()}Fix: Use one or more of: ${VALID_JURISDICTIONS.join(", ")}${RESET()}`);
+    } else if (w.field === "outputFormat") {
+      console.log(`    ${DIM()}Fix: Set "outputFormat" to one of: markdown, html, pdf, json, notion, confluence, wiki, docx, all${RESET()}`);
+    } else if (w.field === "language") {
+      console.log(`    ${DIM()}Fix: Set "language" to one of: en, de, fr, es${RESET()}`);
+    } else if (w.field === "dataRetentionDays") {
+      console.log(`    ${DIM()}Fix: Set "dataRetentionDays" to a positive number (e.g., 365)${RESET()}`);
+    } else if (w.field === "aiRiskLevel") {
+      console.log(`    ${DIM()}Fix: Set "aiRiskLevel" to one of: minimal, limited, high${RESET()}`);
+    }
   }
 }
 
@@ -4645,6 +4706,139 @@ function runBilling(
 
   console.error(`${RED()}Unknown billing subcommand: "${subCommand || ""}". Use: status, usage, portal${RESET()}`);
   process.exit(1);
+}
+
+// --- `codepliant health` command ---
+
+function runHealth(absProjectPath: string, absOutputDir: string, quiet: boolean) {
+  if (!quiet) printBanner();
+  console.log(`${BOLD()}Compliance health check${RESET()}\n`);
+
+  let healthy = true;
+
+  // 1. Config check
+  const hasConfig = configExists(absProjectPath);
+  if (hasConfig) {
+    const config = loadConfig(absProjectPath);
+    const warnings = validateConfig(config);
+    if (warnings.length === 0) {
+      console.log(`  ${GREEN()}✓${RESET()} Config`);
+    } else {
+      console.log(`  ${YELLOW()}✗${RESET()} Config  ${DIM()}(${warnings.length} warning(s))${RESET()}`);
+      healthy = false;
+    }
+  } else {
+    console.log(`  ${RED()}✗${RESET()} Config  ${DIM()}(no .codepliantrc.json found)${RESET()}`);
+    healthy = false;
+  }
+
+  // 2. Docs check
+  if (fs.existsSync(absOutputDir)) {
+    const mdFiles = fs.readdirSync(absOutputDir).filter((f: string) => f.endsWith(".md") || f.endsWith(".json"));
+    if (mdFiles.length > 0) {
+      console.log(`  ${GREEN()}✓${RESET()} Docs    ${DIM()}(${mdFiles.length} file(s) in ${path.basename(absOutputDir)}/)${RESET()}`);
+    } else {
+      console.log(`  ${RED()}✗${RESET()} Docs    ${DIM()}(output directory empty)${RESET()}`);
+      healthy = false;
+    }
+  } else {
+    console.log(`  ${RED()}✗${RESET()} Docs    ${DIM()}(no output directory)${RESET()}`);
+    healthy = false;
+  }
+
+  // 3. Freshness check
+  if (fs.existsSync(absOutputDir)) {
+    try {
+      const config = loadConfig(absProjectPath);
+      const scanResult = scan(absProjectPath);
+      const docs = generateDocuments(scanResult, config);
+      const docDiff = diffDocuments(docs, absOutputDir);
+      if (docDiff.hasChanges) {
+        console.log(`  ${YELLOW()}✗${RESET()} Fresh   ${DIM()}(${docDiff.changes.length} doc(s) out of date)${RESET()}`);
+        healthy = false;
+      } else {
+        console.log(`  ${GREEN()}✓${RESET()} Fresh`);
+      }
+    } catch {
+      console.log(`  ${YELLOW()}✗${RESET()} Fresh   ${DIM()}(could not verify)${RESET()}`);
+      healthy = false;
+    }
+  } else {
+    console.log(`  ${RED()}✗${RESET()} Fresh   ${DIM()}(no docs to check)${RESET()}`);
+    healthy = false;
+  }
+
+  // 4. CI check — look for common CI config files
+  const ciFiles = [".github/workflows", ".gitlab-ci.yml", "Jenkinsfile", ".circleci/config.yml", "bitbucket-pipelines.yml", ".travis.yml"];
+  const foundCI = ciFiles.some((f) => fs.existsSync(path.join(absProjectPath, f)));
+  if (foundCI) {
+    console.log(`  ${GREEN()}✓${RESET()} CI`);
+  } else {
+    console.log(`  ${YELLOW()}✗${RESET()} CI      ${DIM()}(no CI config detected)${RESET()}`);
+    // CI is a soft check — warn but don't fail
+  }
+
+  console.log();
+
+  if (healthy) {
+    console.log(`${GREEN()}${BOLD()}Healthy — compliance setup looks good.${RESET()}\n`);
+    process.exit(0);
+  } else {
+    console.log(`${YELLOW()}Issues found. Run ${CYAN()}codepliant doctor${RESET()}${YELLOW()} for details.${RESET()}\n`);
+    process.exit(1);
+  }
+}
+
+// --- `codepliant clean` command ---
+
+function runClean(absOutputDir: string, quiet: boolean, force: boolean) {
+  if (!fs.existsSync(absOutputDir)) {
+    console.log(`${YELLOW()}Nothing to clean — output directory does not exist.${RESET()}`);
+    process.exit(0);
+  }
+
+  const files = fs.readdirSync(absOutputDir);
+  const generatedFiles = files.filter((f: string) => f.endsWith(".md") || f.endsWith(".json"));
+
+  if (generatedFiles.length === 0) {
+    console.log(`${YELLOW()}No generated files found in ${absOutputDir}.${RESET()}`);
+    process.exit(0);
+  }
+
+  const doClean = () => {
+    for (const file of generatedFiles) {
+      fs.unlinkSync(path.join(absOutputDir, file));
+    }
+    // Remove directory if empty
+    const remaining = fs.readdirSync(absOutputDir);
+    if (remaining.length === 0) {
+      fs.rmdirSync(absOutputDir);
+    }
+    if (!quiet) {
+      console.log(`${GREEN()}✓${RESET()} Removed ${generatedFiles.length} file(s) from ${path.basename(absOutputDir)}/.`);
+    }
+    process.exit(0);
+  };
+
+  if (force) {
+    doClean();
+    return;
+  }
+
+  // Confirmation prompt
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  rl.question(
+    `${YELLOW()}Remove ${generatedFiles.length} generated file(s) from ${path.basename(absOutputDir)}/?${RESET()} [y/N] `,
+    (answer: string) => {
+      rl.close();
+      if (answer.toLowerCase() === "y" || answer.toLowerCase() === "yes") {
+        doClean();
+      } else {
+        console.log(`${DIM()}Cancelled.${RESET()}`);
+        process.exit(0);
+      }
+    },
+  );
 }
 
 main();
