@@ -1,0 +1,17 @@
+{
+  "companyName": "Acme SaaS Inc.",
+  "contactEmail": "privacy@acme-saas.com",
+  "website": "https://acme-saas.com",
+  "jurisdiction": "EU",
+  "jurisdictions": ["EU", "US-CA", "US-VA", "UK"],
+  "companyLocation": "Berlin, Germany",
+  "dpoName": "Jane Mueller",
+  "dpoEmail": "dpo@acme-saas.com",
+  "euRepresentative": "Acme EU Compliance GmbH, Friedrichstr. 123, 10117 Berlin",
+  "dataRetentionDays": 365,
+  "aiRiskLevel": "limited",
+  "aiUsageDescription": "AI-powered chat assistant that helps users draft content using OpenAI GPT-4o. User messages are sent to OpenAI for processing. No automated decision-making is performed.",
+  "tollFreeNumber": "+1-800-555-0199",
+  "outputDir": "legal",
+  "outputFormat": "all"
+}

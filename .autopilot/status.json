@@ -1,0 +1,48 @@
+{
+  "project": "codepliant",
+  "version": "50.0.0",
+  "phase": "v50.0-stable",
+  "lastUpdated": "2026-03-15T23:59:00Z",
+  "buildStatus": "passing",
+  "testStatus": "564/564 passing",
+  "testSuites": 100,
+  "precision": "97.8%",
+  "ecosystems": "10+",
+  "documentTypes": "25+",
+  "outputFormats": "10+",
+  "commands": [
+    "scan", "go", "check", "diff", "badge", "hook", "init",
+    "page", "dashboard", "report", "env", "serve", "scan-all",
+    "generate-all", "notify", "template", "wizard", "version", "help"
+  ],
+  "completedFeatures": [
+    "3-layer scanner: package.json + source imports + .env",
+    "10+ ecosystems: JS/TS, Python, Go, Ruby, Elixir, PHP, Java, Rust, .NET, Django",
+    "25+ document types: Privacy Policy, ToS, AI Disclosure, Cookie Policy, DPA, Security Policy, PIA, SOC 2, DSAR Guide, AI Model Card, and more",
+    "10+ output formats: Markdown, HTML, PDF, JSON, Notion, Confluence, compliance page, badge, widget, report",
+    "Compliance scoring engine (100pt scale, A-F grades)",
+    "HTTP API server (serve command)",
+    "Multi-project scan-all / generate-all with project discovery",
+    "Slack webhook notifications",
+    "Custom document templates",
+    "Plugin system for custom scanners/generators",
+    "MCP server: 7 tools",
+    "GitHub Action PR bot with compliance score",
+    "Pre-commit hook support (husky/lefthook/raw git hooks)",
+    "Cookie consent banner with GPC, dark mode",
+    "EU AI Act compliance (AI Disclosure + AI Act Checklist)",
+    "HIPAA, PCI DSS, COPPA, CCPA/CPRA, UK GDPR detection",
+    "Vulnerability scanner, OpenAPI scanning, infra scanning",
+    "ORM scanning: TypeORM, Sequelize, Prisma, SQLAlchemy, Django models",
+    "GraphQL schema scanning, API route scanning, tracking pixel detection",
+    "Interactive wizard, init command, config system",
+    "564 tests across 100 suites, all passing",
+    "97.8% detection precision (88/90 true positives across 7 repos)"
+  ],
+  "blockers": [],
+  "nextUp": [
+    "npm publish",
+    "GitHub repo creation",
+    "Product Hunt launch"
+  ]
+}

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codepliant — Compliance documents from your code</title>
+<meta name="description" content="Scan your codebase, generate compliance documents. Privacy Policy, Terms of Service, AI Disclosure, Cookie Policy, DPA — all from your actual code.">
+<style>
+:root {
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --bg: #fff;
+  --bg-alt: #f5f5f7;
+  --accent: #0066cc;
+  --border: #d2d2d7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --bg: #000;
+    --bg-alt: #1d1d1f;
+    --accent: #2997ff;
+    --border: #424245;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.47059;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- Hero ---- */
+
+.hero {
+  padding: 120px 24px 100px;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 48px;
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 21px;
+  line-height: 1.38;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+}
+
+.terminal {
+  background: var(--bg-alt);
+  border-radius: 12px;
+  padding: 24px 32px;
+  text-align: left;
+  margin: 0 auto;
+  max-width: 440px;
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.terminal-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.terminal code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  display: block;
+  color: var(--text);
+}
+
+.terminal .prompt { color: var(--text-secondary); }
+
+.terminal .typed {
+  display: inline;
+  border-right: 2px solid var(--accent);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.terminal .output {
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+.terminal .check { color: #30d158; }
+
+/* ---- Problem ---- */
+
+.problem {
+  padding: 100px 24px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.problem h2 {
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 20px;
+}
+
+.problem p {
+  font-size: 21px;
+  line-height: 1.38;
+  color: var(--text-secondary);
+}
+
+/* ---- Stats ---- */
+
+.stats {
+  padding: 80px 24px;
+  background: var(--bg-alt);
+}
+
+.stats-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.stats h2 {
+  font-size: 28px;
+  line-height: 1.14;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px 40px;
+}
+
+.stat-number {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 17px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+/* ---- How it works ---- */
+
+.how {
+  padding: 100px 24px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.how h2 {
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 56px;
+  text-align: center;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.step {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.step-num {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--accent);
+  flex-shrink: 0;
+  width: 56px;
+}
+
+.step h3 {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  margin-bottom: 6px;
+}
+
+.step p {
+  color: var(--text-secondary);
+  line-height: 1.47;
+}
+
+.step code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: var(--bg-alt);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ---- Comparison ---- */
+
+.comparison {
+  padding: 100px 24px;
+  background: var(--bg-alt);
+}
+
+.comparison-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.comparison h2 {
+  font-size: 28px;
+  line-height: 1.14;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+th {
+  text-align: left;
+  font-weight: 600;
+  padding: 12px 12px;
+  border-bottom: 2px solid var(--border);
+}
+
+td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+th:first-child, td:first-child {
+  color: var(--text-secondary);
+  font-size: 14px;
+  width: 28%;
+}
+
+td:nth-child(2) { font-weight: 600; }
+
+/* ---- AI Act ---- */
+
+.ai-act {
+  padding: 100px 24px;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ai-act h2 {
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 20px;
+}
+
+.ai-act p {
+  font-size: 21px;
+  line-height: 1.38;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.countdown {
+  display: inline-flex;
+  gap: 32px;
+  margin: 40px 0 24px;
+}
+
+.countdown-unit {
+  text-align: center;
+}
+
+.countdown-num {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+.ai-act .note {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+/* ---- Pricing ---- */
+
+.pricing {
+  padding: 100px 24px;
+  background: var(--bg-alt);
+  text-align: center;
+}
+
+.pricing h2 {
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+
+.pricing p {
+  font-size: 21px;
+  line-height: 1.38;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.pricing .sub {
+  font-size: 17px;
+  color: var(--text-secondary);
+}
+
+/* ---- CTA ---- */
+
+.cta {
+  padding: 100px 24px 120px;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta h2 {
+  font-size: 28px;
+  line-height: 1.14;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 17px;
+  font-weight: 500;
+  padding: 14px 32px;
+  border-radius: 980px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.btn:hover { opacity: 0.85; text-decoration: none; }
+
+.btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* ---- Social Proof ---- */
+
+.social-proof {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.social-proof a {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.social-proof a:hover { opacity: 0.8; }
+
+.github-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--bg-alt);
+  padding: 8px 16px;
+  border-radius: 980px;
+  border: 1px solid var(--border);
+}
+
+.github-stars svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.github-stars .star-count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Footer ---- */
+
+footer {
+  padding: 32px 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border);
+}
+
+footer a { color: var(--text-secondary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* ---- Responsive ---- */
+
+@media (max-width: 600px) {
+  .hero { padding: 80px 20px 64px; }
+  .hero h1 { font-size: 36px; }
+  .hero p { font-size: 18px; }
+  .terminal { padding: 20px 20px; max-width: 100%; }
+  .problem { padding: 64px 20px; }
+  .problem h2 { font-size: 32px; }
+  .problem p { font-size: 18px; }
+  .stats { padding: 64px 20px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 36px; }
+  .stat-number { font-size: 40px; }
+  .how { padding: 64px 20px; }
+  .how h2 { font-size: 32px; }
+  .step { flex-direction: column; gap: 8px; }
+  .step-num { width: auto; }
+  .comparison { padding: 64px 20px; }
+  table { font-size: 13px; }
+  th, td { padding: 10px 8px; }
+  .ai-act { padding: 64px 20px; }
+  .ai-act h2 { font-size: 32px; }
+  .countdown { gap: 20px; }
+  .countdown-num { font-size: 36px; }
+  .pricing { padding: 64px 20px; }
+  .pricing h2 { font-size: 32px; }
+  .cta { padding: 64px 20px 80px; }
+}
+
+@media print {
+  body { font-size: 11pt; line-height: 1.5; color: #000; background: #fff; }
+  .hero, .section, .problem, .how, .comparison-inner, .ai-act, .cta { max-width: 100%; padding-left: 0; padding-right: 0; }
+  .btn { color: #000; border: 1px solid #000; background: transparent; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Compliance documents from your code.</h1>
+  <p>One command. No questionnaires. Scans your actual codebase and generates the compliance documents you need.</p>
+  <div class="social-proof">
+    <!-- Product Hunt badge — replace PRODUCT_ID with actual ID after launch -->
+    <a href="https://www.producthunt.com/posts/codepliant" target="_blank" rel="noopener">
+      <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=PRODUCT_ID&theme=light" alt="Featured on Product Hunt" width="250" height="54" loading="lazy">
+    </a>
+    <!-- GitHub stars counter -->
+    <a class="github-stars" href="https://github.com/codepliant/codepliant" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="star-count" id="star-count">--</span> stars
+    </a>
+  </div>
+  <div class="terminal">
+    <div class="terminal-dots"><span></span><span></span><span></span></div>
+    <code><span class="prompt">$</span> <span class="typed">npx codepliant go</span></code>
+    <code class="output"></code>
+  </div>
+</div>
+
+<!-- Problem -->
+<div class="problem">
+  <h2>Existing tools ask questionnaires.<br>We read your actual code.</h2>
+  <p>Other compliance tools make you fill out forms about what data you collect, what services you use, and how you process information. Codepliant scans your dependencies, imports, environment variables, database schemas, and API routes to find out for itself.</p>
+</div>
+
+<!-- Features / Stats -->
+<div class="stats">
+  <div class="stats-inner">
+    <h2>Built for real-world projects</h2>
+    <div class="stats-grid">
+      <div>
+        <div class="stat-number">25+</div>
+        <div class="stat-label">Document types. Privacy Policy, ToS, Cookie Policy, AI Disclosure, AI Act Checklist, DPA, Security Policy, PIA, DSAR Guide, SOC 2, and more.</div>
+      </div>
+      <div>
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Ecosystems scanned. Node.js, Python, Go, Ruby, Elixir, PHP, Java, Rust, .NET, Django, and more.</div>
+      </div>
+      <div>
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Output formats. Markdown, HTML, PDF, JSON, Notion, Confluence, compliance page, badge, widget, and more.</div>
+      </div>
+      <div>
+        <div class="stat-number">97.8%</div>
+        <div class="stat-label">Detection precision. Tested against real-world repositories. 88/90 true positives across 7 codebases.</div>
+      </div>
+      <div>
+        <div class="stat-number">554+</div>
+        <div class="stat-label">Tests passing. 100 test suites. Zero false positives on self-scan. v50.0 stable.</div>
+      </div>
+      <div>
+        <div class="stat-number">0</div>
+        <div class="stat-label">Network calls. Everything runs locally. Your code never leaves your machine. No API keys. No accounts.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- How it works -->
+<div class="how">
+  <h2>Three steps. Two minutes.</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <h3>Install</h3>
+        <p>No install needed. Run it directly with <code>npx</code>. Or install globally with <code>npm i -g codepliant</code>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <h3>Scan</h3>
+        <p>Run <code>npx codepliant go</code> in your project root. Codepliant reads your code, detects services, and identifies data flows.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <h3>Done</h3>
+        <p>Compliance documents are generated and saved. Deploy them to your site. Everything runs locally — your code never leaves your machine.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comparison -->
+<div class="comparison">
+  <div class="comparison-inner">
+    <h2>How Codepliant compares</h2>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Codepliant</th>
+          <th>Termly</th>
+          <th>Iubenda</th>
+          <th>PrivacyGen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Code scanning</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Questionnaire-free</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Runs locally</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Open source</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>AI Act ready</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Multi-language</td>
+          <td>10+ langs</td>
+          <td>Limited</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>CI/CD integration</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Price</td>
+          <td>Free</td>
+          <td>$10+/mo</td>
+          <td>$29+/yr</td>
+          <td>Free*</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EU AI Act -->
+<div class="ai-act">
+  <h2>The EU AI Act deadline is coming.</h2>
+  <p>August 2, 2026. If your product uses AI, you need an AI Disclosure and an AI Act compliance checklist. Codepliant generates both.</p>
+  <div class="countdown" id="countdown">
+    <div class="countdown-unit">
+      <div class="countdown-num" id="cd-days">---</div>
+      <div class="countdown-label">days</div>
+    </div>
+    <div class="countdown-unit">
+      <div class="countdown-num" id="cd-hours">--</div>
+      <div class="countdown-label">hours</div>
+    </div>
+    <div class="countdown-unit">
+      <div class="countdown-num" id="cd-mins">--</div>
+      <div class="countdown-label">minutes</div>
+    </div>
+  </div>
+  <p class="note">Until the EU AI Act general-purpose AI provisions take effect.</p>
+</div>
+
+<!-- Pricing -->
+<div class="pricing">
+  <h2>Free and open source. Forever.</h2>
+  <p>MIT licensed. No sign-up. No API keys. No usage limits.</p>
+  <p class="sub">Your code stays on your machine. Always.</p>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Get compliant in two minutes.</h2>
+  <a class="btn" href="https://github.com/codepliant/codepliant">
+    <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    View on GitHub
+  </a>
+</div>
+
+<footer>
+  <a href="https://github.com/codepliant/codepliant">Codepliant</a> is open source under the MIT License.
+</footer>
+
+<script>
+// Terminal animation
+(function() {
+  var lines = [
+    '\u2713 Scanned 847 files across 3 ecosystems',
+    '\u2713 Detected: Stripe, Google Analytics, Auth0, OpenAI',
+    '\u2713 Generated: Privacy Policy, ToS, AI Disclosure + 5 more',
+    '\u2713 Output: ./compliance/'
+  ];
+  var output = document.querySelector('.terminal .output');
+  var i = 0;
+  function addLine() {
+    if (i >= lines.length) return;
+    var span = document.createElement('div');
+    span.innerHTML = '<span class="check">' + lines[i].charAt(0) + '</span>' + lines[i].slice(1);
+    output.appendChild(span);
+    i++;
+    setTimeout(addLine, 600);
+  }
+  setTimeout(addLine, 1200);
+})();
+
+// GitHub stars counter
+(function() {
+  fetch('https://api.github.com/repos/codepliant/codepliant')
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.stargazers_count !== undefined) {
+        document.getElementById('star-count').textContent = d.stargazers_count.toLocaleString();
+      }
+    })
+    .catch(function() {});
+})();
+
+// Countdown to Aug 2, 2026
+(function() {
+  var target = new Date('2026-08-02T00:00:00+02:00').getTime();
+  function update() {
+    var now = Date.now();
+    var diff = target - now;
+    if (diff < 0) {
+      document.getElementById('cd-days').textContent = '0';
+      document.getElementById('cd-hours').textContent = '0';
+      document.getElementById('cd-mins').textContent = '0';
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    document.getElementById('cd-days').textContent = d;
+    document.getElementById('cd-hours').textContent = h;
+    document.getElementById('cd-mins').textContent = m;
+  }
+  update();
+  setInterval(update, 60000);
+})();
+</script>
+
+</body>
+</html>

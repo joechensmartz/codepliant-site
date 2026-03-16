@@ -1,0 +1,53 @@
+name: "Codepliant Compliance Check"
+description: "Scan your codebase for compliance requirements and generate privacy policies, terms of service, and more from your actual code."
+
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  path:
+    description: "Path to the project to scan"
+    required: false
+    default: "."
+  output-dir:
+    description: "Directory to output generated compliance documents"
+    required: false
+    default: "legal"
+  fail-on-missing:
+    description: "Fail the action if required compliance documents are missing"
+    required: false
+    default: "false"
+  comment-on-pr:
+    description: "Post a comment on the pull request with scan results"
+    required: false
+    default: "false"
+
+outputs:
+  services-found:
+    description: "Number of third-party services detected"
+    value: ${{ steps.scan.outputs.services-found }}
+  documents-needed:
+    description: "Number of compliance documents needed"
+    value: ${{ steps.scan.outputs.documents-needed }}
+  compliance-score:
+    description: "Compliance score (0-100) based on existing documents vs requirements"
+    value: ${{ steps.scan.outputs.compliance-score }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - name: Run Codepliant scan
+      id: scan
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_OUTPUT_DIR: ${{ inputs.output-dir }}
+        INPUT_FAIL_ON_MISSING: ${{ inputs.fail-on-missing }}
+        INPUT_COMMENT_ON_PR: ${{ inputs.comment-on-pr }}
+        GITHUB_TOKEN: ${{ github.token }}
+      run: bash ${{ github.action_path }}/action/entrypoint.sh

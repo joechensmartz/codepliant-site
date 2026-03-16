@@ -1,0 +1,323 @@
+import * as fs from "fs";
+import * as path from "path";
+import type { GeneratedDocument } from "../generator/index.js";
+
+/**
+ * Generates a self-contained JavaScript widget that renders a footer bar
+ * with modal overlays for each compliance document.
+ *
+ * Users embed it with: <script src="/legal/widget.js"></script>
+ */
+export function generateWidget(
+  docs: GeneratedDocument[],
+  options: {
+    companyName?: string;
+    lastUpdated?: string;
+  } = {}
+): string {
+  const companyName = options.companyName || "Your Company";
+  const lastUpdated =
+    options.lastUpdated || new Date().toISOString().split("T")[0];
+
+  // Pick the three primary docs for the footer bar (fallback gracefully)
+  const docMap: { label: string; match: string }[] = [
+    { label: "Privacy Policy", match: "privacy" },
+    { label: "Terms of Service", match: "terms" },
+    { label: "Cookie Policy", match: "cookie" },
+  ];
+
+  // Build entries: each has a label and escaped HTML content
+  const entries = docs
+    .map((doc) => {
+      const matchedLabel = docMap.find((d) =>
+        doc.name.toLowerCase().includes(d.match)
+      );
+      return {
+        label: matchedLabel?.label || doc.name,
+        content: escapeForJs(markdownToPlainHtml(doc.content)),
+      };
+    })
+    .filter((_, i) => i < 6); // cap at 6 docs
+
+  const entriesJson = JSON.stringify(
+    entries.map((e) => ({ label: e.label, content: e.content }))
+  );
+
+  return `(function(){
+"use strict";
+var docs=${entriesJson};
+var cname=${JSON.stringify(companyName)};
+var updated=${JSON.stringify(lastUpdated)};
+
+function init(){
+  var style=document.createElement("style");
+  style.textContent=\`
+    .cpl-bar{position:fixed;bottom:0;left:0;right:0;z-index:999999;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      font-size:13px;background:#1d1d1f;color:#f5f5f7;display:flex;
+      align-items:center;justify-content:center;gap:6px;padding:10px 16px;
+      flex-wrap:wrap}
+    .cpl-bar a{color:#2997ff;text-decoration:none;cursor:pointer;white-space:nowrap}
+    .cpl-bar a:hover{text-decoration:underline}
+    .cpl-bar .cpl-sep{color:#6e6e73;user-select:none}
+    .cpl-overlay{position:fixed;inset:0;z-index:1000000;background:rgba(0,0,0,.55);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transition:opacity .2s ease}
+    .cpl-overlay.cpl-show{opacity:1}
+    .cpl-modal{background:#fff;color:#1d1d1f;width:90vw;max-width:640px;
+      max-height:80vh;border-radius:12px;overflow:hidden;display:flex;
+      flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .cpl-modal-head{display:flex;align-items:center;justify-content:space-between;
+      padding:16px 20px;border-bottom:1px solid #d2d2d7;flex-shrink:0}
+    .cpl-modal-head h2{font-size:17px;font-weight:600;margin:0}
+    .cpl-modal-close{background:none;border:none;font-size:22px;cursor:pointer;
+      color:#6e6e73;line-height:1;padding:0 4px}
+    .cpl-modal-close:hover{color:#1d1d1f}
+    .cpl-modal-body{padding:20px;overflow-y:auto;font-size:14px;line-height:1.55}
+    .cpl-modal-body h1,.cpl-modal-body h2,.cpl-modal-body h3{margin:20px 0 8px;font-weight:600}
+    .cpl-modal-body h1{font-size:22px}.cpl-modal-body h2{font-size:18px}
+    .cpl-modal-body h3{font-size:15px}
+    .cpl-modal-body p{margin:0 0 12px}
+    .cpl-modal-body ul,.cpl-modal-body ol{margin:0 0 12px 20px}
+    .cpl-modal-body li{margin-bottom:4px}
+    .cpl-modal-body a{color:#0066cc}
+    .cpl-modal-foot{padding:10px 20px;border-top:1px solid #d2d2d7;font-size:11px;
+      color:#6e6e73;text-align:center;flex-shrink:0}
+    @media(prefers-color-scheme:dark){
+      .cpl-modal{background:#1d1d1f;color:#f5f5f7}
+      .cpl-modal-head{border-color:#424245}
+      .cpl-modal-close:hover{color:#f5f5f7}
+      .cpl-modal-body a{color:#2997ff}
+      .cpl-modal-foot{border-color:#424245;color:#a1a1a6}
+    }
+    @media(max-width:480px){
+      .cpl-bar{font-size:12px;gap:4px;padding:8px 12px}
+      .cpl-modal{width:96vw;max-height:85vh;border-radius:10px}
+    }
+  \`;
+  document.head.appendChild(style);
+
+  var bar=document.createElement("div");
+  bar.className="cpl-bar";
+  docs.forEach(function(doc,i){
+    if(i>0){var sep=document.createElement("span");sep.className="cpl-sep";sep.textContent="|";bar.appendChild(sep)}
+    var link=document.createElement("a");
+    link.textContent=doc.label;
+    link.addEventListener("click",function(e){e.preventDefault();openModal(doc)});
+    bar.appendChild(link);
+  });
+  document.body.appendChild(bar);
+}
+
+function openModal(doc){
+  var overlay=document.createElement("div");
+  overlay.className="cpl-overlay";
+  overlay.innerHTML=
+    '<div class="cpl-modal">'+
+      '<div class="cpl-modal-head"><h2>'+esc(doc.label)+'</h2><button class="cpl-modal-close" aria-label="Close">&times;</button></div>'+
+      '<div class="cpl-modal-body">'+doc.content+'</div>'+
+      '<div class="cpl-modal-foot">'+esc(cname)+' &middot; Updated '+esc(updated)+' &middot; Generated by Codepliant</div>'+
+    '</div>';
+  document.body.appendChild(overlay);
+  requestAnimationFrame(function(){overlay.classList.add("cpl-show")});
+  overlay.querySelector(".cpl-modal-close").addEventListener("click",function(){close(overlay)});
+  overlay.addEventListener("click",function(e){if(e.target===overlay)close(overlay)});
+  document.addEventListener("keydown",function handler(e){if(e.key==="Escape"){close(overlay);document.removeEventListener("keydown",handler)}});
+}
+
+function close(el){el.classList.remove("cpl-show");setTimeout(function(){el.remove()},200)}
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init)}else{init()}
+})();
+`;
+}
+
+/**
+ * Generates an HTML snippet file showing how to embed the widget.
+ */
+export function generateWidgetSnippet(companyName?: string): string {
+  const name = companyName || "Your Company";
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeForHtml(name)} — Compliance Widget</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 640px; margin: 80px auto; padding: 0 24px;
+      color: #1d1d1f; line-height: 1.5;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #000; color: #f5f5f7; }
+      code { background: #1d1d1f; }
+    }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    p { margin-bottom: 16px; color: #6e6e73; }
+    code { display: block; background: #f5f5f7; padding: 16px; border-radius: 8px;
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+      font-size: 14px; overflow-x: auto; white-space: pre; }
+  </style>
+</head>
+<body>
+  <h1>Compliance Widget</h1>
+  <p>Add the following script tag to any page on your website, just before the closing <code>&lt;/body&gt;</code> tag.</p>
+  <code>&lt;script src="/legal/widget.js"&gt;&lt;/script&gt;</code>
+  <p>The widget adds a fixed footer bar with links to your Privacy Policy, Terms of Service, and Cookie Policy. Clicking a link opens an overlay with the full document.</p>
+  <p style="font-size:13px;">Generated by Codepliant for ${escapeForHtml(name)}.</p>
+
+  <!-- Live preview -->
+  <script src="widget.js"></script>
+</body>
+</html>
+`;
+}
+
+/**
+ * Writes widget.js and widget-snippet.html to the output directory.
+ */
+export function writeWidget(
+  docs: GeneratedDocument[],
+  outputDir: string,
+  options: { companyName?: string; lastUpdated?: string } = {}
+): string[] {
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const widgetJs = generateWidget(docs, options);
+  const snippetHtml = generateWidgetSnippet(options.companyName);
+
+  const jsPath = path.join(outputDir, "widget.js");
+  const snippetPath = path.join(outputDir, "widget-snippet.html");
+
+  fs.writeFileSync(jsPath, widgetJs, "utf-8");
+  fs.writeFileSync(snippetPath, snippetHtml, "utf-8");
+
+  return [jsPath, snippetPath];
+}
+
+// --- Helpers ---
+
+function escapeForHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function escapeForJs(text: string): string {
+  // Content is already HTML; we just need to make it safe inside a JSON string.
+  // JSON.stringify will handle the escaping, so return as-is.
+  return text;
+}
+
+/**
+ * Minimal Markdown-to-HTML for widget content.
+ * Produces clean semantic HTML without IDs or classes.
+ */
+function markdownToPlainHtml(md: string): string {
+  const lines = md.split("\n");
+  const out: string[] = [];
+  let inList = false;
+  let listTag = "ul";
+  let inCode = false;
+  const codeBuf: string[] = [];
+
+  for (const raw of lines) {
+    const line = raw;
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith("```")) {
+      if (inCode) {
+        out.push("<pre><code>" + escapeForHtml(codeBuf.join("\n")) + "</code></pre>");
+        codeBuf.length = 0;
+        inCode = false;
+      } else {
+        closeList();
+        inCode = true;
+      }
+      continue;
+    }
+    if (inCode) {
+      codeBuf.push(line);
+      continue;
+    }
+
+    if (trimmed === "") {
+      closeList();
+      continue;
+    }
+
+    // Headings
+    const hm = trimmed.match(/^(#{1,6})\s+(.+)$/);
+    if (hm) {
+      closeList();
+      const level = hm[1].length;
+      out.push(`<h${level}>${inline(hm[2])}</h${level}>`);
+      continue;
+    }
+
+    // Horizontal rule
+    if (/^(---+|\*\*\*+|___+)$/.test(trimmed)) {
+      closeList();
+      out.push("<hr>");
+      continue;
+    }
+
+    // Unordered list
+    if (/^[-*+]\s+/.test(trimmed)) {
+      if (!inList || listTag !== "ul") {
+        closeList();
+        listTag = "ul";
+        inList = true;
+        out.push("<ul>");
+      }
+      out.push("<li>" + inline(trimmed.replace(/^[-*+]\s+/, "")) + "</li>");
+      continue;
+    }
+
+    // Ordered list
+    const olm = trimmed.match(/^(\d+)\.\s+(.+)$/);
+    if (olm) {
+      if (!inList || listTag !== "ol") {
+        closeList();
+        listTag = "ol";
+        inList = true;
+        out.push("<ol>");
+      }
+      out.push("<li>" + inline(olm[2]) + "</li>");
+      continue;
+    }
+
+    // Paragraph
+    closeList();
+    out.push("<p>" + inline(trimmed) + "</p>");
+  }
+  closeList();
+  return out.join("\n");
+
+  function closeList() {
+    if (inList) {
+      out.push(`</${listTag}>`);
+      inList = false;
+    }
+  }
+
+  function inline(text: string): string {
+    text = text.replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>");
+    text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    text = text.replace(/__(.+?)__/g, "<strong>$1</strong>");
+    text = text.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    text = text.replace(/_(.+?)_/g, "<em>$1</em>");
+    text = text.replace(/`([^`]+)`/g, "<code>$1</code>");
+    text = text.replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener">$1</a>'
+    );
+    return text;
+  }
+}

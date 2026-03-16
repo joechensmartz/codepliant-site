@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://codepliant.dev/schema/codepliantrc.json",
+  "title": "Codepliant Configuration",
+  "description": "Configuration file for Codepliant — the compliance document generator.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Path or URL to the JSON Schema for this config file."
+    },
+    "companyName": {
+      "type": "string",
+      "description": "Your company or organization name, used in all generated documents.",
+      "default": "[Your Company Name]"
+    },
+    "contactEmail": {
+      "type": "string",
+      "format": "email",
+      "description": "Primary contact email for privacy and compliance inquiries.",
+      "default": "[your-email@example.com]"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "description": "Your company website URL."
+    },
+    "jurisdiction": {
+      "type": "string",
+      "description": "Primary legal jurisdiction (e.g. 'State of Delaware, United States')."
+    },
+    "outputDir": {
+      "type": "string",
+      "description": "Directory where generated compliance documents are written.",
+      "default": "legal"
+    },
+    "excludeServices": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Service names to exclude from scan results."
+    },
+    "dpoName": {
+      "type": "string",
+      "description": "Data Protection Officer name (required for GDPR compliance)."
+    },
+    "dpoEmail": {
+      "type": "string",
+      "format": "email",
+      "description": "Data Protection Officer email address."
+    },
+    "euRepresentative": {
+      "type": "string",
+      "description": "EU representative name/contact (required for non-EU companies under GDPR)."
+    },
+    "dataRetentionDays": {
+      "type": "number",
+      "minimum": 1,
+      "description": "Default data retention period in days."
+    },
+    "aiRiskLevel": {
+      "type": "string",
+      "enum": ["minimal", "limited", "high"],
+      "description": "AI risk classification level per the EU AI Act."
+    },
+    "aiUsageDescription": {
+      "type": "string",
+      "description": "Human-readable description of how AI is used in your product."
+    },
+    "jurisdictions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["GDPR", "CCPA", "UK GDPR"]
+      },
+      "description": "List of compliance jurisdictions that apply to your product."
+    },
+    "companyLocation": {
+      "type": "string",
+      "description": "Physical location/address of the company."
+    },
+    "outputFormat": {
+      "type": "string",
+      "enum": ["markdown", "html", "pdf", "json", "notion", "confluence", "all"],
+      "default": "markdown",
+      "description": "Format for generated compliance documents."
+    },
+    "tollFreeNumber": {
+      "type": "string",
+      "description": "Toll-free phone number for privacy inquiries (required by some US state laws)."
+    },
+    "securityEmail": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address for security vulnerability reports."
+    },
+    "bugBountyUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to your bug bounty or responsible disclosure program."
+    },
+    "sectionOverrides": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Override specific sections in generated documents with custom text."
+    },
+    "language": {
+      "type": "string",
+      "enum": ["en", "de", "fr", "es"],
+      "default": "en",
+      "description": "Language for generated compliance documents."
+    },
+    "plugins": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of plugin package names to load."
+    },
+    "generateEmployeeNotice": {
+      "type": "boolean",
+      "default": false,
+      "description": "When true, generate an internal Employee Privacy Notice (GDPR Art. 13/14) covering workplace monitoring, AI tools, and employee data rights."
+    },
+    "webhookUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Webhook URL for compliance status notifications (supports Slack incoming webhooks)."
+    }
+  },
+  "required": ["companyName", "contactEmail", "outputDir"],
+  "additionalProperties": false
+}

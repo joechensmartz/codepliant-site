@@ -1,0 +1,98 @@
+{
+  "name": "codepliant",
+  "version": "50.0.0",
+  "description": "Scan your codebase, generate compliance documents. Privacy Policy, Terms of Service, AI Disclosure, Cookie Policy, DPA — all from your actual code.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./scanner": {
+      "import": "./dist/scanner/index.js",
+      "types": "./dist/scanner/index.d.ts"
+    },
+    "./generator": {
+      "import": "./dist/generator/index.js",
+      "types": "./dist/generator/index.d.ts"
+    },
+    "./output": {
+      "import": "./dist/output/index.js",
+      "types": "./dist/output/index.d.ts"
+    },
+    "./config": {
+      "import": "./dist/config.js",
+      "types": "./dist/config.d.ts"
+    },
+    "./scoring": {
+      "import": "./dist/scoring/index.js",
+      "types": "./dist/scoring/index.d.ts"
+    }
+  },
+  "bin": {
+    "codepliant": "dist/cli.js",
+    "codepliant-mcp": "dist/mcp/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "test": "tsx --test src/**/*.test.ts",
+    "mcp": "node dist/mcp/server.js",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "compliance",
+    "privacy-policy",
+    "terms-of-service",
+    "gdpr",
+    "ccpa",
+    "ai-act",
+    "ai-disclosure",
+    "legal",
+    "scanner",
+    "code-analysis",
+    "cookie-policy",
+    "dpa",
+    "data-processing",
+    "mcp",
+    "eu-ai-act",
+    "data-privacy",
+    "regulatory-compliance"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codepliant/codepliant.git"
+  },
+  "homepage": "https://github.com/codepliant/codepliant#readme",
+  "bugs": {
+    "url": "https://github.com/codepliant/codepliant/issues"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "!dist/**/*.test.js",
+    "!dist/**/*.test.d.ts",
+    "!dist/**/*.js.map",
+    "!dist/**/*.d.ts.map",
+    "README.md",
+    "LICENSE",
+    "action.yml",
+    "action",
+    "templates"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1"
+  }
+}

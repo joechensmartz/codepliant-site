@@ -1,0 +1,41 @@
+# Source
+src/
+*.ts
+!dist/**/*.d.ts
+tsconfig.json
+
+# Test files (compiled)
+**/*.test.js
+**/*.test.d.ts
+**/*.test.d.ts.map
+**/*.test.js.map
+
+# Source maps (not needed in published package)
+**/*.js.map
+**/*.d.ts.map
+
+# Project config
+.autopilot/
+.codepliantrc.json
+.claude/
+.github/
+.mcp.json
+CLAUDE.md
+CONTRIBUTING.md
+
+# Directories not needed in npm
+docs/
+vscode-extension/
+legal/
+
+# Environment & IDE
+.env
+.env.*
+.vscode/
+.idea/
+node_modules/
+
+# Test output
+coverage/
+.nyc_output/
+*.log

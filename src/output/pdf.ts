@@ -1,0 +1,278 @@
+import * as fs from "fs";
+import * as path from "path";
+import { execSync } from "node:child_process";
+import type { GeneratedDocument } from "../generator/index.js";
+import type { CodepliantConfig } from "../config.js";
+import { generateHtml } from "./html.js";
+
+/**
+ * Generates a print-optimized HTML file designed for PDF output.
+ *
+ * Strategy (no heavy dependencies like Puppeteer):
+ * 1. Generate the standard HTML with enhanced @media print CSS
+ * 2. Inject a script that auto-triggers window.print() when opened in a browser
+ * 3. If wkhtmltopdf is installed, convert directly to PDF
+ * 4. Fallback: write the print-ready HTML with instructions
+ */
+
+/**
+ * Enhanced print CSS that produces a clean, professional PDF.
+ * Injected into the HTML right before the closing </style> tag.
+ */
+const PRINT_ENHANCEMENTS = `
+    /* ── PDF / Print enhancements ── */
+    @media print {
+      @page {
+        size: A4;
+        margin: 20mm 18mm;
+      }
+
+      body {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 11pt;
+        line-height: 1.6;
+        color: #000;
+        background: #fff;
+      }
+
+      .page {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .page-header {
+        margin-bottom: 32pt;
+        padding-bottom: 12pt;
+        border-bottom: 2px solid #000;
+      }
+
+      .page-header h1 {
+        font-size: 22pt;
+        font-weight: 700;
+      }
+
+      .page-header .meta {
+        font-size: 10pt;
+        color: #333;
+      }
+
+      .doc-nav {
+        display: none;
+      }
+
+      .footer {
+        display: none;
+      }
+
+      h1 {
+        font-size: 18pt;
+        page-break-after: avoid;
+      }
+
+      h2 {
+        font-size: 14pt;
+        margin-top: 24pt;
+        page-break-after: avoid;
+      }
+
+      h3 {
+        font-size: 12pt;
+        margin-top: 16pt;
+        page-break-after: avoid;
+      }
+
+      h4 {
+        font-size: 11pt;
+        margin-top: 12pt;
+        page-break-after: avoid;
+      }
+
+      p {
+        orphans: 3;
+        widows: 3;
+      }
+
+      section {
+        page-break-inside: avoid;
+      }
+
+      section + section {
+        page-break-before: always;
+      }
+
+      a {
+        color: #000;
+        text-decoration: underline;
+      }
+
+      a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 9pt;
+        color: #555;
+        word-break: break-all;
+      }
+
+      a[href^="#"]::after {
+        content: "";
+      }
+
+      pre {
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+        font-size: 9pt;
+        page-break-inside: avoid;
+      }
+
+      table {
+        font-size: 10pt;
+        page-break-inside: avoid;
+      }
+
+      blockquote {
+        border-left: 3px solid #999;
+        color: #333;
+      }
+
+      .print-banner {
+        display: block !important;
+        text-align: center;
+        padding: 8pt 0 16pt;
+        font-size: 9pt;
+        color: #999;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 24pt;
+      }
+    }
+
+    .print-banner {
+      display: none;
+    }
+`;
+
+/**
+ * Auto-print script: triggers the browser print dialog when the file is opened.
+ * Includes a small delay so the page renders fully first.
+ */
+const AUTO_PRINT_SCRIPT = `
+  <script>
+    // Auto-trigger print dialog for easy Save-as-PDF
+    if (window.location.protocol === "file:" || window.location.search.includes("print")) {
+      window.addEventListener("load", function() {
+        setTimeout(function() { window.print(); }, 500);
+      });
+    }
+  </script>
+`;
+
+/**
+ * Check if wkhtmltopdf is available on the system.
+ */
+function isWkhtmltopdfAvailable(): boolean {
+  try {
+    execSync("wkhtmltopdf --version", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Convert an HTML file to PDF using wkhtmltopdf.
+ */
+function convertWithWkhtmltopdf(htmlPath: string, pdfPath: string): boolean {
+  try {
+    execSync(
+      `wkhtmltopdf --quiet --enable-local-file-access --print-media-type --page-size A4 --margin-top 20mm --margin-bottom 20mm --margin-left 18mm --margin-right 18mm "${htmlPath}" "${pdfPath}"`,
+      { stdio: "ignore" }
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Transform the standard HTML output into a print-optimized version for PDF.
+ * Replaces the existing @media print block and adds the auto-print script.
+ */
+function makePrintReady(html: string): string {
+  // Remove the existing @media print block from the HTML
+  // It's inside the <style> tag — replace it with enhanced version
+  const printRegex = /\s*@media print \{[\s\S]*?\n\s{4}\}/;
+  let result = html.replace(printRegex, PRINT_ENHANCEMENTS);
+
+  // Add print banner inside <body>
+  result = result.replace(
+    '<div class="page">',
+    '<div class="print-banner">This document was generated by Codepliant</div>\n  <div class="page">'
+  );
+
+  // Inject auto-print script before </body>
+  result = result.replace("</body>", `${AUTO_PRINT_SCRIPT}</body>`);
+
+  return result;
+}
+
+export interface PdfResult {
+  /** Path to the generated file (HTML or PDF). */
+  filePath: string;
+  /** Whether a native PDF was generated (via wkhtmltopdf). */
+  isNativePdf: boolean;
+  /** Message describing the result and any manual steps needed. */
+  message: string;
+}
+
+/**
+ * Generate a PDF-ready output from compliance documents.
+ *
+ * Writes a print-optimized HTML file and, if wkhtmltopdf is available,
+ * converts it to a native PDF. Returns information about what was produced.
+ */
+export function writePdf(
+  docs: GeneratedDocument[],
+  outputDir: string,
+  config?: CodepliantConfig
+): { files: string[]; result: PdfResult } {
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const baseHtml = generateHtml(docs, {
+    companyName: config?.companyName,
+    lastUpdated: new Date().toISOString().split("T")[0],
+  });
+
+  const printHtml = makePrintReady(baseHtml);
+  const htmlPath = path.join(outputDir, "compliance.print.html");
+  fs.writeFileSync(htmlPath, printHtml, "utf-8");
+
+  // Try native PDF conversion
+  if (isWkhtmltopdfAvailable()) {
+    const pdfPath = path.join(outputDir, "compliance.pdf");
+    const success = convertWithWkhtmltopdf(htmlPath, pdfPath);
+    if (success) {
+      return {
+        files: [pdfPath, htmlPath],
+        result: {
+          filePath: pdfPath,
+          isNativePdf: true,
+          message: "PDF generated successfully via wkhtmltopdf.",
+        },
+      };
+    }
+  }
+
+  // Fallback: print-ready HTML only
+  return {
+    files: [htmlPath],
+    result: {
+      filePath: htmlPath,
+      isNativePdf: false,
+      message:
+        "Print-ready HTML generated. To convert to PDF:\n" +
+        "  1. Open the file in a browser (it will auto-trigger the print dialog)\n" +
+        "  2. Choose \"Save as PDF\" in the print dialog\n" +
+        "  Or install wkhtmltopdf for automatic conversion: https://wkhtmltopdf.org",
+    },
+  };
+}
