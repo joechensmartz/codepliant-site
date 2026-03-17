@@ -3,21 +3,21 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Codepliant pricing plans. Free for open source, Pro at $29/month, Team at $79/month. Generate compliance documents from your code.",
+    "Codepliant pricing plans. Free for open source, Pro at $19/month, Team at $49/month. Generate compliance documents from your code.",
   alternates: {
     canonical: "https://codepliant.dev/pricing",
   },
   openGraph: {
     title: "Pricing | Codepliant",
     description:
-      "Free for open source. Pro at $29/mo. Team at $79/mo. Generate compliance documents from code.",
+      "Free for open source. Pro at $19/mo. Team at $49/mo. Generate compliance documents from code.",
     url: "https://codepliant.dev/pricing",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Pricing | Codepliant",
-    description: "Codepliant pricing. Free, Pro $29/mo, Team $79/mo.",
+    description: "Codepliant pricing. Free, Pro $19/mo, Team $49/mo.",
     images: ["/og-image.png"],
   },
 };
@@ -29,56 +29,57 @@ const plans = [
     period: "forever",
     desc: "For individual developers and open source projects.",
     features: [
-      "All 35+ document types",
+      "Full CLI scanning",
+      "Markdown output",
+      "Up to 5 document types",
       "10+ ecosystem support",
       "8 ORM scanners",
-      "Markdown output",
-      "CLI access",
       "4 languages (EN/DE/FR/ES)",
       "Open source (MIT)",
       "Community support",
     ],
     cta: "Get started",
     href: "https://github.com/joechensmartz/codepliant",
-    primary: false,
+    highlight: false,
   },
   {
     name: "Pro",
-    price: "$29",
+    price: "$19",
     period: "/month",
-    desc: "For startups and professional developers.",
+    badge: "Most Popular",
+    desc: "For solo developers, freelancers, and startups.",
     features: [
       "Everything in Free",
-      "HTML & PDF output",
-      "Custom branding & logo",
-      "CI/CD integration",
-      "Compliance page hosting",
-      "Cookie banner widget",
-      "Badge embedding",
+      "Unlimited document types",
+      "HTML, PDF, DOCX & JSON output",
+      "Change detection (codepliant diff)",
+      "Notion & Confluence export",
+      "CI/CD GitHub Action",
+      "Custom branding & templates",
       "Priority email support",
     ],
     cta: "Start free trial",
     href: "#",
-    primary: true,
+    highlight: true,
   },
   {
     name: "Team",
-    price: "$79",
+    price: "$49",
     period: "/month",
-    desc: "For teams and organizations.",
+    desc: "For teams and organizations managing multiple projects.",
     features: [
       "Everything in Pro",
-      "Monorepo support",
-      "Compliance API server",
       "Team dashboard",
-      "MCP server (7 tools)",
-      "Plugin system",
-      "SLA guarantee",
-      "Dedicated support",
+      "Multi-project scanning (scan-all)",
+      "Webhook notifications",
+      "Custom compliance templates",
+      "Shared template library",
+      "SSO / SAML",
+      "Dedicated support with SLA",
     ],
     cta: "Contact us",
     href: "#",
-    primary: false,
+    highlight: false,
   },
 ];
 
@@ -86,7 +87,7 @@ const faqs = [
   {
     question: "Can I use Codepliant for free?",
     answer:
-      "Yes. The CLI is free and open source under the MIT license. You get all 35+ document types, all ecosystems, and Markdown output at no cost. The Pro and Team plans add output formats, branding, and collaboration features.",
+      "Yes. The CLI is free and open source under the MIT license. You get full scanning, Markdown output, and up to 5 document types at no cost. The Pro and Team plans unlock additional output formats, unlimited document types, and collaboration features.",
   },
   {
     question: "Is there a free trial for Pro?",
@@ -96,12 +97,32 @@ const faqs = [
   {
     question: "Can I cancel anytime?",
     answer:
-      "Yes. Both Pro and Team plans are month-to-month. Cancel anytime from your dashboard.",
+      "Yes. Both Pro and Team plans are month-to-month. Cancel anytime from your dashboard. No long-term contracts.",
+  },
+  {
+    question: "What does \"codepliant diff\" do?",
+    answer:
+      "The diff command compares your current scan against a previous snapshot and shows what changed — new services detected, removed services, and which compliance documents need updating. It is essential for CI/CD workflows and audit trails.",
+  },
+  {
+    question: "Do you offer annual billing?",
+    answer:
+      "Yes. Pro is $149/year (save $79) and Team is $399/year (save $189). Contact us for annual pricing.",
   },
   {
     question: "Do you offer discounts for startups?",
     answer:
       "Yes. We offer 50% off the first year for startups with fewer than 10 employees. Contact us for details.",
+  },
+  {
+    question: "What happens if I exceed 5 document types on Free?",
+    answer:
+      "The Free plan generates up to 5 document types per scan. If your project needs more, upgrading to Pro unlocks all 120+ document types with no limits.",
+  },
+  {
+    question: "Can I self-host the Team dashboard?",
+    answer:
+      "Not yet, but it is on the roadmap. Currently the Team dashboard is a hosted solution. Enterprise customers can contact us about on-premise deployment options.",
   },
 ];
 
@@ -121,7 +142,6 @@ function jsonLd() {
     })),
   };
 }
-
 
 function breadcrumbJsonLd() {
   return {
@@ -157,7 +177,7 @@ export default function Pricing() {
       />
 
       <section className="py-20 px-6">
-        <div className="max-w-[680px] mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold tracking-tight mb-4">Pricing</h1>
             <p className="text-lg text-muted">
@@ -165,44 +185,85 @@ export default function Pricing() {
             </p>
           </div>
 
-          <div className="space-y-6">
+          {/* Pricing cards grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`rounded-2xl p-8 ${
-                  plan.primary
-                    ? "bg-brand text-white ring-2 ring-brand"
-                    : "bg-surface"
+                className={`relative rounded-2xl p-8 flex flex-col ${
+                  plan.highlight
+                    ? "bg-brand text-white ring-2 ring-brand scale-[1.02]"
+                    : "bg-surface ring-1 ring-border-subtle"
                 }`}
               >
-                <div className="flex items-baseline justify-between mb-1">
-                  <h2 className="text-xl font-bold">{plan.name}</h2>
-                  <div className="text-2xl font-bold">
-                    {plan.price}
-                    <span className="text-sm font-normal opacity-70">
+                {/* "Most Popular" badge */}
+                {"badge" in plan && plan.badge && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-white text-brand text-xs font-bold px-3 py-1 rounded-full shadow-sm whitespace-nowrap">
+                      {plan.badge}
+                    </span>
+                  </div>
+                )}
+
+                {/* Plan header */}
+                <div className="mb-6">
+                  <h2 className="text-lg font-bold mb-2">{plan.name}</h2>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span
+                      className={`text-sm font-normal ${
+                        plan.highlight ? "text-white/70" : "text-muted"
+                      }`}
+                    >
                       {plan.period}
                     </span>
                   </div>
+                  <p
+                    className={`text-sm mt-3 ${
+                      plan.highlight ? "text-white/70" : "text-muted"
+                    }`}
+                  >
+                    {plan.desc}
+                  </p>
                 </div>
-                <p
-                  className={`text-sm mb-6 ${
-                    plan.primary ? "text-white/70" : "text-muted"
+
+                {/* Divider */}
+                <div
+                  className={`border-t mb-6 ${
+                    plan.highlight ? "border-white/20" : "border-border-subtle"
                   }`}
-                >
-                  {plan.desc}
-                </p>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mb-6">
+                />
+
+                {/* Features */}
+                <ul className="space-y-3 text-sm mb-8 flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2">
-                      <span className="mt-0.5">&#10003;</span>
-                      {f}
+                    <li key={f} className="flex items-start gap-2.5">
+                      <svg
+                        className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
+                          plan.highlight ? "text-white" : "text-brand"
+                        }`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span>{f}</span>
                     </li>
                   ))}
                 </ul>
+
+                {/* CTA button */}
                 <a
                   href={plan.href}
                   className={`block text-center py-3 rounded-xl text-sm font-medium transition-colors ${
-                    plan.primary
+                    plan.highlight
                       ? "bg-white text-brand hover:bg-gray-100"
                       : "bg-surface-secondary border border-border-subtle hover:bg-surface-tertiary"
                   }`}
@@ -213,11 +274,18 @@ export default function Pricing() {
             ))}
           </div>
 
+          {/* Annual savings note */}
+          <p className="text-center text-sm text-muted mt-8">
+            Save up to 34% with annual billing. All plans include a 14-day free
+            trial.
+          </p>
+
+          {/* FAQ section */}
           <div className="mt-20">
-            <h2 className="text-2xl font-bold tracking-tight mb-8 text-center">
-              Questions
+            <h2 className="text-2xl font-bold tracking-tight mb-10 text-center">
+              Frequently Asked Questions
             </h2>
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
               {faqs.map((faq) => (
                 <div key={faq.question}>
                   <h3 className="font-semibold mb-2">{faq.question}</h3>
