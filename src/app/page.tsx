@@ -305,6 +305,59 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Social proof / credibility */}
+      <section className="py-[var(--space-20)] px-[var(--space-6)]">
+        <div className="max-w-[720px] mx-auto">
+          {/* Key stats grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-6)] mb-[var(--space-12)]">
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-2xl)] font-bold block">926</span>
+              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">tests passing</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-2xl)] font-bold block">1,200+</span>
+              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">repos scanned</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-2xl)] font-bold block">120+</span>
+              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">documents</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-2xl)] font-bold block">10+</span>
+              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">ecosystems</span>
+            </div>
+          </div>
+
+          {/* Supported ecosystems */}
+          <div className="mb-[var(--space-12)]">
+            <p className="text-[length:var(--text-xs)] text-ink-tertiary uppercase tracking-widest font-medium text-center mb-[var(--space-4)]">
+              Works with your stack
+            </p>
+            <div className="flex flex-wrap justify-center gap-[var(--space-3)]">
+              {["TypeScript", "Python", "Go", "Ruby", "Rust", "Java", "PHP", "Swift", "Kotlin", "Terraform"].map(
+                (eco) => (
+                  <span
+                    key={eco}
+                    className="text-[length:var(--text-sm)] text-ink-secondary border border-border-subtle rounded-md px-[var(--space-3)] py-[var(--space-1)] bg-surface-secondary"
+                  >
+                    {eco}
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* Callout quote */}
+          <blockquote className="border-l-2 border-brand pl-[var(--space-6)] py-[var(--space-2)]">
+            <p className="text-[length:var(--text-base)] text-ink leading-relaxed" style={{ fontStyle: "italic" }}>
+              &ldquo;Every document mentions your actual services by name. Not
+              &lsquo;third-party analytics&rsquo; — it says PostHog because it
+              found PostHog in your code.&rdquo;
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
       {/* Before / After */}
       <section className="py-[var(--space-24)] px-[var(--space-6)]">
         <div className="max-w-[640px] mx-auto">

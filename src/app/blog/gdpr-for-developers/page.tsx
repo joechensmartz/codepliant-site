@@ -1,25 +1,52 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "GDPR Compliance for Developers: A Practical Guide",
+  title: "GDPR Compliance for Developers: A Practical Guide | Codepliant",
   description:
-    "A practical GDPR guide for developers building SaaS applications. Covers data processing, consent, user rights, sub-processors, DPAs, and actionable steps your engineering team can take today.",
+    "A practical GDPR guide for developers building SaaS applications. Covers data processing, consent, user rights, sub-processors, DPAs, common mistakes, code examples, and actionable steps your engineering team can take today.",
   alternates: {
     canonical: "https://codepliant.dev/blog/gdpr-for-developers",
   },
+  keywords: [
+    "GDPR compliance",
+    "GDPR for developers",
+    "GDPR SaaS",
+    "data privacy",
+    "privacy policy generator",
+    "GDPR engineering checklist",
+    "data processing agreement",
+    "GDPR consent management",
+    "right to erasure",
+    "data subject rights",
+    "GDPR code examples",
+    "codepliant",
+    "GDPR automation",
+    "sub-processor register",
+    "GDPR mistakes",
+  ],
   openGraph: {
     title: "GDPR Compliance for Developers: A Practical Guide",
     description:
       "Everything developers need to know about GDPR compliance. Practical, code-focused guidance for SaaS engineering teams.",
     url: "https://codepliant.dev/blog/gdpr-for-developers",
     type: "article",
+    publishedTime: "2026-03-16T00:00:00Z",
+    modifiedTime: "2026-03-16T00:00:00Z",
+    authors: ["Codepliant"],
+    tags: [
+      "GDPR",
+      "Data Privacy",
+      "Developer Guide",
+      "Compliance",
+      "SaaS",
+    ],
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "GDPR Compliance for Developers: A Practical Guide",
     description:
-      "Developer GDPR guide covering data processing, consent, user rights, and practical compliance steps for SaaS teams.",
+      "Developer GDPR guide covering data processing, consent, user rights, common mistakes, and practical compliance steps for SaaS teams.",
     images: ["/og-image.png"],
   },
 };
@@ -50,6 +77,30 @@ function articleJsonLd() {
   };
 }
 
+function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "How can I check if my codebase has GDPR-relevant services?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Run `npx codepliant go` in your project directory. Codepliant scans your dependencies, imports, and environment variables to detect analytics, payment processors, error tracking, and other services that collect personal data, then generates compliance documentation automatically.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What are the most common GDPR mistakes developers make?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Common mistakes include treating GDPR as a legal-only problem, not tracking sub-processors when adding new npm packages, collecting data without a documented legal basis, storing personal data in logs indefinitely, and assuming anonymization is simpler than it is.",
+        },
+      },
+    ],
+  };
+}
 
 function breadcrumbJsonLd() {
   return {
@@ -78,6 +129,27 @@ function breadcrumbJsonLd() {
   };
 }
 
+function CodeBlock({
+  filename,
+  children,
+}: {
+  filename?: string;
+  children: string;
+}) {
+  return (
+    <div className="rounded-xl overflow-hidden my-6">
+      {filename && (
+        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
+          {filename}
+        </div>
+      )}
+      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
+        <code>{children}</code>
+      </pre>
+    </div>
+  );
+}
+
 export default function GdprForDevelopers() {
   return (
     <>
@@ -85,18 +157,111 @@ export default function GdprForDevelopers() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd()) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd()),
+        }}
+      />
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
           <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
-            Blog
+            <a href="/blog" className="hover:underline">
+              Blog
+            </a>
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-4">
             GDPR Compliance for Developers: A Practical Guide
           </h1>
           <p className="text-sm text-muted mb-12">
-            Published March 16, 2026 &middot; 15 min read
+            Published March 16, 2026 &middot; 20 min read
           </p>
+
+          {/* Table of Contents */}
+          <nav className="bg-surface rounded-2xl p-6 mb-12">
+            <h2 className="text-sm font-bold tracking-wide uppercase text-foreground mb-4">
+              Table of contents
+            </h2>
+            <ol className="space-y-2 text-sm text-muted list-decimal list-inside">
+              <li>
+                <a
+                  href="#core-concepts"
+                  className="hover:text-foreground transition-colors"
+                >
+                  GDPR core concepts developers need to understand
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#engineering-checklist"
+                  className="hover:text-foreground transition-colors"
+                >
+                  What you need to build: the GDPR engineering checklist
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#detecting-gdpr-services"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Detecting GDPR-relevant services with Codepliant
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#common-mistakes"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Common GDPR mistakes developers make
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#implementation-patterns"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Common GDPR implementation patterns for SaaS
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#international-transfers"
+                  className="hover:text-foreground transition-colors"
+                >
+                  International data transfers
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#gdpr-and-ai"
+                  className="hover:text-foreground transition-colors"
+                >
+                  GDPR and AI: additional obligations
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#enforcement"
+                  className="hover:text-foreground transition-colors"
+                >
+                  GDPR enforcement: the numbers
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#action-plan"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Action plan for your engineering team
+                </a>
+              </li>
+            </ol>
+          </nav>
 
           <div className="prose-custom space-y-6 text-base text-muted leading-relaxed">
             {/* Introduction */}
@@ -114,11 +279,22 @@ export default function GdprForDevelopers() {
               understand, what you need to build, and what you can automate.
               Whether you are retrofitting GDPR compliance into an existing
               product or building a new application from scratch, this article
-              covers the practical engineering decisions you will face.
+              covers the practical engineering decisions you will face. If your
+              application also uses AI, see our{" "}
+              <a
+                href="/blog/eu-ai-act-deadline"
+                className="text-accent hover:underline"
+              >
+                EU AI Act developer guide
+              </a>{" "}
+              for the additional obligations that apply.
             </p>
 
             {/* Core concepts */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="core-concepts"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
               GDPR core concepts developers need to understand
             </h2>
 
@@ -193,7 +369,10 @@ export default function GdprForDevelopers() {
             </ul>
 
             {/* What you need to build */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="engineering-checklist"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
               What you need to build: the GDPR engineering checklist
             </h2>
 
@@ -328,11 +507,242 @@ export default function GdprForDevelopers() {
               service, what data it processes, where it is hosted, and the DPA
               status. Codepliant automatically detects your third-party services
               by scanning your codebase, giving you a starting point for this
-              register.
+              register. Learn more about generating this documentation on
+              our{" "}
+              <a
+                href="/privacy-policy-generator"
+                className="text-accent hover:underline"
+              >
+                Privacy Policy Generator
+              </a>{" "}
+              page.
             </p>
 
+            {/* Detecting GDPR services with Codepliant */}
+            <h2
+              id="detecting-gdpr-services"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
+              Detecting GDPR-relevant services with Codepliant
+            </h2>
+            <p>
+              Before you can comply with GDPR, you need to know what data your
+              application actually collects and which third-party services it
+              sends data to. Codepliant automates this discovery by scanning
+              your{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                package.json
+              </code>
+              , source imports, and{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                .env
+              </code>{" "}
+              files.
+            </p>
+            <p>
+              Run a single command to scan your project and see which
+              GDPR-relevant services are detected:
+            </p>
+
+            <CodeBlock filename="Terminal">
+{`$ npx codepliant go
+
+Scanning project...
+
+Detected services:
+  Analytics:     Google Analytics, Mixpanel, Segment
+  Payments:      Stripe
+  Auth:          Auth0
+  Error tracking: Sentry
+  Email:         SendGrid
+  Database:      PostgreSQL (Prisma)
+  AI:            OpenAI
+
+Generated documents:
+  ./compliance/privacy-policy.md
+  ./compliance/cookie-policy.md
+  ./compliance/terms-of-service.md
+  ./compliance/ai-disclosure.md
+
+Done. 4 documents generated.`}
+            </CodeBlock>
+
+            <p>
+              Codepliant detects services across three layers: dependency
+              names in your package manifest, import statements in your source
+              code, and environment variable patterns in{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                .env
+              </code>{" "}
+              files. Here is what it looks for in each category relevant to
+              GDPR:
+            </p>
+
+            <CodeBlock filename="GDPR-relevant detection patterns">
+{`# Analytics (collect user behavior data)
+Dependencies: @google-analytics/data, mixpanel, @segment/analytics-next
+Imports:      gtag(), mixpanel.track(), analytics.track()
+Env vars:     GA_TRACKING_ID, MIXPANEL_TOKEN, SEGMENT_WRITE_KEY
+
+# Payment processors (handle financial PII)
+Dependencies: stripe, @paypal/checkout-server-sdk
+Imports:      new Stripe(), paypal.orders.create()
+Env vars:     STRIPE_SECRET_KEY, PAYPAL_CLIENT_ID
+
+# Error tracking (may capture user context)
+Dependencies: @sentry/node, @sentry/nextjs, bugsnag
+Imports:      Sentry.init(), Bugsnag.start()
+Env vars:     SENTRY_DSN, BUGSNAG_API_KEY
+
+# Email services (process email addresses)
+Dependencies: @sendgrid/mail, nodemailer, postmark
+Imports:      sgMail.send(), transporter.sendMail()
+Env vars:     SENDGRID_API_KEY, SMTP_HOST, POSTMARK_API_TOKEN
+
+# Auth providers (store identity data)
+Dependencies: auth0, next-auth, @clerk/nextjs, firebase-admin
+Imports:      auth0.getSession(), getServerSession()
+Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
+            </CodeBlock>
+
+            <p>
+              For a JSON-formatted scan result you can pipe into your own
+              tooling, use the{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                scan
+              </code>{" "}
+              subcommand:
+            </p>
+
+            <CodeBlock filename="Terminal">
+{`$ npx codepliant scan --json
+
+{
+  "services": {
+    "stripe": {
+      "category": "payments",
+      "dataCollected": [
+        "payment card numbers",
+        "billing addresses",
+        "email addresses",
+        "transaction history"
+      ],
+      "detectedVia": ["dependency", "import", "env"]
+    },
+    "google-analytics": {
+      "category": "analytics",
+      "dataCollected": [
+        "IP addresses",
+        "page views",
+        "device information",
+        "user behavior"
+      ],
+      "detectedVia": ["dependency", "env"]
+    },
+    "sentry": {
+      "category": "error-tracking",
+      "dataCollected": [
+        "error stack traces",
+        "user context",
+        "device information",
+        "IP addresses"
+      ],
+      "detectedVia": ["dependency", "import"]
+    }
+  }
+}`}
+            </CodeBlock>
+            <p>
+              This output tells you exactly which services require DPAs, what
+              data categories to disclose in your{" "}
+              <a
+                href="/privacy-policy-generator"
+                className="text-accent hover:underline"
+              >
+                privacy policy
+              </a>
+              , and which services need entries in your{" "}
+              <a
+                href="/cookie-policy-generator"
+                className="text-accent hover:underline"
+              >
+                cookie policy
+              </a>
+              . Instead of manually auditing your codebase every quarter, run
+              Codepliant in CI to catch new sub-processors the moment a
+              developer adds an{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                npm install
+              </code>
+              .
+            </p>
+
+            {/* Common GDPR mistakes */}
+            <h2
+              id="common-mistakes"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
+              Common GDPR mistakes developers make
+            </h2>
+            <p>
+              After scanning hundreds of codebases, we see the same patterns
+              repeatedly. Here are the GDPR mistakes that catch engineering
+              teams off guard:
+            </p>
+
+            <div className="space-y-4">
+              {[
+                {
+                  mistake: "1. Adding npm packages without checking data implications",
+                  detail:
+                    "Every npm install that adds a third-party service is potentially a new sub-processor. Installing @sentry/nextjs, mixpanel, or @sendgrid/mail means personal data may flow to a new company. Developers rarely flag this to their compliance team. Codepliant catches these automatically by scanning your dependency tree.",
+                },
+                {
+                  mistake: "2. Logging personal data in plain text",
+                  detail:
+                    "console.log(user) during debugging, error handlers that dump request bodies, and verbose ORM logging all risk writing personal data to log files. These logs often have no retention policy, no access controls, and get shipped to third-party log aggregators without a DPA in place.",
+                },
+                {
+                  mistake: "3. Treating anonymization as trivial",
+                  detail:
+                    "Replacing a user's name with 'Anonymous' is not anonymization. GDPR requires that re-identification is not reasonably possible. If your dataset contains timestamps, IP addresses, or behavioral patterns alongside the 'anonymized' record, the data may still be personal data. True anonymization requires removing or generalizing all quasi-identifiers.",
+                },
+                {
+                  mistake: "4. Forgetting about backups in deletion flows",
+                  detail:
+                    "When a user exercises their right to erasure, deleting their row from the primary database is not enough. If their data exists in database backups, data warehouse exports, Redis caches, CDN edge caches, or Elasticsearch indices, those copies need to be addressed too. Document a realistic timeline for backup expiry and communicate it.",
+                },
+                {
+                  mistake: "5. Using Google Fonts, CDN scripts, or embedded iframes without consent",
+                  detail:
+                    "Loading resources from external domains causes the user's browser to send their IP address to those domains. The CJEU ruled in 2022 that serving Google Fonts from Google's CDN without consent violates GDPR. Self-host fonts and scripts, or get consent before loading them.",
+                },
+                {
+                  mistake: "6. No data retention policy in code",
+                  detail:
+                    "GDPR requires storage limitation: you cannot keep personal data indefinitely. Yet most applications have no automated cleanup. Server logs grow forever, soft-deleted records are never purged, and analytics databases accumulate years of user-level data. Define retention periods per data category and enforce them with scheduled jobs.",
+                },
+                {
+                  mistake: "7. Collecting data 'just in case'",
+                  detail:
+                    "Requesting full name, phone number, company name, and job title on a signup form when only email is needed for the service violates data minimization. Collecting broad OAuth scopes 'in case we need them later' is the same problem. Only collect what you need for the stated purpose, and document why each field is necessary.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.mistake}
+                  className="bg-surface rounded-xl p-5"
+                >
+                  <h3 className="font-semibold mb-1">{item.mistake}</h3>
+                  <p className="text-sm text-muted">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+
             {/* Common technical patterns */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="implementation-patterns"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
               Common GDPR implementation patterns for SaaS
             </h2>
 
@@ -386,7 +796,10 @@ export default function GdprForDevelopers() {
             </p>
 
             {/* International data transfers */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="international-transfers"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
               International data transfers
             </h2>
             <p>
@@ -414,17 +827,51 @@ export default function GdprForDevelopers() {
             </ul>
             <p>
               For each sub-processor, verify which transfer mechanism applies
-              and document it. Your privacy policy must disclose international
-              transfers and the safeguards in place.
+              and document it. Your{" "}
+              <a
+                href="/privacy-policy-generator"
+                className="text-accent hover:underline"
+              >
+                privacy policy
+              </a>{" "}
+              must disclose international transfers and the safeguards in place.
+              Codepliant detects your sub-processors automatically, so you
+              always have an up-to-date list to audit against. For a broader
+              view of data privacy requirements, visit our{" "}
+              <a
+                href="/data-privacy"
+                className="text-accent hover:underline"
+              >
+                Data Privacy Compliance Hub
+              </a>
+              .
             </p>
 
             {/* GDPR and AI */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="gdpr-and-ai"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
               GDPR and AI: additional obligations for AI-powered SaaS
             </h2>
             <p>
               If your SaaS uses AI, GDPR adds specific obligations on top of
-              the standard requirements:
+              the standard requirements. For a detailed breakdown of AI-specific
+              regulation, see our{" "}
+              <a
+                href="/blog/eu-ai-act-deadline"
+                className="text-accent hover:underline"
+              >
+                EU AI Act developer guide
+              </a>{" "}
+              and the{" "}
+              <a
+                href="/ai-governance"
+                className="text-accent hover:underline"
+              >
+                AI Governance Hub
+              </a>
+              :
             </p>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
@@ -439,6 +886,14 @@ export default function GdprForDevelopers() {
                 policy must disclose the existence of automated decision-making,
                 provide meaningful information about the logic involved, and
                 explain the significance and consequences for the user.
+                Codepliant can generate an{" "}
+                <a
+                  href="/ai-disclosure-generator"
+                  className="text-accent hover:underline"
+                >
+                  AI Disclosure document
+                </a>{" "}
+                for you automatically.
               </li>
               <li>
                 <strong>Data sent to AI providers:</strong> If you send user
@@ -457,7 +912,10 @@ export default function GdprForDevelopers() {
             </ul>
 
             {/* Enforcement reality */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="enforcement"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
               GDPR enforcement: the numbers developers should know
             </h2>
             <p>
@@ -510,7 +968,10 @@ export default function GdprForDevelopers() {
             </div>
 
             {/* Practical steps */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="action-plan"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+            >
               Action plan: GDPR compliance for your engineering team
             </h2>
             <ol className="list-decimal list-inside space-y-3 ml-2">
@@ -535,12 +996,26 @@ export default function GdprForDevelopers() {
                 <strong>Review your privacy policy.</strong> Ensure it
                 accurately reflects your data practices, names your
                 sub-processors, specifies retention periods, and covers AI
-                processing if applicable.
+                processing if applicable. Use the{" "}
+                <a
+                  href="/privacy-policy-generator"
+                  className="text-accent hover:underline"
+                >
+                  Privacy Policy Generator
+                </a>{" "}
+                to create one from your codebase.
               </li>
               <li>
                 <strong>Set up consent management.</strong> Implement a GDPR-
                 compliant cookie consent banner. Ensure non-essential cookies
-                are blocked until opt-in.
+                are blocked until opt-in. See our{" "}
+                <a
+                  href="/cookie-policy-generator"
+                  className="text-accent hover:underline"
+                >
+                  Cookie Policy Generator
+                </a>{" "}
+                for help documenting your cookie usage.
               </li>
               <li>
                 <strong>Prepare for breaches.</strong> Document an incident
@@ -559,16 +1034,27 @@ export default function GdprForDevelopers() {
           {/* CTA */}
           <section className="bg-surface rounded-2xl p-8 text-center mt-16 mb-16">
             <h2 className="text-xl font-bold mb-3">
-              Automate GDPR compliance documentation
+              Check your GDPR compliance now
             </h2>
             <p className="text-muted text-sm mb-6">
-              Scan your codebase to generate privacy policies, data inventories,
-              and compliance documentation. Free, open source, no account
-              required.
+              Run{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                npx codepliant go
+              </code>{" "}
+              to scan your codebase for GDPR-relevant services and generate
+              privacy policies, data inventories, and compliance documentation.
+              Free, open source, no account required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
+            <p className="text-xs text-muted mt-4">
+              Works with Node.js, Python, Ruby, Go, Java, PHP, and more.{" "}
+              <a href="/docs" className="text-accent hover:underline">
+                Read the docs
+              </a>
+              .
+            </p>
           </section>
 
           {/* Related pages */}
@@ -584,9 +1070,19 @@ export default function GdprForDevelopers() {
                   desc: "Everything you need to know about GDPR compliance for your application.",
                 },
                 {
+                  title: "EU AI Act: What Developers Need to Know",
+                  href: "/blog/eu-ai-act-deadline",
+                  desc: "Comprehensive guide to the EU AI Act deadline, risk classifications, and compliance steps.",
+                },
+                {
                   title: "How to Write a Privacy Policy for Your SaaS App",
                   href: "/blog/privacy-policy-for-saas",
                   desc: "Step-by-step guide to creating a legally compliant SaaS privacy policy.",
+                },
+                {
+                  title: "Colorado AI Act: Developer Guide",
+                  href: "/blog/colorado-ai-act",
+                  desc: "What the Colorado AI Act means for developers building AI-powered applications.",
                 },
                 {
                   title: "Privacy Policy Generator",
