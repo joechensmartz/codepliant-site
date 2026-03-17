@@ -12,6 +12,7 @@ function jsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant",
+    version: "1.1.0",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
@@ -187,7 +188,7 @@ export default function Home() {
       />
 
       {/* Hero */}
-      <section className="pt-[var(--space-24)] pb-[var(--space-16)] px-[var(--space-6)]">
+      <section aria-label="Introduction" className="pt-[var(--space-24)] pb-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[640px]" style={{ marginInlineStart: "auto", marginInlineEnd: "auto" }}>
           <p className="text-[length:var(--text-sm)] font-medium text-brand mb-[var(--space-4)] tracking-widest uppercase">
             Open Source CLI
@@ -255,7 +256,7 @@ export default function Home() {
       </section>
 
       {/* Trust signals */}
-      <section className="py-[var(--space-12)] px-[var(--space-6)] border-y border-border-subtle">
+      <section aria-label="Trust signals and supported ecosystems" className="py-[var(--space-12)] px-[var(--space-6)] border-y border-border-subtle">
         <div className="max-w-[720px] mx-auto">
           <div className="flex flex-wrap justify-center gap-x-[var(--space-8)] gap-y-[var(--space-4)] mb-[var(--space-8)]">
             {["Zero network calls", "MIT Licensed", "No runtime dependencies", "1,200+ repos tested"].map((label) => (
@@ -309,7 +310,7 @@ export default function Home() {
       </section>
 
       {/* Before / After */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)]">
+      <section aria-label="Comparison of old way versus Codepliant" className="py-[var(--space-24)] px-[var(--space-6)]">
         <div className="max-w-[640px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
             The old way vs. Codepliant
@@ -340,7 +341,7 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
+      <section aria-label="How it works" className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
         <div className="max-w-[640px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-12)]">
             How it works
@@ -369,7 +370,7 @@ export default function Home() {
       </section>
 
       {/* Example output preview */}
-      <section id="example-output" className="py-[var(--space-24)] px-[var(--space-6)] scroll-mt-[var(--space-6)]">
+      <section id="example-output" aria-label="Example output" className="py-[var(--space-24)] px-[var(--space-6)] scroll-mt-[var(--space-6)]">
         <div className="max-w-[880px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
             See what Codepliant generates
@@ -386,7 +387,7 @@ export default function Home() {
                 <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">scan-result.json</span>
               </div>
               <div className="p-[var(--space-4)] bg-code-bg text-[length:var(--text-xs)] font-mono leading-relaxed text-code-fg overflow-x-auto">
-                <pre className="whitespace-pre">{`{
+                <pre className="whitespace-pre" role="region" aria-label="Example scan result JSON output" tabIndex={0}>{`{
   "project": "acme-saas",
   "services": [
     {
@@ -433,7 +434,7 @@ export default function Home() {
                   <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">legal/ (generated)</span>
                 </div>
                 <div className="p-[var(--space-4)] bg-code-bg text-[length:var(--text-xs)] font-mono leading-relaxed text-code-fg overflow-x-auto">
-                  <pre className="whitespace-pre">{`legal/
+                  <pre className="whitespace-pre" role="region" aria-label="Generated document file tree" tabIndex={0}>{`legal/
 ├── PRIVACY_POLICY.md
 ├── TERMS_OF_SERVICE.md
 ├── COOKIE_POLICY.md
@@ -483,7 +484,7 @@ export default function Home() {
       </section>
 
       {/* EU AI Act deadline */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)]">
+      <section aria-label="EU AI Act deadline countdown" className="py-[var(--space-24)] px-[var(--space-6)]">
         <div className="max-w-[640px] mx-auto">
           <div
             className="bg-urgency-muted text-urgency px-[var(--space-4)] py-[var(--space-2)] rounded-md text-[length:var(--text-xs)] font-semibold uppercase tracking-wider inline-block mb-[var(--space-6)]"
@@ -515,7 +516,7 @@ export default function Home() {
       </section>
 
       {/* Real project evidence */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
+      <section aria-label="Real project evidence" className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
         <div className="max-w-[640px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
             Tested on real projects
@@ -605,7 +606,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)]" id="pricing">
+      <section aria-label="Pricing plans" className="py-[var(--space-24)] px-[var(--space-6)]" id="pricing">
         <div className="max-w-[800px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-12)] text-center">
             Pricing
@@ -673,7 +674,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)]">
+      <section aria-label="Get started" className="py-[var(--space-24)] px-[var(--space-6)]">
         <div className="max-w-[640px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
             One command. Full compliance.

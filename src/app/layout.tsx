@@ -89,18 +89,19 @@ function Header() {
           <a href="/pricing" className={linkClass} style={linkStyle}>Pricing</a>
           {/* Hamburger menu using <details> for remaining links */}
           <details className="relative">
-            <summary className="list-none cursor-pointer p-1 hover:text-ink transition-colors duration-150" aria-label="Open navigation menu">
+            <summary className="list-none cursor-pointer p-3 -m-2 hover:text-ink transition-colors duration-150 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Open navigation menu">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                 <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
             </summary>
-            <div className="absolute right-0 top-full mt-2 w-48 bg-surface-primary border border-border-subtle rounded-lg shadow-lg py-[var(--space-2)] z-50">
-              <a href="/blog" className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors">Blog</a>
-              <a href="/changelog" className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors">Changelog</a>
-              <a href="/about" className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors">About</a>
+            <div className="absolute right-0 top-full mt-2 w-48 bg-surface-primary border border-border-subtle rounded-lg shadow-lg py-[var(--space-2)] z-50" role="menu">
+              <a href="/blog" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Blog</a>
+              <a href="/changelog" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Changelog</a>
+              <a href="/about" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">About</a>
               <a
                 href="https://github.com/joechensmartz/codepliant"
-                className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors"
+                role="menuitem"
+                className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >

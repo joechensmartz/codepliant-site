@@ -267,7 +267,7 @@ export default function Docs() {
                 Documents appear in your project
               </p>
               <div className="bg-code-bg text-code-fg rounded-lg px-[var(--space-6)] py-[var(--space-4)] font-mono text-[length:var(--text-xs)] leading-relaxed">
-                <pre className="whitespace-pre">{`legal/
+                <pre className="whitespace-pre" role="region" aria-label="Generated document file tree" tabIndex={0}>{`legal/
 ├── PRIVACY_POLICY.md
 ├── TERMS_OF_SERVICE.md
 ├── COOKIE_POLICY.md
@@ -322,7 +322,7 @@ Generated in ~1.2s`}</pre>
                 </span>
               </div>
               <div className="bg-code-bg text-code-fg rounded-b-lg border border-border-subtle border-t-0 px-[var(--space-6)] py-[var(--space-4)] font-mono text-[length:var(--text-xs)] leading-relaxed overflow-x-auto">
-                <pre className="whitespace-pre">{`{
+                <pre className="whitespace-pre" role="region" aria-label="Example codepliantrc.json configuration" tabIndex={0}>{`{
   "companyName": "Acme Inc.",
   "contactEmail": "privacy@acme.com",
   "website": "https://acme.com",
@@ -600,7 +600,7 @@ Generated in ~1.2s`}</pre>
               file:
             </p>
             <div className="bg-code-bg text-code-fg rounded-lg px-[var(--space-6)] py-[var(--space-4)] font-mono text-[length:var(--text-xs)] leading-relaxed mb-[var(--space-6)] overflow-x-auto">
-              <pre className="whitespace-pre">{`{
+              <pre className="whitespace-pre" role="region" aria-label="Claude Code MCP server configuration" tabIndex={0}>{`{
   "codepliant": {
     "command": "npx",
     "args": ["-y", "codepliant", "serve", "--mcp"]
@@ -619,7 +619,7 @@ Generated in ~1.2s`}</pre>
               file:
             </p>
             <div className="bg-code-bg text-code-fg rounded-lg px-[var(--space-6)] py-[var(--space-4)] font-mono text-[length:var(--text-xs)] leading-relaxed mb-[var(--space-6)] overflow-x-auto">
-              <pre className="whitespace-pre">{`{
+              <pre className="whitespace-pre" role="region" aria-label="Cursor MCP server configuration" tabIndex={0}>{`{
   "mcpServers": {
     "codepliant": {
       "command": "npx",

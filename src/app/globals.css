@@ -132,6 +132,19 @@ details > summary { list-style: none; }
   border-width: 0;
 }
 
+/* Minimum touch targets for mobile (WCAG 2.1 AA - 2.5.8 Target Size) */
+@media (pointer: coarse) {
+  a, button, summary, [role="menuitem"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Inline text links inside prose are exempt from target size */
+  p a, li a, td a, span a {
+    min-height: auto;
+    min-width: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

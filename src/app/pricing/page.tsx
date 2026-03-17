@@ -131,8 +131,10 @@ function jsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant",
+    version: "1.1.0",
     description: "Open-source CLI that scans codebases and generates compliance documents automatically.",
     applicationCategory: "DeveloperApplication",
+    operatingSystem: "macOS, Linux, Windows",
     offers: plans.map((p) => ({
       "@type": "Offer",
       name: p.name,

@@ -69,7 +69,7 @@ const releases: Release[] = [
     date: "Coming soon",
     tag: "Upcoming",
     summary:
-      "Interactive setup wizard, SBOM generation, Terraform scanning, Flutter, Swift/iOS, and 13 ecosystems.",
+      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, and 3,037 tests across 13 ecosystems.",
     changes: [
       {
         category: "new",
@@ -81,7 +81,27 @@ const releases: Release[] = [
       },
       {
         category: "new",
-        text: "Terraform/IaC scanner with support for AWS, GCP, and Azure providers",
+        text: "codepliant completions — shell completions for bash, zsh, and fish with auto-detection",
+      },
+      {
+        category: "new",
+        text: "Disclaimer generator — general, professional advice, external links, fair use, and conditional AI/payment sections",
+      },
+      {
+        category: "new",
+        text: "EULA generator with conditional AI disclaimer and payment terms sections",
+      },
+      {
+        category: "new",
+        text: "Impressum generator for German legal compliance (Section 5 DDG)",
+      },
+      {
+        category: "new",
+        text: "18 additional generators including DPO Handbook, Penetration Test Scope, Data Deletion Procedures, Training Record, Privacy Risk Matrix, Data Mapping Register, Compliance Calendar, and more",
+      },
+      {
+        category: "new",
+        text: "Terraform/IaC scanner with support for AWS, GCP, and Azure providers (12 tests)",
       },
       {
         category: "new",
@@ -89,15 +109,31 @@ const releases: Release[] = [
       },
       {
         category: "new",
-        text: "Flutter/Dart ecosystem support — pubspec.yaml analysis and Dart import scanning",
+        text: "Flutter/Dart ecosystem support — pubspec.yaml analysis and Dart import scanning (19 tests)",
       },
       {
         category: "new",
-        text: "Swift/iOS ecosystem support — Package.swift, .xcodeproj, and Swift import scanning",
+        text: "Swift/iOS ecosystem support — Package.swift, Podfile, and Swift import scanning (23 tests)",
       },
       {
         category: "new",
-        text: "Impressum generator for German legal compliance (Section 5 DDG)",
+        text: "Kotlin/Android ecosystem support — build.gradle, build.gradle.kts, and Version Catalog scanning (26 tests)",
+      },
+      {
+        category: "improved",
+        text: "Fuzzy command matching — Levenshtein-based \"Did you mean?\" suggestions for mistyped commands",
+      },
+      {
+        category: "improved",
+        text: "Tree-view output — codepliant go now groups generated documents by category with box-drawing characters",
+      },
+      {
+        category: "improved",
+        text: "Diff-in-go display — codepliant go now shows a \"Changes Since Last Generation\" summary with new, updated, removed, and unchanged counts",
+      },
+      {
+        category: "improved",
+        text: "Health command enhanced — full project health check with service detection, doc diffing, and --json flag for CI pipelines",
       },
       {
         category: "improved",
@@ -105,7 +141,7 @@ const releases: Release[] = [
       },
       {
         category: "tests",
-        text: "Test suite expanded from 763 to 2,867 tests (276% increase)",
+        text: "Test suite expanded from 763 to 3,037 tests (298% increase) with 100% scanner coverage and 51 generator test suites",
       },
     ],
   },

@@ -97,6 +97,14 @@ function faqJsonLd() {
           text: "Common mistakes include treating GDPR as a legal-only problem, not tracking sub-processors when adding new npm packages, collecting data without a documented legal basis, storing personal data in logs indefinitely, and assuming anonymization is simpler than it is.",
         },
       },
+      {
+        "@type": "Question",
+        name: "Does GDPR apply if my company is based outside the EU?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. GDPR has extraterritorial scope under Article 3. It applies to any organization that offers goods or services to individuals in the EU/EEA or monitors the behavior of individuals in the EU/EEA, regardless of where the organization is headquartered. If your SaaS product has EU users, GDPR almost certainly applies to you.",
+        },
+      },
     ],
   };
 }
