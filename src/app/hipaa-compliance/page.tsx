@@ -80,6 +80,28 @@ const faqs = [
   },
 ];
 
+function webPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "HIPAA Compliance Tool for Healthcare Apps",
+    description:
+      "Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready HIPAA policies.",
+    url: "https://codepliant.dev/hipaa-compliance",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Codepliant",
+      url: "https://codepliant.dev",
+    },
+    about: {
+      "@type": "Thing",
+      name: "Health Insurance Portability and Accountability Act (HIPAA)",
+      sameAs: "https://en.wikipedia.org/wiki/Health_Insurance_Portability_and_Accountability_Act",
+    },
+    specialty: "HIPAA compliance documentation for healthcare software developers",
+  };
+}
+
 function faqJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -137,6 +159,10 @@ function breadcrumbJsonLd() {
 export default function HipaaCompliance() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd()) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}

@@ -251,6 +251,28 @@ const faqs = [
   },
 ];
 
+function webPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Data Privacy Compliance Hub",
+    description:
+      "Generate documentation for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act from a single code scan. Multi-jurisdiction data privacy compliance for developers.",
+    url: "https://codepliant.dev/data-privacy",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Codepliant",
+      url: "https://codepliant.dev",
+    },
+    about: {
+      "@type": "Thing",
+      name: "Data Privacy",
+      sameAs: "https://en.wikipedia.org/wiki/Information_privacy",
+    },
+    specialty: "Multi-jurisdiction data privacy compliance documentation for developers",
+  };
+}
+
 function softwareJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -308,6 +330,10 @@ function faqJsonLd() {
 export default function DataPrivacy() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd()) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd()) }}

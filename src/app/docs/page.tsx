@@ -23,6 +23,85 @@ export const metadata: Metadata = {
   },
 };
 
+function techArticleJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: "Codepliant Documentation",
+    description:
+      "Install, configure, and generate compliance documents from your codebase. CLI commands, MCP server setup, and output format reference.",
+    url: "https://codepliant.dev/docs",
+    author: {
+      "@type": "Organization",
+      name: "Codepliant",
+      url: "https://codepliant.dev",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Codepliant",
+      url: "https://codepliant.dev",
+    },
+    mainEntityOfPage: "https://codepliant.dev/docs",
+    proficiencyLevel: "Beginner",
+    dependencies: "Node.js 18+",
+    about: {
+      "@type": "SoftwareApplication",
+      name: "Codepliant",
+      applicationCategory: "DeveloperApplication",
+    },
+  };
+}
+
+function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
+}
+
+function howToJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "How to Generate Compliance Documents from Your Codebase",
+    description:
+      "Generate privacy policies, terms of service, and 123+ compliance documents from your code in under a minute.",
+    totalTime: "PT1M",
+    tool: {
+      "@type": "HowToTool",
+      name: "Node.js 18+",
+    },
+    step: [
+      {
+        "@type": "HowToStep",
+        name: "Run the CLI",
+        text: "Run npx codepliant go in your project directory. No account or API key needed.",
+        url: "https://codepliant.dev/docs#quick-start",
+      },
+      {
+        "@type": "HowToStep",
+        name: "Review generated documents",
+        text: "Documents appear in your project's legal/ directory, including privacy policies, terms of service, and more.",
+        url: "https://codepliant.dev/docs#quick-start",
+      },
+      {
+        "@type": "HowToStep",
+        name: "Customize with a config file",
+        text: "Run codepliant init to create a .codepliantrc.json with your company name, email, jurisdiction, and other settings.",
+        url: "https://codepliant.dev/docs#configuration",
+      },
+    ],
+  };
+}
+
 function breadcrumbJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -191,6 +270,18 @@ const faqs = [
 export default function Docs() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(techArticleJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}

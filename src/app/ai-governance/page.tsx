@@ -81,6 +81,28 @@ const faqs = [
   },
 ];
 
+function webPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "AI Governance Framework Generator",
+    description:
+      "Generate EU AI Act and NIST AI RMF aligned governance documentation for AI-powered applications by scanning your codebase.",
+    url: "https://codepliant.dev/ai-governance",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Codepliant",
+      url: "https://codepliant.dev",
+    },
+    about: {
+      "@type": "Thing",
+      name: "AI Governance",
+      sameAs: "https://en.wikipedia.org/wiki/Regulation_of_artificial_intelligence",
+    },
+    specialty: "AI governance documentation for developers building AI-powered applications",
+  };
+}
+
 function faqJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -138,6 +160,10 @@ function breadcrumbJsonLd() {
 export default function AiGovernance() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd()) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}

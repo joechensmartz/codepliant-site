@@ -79,6 +79,28 @@ const faqs = [
   },
 ];
 
+function webPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "GDPR Compliance Tool for Developers",
+    description:
+      "Automate GDPR compliance by scanning your codebase. Generate privacy policies, DPAs, DSAR guides, and data flow maps from your actual code.",
+    url: "https://codepliant.dev/gdpr-compliance",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Codepliant",
+      url: "https://codepliant.dev",
+    },
+    about: {
+      "@type": "Thing",
+      name: "General Data Protection Regulation (GDPR)",
+      sameAs: "https://en.wikipedia.org/wiki/General_Data_Protection_Regulation",
+    },
+    specialty: "GDPR compliance documentation for software developers",
+  };
+}
+
 function faqJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -136,6 +158,10 @@ function breadcrumbJsonLd() {
 export default function GdprCompliance() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd()) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}

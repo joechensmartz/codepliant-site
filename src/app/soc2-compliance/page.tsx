@@ -79,6 +79,28 @@ const faqs = [
   },
 ];
 
+function webPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "SOC 2 Compliance Tool for Startups",
+    description:
+      "Scan your codebase and generate SOC 2 readiness checklists, control mappings, and evidence documentation for all five Trust Service Criteria.",
+    url: "https://codepliant.dev/soc2-compliance",
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Codepliant",
+      url: "https://codepliant.dev",
+    },
+    about: {
+      "@type": "Thing",
+      name: "SOC 2 (System and Organization Controls 2)",
+      sameAs: "https://en.wikipedia.org/wiki/System_and_Organization_Controls",
+    },
+    specialty: "SOC 2 compliance documentation for software startups",
+  };
+}
+
 function faqJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -136,6 +158,10 @@ function breadcrumbJsonLd() {
 export default function Soc2Compliance() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd()) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}

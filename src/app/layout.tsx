@@ -255,6 +255,25 @@ function organizationJsonLd() {
   };
 }
 
+function webSiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Codepliant",
+    url: "https://codepliant.dev",
+    description:
+      "Open-source CLI that scans codebases and generates 123+ compliance documents automatically.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://codepliant.dev/docs?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -266,6 +285,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd()) }}
         />
         <a
           href="#main-content"
