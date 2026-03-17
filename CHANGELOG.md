@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Website Design
 
+### 2026-03-17 — Iteration 35 (build verification + tsconfig fix)
+- Fixed `tsc` build failure caused by Next.js auto-injecting `.next/types/**/*.ts` into tsconfig.json, conflicting with `rootDir: "src"`
+- Created `tsconfig.cli.json` (CLI-only config without `.next/types`) so Next.js can freely modify `tsconfig.json`
+- Updated `package.json` build script to `tsc -p tsconfig.cli.json`
+- `tsc` build: passes (0 errors)
+- `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
+- Tests: 758 passing across 128 suites, 0 failures
+
 ### 2026-03-17 — Iteration 33 (CSS serving verification)
 - Confirmed single compiled CSS file (`39b61dbfcf3f6beb.css`, 49 KB) present in `.next/static/css/`
 - All built HTML pages (index, pricing, docs, about, blog, etc.) reference the same CSS hash — no stale or missing references
@@ -35,6 +43,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No accessibility regressions detected
 
 ## Website Updates
+
+### 2026-03-17 — Iteration 35
+- Synced test count from 4,478 to 4,601 across landing page, about page, and changelog
+- Updated generator coverage from 87 to 90 test suites (65.2% of 138 generators) in changelog
+- Updated percentage increase from 487% to 503% in changelog
+- Verified `next build` passes (29 static pages, 0 errors)
 
 ### 2026-03-17 — Iteration 34
 - Synced test count from 4,344 to 4,478 across landing page, about page, and changelog
