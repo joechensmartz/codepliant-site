@@ -314,6 +314,120 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Example output preview */}
+      <section className="py-[var(--space-24)] px-[var(--space-6)]">
+        <div className="max-w-[880px] mx-auto">
+          <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
+            See what Codepliant generates
+          </h2>
+          <p className="text-ink-secondary text-[length:var(--text-base)] mb-[var(--space-8)] max-w-[50ch]">
+            Real output from scanning a SaaS codebase. Every detail is derived from your actual code — not a questionnaire.
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[var(--space-6)]">
+            {/* Left: Detected services */}
+            <div className="border border-border-subtle rounded-lg overflow-hidden">
+              <div className="bg-surface-secondary px-[var(--space-4)] py-[var(--space-3)] border-b border-border-subtle flex items-center gap-[var(--space-2)]">
+                <span className="inline-block w-3 h-3 rounded-full bg-green-500/80" aria-hidden="true" />
+                <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">scan-result.json</span>
+              </div>
+              <div className="p-[var(--space-4)] bg-code-bg text-[length:var(--text-xs)] font-mono leading-relaxed text-code-fg overflow-x-auto">
+                <pre className="whitespace-pre">{`{
+  "project": "acme-saas",
+  "services": [
+    {
+      "name": "stripe",
+      "category": "payments",
+      "data": ["card info", "billing address"]
+    },
+    {
+      "name": "supabase",
+      "category": "auth",
+      "data": ["email", "password hash", "sessions"]
+    },
+    {
+      "name": "openai",
+      "category": "ai",
+      "data": ["user prompts", "generated content"]
+    },
+    {
+      "name": "posthog",
+      "category": "analytics",
+      "data": ["page views", "click patterns", "IP"]
+    },
+    {
+      "name": "sentry",
+      "category": "monitoring",
+      "data": ["error data", "stack traces"]
+    },
+    {
+      "name": "resend",
+      "category": "email",
+      "data": ["email addresses", "email content"]
+    }
+  ]
+}`}</pre>
+              </div>
+            </div>
+
+            {/* Right: Generated output tree + preview */}
+            <div className="flex flex-col gap-[var(--space-4)]">
+              {/* Output file tree */}
+              <div className="border border-border-subtle rounded-lg overflow-hidden">
+                <div className="bg-surface-secondary px-[var(--space-4)] py-[var(--space-3)] border-b border-border-subtle flex items-center gap-[var(--space-2)]">
+                  <span className="inline-block w-3 h-3 rounded-full bg-brand/70" aria-hidden="true" />
+                  <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">legal/ (generated)</span>
+                </div>
+                <div className="p-[var(--space-4)] bg-code-bg text-[length:var(--text-xs)] font-mono leading-relaxed text-code-fg">
+                  <pre className="whitespace-pre">{`legal/
+├── PRIVACY_POLICY.md
+├── TERMS_OF_SERVICE.md
+├── COOKIE_POLICY.md
+├── AI_DISCLOSURE.md
+├── SECURITY.md
+├── DATA_FLOW_MAP.md
+└── DATA_CLASSIFICATION.md
+
+7 documents generated in 1.2s`}</pre>
+                </div>
+              </div>
+
+              {/* Privacy policy excerpt */}
+              <div className="border border-border-subtle rounded-lg overflow-hidden flex-1">
+                <div className="bg-surface-secondary px-[var(--space-4)] py-[var(--space-3)] border-b border-border-subtle flex items-center justify-between">
+                  <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">PRIVACY_POLICY.md</span>
+                  <span className="text-[length:var(--text-xs)] text-ink-tertiary">excerpt</span>
+                </div>
+                <div className="p-[var(--space-4)] text-[length:var(--text-xs)] leading-relaxed space-y-[var(--space-3)]">
+                  <p className="font-semibold text-ink text-[length:var(--text-sm)]">3. Information We Collect</p>
+                  <div className="space-y-[var(--space-2)]">
+                    <div>
+                      <p className="font-medium text-ink">Financial Data</p>
+                      <p className="text-ink-secondary">Payment card information, billing addresses, and transaction history processed through payment providers.</p>
+                      <p className="text-brand text-[length:var(--text-xs)] mt-[var(--space-1)] font-mono">Collected through: <strong>stripe</strong></p>
+                    </div>
+                    <div className="border-t border-border-subtle pt-[var(--space-2)]">
+                      <p className="font-medium text-ink">AI Interaction Data</p>
+                      <p className="text-ink-secondary">User prompts, conversation history, and AI-generated content processed through third-party AI services.</p>
+                      <p className="text-brand text-[length:var(--text-xs)] mt-[var(--space-1)] font-mono">Collected through: <strong>openai</strong></p>
+                    </div>
+                    <div className="border-t border-border-subtle pt-[var(--space-2)]">
+                      <p className="font-medium text-ink">Usage &amp; Behavioral Data</p>
+                      <p className="text-ink-secondary">Page views, click patterns, session recordings, device information, and IP addresses.</p>
+                      <p className="text-brand text-[length:var(--text-xs)] mt-[var(--space-1)] font-mono">Collected through: <strong>posthog</strong></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-ink-tertiary text-[length:var(--text-xs)] mt-[var(--space-4)]">
+            Output from running <code className="font-mono text-brand">npx codepliant go</code> on a Next.js SaaS project with Stripe, Supabase, OpenAI, PostHog, Sentry, and Resend.
+          </p>
+        </div>
+      </section>
+
       {/* Real project evidence */}
       <section className="py-[var(--space-24)] px-[var(--space-6)]">
         <div className="max-w-[640px] mx-auto">
