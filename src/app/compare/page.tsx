@@ -281,8 +281,8 @@ export default function Compare() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               Feature-by-feature comparison
             </h2>
-            <div className="overflow-x-auto -mx-6 px-6">
-              <table className="w-full text-sm border border-border-subtle rounded-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-[520px] w-full text-sm border border-border-subtle rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-surface text-left">
                     <th className="font-semibold px-4 py-3 border-b border-border-subtle">

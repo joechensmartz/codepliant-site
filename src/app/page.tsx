@@ -190,30 +190,49 @@ export default function Home() {
             Open Source CLI
           </p>
           <h1 className="text-[length:var(--text-3xl)] font-bold tracking-tight mb-[var(--space-6)]">
-            Your app collects user data.
+            Ship compliant software
             <br />
-            <span className="text-ink-secondary">Where are your legal&nbsp;docs?</span>
+            <span className="text-ink-secondary">without the legal&nbsp;bills.</span>
           </h1>
           <p
             className="text-[length:var(--text-lg)] text-ink-secondary mb-[var(--space-8)] max-w-[50ch]"
             style={{ lineHeight: 1.5 }}
           >
-            Codepliant scans your codebase and generates privacy policies, terms
-            of service, AI disclosures, and 35+ compliance documents
-            automatically.
+            One command scans your codebase and generates privacy policies, terms
+            of service, AI disclosures, and 35+ compliance documents — tailored to
+            what your app actually does.
           </p>
-          <div className="flex flex-col sm:flex-row items-start gap-[var(--space-4)]">
-            <code className="bg-code-bg text-code-fg px-[var(--space-6)] py-[var(--space-3)] rounded-lg font-mono text-[length:var(--text-sm)] select-all">
-              npx codepliant go
+
+          {/* Prominent command block */}
+          <div className="bg-code-bg border border-border-subtle rounded-lg px-[var(--space-6)] py-[var(--space-4)] mb-[var(--space-6)]">
+            <code className="text-code-fg font-mono text-[length:var(--text-base)] font-semibold select-all">
+              <span className="text-ink-tertiary select-none">$ </span>npx codepliant go
             </code>
+            <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-2)] select-none">
+              Click to select, then copy. No account or API key needed.
+            </span>
+          </div>
+
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row items-start gap-[var(--space-4)]">
             <a
               href="https://github.com/joechensmartz/codepliant"
               className="inline-flex items-center gap-[var(--space-2)] bg-brand hover:bg-brand-hover text-surface-primary px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >
-              View on GitHub
+              Get started
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+            <a
+              href="#example-output"
+              className="inline-flex items-center gap-[var(--space-2)] border border-border-subtle hover:border-brand text-ink hover:text-brand px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            >
+              See example output
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 3v8.5M4.5 8L8 11.5 11.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
             <a
@@ -232,24 +251,56 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Key metrics */}
+      {/* Trust signals */}
       <section className="py-[var(--space-12)] px-[var(--space-6)] border-y border-border-subtle">
-        <div className="max-w-[640px] mx-auto flex flex-wrap gap-x-[var(--space-12)] gap-y-[var(--space-6)]">
-          <div>
-            <span className="font-display text-[length:var(--text-xl)] font-bold">97.8%</span>
-            <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Detection precision</span>
+        <div className="max-w-[720px] mx-auto">
+          <div className="flex flex-wrap justify-center gap-x-[var(--space-8)] gap-y-[var(--space-4)] mb-[var(--space-8)]">
+            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
+                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
+                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Zero network calls
+            </div>
+            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
+                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
+                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              MIT Licensed
+            </div>
+            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
+                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
+                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              No runtime dependencies
+            </div>
+            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
+                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
+                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              1,200+ repos tested
+            </div>
           </div>
-          <div>
-            <span className="font-display text-[length:var(--text-xl)] font-bold">35+</span>
-            <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
-          </div>
-          <div>
-            <span className="font-display text-[length:var(--text-xl)] font-bold">763</span>
-            <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
-          </div>
-          <div>
-            <span className="font-display text-[length:var(--text-xl)] font-bold">10+</span>
-            <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Ecosystems</span>
+          <div className="flex flex-wrap justify-center gap-x-[var(--space-12)] gap-y-[var(--space-6)]">
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-xl)] font-bold">97.8%</span>
+              <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Detection precision</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-xl)] font-bold">35+</span>
+              <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-xl)] font-bold">835</span>
+              <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[length:var(--text-xl)] font-bold">10+</span>
+              <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Ecosystems</span>
+            </div>
           </div>
         </div>
       </section>
@@ -315,7 +366,7 @@ export default function Home() {
       </section>
 
       {/* Example output preview */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)]">
+      <section id="example-output" className="py-[var(--space-24)] px-[var(--space-6)] scroll-mt-[var(--space-6)]">
         <div className="max-w-[880px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
             See what Codepliant generates

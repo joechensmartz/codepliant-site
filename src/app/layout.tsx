@@ -64,14 +64,14 @@ export const metadata: Metadata = {
 function Header() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-surface-primary/90 border-b border-border-subtle">
-      <nav className="max-w-[960px] mx-auto px-[var(--space-6)] h-12 flex items-center justify-between">
+      <nav className="max-w-[960px] mx-auto px-[var(--space-4)] md:px-[var(--space-6)] h-12 flex items-center justify-between overflow-x-hidden">
         <a
           href="/"
-          className="font-display font-semibold text-[length:var(--text-base)] tracking-tight"
+          className="font-display font-semibold text-[length:var(--text-base)] tracking-tight shrink-0"
         >
           Codepliant
         </a>
-        <div className="flex items-center gap-[var(--space-6)] text-[length:var(--text-sm)] text-ink-secondary">
+        <div className="flex items-center gap-[var(--space-3)] md:gap-[var(--space-6)] text-[length:var(--text-sm)] text-ink-secondary">
           <a
             href="/pricing"
             className="hover:text-ink transition-colors duration-150"
@@ -88,14 +88,21 @@ function Header() {
           </a>
           <a
             href="/changelog"
-            className="hover:text-ink transition-colors duration-150"
+            className="hidden sm:inline hover:text-ink transition-colors duration-150"
             style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
           >
             Changelog
           </a>
           <a
+            href="/blog"
+            className="hidden sm:inline hover:text-ink transition-colors duration-150"
+            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+          >
+            Blog
+          </a>
+          <a
             href="/about"
-            className="hover:text-ink transition-colors duration-150"
+            className="hidden sm:inline hover:text-ink transition-colors duration-150"
             style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
           >
             About
