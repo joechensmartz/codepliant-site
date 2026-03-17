@@ -729,7 +729,7 @@ jobs:
               will not include it &mdash; which is why you should still review
               the output. You can also{" "}
               <a
-                href="https://github.com/codepliant/codepliant"
+                href="https://github.com/joechensmartz/codepliant"
                 className="text-brand hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
