@@ -11,8 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `tsc -p tsconfig.cli.json` build: passes (0 errors)
 - `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
 - Tests: 758 passing across 128 suites, 0 failures
-- Synced test count to 5,592 across landing page, about page, and changelog
-- Generator coverage updated to 111 of 138 (80.4%)
+- Synced test count to 5,723 across landing page, about page, and changelog
+- Generator coverage updated to 114 of 138 (82.6%)
 - No code regressions — site is stable
 
 ### 2026-03-17 — Iteration 38 (build verification)

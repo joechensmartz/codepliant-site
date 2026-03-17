@@ -97,3 +97,24 @@ npm run build        # tsc -p tsconfig.cli.json
 # Full site build (Next.js)
 npx next build
 ```
+
+### Dark Mode
+- Automatic via `prefers-color-scheme: dark` — no toggle, no JS
+- Full dark palette defined in `globals.css` `:root` media query overrides
+- Brand color shifts from `#1a7a6d` (light) to `#3cbaa8` (dark) for contrast
+
+### Accessibility (WCAG 2.1 AA)
+- Skip-to-content link in layout
+- `:focus-visible` outlines using brand color
+- `prefers-reduced-motion: reduce` kills all transitions/animations
+- Minimum 44px touch targets on coarse-pointer devices (prose links exempt)
+- Semantic heading hierarchy; `text-wrap: balance` on all headings
+- `::selection` styled for readability
+
+### Error States
+- `error.tsx` — client-side error boundary with "Try again" + "Go home" CTAs and GitHub issue link
+- `not-found.tsx` — branded 404 with `npx codepliant go` prompt and popular-page grid
+
+### Route Count
+- 23 page routes (15 product/tool pages + 1 blog index + 7 blog articles)
+- Plus dynamic routes: 7 OG images, sitemap, robots, manifest, icon, apple-icon, twitter-image
