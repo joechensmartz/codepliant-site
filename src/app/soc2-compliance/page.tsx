@@ -187,8 +187,8 @@ export default function Soc2Compliance() {
           </p>
 
           {/* What is SOC 2 */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <section className="mb-16" id="what-is-soc2">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
               What is SOC 2 and who needs it?
             </h2>
             <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
@@ -227,8 +227,8 @@ export default function Soc2Compliance() {
           </section>
 
           {/* 5 Trust Service Criteria */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <section className="mb-16" id="trust-service-criteria">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
               The 5 Trust Service Criteria explained
             </h2>
             <p className="text-base text-ink-secondary leading-relaxed mb-6">
@@ -294,8 +294,8 @@ export default function Soc2Compliance() {
           </section>
 
           {/* What SOC 2 requires from engineering */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <section className="mb-16" id="engineering-requirements">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
               What SOC 2 requires from your engineering team
             </h2>
             <p className="text-base text-ink-secondary leading-relaxed mb-6">
@@ -332,8 +332,8 @@ export default function Soc2Compliance() {
           </section>
 
           {/* How Codepliant generates SOC 2 readiness docs */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <section className="mb-16" id="how-it-works">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
               How Codepliant generates SOC 2 readiness documents
             </h2>
             <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
@@ -381,8 +381,8 @@ export default function Soc2Compliance() {
           </section>
 
           {/* What Codepliant generates */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <section className="mb-16" id="generated-docs">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
               SOC 2 documentation Codepliant generates
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -409,8 +409,8 @@ export default function Soc2Compliance() {
           </section>
 
           {/* Timeline and cost comparison */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <section className="mb-16" id="timeline-cost">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
               SOC 2 timeline and cost: manual vs. Codepliant
             </h2>
             <p className="text-base text-ink-secondary leading-relaxed mb-6">
@@ -499,9 +499,105 @@ export default function Soc2Compliance() {
             </p>
           </section>
 
+          {/* SOC 2 readiness checklist */}
+          <section className="mb-16" id="soc2-checklist">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
+              SOC 2 readiness checklist for startups
+            </h2>
+            <p className="text-base text-ink-secondary leading-relaxed mb-6">
+              Use this checklist to evaluate your organization&apos;s SOC 2
+              readiness. Codepliant automates detection of many of these
+              controls from your code.
+            </p>
+
+            <div className="space-y-6">
+              {[
+                {
+                  heading: "Access controls (CC6)",
+                  items: [
+                    "Unique user accounts for all team members (no shared credentials)",
+                    "Role-based access controls (RBAC) limiting data access by role",
+                    "Multi-factor authentication (MFA) enforced for all production systems",
+                    "Least-privilege access to databases, cloud consoles, and admin panels",
+                    "Offboarding process that revokes access within 24 hours of departure",
+                    "Password policy enforcing minimum length and complexity requirements",
+                  ],
+                },
+                {
+                  heading: "Encryption & data protection (CC6)",
+                  items: [
+                    "Data encrypted at rest (AES-256 or equivalent) in all databases",
+                    "Data encrypted in transit (TLS 1.2+ on all endpoints and API calls)",
+                    "Secrets stored in a secrets manager (not hardcoded or in .env files in repos)",
+                    "Encryption keys rotated on a defined schedule",
+                    "Backups encrypted with the same standards as primary storage",
+                  ],
+                },
+                {
+                  heading: "Monitoring & logging (CC7)",
+                  items: [
+                    "Centralized logging for application events and errors",
+                    "Infrastructure monitoring with alerting for anomalies",
+                    "Audit logs capturing who accessed what data and when",
+                    "Log retention policy defined and enforced (minimum 90 days)",
+                    "Alerting configured for failed login attempts and suspicious activity",
+                  ],
+                },
+                {
+                  heading: "Change management (CC8)",
+                  items: [
+                    "All code changes go through pull request review before merging",
+                    "CI/CD pipeline with automated tests before deployment",
+                    "Separate development, staging, and production environments",
+                    "Deployment rollback procedures documented and tested",
+                    "Infrastructure changes managed through infrastructure-as-code",
+                  ],
+                },
+                {
+                  heading: "Risk management (CC9)",
+                  items: [
+                    "Annual risk assessment covering security, availability, and data integrity",
+                    "Third-party vendor risk assessments completed for critical vendors",
+                    "Business continuity and disaster recovery plan documented",
+                    "Incident response plan tested at least annually",
+                    "Security awareness training completed by all employees annually",
+                  ],
+                },
+                {
+                  heading: "Availability & business continuity (A1)",
+                  items: [
+                    "Uptime SLA defined and monitored (e.g., 99.9%)",
+                    "Automated health checks and status page for customers",
+                    "Database backups automated and tested for restoration",
+                    "Failover procedures documented for critical infrastructure",
+                    "Capacity planning reviewed quarterly to prevent resource exhaustion",
+                  ],
+                },
+              ].map((group) => (
+                <div key={group.heading}>
+                  <h3 className="font-semibold mb-3">{group.heading}</h3>
+                  <div className="space-y-2">
+                    {group.items.map((item) => (
+                      <label
+                        key={item}
+                        className="flex items-start gap-3 bg-surface-secondary rounded-lg px-4 py-3 text-sm cursor-pointer hover:ring-1 hover:ring-border-strong transition-shadow"
+                      >
+                        <input
+                          type="checkbox"
+                          className="mt-0.5 rounded border-border-subtle"
+                        />
+                        <span className="text-ink-secondary">{item}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Why startups need SOC 2 */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <section className="mb-16" id="why-startups">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 scroll-mt-24">
               Why startups need SOC 2 compliance
             </h2>
             <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
@@ -541,9 +637,26 @@ export default function Soc2Compliance() {
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
               npx codepliant go
             </div>
-            <p className="text-xs text-ink-secondary mt-4">
-              Works offline. Zero network calls. No API key needed.
-            </p>
+            <div className="mt-4 flex items-center justify-center gap-4 text-sm text-ink-secondary">
+              <a
+                href="https://github.com/joechensmartz/codepliant"
+                className="hover:text-ink transition-colors underline"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://www.npmjs.com/package/codepliant"
+                className="hover:text-ink transition-colors underline"
+              >
+                npm
+              </a>
+              <a
+                href="/docs"
+                className="hover:text-ink transition-colors underline"
+              >
+                Docs
+              </a>
+            </div>
           </section>
 
           {/* Related pages */}
@@ -559,19 +672,29 @@ export default function Soc2Compliance() {
                   desc: "Overview of all compliance frameworks Codepliant supports.",
                 },
                 {
-                  title: "Codepliant vs Termly vs Iubenda",
-                  href: "/compare",
-                  desc: "See how code-based scanning compares to form builders for compliance documentation.",
-                },
-                {
                   title: "HIPAA Compliance Tool",
                   href: "/hipaa-compliance",
-                  desc: "Detect PHI in your code and generate HIPAA documentation.",
+                  desc: "HIPAA documentation automation for healthcare applications handling PHI.",
                 },
                 {
                   title: "GDPR Compliance Tool",
                   href: "/gdpr-compliance",
-                  desc: "Automate GDPR documentation from your codebase.",
+                  desc: "GDPR documentation automation for applications processing EU personal data.",
+                },
+                {
+                  title: "AI Governance Framework",
+                  href: "/ai-governance",
+                  desc: "EU AI Act and NIST AI RMF compliance documentation for AI-powered applications.",
+                },
+                {
+                  title: "Terms of Service Generator",
+                  href: "/terms-of-service-generator",
+                  desc: "Generate Terms of Service from your codebase instead of using generic templates.",
+                },
+                {
+                  title: "Codepliant vs Termly vs Iubenda",
+                  href: "/compare",
+                  desc: "See how code-based scanning compares to form builders for compliance documentation.",
                 },
               ].map((link) => (
                 <a

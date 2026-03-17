@@ -672,6 +672,16 @@ export default function HipaaCompliance() {
                   desc: "GDPR documentation automation for developers handling EU personal data.",
                 },
                 {
+                  title: "AI Governance Framework",
+                  href: "/ai-governance",
+                  desc: "EU AI Act and NIST AI RMF compliance for AI-powered healthcare applications.",
+                },
+                {
+                  title: "Terms of Service Generator",
+                  href: "/terms-of-service-generator",
+                  desc: "Generate Terms of Service from your codebase instead of using generic templates.",
+                },
+                {
                   title: "Codepliant vs Termly vs Iubenda",
                   href: "/compare",
                   desc: "See how code-based scanning compares to form builders for compliance documentation.",
