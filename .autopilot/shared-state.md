@@ -699,6 +699,75 @@ Analyzed privacy policies from Stripe, Vercel, Linear, Notion, and PostHog. Sear
 
 ---
 
+## Website QA
+
+### Iteration 32 — 2026-03-17
+
+**Server:** Next.js v15.5.12, production mode (`next start -p 5001`), PID 18345
+
+#### Page Status (23 pages)
+
+| Status | Pages |
+|--------|-------|
+| 200 | `/` `/about` `/pricing` `/docs` `/blog` `/changelog` `/compare` `/ai-disclosure-generator` `/ai-governance` `/cookie-policy-generator` `/data-privacy` `/gdpr-compliance` `/hipaa-compliance` `/privacy-policy-generator` `/soc2-compliance` `/terms-of-service-generator` |
+| 200 | `/blog/colorado-ai-act` `/blog/eu-ai-act-deadline` `/blog/gdpr-for-developers` `/blog/generate-privacy-policy-from-code` `/blog/hipaa-for-developers` `/blog/privacy-policy-for-saas` `/blog/soc2-for-startups` |
+| 404 | `/nonexistent-page-xyz` (correct behavior) |
+
+**Result: All 23 pages return 200. 404 handling works correctly.**
+
+#### Static Assets
+
+| Asset | Status |
+|-------|--------|
+| JS chunks (5 files) | 200 |
+| Font woff2 files (2) | 200 |
+| `/manifest.webmanifest` | 200 (valid JSON) |
+| `/apple-icon` | 200 (image/png) |
+| `/icon` | 200 |
+| `/robots.txt` | 200 |
+| `/sitemap.xml` | 200 (21+ URLs, correct domain) |
+| **`/_next/static/css/c07d3ce511e529b5.css`** | **400 Bad Request** |
+
+#### CRITICAL: CSS Stylesheet Returns 400
+
+The sole external CSS file (`c07d3ce511e529b5.css`) returns HTTP 400. Root cause: the `.next` build directory on disk has build ID `KhkIPUbHPKLcwVE01kJb-` with CSS hash `39b61dbfcf3f6beb.css`, but the running server process uses build ID `_rzqCoAyb-G_ru96WGHXU` referencing `c07d3ce511e529b5.css`. The project was rebuilt after the server started, causing a mismatch.
+
+**Impact:** The site renders HTML content correctly (all text, links, structure present) but Tailwind CSS utility classes will not apply in a browser. The page will appear completely unstyled.
+
+**Fix:** Restart the server (`npm run start -- -p 5001` or re-run `next start -p 5001`) so it picks up the current build output.
+
+#### SEO & Meta
+
+- All pages have unique `<title>` tags
+- Open Graph tags present on homepage
+- Canonical URL set to `https://codepliant.dev`
+- `robots.txt` allows all crawling
+- `sitemap.xml` present with correct URLs and priorities
+
+#### No Errors Found
+
+- No React hydration errors in HTML output
+- No "Application Error" messages on any page
+- No Next.js error overlays detected
+- Navigation links consistent across pages (same set on homepage and `/about`)
+
+#### Summary
+
+| Check | Result |
+|-------|--------|
+| All pages 200 | PASS |
+| 404 handling | PASS |
+| JS assets load | PASS |
+| Fonts load | PASS |
+| SEO files | PASS |
+| Meta tags | PASS |
+| No HTML errors | PASS |
+| CSS stylesheet | **FAIL** (400 — stale build, needs server restart) |
+
+**Overall: FAIL — 1 critical issue (CSS 400). Server restart required.**
+
+---
+
 ## Blockers
 _(Any agent can flag blockers here)_
 

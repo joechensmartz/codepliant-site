@@ -5,7 +5,30 @@ All notable changes to Codepliant are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Website Design
+
+### 2026-03-17 — Iteration 32 (regression check)
+- No visual or layout design regressions from iteration 31
+- Design system tokens (CSS custom properties) consistent across all pages
+- Dark mode variables intact with no missing overrides
+- Typography scale (clamp-based fluid sizing) unchanged and correct
+- Spacing scale consistent: all pages use --space-* tokens, no raw pixel values in components
+- Color palette stable: brand, ink, surface, urgency tokens all present in light and dark modes
+- Header/footer layout unchanged: sticky header with backdrop blur, 4-column footer grid
+- Mobile nav (details/summary hamburger) and touch target minimums (44px) intact
+- Focus indicators (:focus-visible) and skip-to-content link present
+- prefers-reduced-motion media query still in globals.css
+- Test count now synced to 4,261 across landing page, about page, and changelog (consistent)
+- next build passes (29 static pages, 0 errors)
+- No accessibility regressions detected
+
 ## Website Updates
+
+### 2026-03-17 — Iteration 32
+- Synced test count from 4,114 to 4,261 across landing page, about page, and changelog
+- Updated generator coverage from 78 to 81 test suites (59% of 138 generators) in changelog
+- Updated percentage increase from 439% to 458% in changelog
+- Verified `next build` passes (29 static pages, 0 errors)
 
 ### 2026-03-17 — Iteration 31
 - Synced test count from 3,986 to 4,114 across landing page, about page, and changelog
