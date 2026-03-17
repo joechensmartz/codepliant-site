@@ -69,7 +69,7 @@ const releases: Release[] = [
     date: "Coming soon",
     tag: "Upcoming",
     summary:
-      "Interactive setup wizard, SBOM generation, Terraform scanning, and Flutter support.",
+      "Interactive setup wizard, SBOM generation, Terraform scanning, Flutter, Swift/iOS, and 12 ecosystems.",
     changes: [
       {
         category: "new",
@@ -93,6 +93,10 @@ const releases: Release[] = [
       },
       {
         category: "new",
+        text: "Swift/iOS ecosystem support — Package.swift, .xcodeproj, and Swift import scanning",
+      },
+      {
+        category: "new",
         text: "Impressum generator for German legal compliance (Section 5 DDG)",
       },
       {
@@ -101,7 +105,7 @@ const releases: Release[] = [
       },
       {
         category: "tests",
-        text: "Test suite expanded from 763 to 1,367 tests (79% increase)",
+        text: "Test suite expanded from 763 to 1,806 tests (119% increase)",
       },
     ],
   },
@@ -110,7 +114,7 @@ const releases: Release[] = [
     date: "2026-03-16",
     tag: "Latest",
     summary:
-      "The stable release. 120+ document types, 10+ ecosystems, 200+ service signatures.",
+      "The stable release. 120+ document types, 12 ecosystems, 200+ service signatures.",
     changes: [
       {
         category: "new",
@@ -118,7 +122,7 @@ const releases: Release[] = [
       },
       {
         category: "new",
-        text: "10+ ecosystem scanners: TypeScript, Python, Go, Ruby, Rust, Java, PHP, Swift, Kotlin, C#",
+        text: "12 ecosystem scanners: TypeScript, Python, Go, Ruby, Rust, Java, PHP, Swift, Kotlin, C#, Elixir, Terraform",
       },
       {
         category: "new",

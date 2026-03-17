@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Codepliant — Compliance Documents from Your Code",
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 35+ compliance documents. One command. 97.8% precision.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 121+ compliance documents. One command. 97.8% precision.",
   alternates: { canonical: "https://codepliant.dev" },
 };
 
@@ -15,7 +15,7 @@ function jsonLd() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
-      "Open source CLI that scans your codebase and generates 35+ compliance documents automatically.",
+      "Open source CLI that scans your codebase and generates 121+ compliance documents automatically.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
       { "@type": "Offer", price: "19", priceCurrency: "USD", name: "Pro" },
@@ -79,7 +79,7 @@ const steps = [
   {
     num: "03",
     title: "Ship",
-    code: "35+ documents generated",
+    code: "121+ documents generated",
     detail:
       "Privacy policy, terms of service, cookie policy, AI disclosure, and more — ready to publish.",
   },
@@ -120,7 +120,7 @@ const plans = [
     price: "$0",
     period: "forever",
     features: [
-      "All 35+ document types",
+      "All 121+ document types",
       "All ecosystems",
       "Markdown output",
       "CLI access",
@@ -199,7 +199,7 @@ export default function Home() {
             style={{ lineHeight: 1.5 }}
           >
             One command scans your codebase and generates privacy policies, terms
-            of service, AI disclosures, and 35+ compliance documents — tailored to
+            of service, AI disclosures, and 121+ compliance documents — tailored to
             what your app actually does.
           </p>
 
@@ -271,15 +271,15 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Detection precision</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">35+</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">121+</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">1,367</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">1,806</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">10+</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">12</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Ecosystems</span>
             </div>
           </div>
@@ -443,7 +443,7 @@ export default function Home() {
                   <span className="inline-block w-3 h-3 rounded-full bg-brand/70" aria-hidden="true" />
                   <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">legal/ (generated)</span>
                 </div>
-                <div className="p-[var(--space-4)] bg-code-bg text-[length:var(--text-xs)] font-mono leading-relaxed text-code-fg">
+                <div className="p-[var(--space-4)] bg-code-bg text-[length:var(--text-xs)] font-mono leading-relaxed text-code-fg overflow-x-auto">
                   <pre className="whitespace-pre">{`legal/
 ├── PRIVACY_POLICY.md
 ├── TERMS_OF_SERVICE.md

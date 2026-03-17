@@ -16,8 +16,57 @@ export const metadata: Metadata = {
   },
 };
 
+function softwareJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Codepliant",
+    description:
+      "Open-source CLI that scans codebases and generates cookie policies based on detected cookies, tracking scripts, and analytics SDKs.",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Cross-platform",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+}
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Cookie Policy Generator",
+        item: "https://codepliant.dev/cookie-policy-generator",
+      },
+    ],
+  };
+}
+
 export default function CookiePolicyGenerator() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd()),
+        }}
+      />
     <article className="py-20 px-6">
       <div className="max-w-[680px] mx-auto">
         <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
@@ -68,5 +117,6 @@ export default function CookiePolicyGenerator() {
         </section>
       </div>
     </article>
+    </>
   );
 }

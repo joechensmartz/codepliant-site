@@ -32,7 +32,7 @@ const plans = [
       "Full CLI scanning",
       "Markdown output",
       "Up to 5 document types",
-      "10+ ecosystem support",
+      "12 ecosystem support",
       "8 ORM scanners",
       "4 languages (EN/DE/FR/ES)",
       "Open source (MIT)",
@@ -131,6 +131,7 @@ function jsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant",
+    description: "Open-source CLI that scans codebases and generates compliance documents automatically.",
     applicationCategory: "DeveloperApplication",
     offers: plans.map((p) => ({
       "@type": "Offer",

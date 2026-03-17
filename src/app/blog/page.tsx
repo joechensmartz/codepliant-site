@@ -144,7 +144,7 @@ export default function BlogIndex() {
             </h2>
             <p className="text-ink-secondary text-sm mb-6">
               Scan your codebase to detect services, data flows, and AI
-              integrations. Generate 35+ compliance documents automatically.
+              integrations. Generate 121+ compliance documents automatically.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
               npx codepliant go

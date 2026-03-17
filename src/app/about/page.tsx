@@ -47,10 +47,10 @@ const principles = [
 ];
 
 const stats = [
-  { value: "1,367", label: "Tests passing" },
+  { value: "1,806", label: "Tests passing" },
   { value: "1,200+", label: "Repos tested" },
   { value: "121+", label: "Document types" },
-  { value: "11", label: "Ecosystems" },
+  { value: "12", label: "Ecosystems" },
 ];
 
 function breadcrumbJsonLd() {

@@ -16,8 +16,57 @@ export const metadata: Metadata = {
   },
 };
 
+function softwareJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Codepliant",
+    description:
+      "Open-source CLI that scans codebases and generates terms of service based on detected features, data practices, and third-party integrations.",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Cross-platform",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+}
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://codepliant.dev",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Terms of Service Generator",
+        item: "https://codepliant.dev/terms-of-service-generator",
+      },
+    ],
+  };
+}
+
 export default function TermsOfServiceGenerator() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd()),
+        }}
+      />
     <article className="py-20 px-6">
       <div className="max-w-[680px] mx-auto">
         <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
@@ -68,5 +117,6 @@ export default function TermsOfServiceGenerator() {
         </section>
       </div>
     </article>
+    </>
   );
 }
