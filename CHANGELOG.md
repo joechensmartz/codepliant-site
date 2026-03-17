@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Website Design
 
+### 2026-03-17 — Iteration 33 (CSS serving verification)
+- Confirmed single compiled CSS file (`39b61dbfcf3f6beb.css`, 49 KB) present in `.next/static/css/`
+- All built HTML pages (index, pricing, docs, about, blog, etc.) reference the same CSS hash — no stale or missing references
+- Font files (9 woff2 files for Outfit + Source Sans 3) present in `.next/static/media/`
+- `globals.css` source intact: Tailwind v4 `@import "tailwindcss"` + `@theme` block with all design tokens
+- CSS custom properties verified: full light/dark mode token sets, fluid typography scale, spacing scale
+- PostCSS config correct: using `@tailwindcss/postcss` plugin
+- Layout imports `./globals.css` and applies font CSS variables via `outfit.variable` + `sourceSans.variable`
+- Built CSS contains all expected utility classes, `@font-face` declarations, theme tokens, and base styles
+- No visual issues detected: no missing classes, no broken references, no orphaned CSS
+- BUILD_ID (`ON8l2rLkhPDJHEh7ueDch`) present and consistent across pages
+
 ### 2026-03-17 — Iteration 32 (regression check)
 - No visual or layout design regressions from iteration 31
 - Design system tokens (CSS custom properties) consistent across all pages
@@ -18,11 +30,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mobile nav (details/summary hamburger) and touch target minimums (44px) intact
 - Focus indicators (:focus-visible) and skip-to-content link present
 - prefers-reduced-motion media query still in globals.css
-- Test count now synced to 4,261 across landing page, about page, and changelog (consistent)
+- Test count now synced to 4,344 across landing page, about page, and changelog (consistent)
 - next build passes (29 static pages, 0 errors)
 - No accessibility regressions detected
 
 ## Website Updates
+
+### 2026-03-17 — Iteration 33
+- Synced test count from 4,261 to 4,344 across landing page, about page, and changelog
+- Updated generator coverage from 81 to 84 test suites (60.9% of 138 generators) in changelog
+- Updated percentage increase from 458% to 469% in changelog
+- Verified `next build` passes (29 static pages, 0 errors)
 
 ### 2026-03-17 — Iteration 32
 - Synced test count from 4,114 to 4,261 across landing page, about page, and changelog
