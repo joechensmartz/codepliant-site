@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
   title:
@@ -32,14 +33,12 @@ export const metadata: Metadata = {
     modifiedTime: "2026-03-16T00:00:00Z",
     authors: ["Codepliant"],
     tags: ["Privacy Policy", "SaaS Compliance", "GDPR", "CCPA"],
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "How to Write a Privacy Policy for Your SaaS App in 2026",
     description:
       "SaaS privacy policy template and step-by-step guide covering GDPR Article 13, CCPA, and modern data privacy requirements.",
-    images: ["/og-image.png"],
   },
 };
 
@@ -144,27 +143,6 @@ function breadcrumbJsonLd() {
       },
     ],
   };
-}
-
-function CodeBlock({
-  filename,
-  children,
-}: {
-  filename?: string;
-  children: string;
-}) {
-  return (
-    <div className="rounded-xl overflow-hidden my-6">
-      {filename && (
-        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
-          {filename}
-        </div>
-      )}
-      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
-        <code>{children}</code>
-      </pre>
-    </div>
-  );
 }
 
 const tocItems = [
@@ -896,7 +874,7 @@ jobs:
                   key={item.mistake}
                   className="bg-surface-secondary rounded-xl p-5"
                 >
-                  <h3 className="font-semibold mb-1">{item.mistake}</h3>
+                  <p className="font-semibold mb-1">{item.mistake}</p>
                   <p className="text-sm text-ink-secondary">{item.why}</p>
                 </div>
               ))}
@@ -1150,7 +1128,7 @@ jobs:
                   href={link.href}
                   className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
-                  <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
+                  <p className="font-semibold mb-1 text-sm">{link.title}</p>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </a>
               ))}

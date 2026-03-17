@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
   title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
@@ -31,14 +32,12 @@ export const metadata: Metadata = {
     modifiedTime: "2026-03-16T00:00:00Z",
     authors: ["Codepliant"],
     tags: ["Colorado AI Act", "AI Compliance", "Developer Guide", "SB 24-205"],
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
     description:
       "SB 24-205 compliance guide for SaaS companies. Deadlines, requirements, impact assessments, NIST AI RMF defense, and practical steps with code examples.",
-    images: ["/og-image.png"],
   },
 };
 
@@ -143,27 +142,6 @@ function breadcrumbJsonLd() {
       },
     ],
   };
-}
-
-function CodeBlock({
-  filename,
-  children,
-}: {
-  filename?: string;
-  children: string;
-}) {
-  return (
-    <div className="rounded-xl overflow-hidden my-6">
-      {filename && (
-        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
-          {filename}
-        </div>
-      )}
-      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
-        <code>{children}</code>
-      </pre>
-    </div>
-  );
 }
 
 export default function ColoradoAiAct() {
@@ -464,7 +442,7 @@ export default function ColoradoAiAct() {
                   key={item.area}
                   className="bg-surface-secondary rounded-xl p-5"
                 >
-                  <h3 className="font-semibold mb-1 text-ink">{item.area}</h3>
+                  <p className="font-semibold mb-1 text-ink">{item.area}</p>
                   <p className="text-sm text-ink-secondary">{item.examples}</p>
                 </div>
               ))}
@@ -502,9 +480,9 @@ export default function ColoradoAiAct() {
                   key={milestone.date}
                   className="bg-surface-secondary rounded-xl p-5"
                 >
-                  <h3 className="font-semibold mb-1 text-ink">
+                  <p className="font-semibold mb-1 text-ink">
                     {milestone.date} &mdash; {milestone.event}
-                  </h3>
+                  </p>
                   <p className="text-sm text-ink-secondary">{milestone.detail}</p>
                 </div>
               ))}
@@ -949,7 +927,7 @@ jobs:
                   key={item.dimension}
                   className="bg-surface-secondary rounded-xl p-5"
                 >
-                  <h3 className="font-semibold mb-1 text-ink">{item.dimension}</h3>
+                  <p className="font-semibold mb-1 text-ink">{item.dimension}</p>
                   <p className="text-sm text-ink-secondary">{item.comparison}</p>
                 </div>
               ))}
@@ -1193,9 +1171,9 @@ jobs:
                   href={link.href}
                   className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
-                  <h3 className="font-semibold mb-1 text-sm text-ink">
+                  <p className="font-semibold mb-1 text-sm text-ink">
                     {link.title}
-                  </h3>
+                  </p>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </a>
               ))}

@@ -15,14 +15,12 @@ export const metadata: Metadata = {
     description:
       "Compare Codepliant vs Termly, Iubenda, and Vanta. See how code-based scanning beats form builders for privacy policies, GDPR, SOC 2, and AI compliance.",
     url: "https://codepliant.dev/compare",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Codepliant vs Termly vs Iubenda vs Vanta",
     description:
       "Compare compliance tools: code scanning vs form builders vs cookie consent vs enterprise GRC platforms.",
-    images: ["/og-image.png"],
   },
 };
 
@@ -329,7 +327,7 @@ export default function Compare() {
           <section className="mb-16">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-brand-muted border border-brand/20 rounded-xl p-5">
-                <h3 className="font-semibold mb-2 text-brand">Codepliant</h3>
+                <p className="font-semibold mb-2 text-brand">Codepliant</p>
                 <p className="text-sm text-ink-secondary">
                   Open source CLI. Scans your code, generates 120+ compliance
                   documents. Free tier with all features. No questionnaires, no
@@ -337,7 +335,7 @@ export default function Compare() {
                 </p>
               </div>
               <div className="bg-surface-secondary rounded-xl p-5">
-                <h3 className="font-semibold mb-2">Termly</h3>
+                <p className="font-semibold mb-2">Termly</p>
                 <p className="text-sm text-ink-secondary">
                   Web-based form wizard for privacy policies and cookie consent.
                   ~10 document types. Covers 28 privacy laws. $14-20/mo for paid
@@ -345,7 +343,7 @@ export default function Compare() {
                 </p>
               </div>
               <div className="bg-surface-secondary rounded-xl p-5">
-                <h3 className="font-semibold mb-2">Iubenda</h3>
+                <p className="font-semibold mb-2">Iubenda</p>
                 <p className="text-sm text-ink-secondary">
                   Integrated compliance suite: cookie banners, privacy policies,
                   consent records. Auto-scans websites for cookies. 150,000+
@@ -353,7 +351,7 @@ export default function Compare() {
                 </p>
               </div>
               <div className="bg-surface-secondary rounded-xl p-5">
-                <h3 className="font-semibold mb-2">Vanta</h3>
+                <p className="font-semibold mb-2">Vanta</p>
                 <p className="text-sm text-ink-secondary">
                   Enterprise GRC platform. 30+ compliance frameworks. 300+
                   integrations for audit evidence collection. Starts at
@@ -520,9 +518,9 @@ export default function Compare() {
             </h2>
             <div className="space-y-4">
               <div className="bg-brand-muted border border-brand/20 rounded-xl p-5">
-                <h3 className="font-semibold mb-2 text-brand">
+                <p className="font-semibold mb-2 text-brand">
                   Use Codepliant when you need
-                </h3>
+                </p>
                 <ul className="text-sm text-ink-secondary space-y-1 list-disc list-inside">
                   <li>
                     Compliance documents generated from your actual code
@@ -546,9 +544,9 @@ export default function Compare() {
                 </ul>
               </div>
               <div className="bg-surface-secondary rounded-xl p-5">
-                <h3 className="font-semibold mb-2">
+                <p className="font-semibold mb-2">
                   Use Termly when you need
-                </h3>
+                </p>
                 <ul className="text-sm text-ink-secondary space-y-1 list-disc list-inside">
                   <li>
                     A managed cookie consent banner with automatic cookie
@@ -567,9 +565,9 @@ export default function Compare() {
                 </ul>
               </div>
               <div className="bg-surface-secondary rounded-xl p-5">
-                <h3 className="font-semibold mb-2">
+                <p className="font-semibold mb-2">
                   Use Iubenda when you need
-                </h3>
+                </p>
                 <ul className="text-sm text-ink-secondary space-y-1 list-disc list-inside">
                   <li>
                     Hosted privacy and cookie policies with automatic legal
@@ -585,9 +583,9 @@ export default function Compare() {
                 </ul>
               </div>
               <div className="bg-surface-secondary rounded-xl p-5">
-                <h3 className="font-semibold mb-2">
+                <p className="font-semibold mb-2">
                   Use Vanta when you need
-                </h3>
+                </p>
                 <ul className="text-sm text-ink-secondary space-y-1 list-disc list-inside">
                   <li>
                     Enterprise audit automation for SOC 2, ISO 27001, or PCI DSS
@@ -608,9 +606,9 @@ export default function Compare() {
                 </ul>
               </div>
               <div className="bg-surface-tertiary rounded-xl p-5">
-                <h3 className="font-semibold mb-2">
+                <p className="font-semibold mb-2">
                   Use Codepliant + Termly/Iubenda together when you need
-                </h3>
+                </p>
                 <ul className="text-sm text-ink-secondary space-y-1 list-disc list-inside">
                   <li>
                     Code-based compliance documentation plus a managed cookie
@@ -744,7 +742,7 @@ export default function Compare() {
                       : "bg-surface-secondary rounded-xl p-5"
                   }
                 >
-                  <h3 className="font-semibold mb-2">{item.tool}</h3>
+                  <p className="font-semibold mb-2">{item.tool}</p>
                   <p className="text-sm text-ink-secondary mb-1">
                     <span className="font-medium text-ink">Free: </span>
                     {item.free}
@@ -807,7 +805,7 @@ export default function Compare() {
             <div className="space-y-6">
               {faqs.map((faq) => (
                 <div key={faq.question}>
-                  <h3 className="font-semibold mb-2">{faq.question}</h3>
+                  <p className="font-semibold mb-2">{faq.question}</p>
                   <p className="text-sm text-ink-secondary leading-relaxed">
                     {faq.answer}
                   </p>
@@ -859,7 +857,7 @@ export default function Compare() {
                   href={link.href}
                   className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
-                  <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
+                  <p className="font-semibold mb-1 text-sm">{link.title}</p>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </Link>
               ))}

@@ -29,14 +29,12 @@ export const metadata: Metadata = {
     description:
       "AI disclosure generator for EU AI Act Article 50 compliance. Scans your code to detect AI integrations and generates transparency documents. Deadline: Aug 2026.",
     url: "https://codepliant.dev/ai-disclosure-generator",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Disclosure Generator | EU AI Act Article 50 Compliance",
     description:
       "AI disclosure generator that detects AI services in your code and generates transparency documents for EU AI Act compliance.",
-    images: ["/og-image.png"],
   },
 };
 

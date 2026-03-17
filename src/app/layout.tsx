@@ -32,21 +32,12 @@ export const metadata: Metadata = {
     title: "Codepliant — Compliance Documents from Your Code",
     description:
       "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 122+ compliance documents automatically.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Codepliant — Compliance from Code",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
       "Scan your codebase and generate 122+ compliance documents. One command. 97.8% precision.",
-    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -255,7 +246,7 @@ function organizationJsonLd() {
     name: "Codepliant",
     description: "Open-source CLI that scans codebases and generates compliance documents — privacy policies, terms of service, AI disclosures, and 122+ document types.",
     url: "https://codepliant.dev",
-    logo: "https://codepliant.dev/og-image.png",
+    logo: "https://codepliant.dev/opengraph-image",
     sameAs: [
       "https://github.com/joechensmartz/codepliant",
       "https://www.npmjs.com/package/codepliant",

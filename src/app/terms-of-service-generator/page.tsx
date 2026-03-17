@@ -27,14 +27,12 @@ export const metadata: Metadata = {
     description:
       "Terms of service generator for SaaS apps. Scans your code to detect payments, auth, and AI, then generates ToS with liability and IP clauses. Free CLI.",
     url: "https://codepliant.dev/terms-of-service-generator",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Terms of Service Generator for SaaS",
     description:
       "Scan your code, generate accurate terms of service. No questionnaires, no legal fees.",
-    images: ["/og-image.png"],
   },
 };
 

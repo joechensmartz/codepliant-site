@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
   title:
@@ -32,14 +33,12 @@ export const metadata: Metadata = {
     modifiedTime: "2026-03-17T00:00:00Z",
     authors: ["Codepliant"],
     tags: ["Privacy Policy", "Developer Tools", "Automation", "CLI"],
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Generate a Privacy Policy from Your Code in 30 Seconds",
     description:
       "One command scans your codebase and generates a privacy policy that reflects your actual data practices. No templates, no guesswork.",
-    images: ["/og-image.png"],
   },
 };
 
@@ -181,27 +180,6 @@ function breadcrumbJsonLd() {
       },
     ],
   };
-}
-
-function CodeBlock({
-  filename,
-  children,
-}: {
-  filename?: string;
-  children: string;
-}) {
-  return (
-    <div className="rounded-xl overflow-hidden my-6">
-      {filename && (
-        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
-          {filename}
-        </div>
-      )}
-      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
-        <code>{children}</code>
-      </pre>
-    </div>
-  );
 }
 
 const tocItems = [

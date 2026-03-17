@@ -27,14 +27,12 @@ export const metadata: Metadata = {
     description:
       "SOC 2 compliance tool for startups. Scan your codebase to generate readiness checklists, control mappings, and evidence docs. All 5 Trust Service Criteria.",
     url: "https://codepliant.dev/soc2-compliance",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "SOC 2 Compliance Tool for Startups",
     description:
       "Automate SOC 2 readiness from your code. Checklists, control mappings, and evidence docs for all 5 Trust Service Criteria.",
-    images: ["/og-image.png"],
   },
 };
 

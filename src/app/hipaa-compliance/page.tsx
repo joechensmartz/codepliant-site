@@ -26,14 +26,12 @@ export const metadata: Metadata = {
     description:
       "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies.",
     url: "https://codepliant.dev/hipaa-compliance",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "HIPAA Compliance Tool for Healthcare Apps",
     description:
       "Detect PHI in your code and generate HIPAA compliance docs automatically.",
-    images: ["/og-image.png"],
   },
 };
 

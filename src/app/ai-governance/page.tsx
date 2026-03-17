@@ -29,14 +29,12 @@ export const metadata: Metadata = {
     description:
       "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI.",
     url: "https://codepliant.dev/ai-governance",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Governance Framework for SaaS",
     description:
       "Detect AI services in your code and generate governance documentation aligned with the EU AI Act and NIST AI RMF.",
-    images: ["/og-image.png"],
   },
 };
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
   title: "GDPR Compliance for Developers: A Practical Guide | Codepliant",
@@ -40,14 +41,12 @@ export const metadata: Metadata = {
       "Compliance",
       "SaaS",
     ],
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "GDPR Compliance for Developers: A Practical Guide",
     description:
       "Developer GDPR guide covering data processing, consent, user rights, common mistakes, and practical compliance steps for SaaS teams.",
-    images: ["/og-image.png"],
   },
 };
 
@@ -127,27 +126,6 @@ function breadcrumbJsonLd() {
       },
     ],
   };
-}
-
-function CodeBlock({
-  filename,
-  children,
-}: {
-  filename?: string;
-  children: string;
-}) {
-  return (
-    <div className="rounded-xl overflow-hidden my-6">
-      {filename && (
-        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
-          {filename}
-        </div>
-      )}
-      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
-        <code>{children}</code>
-      </pre>
-    </div>
-  );
 }
 
 export default function GdprForDevelopers() {

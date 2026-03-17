@@ -12,14 +12,12 @@ export const metadata: Metadata = {
     description:
       "Codepliant docs: install, configure, and generate compliance documents from your codebase. CLI commands, MCP server setup, and output format reference.",
     url: "https://codepliant.dev/docs",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Documentation | Codepliant",
     description:
       "Codepliant docs: install, configure, and generate compliance documents from your codebase. CLI commands, MCP server setup, and output format reference.",
-    images: ["/og-image.png"],
   },
 };
 

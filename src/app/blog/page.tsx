@@ -13,18 +13,26 @@ export const metadata: Metadata = {
       "Developer-focused guides on GDPR, EU AI Act, privacy policies, and compliance automation.",
     url: "https://codepliant.dev/blog",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Blog — Developer Compliance Guides | Codepliant",
     description:
       "Practical compliance guides for engineering teams. GDPR, EU AI Act, privacy policies, and more.",
-    images: ["/og-image.png"],
   },
 };
 
 const posts = [
+  {
+    slug: "soc2-for-startups",
+    title: "SOC 2 for Startups: A Developer's Survival Guide",
+    description:
+      "What SOC 2 is, why enterprise buyers require it, the 5 Trust Service Criteria explained simply, common mistakes to avoid, and how to go from zero to audit-ready in 30 days.",
+    date: "March 17, 2026",
+    readTime: "12 min read",
+    tag: "SOC 2",
+    tagColor: "text-brand",
+  },
   {
     slug: "generate-privacy-policy-from-code",
     title: "How to Generate a Privacy Policy from Your Code in 30 Seconds",

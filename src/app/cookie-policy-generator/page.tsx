@@ -29,14 +29,12 @@ export const metadata: Metadata = {
     description:
       "Cookie policy generator that scans your code to detect tracking scripts, analytics SDKs, and session cookies. GDPR and ePrivacy compliant. Free CLI.",
     url: "https://codepliant.dev/cookie-policy-generator",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Cookie Policy Generator for Developers",
     description:
       "Scan your code, generate an accurate cookie policy. No questionnaires, no guesswork.",
-    images: ["/og-image.png"],
   },
 };
 

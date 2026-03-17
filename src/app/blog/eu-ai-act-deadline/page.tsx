@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
   title: "EU AI Act: What Developers Need to Know Before August 2, 2026",
@@ -29,14 +30,12 @@ export const metadata: Metadata = {
     modifiedTime: "2026-03-16T00:00:00Z",
     authors: ["Codepliant"],
     tags: ["EU AI Act", "AI Compliance", "Developer Guide"],
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "EU AI Act: What Developers Need to Know Before August 2, 2026",
     description:
       "Comprehensive AI Act developer guide. Risk tiers, deadlines, transparency rules, code examples, and compliance steps.",
-    images: ["/og-image.png"],
   },
 };
 
@@ -150,27 +149,6 @@ function DaysUntilDeadline() {
     Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
   );
   return <>{days}</>;
-}
-
-function CodeBlock({
-  filename,
-  children,
-}: {
-  filename?: string;
-  children: string;
-}) {
-  return (
-    <div className="rounded-xl overflow-hidden my-6">
-      {filename && (
-        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
-          {filename}
-        </div>
-      )}
-      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
-        <code>{children}</code>
-      </pre>
-    </div>
-  );
 }
 
 export default function EuAiActDeadline() {
@@ -525,62 +503,40 @@ export default function EuAiActDeadline() {
               2026. Let us break down what it requires in concrete terms.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              1. Disclose AI-generated content
-            </h3>
-            <p>
-              If your application generates text, images, audio, or video using
-              AI, you must clearly inform users that the content is AI-generated.
-              This applies whether you use OpenAI, Anthropic, Mistral, Llama, or
-              any other AI provider.
-            </p>
-            <p>
-              Practically, this means adding visible labels or disclosures near
-              AI-generated content. A writing assistant should indicate which
-              portions were AI-generated. An image generation tool must label
-              outputs as AI-generated. A code assistant should distinguish AI
-              suggestions from human-written code.
-            </p>
-
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              2. Identify AI interactions
-            </h3>
-            <p>
-              If your application includes a chatbot, virtual assistant, or any
-              feature where AI communicates with users in natural language, you
-              must inform users that they are interacting with an AI system. This
-              must happen before or at the start of the interaction.
-            </p>
-            <p>
-              A simple implementation is a banner or notice at the top of the
-              chat interface stating &quot;You are interacting with an AI
-              assistant.&quot; The disclosure must be clear, concise, and
-              impossible to miss.
-            </p>
-
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              3. Mark synthetic media
-            </h3>
-            <p>
-              AI-generated or substantially modified images, audio, and video
-              must be labeled as such. The Act requires both human-readable
-              disclosures (visible labels) and machine-readable markings
-              (metadata, watermarks). This means implementing both UI labeling
-              and technical watermarking for any synthetic media your application
-              produces.
-            </p>
-
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              4. Document your AI systems
-            </h3>
-            <p>
-              While not explicitly an Article 50 requirement, the broader AI Act
-              expects organizations to maintain documentation of their AI
-              systems. This includes what AI models you use, what data they
-              process, what decisions they influence, and what safeguards you
-              have in place. Maintaining this documentation from the start makes
-              compliance with future obligations significantly easier.
-            </p>
+            <ol className="list-decimal list-inside space-y-4 ml-2">
+              <li>
+                <strong className="text-ink">Disclose AI-generated content.</strong>{" "}
+                If your application generates text, images, audio, or video using
+                AI, you must clearly inform users. This applies whether you use
+                OpenAI, Anthropic, Mistral, Llama, or any other provider.
+                Practically, add visible labels near AI-generated content — a
+                writing assistant should indicate AI-generated portions, an image
+                tool must label AI outputs, and a code assistant should
+                distinguish AI suggestions from human-written code.
+              </li>
+              <li>
+                <strong className="text-ink">Identify AI interactions.</strong>{" "}
+                If your application includes a chatbot or virtual assistant, users
+                must be informed they are interacting with AI before or at the
+                start of the interaction. A simple banner stating &quot;You are
+                interacting with an AI assistant&quot; at the top of the chat
+                interface satisfies this requirement.
+              </li>
+              <li>
+                <strong className="text-ink">Mark synthetic media.</strong>{" "}
+                AI-generated or substantially modified images, audio, and video
+                must be labeled with both human-readable disclosures (visible
+                labels) and machine-readable markings (metadata, watermarks).
+              </li>
+              <li>
+                <strong className="text-ink">Document your AI systems.</strong>{" "}
+                While not strictly an Article 50 requirement, the broader AI Act
+                expects organizations to document what AI models they use, what
+                data they process, what decisions they influence, and what
+                safeguards are in place. Starting this documentation early makes
+                compliance with future obligations significantly easier.
+              </li>
+            </ol>
 
             {/* Detecting AI services — NEW section with code examples */}
             <h2
@@ -709,15 +665,12 @@ Generating documents...
 Done. Generated 35 documents in legal/`}
             </CodeBlock>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              JSON output for CI/CD integration
-            </h3>
             <p>
               For automated pipelines, use the{" "}
               <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
                 --json
               </code>{" "}
-              flag to get machine-readable output. This is useful for blocking
+              flag to get machine-readable output, useful for blocking
               deployments that introduce new AI services without updated
               disclosure documentation:
             </p>
@@ -755,11 +708,8 @@ Done. Generated 35 documents in legal/`}
 }`}
             </CodeBlock>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              Example: GitHub Actions compliance check
-            </h3>
             <p>
-              Add a compliance gate to your CI pipeline that fails if AI
+              You can add a compliance gate to your CI pipeline that fails if AI
               services are detected but no AI disclosure document exists:
             </p>
             <CodeBlock filename=".github/workflows/compliance.yml">
@@ -784,10 +734,7 @@ jobs:
           fi`}
             </CodeBlock>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              Generated AI disclosure document
-            </h3>
-            <p>
+            <p className="pt-2">
               When Codepliant detects AI services, it generates an{" "}
               <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
                 ai-disclosure.md
@@ -960,67 +907,45 @@ jobs:
               checklist for engineering teams:
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              Step 1: Inventory your AI usage
-            </h3>
             <p>
-              Catalog every AI integration in your application. This includes
-              direct API calls to AI providers, embedded ML models, AI-powered
-              features in third-party libraries, and any automated
-              decision-making systems.
+              <strong className="text-ink">Step 1: Inventory your AI usage.</strong>{" "}
+              Catalog every AI integration — direct API calls, embedded ML models,
+              AI-powered features in third-party libraries, and automated
+              decision-making systems. Codepliant checks three detection surfaces:
+              package dependencies, import/require statements, and environment
+              variable patterns, catching AI services that manual audits miss.
             </p>
             <CodeBlock filename="terminal">
               {`# Scan your project and output only AI services
 $ npx codepliant scan --json | jq '[.services[] | select(.category == "ai")]'`}
             </CodeBlock>
-            <p>
-              Codepliant checks three detection surfaces: package dependencies
-              (package.json, requirements.txt, Gemfile, go.mod, Cargo.toml),
-              import/require statements in source files, and environment variable
-              patterns (.env files). This catches AI services that other audit
-              approaches miss — a developer might add{" "}
-              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
-                @anthropic-ai/sdk
-              </code>{" "}
-              as a dependency without updating any internal documentation.
-            </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              Step 2: Classify your risk level
-            </h3>
             <p>
-              For each AI system or feature, determine which risk tier applies.
-              Most SaaS AI features (content generation, search, chatbots,
-              recommendations) fall under limited risk with transparency
-              obligations. If you are in hiring, credit, education, or
-              healthcare, you may be high-risk. The{" "}
-              <a
-                href="/ai-governance"
-                className="text-brand hover:underline"
-              >
+              <strong className="text-ink">Step 2: Classify your risk level.</strong>{" "}
+              For each AI feature, determine which risk tier applies. Most SaaS AI
+              features fall under limited risk with transparency obligations. If
+              you are in hiring, credit, education, or healthcare, you may be
+              high-risk. The{" "}
+              <a href="/ai-governance" className="text-brand hover:underline">
                 AI Governance Framework
               </a>{" "}
               page explains how to perform a risk assessment aligned with both
               the EU AI Act and the NIST AI RMF.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              Step 3: Implement transparency measures
-            </h3>
             <p>
-              For the August 2026 deadline, focus on Article 50 transparency:
-              add AI-generated content labels, chatbot disclosures, synthetic
-              media marking, and general AI usage notices. These are UI changes
-              that your engineering team can implement directly.
+              <strong className="text-ink">Step 3: Implement transparency measures.</strong>{" "}
+              For the August 2026 deadline, focus on Article 50 transparency: add
+              AI-generated content labels, chatbot disclosures, synthetic media
+              marking, and general AI usage notices. These are UI changes your
+              engineering team can implement directly.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              Step 4: Generate compliance documentation
-            </h3>
             <p>
+              <strong className="text-ink">Step 4: Generate compliance documentation.</strong>{" "}
               Document your AI systems, their purposes, risk assessments, and
-              transparency measures. This documentation serves as evidence of
-              compliance and is required for high-risk systems.
+              transparency measures. This serves as evidence of compliance and is
+              required for high-risk systems.
             </p>
             <CodeBlock filename="terminal">
               {`# Generate all compliance documents including AI disclosure
@@ -1033,16 +958,13 @@ $ npx codepliant go
 #   ... and 32 more documents`}
             </CodeBlock>
 
-            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-              Step 5: Establish ongoing governance
-            </h3>
             <p>
-              Compliance is not a one-time event. Establish processes for
-              reviewing AI usage when adding new features, updating
-              documentation when AI integrations change, monitoring AI system
-              performance and risks, and responding to user complaints about AI
-              decisions. Integrate Codepliant into your CI/CD pipeline to
-              regenerate compliance documentation on every deployment.
+              <strong className="text-ink">Step 5: Establish ongoing governance.</strong>{" "}
+              Compliance is not a one-time event. Establish processes for reviewing
+              AI usage when adding new features, updating documentation when
+              integrations change, and monitoring AI system performance. Integrate
+              Codepliant into your CI/CD pipeline to regenerate compliance
+              documentation on every deployment.
             </p>
 
             {/* Comparison with GDPR */}

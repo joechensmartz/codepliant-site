@@ -51,6 +51,12 @@
       "namedRegex": "^/ai\\-governance(?:/)?$"
     },
     {
+      "page": "/ai-governance/opengraph-image",
+      "regex": "^/ai\\-governance/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/ai\\-governance/opengraph\\-image(?:/)?$"
+    },
+    {
       "page": "/blog",
       "regex": "^/blog(?:/)?$",
       "routeKeys": {},
@@ -63,10 +69,22 @@
       "namedRegex": "^/blog/colorado\\-ai\\-act(?:/)?$"
     },
     {
+      "page": "/blog/colorado-ai-act/opengraph-image",
+      "regex": "^/blog/colorado\\-ai\\-act/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/colorado\\-ai\\-act/opengraph\\-image(?:/)?$"
+    },
+    {
       "page": "/blog/eu-ai-act-deadline",
       "regex": "^/blog/eu\\-ai\\-act\\-deadline(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/eu\\-ai\\-act\\-deadline(?:/)?$"
+    },
+    {
+      "page": "/blog/eu-ai-act-deadline/opengraph-image",
+      "regex": "^/blog/eu\\-ai\\-act\\-deadline/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/eu\\-ai\\-act\\-deadline/opengraph\\-image(?:/)?$"
     },
     {
       "page": "/blog/gdpr-for-developers",
@@ -75,16 +93,46 @@
       "namedRegex": "^/blog/gdpr\\-for\\-developers(?:/)?$"
     },
     {
+      "page": "/blog/gdpr-for-developers/opengraph-image",
+      "regex": "^/blog/gdpr\\-for\\-developers/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/gdpr\\-for\\-developers/opengraph\\-image(?:/)?$"
+    },
+    {
       "page": "/blog/generate-privacy-policy-from-code",
       "regex": "^/blog/generate\\-privacy\\-policy\\-from\\-code(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/generate\\-privacy\\-policy\\-from\\-code(?:/)?$"
     },
     {
+      "page": "/blog/generate-privacy-policy-from-code/opengraph-image",
+      "regex": "^/blog/generate\\-privacy\\-policy\\-from\\-code/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/generate\\-privacy\\-policy\\-from\\-code/opengraph\\-image(?:/)?$"
+    },
+    {
       "page": "/blog/privacy-policy-for-saas",
       "regex": "^/blog/privacy\\-policy\\-for\\-saas(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/privacy\\-policy\\-for\\-saas(?:/)?$"
+    },
+    {
+      "page": "/blog/privacy-policy-for-saas/opengraph-image",
+      "regex": "^/blog/privacy\\-policy\\-for\\-saas/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/privacy\\-policy\\-for\\-saas/opengraph\\-image(?:/)?$"
+    },
+    {
+      "page": "/blog/soc2-for-startups",
+      "regex": "^/blog/soc2\\-for\\-startups(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/soc2\\-for\\-startups(?:/)?$"
+    },
+    {
+      "page": "/blog/soc2-for-startups/opengraph-image",
+      "regex": "^/blog/soc2\\-for\\-startups/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/soc2\\-for\\-startups/opengraph\\-image(?:/)?$"
     },
     {
       "page": "/changelog",
@@ -123,10 +171,28 @@
       "namedRegex": "^/gdpr\\-compliance(?:/)?$"
     },
     {
+      "page": "/gdpr-compliance/opengraph-image",
+      "regex": "^/gdpr\\-compliance/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/gdpr\\-compliance/opengraph\\-image(?:/)?$"
+    },
+    {
       "page": "/hipaa-compliance",
       "regex": "^/hipaa\\-compliance(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/hipaa\\-compliance(?:/)?$"
+    },
+    {
+      "page": "/hipaa-compliance/opengraph-image",
+      "regex": "^/hipaa\\-compliance/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/hipaa\\-compliance/opengraph\\-image(?:/)?$"
+    },
+    {
+      "page": "/opengraph-image",
+      "regex": "^/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/opengraph\\-image(?:/)?$"
     },
     {
       "page": "/pricing",
@@ -159,10 +225,22 @@
       "namedRegex": "^/soc2\\-compliance(?:/)?$"
     },
     {
+      "page": "/soc2-compliance/opengraph-image",
+      "regex": "^/soc2\\-compliance/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/soc2\\-compliance/opengraph\\-image(?:/)?$"
+    },
+    {
       "page": "/terms-of-service-generator",
       "regex": "^/terms\\-of\\-service\\-generator(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/terms\\-of\\-service\\-generator(?:/)?$"
+    },
+    {
+      "page": "/twitter-image",
+      "regex": "^/twitter\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/twitter\\-image(?:/)?$"
     }
   ],
   "dataRoutes": [],

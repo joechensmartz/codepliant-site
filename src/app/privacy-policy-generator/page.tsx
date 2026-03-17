@@ -27,14 +27,12 @@ export const metadata: Metadata = {
     description:
       "Privacy policy generator that scans your codebase to detect data collection, third-party services, and analytics. Accurate, GDPR-ready output. Free CLI.",
     url: "https://codepliant.dev/privacy-policy-generator",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Privacy Policy Generator for Developers",
     description:
       "Scan your code, generate an accurate privacy policy. No questionnaires, no guesswork.",
-    images: ["/og-image.png"],
   },
 };
 
