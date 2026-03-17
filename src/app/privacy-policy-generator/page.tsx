@@ -234,7 +234,7 @@ export default function PrivacyPolicyGenerator() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="border border-border-subtle rounded-xl px-5 py-4"
+                  className="border border-border-subtle rounded-lg px-5 py-4"
                 >
                   <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
                   <p className="text-ink-secondary text-sm">{item.desc}</p>
@@ -319,7 +319,7 @@ export default function PrivacyPolicyGenerator() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-lg px-4 py-3 text-sm"
                 >
                   {item}
                 </div>
@@ -340,7 +340,7 @@ export default function PrivacyPolicyGenerator() {
 
             <div className="space-y-6">
               {/* Before: Generic template */}
-              <div className="border border-border-subtle rounded-2xl overflow-hidden">
+              <div className="border border-border-subtle rounded-lg overflow-hidden">
                 <div className="bg-surface-secondary px-5 py-3 border-b border-border-subtle flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-red-400" />
                   <span className="text-sm font-medium text-ink-secondary">
@@ -382,7 +382,7 @@ export default function PrivacyPolicyGenerator() {
               </div>
 
               {/* After: Codepliant-generated */}
-              <div className="border-2 border-brand rounded-2xl overflow-hidden">
+              <div className="border-2 border-brand rounded-lg overflow-hidden">
                 <div className="bg-brand/5 px-5 py-3 border-b border-brand/20 flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-brand" />
                   <span className="text-sm font-medium text-brand">
@@ -441,7 +441,7 @@ export default function PrivacyPolicyGenerator() {
               </div>
             </div>
 
-            <div className="mt-6 bg-surface-secondary rounded-xl px-5 py-4">
+            <div className="mt-6 bg-surface-secondary rounded-lg px-5 py-4">
               <p className="text-sm text-ink-secondary">
                 <strong className="text-ink-primary">The difference:</strong> The
                 generic template says &quot;we may use third-party service
@@ -484,7 +484,7 @@ export default function PrivacyPolicyGenerator() {
               ].map((item) => (
                 <div
                   key={item.problem}
-                  className="border border-border-subtle rounded-xl px-5 py-4"
+                  className="border border-border-subtle rounded-lg px-5 py-4"
                 >
                   <h3 className="font-semibold text-sm mb-1">
                     {item.problem}
@@ -529,7 +529,7 @@ export default function PrivacyPolicyGenerator() {
               ].map((item) => (
                 <div
                   key={item.reg}
-                  className="bg-surface-secondary rounded-xl px-5 py-4"
+                  className="bg-surface-secondary rounded-lg px-5 py-4"
                 >
                   <h3 className="font-semibold text-sm mb-2 text-brand">
                     {item.reg}
@@ -541,7 +541,7 @@ export default function PrivacyPolicyGenerator() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Generate your privacy policy in seconds
             </h2>
@@ -553,7 +553,7 @@ export default function PrivacyPolicyGenerator() {
             <p className="text-ink-secondary text-xs mb-6">
               Free, open source, no account required. Works offline.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go
             </div>
           </section>
@@ -606,7 +606,7 @@ export default function PrivacyPolicyGenerator() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block border border-border-subtle rounded-xl px-5 py-4 hover:border-brand transition-colors"
+                  className="block border border-border-subtle rounded-lg px-5 py-4 hover:border-brand transition-colors"
                 >
                   <h3 className="font-semibold text-sm mb-1">{link.title}</h3>
                   <p className="text-ink-secondary text-sm">{link.desc}</p>

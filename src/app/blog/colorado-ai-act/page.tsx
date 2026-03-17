@@ -189,7 +189,7 @@ export default function ColoradoAiAct() {
 
           <div className="space-y-6 text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
             {/* Urgency callout */}
-            <div className="bg-urgency-muted border border-urgency/20 rounded-xl p-5">
+            <div className="bg-urgency-muted border border-urgency/20 rounded-lg p-5">
               <p className="text-urgency font-semibold text-sm mb-1">
                 Compliance deadline approaching
               </p>
@@ -240,7 +240,7 @@ export default function ColoradoAiAct() {
             </p>
 
             {/* Table of contents */}
-            <div className="bg-surface-secondary rounded-xl p-5">
+            <div className="bg-surface-secondary rounded-lg p-5">
               <h2 className="text-sm font-semibold text-ink mb-3">
                 In this guide
               </h2>
@@ -440,7 +440,7 @@ export default function ColoradoAiAct() {
               ].map((item) => (
                 <div
                   key={item.area}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <p className="font-semibold mb-1 text-ink">{item.area}</p>
                   <p className="text-sm text-ink-secondary">{item.examples}</p>
@@ -478,7 +478,7 @@ export default function ColoradoAiAct() {
               ].map((milestone) => (
                 <div
                   key={milestone.date}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <p className="font-semibold mb-1 text-ink">
                     {milestone.date} &mdash; {milestone.event}
@@ -699,7 +699,7 @@ export default function ColoradoAiAct() {
               AI providers Codepliant detects
             </h3>
             <div className="overflow-x-auto my-4">
-              <table className="w-full text-sm border border-border-subtle rounded-xl overflow-hidden">
+              <table className="w-full text-sm border border-border-subtle rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-surface-secondary text-ink text-left">
                     <th className="px-4 py-2 font-semibold">Provider</th>
@@ -925,7 +925,7 @@ jobs:
               ].map((item) => (
                 <div
                   key={item.dimension}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <p className="font-semibold mb-1 text-ink">{item.dimension}</p>
                   <p className="text-sm text-ink-secondary">{item.comparison}</p>
@@ -1087,7 +1087,7 @@ jobs:
           </div>
 
           {/* CTA */}
-          <section className="bg-brand-muted border border-brand/20 rounded-2xl p-8 text-center mt-16 mb-16">
+          <section className="bg-brand-muted border border-brand/20 rounded-lg p-8 text-center mt-16 mb-16">
             <h2 className="text-xl font-bold mb-3 text-ink">
               Prepare for the Colorado AI Act deadline
             </h2>
@@ -1100,7 +1100,7 @@ jobs:
               Detects OpenAI, Anthropic, Google AI, LangChain, Vercel AI SDK,
               Cohere, Replicate, Together AI, and more.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
             <p className="text-xs text-ink-tertiary">
@@ -1174,7 +1174,7 @@ jobs:
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <p className="font-semibold mb-1 text-sm text-ink">
                     {link.title}

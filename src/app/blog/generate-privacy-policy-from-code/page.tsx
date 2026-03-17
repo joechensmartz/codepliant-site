@@ -236,7 +236,7 @@ export default function GeneratePrivacyPolicyFromCode() {
           </p>
 
           {/* Table of Contents */}
-          <nav className="bg-surface-secondary rounded-xl p-6 mb-12" aria-label="Table of contents">
+          <nav className="bg-surface-secondary rounded-lg p-6 mb-12" aria-label="Table of contents">
             <h2 className="text-sm font-semibold text-ink uppercase tracking-wide mb-3">
               Table of contents
             </h2>
@@ -808,7 +808,7 @@ jobs:
             </div>
 
             {/* CTA */}
-            <section className="bg-surface-secondary rounded-2xl p-8 text-center mt-8">
+            <section className="bg-surface-secondary rounded-lg p-8 text-center mt-8">
               <h2 className="text-xl font-bold mb-3 text-ink">
                 Generate your privacy policy now
               </h2>
@@ -816,7 +816,7 @@ jobs:
                 One command scans your codebase and generates a privacy policy
                 that reflects your actual data practices. No account needed.
               </p>
-              <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+              <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
                 npx codepliant go
               </div>
               <p className="text-xs text-ink-tertiary mt-4">

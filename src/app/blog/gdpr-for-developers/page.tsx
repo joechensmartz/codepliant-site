@@ -182,7 +182,7 @@ export default function GdprForDevelopers() {
           </p>
 
           {/* Table of Contents */}
-          <nav className="bg-surface-secondary rounded-2xl p-6 mb-12">
+          <nav className="bg-surface-secondary rounded-lg p-6 mb-12">
             <h2 className="text-sm font-bold tracking-wide uppercase text-ink mb-4">
               Table of contents
             </h2>
@@ -434,7 +434,7 @@ export default function GdprForDevelopers() {
               ].map((item) => (
                 <div
                   key={item.right}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.right}</h3>
                   <p className="text-sm text-ink-secondary">{item.implementation}</p>
@@ -729,7 +729,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               ].map((item) => (
                 <div
                   key={item.mistake}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.mistake}</h3>
                   <p className="text-sm text-ink-secondary">{item.detail}</p>
@@ -958,7 +958,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               ].map((item) => (
                 <div
                   key={item.violation}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.violation}</h3>
                   <p className="text-sm text-ink-secondary">{item.detail}</p>
@@ -1031,7 +1031,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
           </div>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mt-16 mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mt-16 mb-16">
             <h2 className="text-xl font-bold mb-3">
               Check your GDPR compliance now
             </h2>
@@ -1044,7 +1044,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               privacy policies, data inventories, and compliance documentation.
               Free, open source, no account required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
             <p className="text-xs text-ink-secondary mt-4">
@@ -1107,7 +1107,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>

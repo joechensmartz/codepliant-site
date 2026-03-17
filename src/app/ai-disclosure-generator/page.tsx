@@ -186,7 +186,7 @@ export default function AiDisclosureGenerator() {
           </nav>
 
           {/* Countdown banner */}
-          <div className="bg-urgency-muted text-urgency rounded-2xl p-6 text-center mb-12">
+          <div className="bg-urgency-muted text-urgency rounded-lg p-6 text-center mb-12">
             <div className="text-5xl font-bold mb-1">{daysLeft}</div>
             <div className="text-sm font-medium">
               days until EU AI Act Article 50 takes effect
@@ -230,7 +230,7 @@ export default function AiDisclosureGenerator() {
                 mobile apps, and web applications with AI features fall
                 within scope.
               </p>
-              <div className="border border-border-subtle rounded-xl px-5 py-4">
+              <div className="border border-border-subtle rounded-lg px-5 py-4">
                 <h3 className="font-semibold text-sm text-ink mb-2">
                   Penalties for non-compliance
                 </h3>
@@ -287,7 +287,7 @@ export default function AiDisclosureGenerator() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="border border-border-subtle rounded-xl px-5 py-4"
+                  className="border border-border-subtle rounded-lg px-5 py-4"
                 >
                   <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
                   <p className="text-ink-secondary text-sm">{item.desc}</p>
@@ -382,7 +382,7 @@ export default function AiDisclosureGenerator() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-lg px-4 py-3 text-sm"
                 >
                   {item}
                 </div>
@@ -404,7 +404,7 @@ export default function AiDisclosureGenerator() {
 
             <div className="space-y-6">
               {/* Before: No disclosure */}
-              <div className="border border-border-subtle rounded-2xl overflow-hidden">
+              <div className="border border-border-subtle rounded-lg overflow-hidden">
                 <div className="bg-surface-secondary px-5 py-3 border-b border-border-subtle flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-red-400" />
                   <span className="text-sm font-medium text-ink-secondary">
@@ -428,7 +428,7 @@ export default function AiDisclosureGenerator() {
               </div>
 
               {/* After: Codepliant-generated */}
-              <div className="border-2 border-brand rounded-2xl overflow-hidden">
+              <div className="border-2 border-brand rounded-lg overflow-hidden">
                 <div className="bg-brand/5 px-5 py-3 border-b border-brand/20 flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-brand" />
                   <span className="text-sm font-medium text-brand">
@@ -496,7 +496,7 @@ export default function AiDisclosureGenerator() {
               </div>
             </div>
 
-            <div className="mt-6 bg-surface-secondary rounded-xl px-5 py-4">
+            <div className="mt-6 bg-surface-secondary rounded-lg px-5 py-4">
               <p className="text-sm text-ink-secondary">
                 <strong className="text-ink-primary">The difference:</strong>{" "}
                 Without a disclosure, users have no idea they are interacting
@@ -535,7 +535,7 @@ export default function AiDisclosureGenerator() {
               ].map((doc) => (
                 <div
                   key={doc.name}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <div className="font-semibold mb-1">{doc.name}</div>
                   <p className="text-sm text-ink-secondary">{doc.desc}</p>
@@ -545,7 +545,7 @@ export default function AiDisclosureGenerator() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Generate your AI disclosure before August 2, 2026
             </h2>
@@ -558,7 +558,7 @@ export default function AiDisclosureGenerator() {
             <p className="text-ink-secondary text-xs mb-6">
               Free, open source, no account required. Works offline.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go
             </div>
           </section>
@@ -611,7 +611,7 @@ export default function AiDisclosureGenerator() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block border border-border-subtle rounded-xl px-5 py-4 hover:border-brand transition-colors"
+                  className="block border border-border-subtle rounded-lg px-5 py-4 hover:border-brand transition-colors"
                 >
                   <h3 className="font-semibold text-sm mb-1">{link.title}</h3>
                   <p className="text-ink-secondary text-sm">{link.desc}</p>

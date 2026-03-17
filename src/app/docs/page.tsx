@@ -469,6 +469,7 @@ Generated in ~1.2s`}</pre>
                     { flag: "--format <fmt>", desc: "Output format: markdown, html, pdf, json, notion, confluence, wiki, docx, all" },
                     { flag: "--json", desc: "Output scan results as JSON (for scan command)" },
                     { flag: "--quiet, -q", desc: "Suppress banner and non-essential output" },
+                    { flag: "--dry-run", desc: "Preview what would be generated without writing files to disk" },
                     { flag: "--ci", desc: "CI mode: non-interactive, deterministic output" },
                   ].map((f) => (
                     <tr key={f.flag} className="border-t border-border-subtle">

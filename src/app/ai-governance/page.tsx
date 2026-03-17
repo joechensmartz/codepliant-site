@@ -273,7 +273,7 @@ export default function AiGovernance() {
               ].map((tier) => (
                 <div
                   key={tier.level}
-                  className={`bg-surface-secondary rounded-xl p-5 ${tier.color}`}
+                  className={`bg-surface-secondary rounded-lg p-5 ${tier.color}`}
                 >
                   <h4 className="font-semibold mb-2">{tier.level}</h4>
                   <p className="text-sm text-ink-secondary">{tier.desc}</p>
@@ -308,7 +308,7 @@ export default function AiGovernance() {
               ].map((milestone) => (
                 <div
                   key={milestone.date}
-                  className="flex gap-4 bg-surface-secondary rounded-xl px-4 py-3 text-sm"
+                  className="flex gap-4 bg-surface-secondary rounded-lg px-4 py-3 text-sm"
                 >
                   <span className="font-semibold text-ink whitespace-nowrap min-w-[140px]">
                     {milestone.date}
@@ -373,7 +373,7 @@ export default function AiGovernance() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-2">{item.title}</h3>
                   <p className="text-sm text-ink-secondary">{item.desc}</p>
@@ -402,7 +402,7 @@ export default function AiGovernance() {
                 AI services and patterns Codepliant detects
               </h3>
               <div className="overflow-x-auto">
-                <table className="w-full text-sm border border-border-subtle rounded-xl overflow-hidden">
+                <table className="w-full text-sm border border-border-subtle rounded-lg overflow-hidden">
                   <thead>
                     <tr className="bg-surface-secondary">
                       <th className="text-left px-4 py-3 font-semibold">
@@ -507,7 +507,7 @@ export default function AiGovernance() {
               ].map((doc) => (
                 <div
                   key={doc}
-                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-lg px-4 py-3 text-sm"
                 >
                   {doc}
                 </div>
@@ -657,7 +657,7 @@ export default function AiGovernance() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Generate your AI governance framework
             </h2>
@@ -666,7 +666,7 @@ export default function AiGovernance() {
               and generates governance documentation aligned with the EU AI Act
               and NIST AI RMF. Free, open source, no account required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go
             </div>
             <div className="mt-4 flex items-center justify-center gap-4 text-sm text-ink-secondary">
@@ -732,7 +732,7 @@ export default function AiGovernance() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>

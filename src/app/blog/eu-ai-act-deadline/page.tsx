@@ -197,7 +197,7 @@ export default function EuAiActDeadline() {
 
           <div className="space-y-6 text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
             {/* Urgency callout */}
-            <div className="bg-urgency-muted border border-urgency/20 rounded-xl p-5">
+            <div className="bg-urgency-muted border border-urgency/20 rounded-lg p-5">
               <p className="text-urgency font-semibold text-sm mb-1">
                 Deadline approaching
               </p>
@@ -234,7 +234,7 @@ export default function EuAiActDeadline() {
             </p>
 
             {/* Table of contents */}
-            <div className="bg-surface-secondary rounded-xl p-5">
+            <div className="bg-surface-secondary rounded-lg p-5">
               <h2 className="text-sm font-semibold text-ink mb-3">
                 In this guide
               </h2>
@@ -368,7 +368,7 @@ export default function EuAiActDeadline() {
               ].map((milestone) => (
                 <div
                   key={milestone.date}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <div className="flex items-center justify-between mb-1">
                     <h3 className="font-semibold text-ink">
@@ -848,7 +848,7 @@ jobs:
               ].map((item) => (
                 <div
                   key={item.violation}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-1 text-ink">
                     {item.violation}
@@ -1047,7 +1047,7 @@ $ npx codepliant go
               ].map((item) => (
                 <div
                   key={item.industry}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-1 text-ink">
                     {item.industry}
@@ -1107,7 +1107,7 @@ $ npx codepliant go
           </div>
 
           {/* CTA */}
-          <section className="bg-brand-muted border border-brand/20 rounded-2xl p-8 text-center mt-16 mb-16">
+          <section className="bg-brand-muted border border-brand/20 rounded-lg p-8 text-center mt-16 mb-16">
             <h2 className="text-xl font-bold mb-3 text-ink">
               Check your AI compliance now
             </h2>
@@ -1119,7 +1119,7 @@ $ npx codepliant go
               Detects OpenAI, Anthropic, Google AI, LangChain, Vercel AI SDK,
               Cohere, Replicate, Together AI, and more.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
             <p className="text-xs text-ink-tertiary">
@@ -1193,7 +1193,7 @@ $ npx codepliant go
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm text-ink">
                     {link.title}

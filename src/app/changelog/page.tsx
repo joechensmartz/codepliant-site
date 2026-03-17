@@ -69,7 +69,7 @@ const releases: Release[] = [
     date: "Coming soon",
     tag: "Upcoming",
     summary:
-      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, and 3,037 tests across 13 ecosystems.",
+      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, --dry-run preview, and 3,177 tests across 13 ecosystems.",
     changes: [
       {
         category: "new",
@@ -120,6 +120,10 @@ const releases: Release[] = [
         text: "Kotlin/Android ecosystem support — build.gradle, build.gradle.kts, and Version Catalog scanning (26 tests)",
       },
       {
+        category: "new",
+        text: "codepliant go --dry-run — preview generated documents without writing files to disk",
+      },
+      {
         category: "improved",
         text: "Fuzzy command matching — Levenshtein-based \"Did you mean?\" suggestions for mistyped commands",
       },
@@ -141,7 +145,7 @@ const releases: Release[] = [
       },
       {
         category: "tests",
-        text: "Test suite expanded from 763 to 3,037 tests (298% increase) with 100% scanner coverage and 51 generator test suites",
+        text: "Test suite expanded from 763 to 3,177 tests (316% increase) with 100% scanner coverage and 54 generator test suites",
       },
     ],
   },

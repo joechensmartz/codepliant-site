@@ -6,7 +6,7 @@ export function CodeBlock({
   children: string;
 }) {
   return (
-    <div className="rounded-xl overflow-hidden my-6">
+    <div className="rounded-lg overflow-hidden my-6">
       {filename && (
         <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
           {filename}

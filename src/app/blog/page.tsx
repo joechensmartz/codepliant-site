@@ -134,7 +134,7 @@ export default function BlogIndex() {
 
       <section className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
-          <h1 className="text-4xl font-bold tracking-tight mb-4">Blog</h1>
+          <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">Blog</h1>
           <p className="text-ink-secondary text-[length:var(--text-lg)] mb-12">
             Developer-focused guides on compliance, privacy regulations, and AI
             governance. Practical advice for engineering teams.
@@ -145,7 +145,7 @@ export default function BlogIndex() {
               <a
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="block bg-surface-secondary rounded-2xl p-6 hover:ring-1 hover:ring-border-strong transition-shadow"
+                className="block bg-surface-secondary rounded-lg p-6 hover:ring-1 hover:ring-border-strong transition-shadow"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <span
@@ -168,7 +168,7 @@ export default function BlogIndex() {
           </div>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mt-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mt-16">
             <h2 className="text-xl font-bold mb-3">
               Check your compliance in one command
             </h2>
@@ -176,7 +176,7 @@ export default function BlogIndex() {
               Scan your codebase to detect services, data flows, and AI
               integrations. Generate 123+ compliance documents automatically.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go
             </div>
           </section>

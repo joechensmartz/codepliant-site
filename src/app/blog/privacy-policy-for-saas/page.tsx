@@ -196,7 +196,7 @@ export default function PrivacyPolicyForSaas() {
           </p>
 
           {/* Table of Contents */}
-          <nav className="bg-surface-secondary rounded-xl p-6 mb-12" aria-label="Table of contents">
+          <nav className="bg-surface-secondary rounded-lg p-6 mb-12" aria-label="Table of contents">
             <h2 className="text-sm font-semibold text-ink uppercase tracking-wide mb-3">
               Table of contents
             </h2>
@@ -411,7 +411,7 @@ export default function PrivacyPolicyForSaas() {
               or ensure your new one is complete:
             </p>
 
-            <div className="bg-surface-secondary rounded-xl p-6 my-6">
+            <div className="bg-surface-secondary rounded-lg p-6 my-6">
               <h3 className="text-lg font-bold text-ink mb-4">
                 Article 13 Required Disclosures
               </h3>
@@ -595,7 +595,7 @@ export default function PrivacyPolicyForSaas() {
               accurate inventory of data collection, third-party integrations,
               and AI usage:
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm">
               npx codepliant go
             </div>
             <p>
@@ -872,7 +872,7 @@ jobs:
               ].map((item) => (
                 <div
                   key={item.mistake}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <p className="font-semibold mb-1">{item.mistake}</p>
                   <p className="text-sm text-ink-secondary">{item.why}</p>
@@ -990,7 +990,7 @@ jobs:
             <p>
               To generate a privacy policy for your SaaS application:
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm">
               npx codepliant go
             </div>
             <p>
@@ -1035,7 +1035,7 @@ jobs:
           </div>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mt-16 mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mt-16 mb-16">
             <h2 className="text-xl font-bold mb-3">
               Generate your SaaS privacy policy
             </h2>
@@ -1043,7 +1043,7 @@ jobs:
               Scan your codebase to generate a privacy policy based on your
               actual data practices. Free, open source, no account required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
             <p className="text-xs text-ink-secondary">
@@ -1141,7 +1141,7 @@ jobs:
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <p className="font-semibold mb-1 text-sm">{link.title}</p>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>

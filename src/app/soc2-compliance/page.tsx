@@ -270,7 +270,7 @@ export default function Soc2Compliance() {
                   desc: "Personal information is collected, used, retained, disclosed, and disposed of in conformity with commitments. Overlaps with GDPR requirements. Codepliant scans ORM schemas for PII fields, detects analytics and tracking integrations, identifies consent management patterns, and maps data flows to third-party processors.",
                 },
               ].map((tsc) => (
-                <div key={tsc.label} className="bg-surface-secondary rounded-xl p-5">
+                <div key={tsc.label} className="bg-surface-secondary rounded-lg p-5">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">
                       <span className="text-brand font-mono mr-2">{tsc.label}</span>
@@ -322,7 +322,7 @@ export default function Soc2Compliance() {
                   desc: "Prove you identify and mitigate risks. Codepliant generates a risk assessment based on third-party dependencies, data handling patterns, and infrastructure configuration.",
                 },
               ].map((req) => (
-                <div key={req.title} className="bg-surface-secondary rounded-xl p-5">
+                <div key={req.title} className="bg-surface-secondary rounded-lg p-5">
                   <h3 className="font-semibold mb-2">{req.title}</h3>
                   <p className="text-sm text-ink-secondary">{req.desc}</p>
                 </div>
@@ -399,7 +399,7 @@ export default function Soc2Compliance() {
               ].map((doc) => (
                 <div
                   key={doc}
-                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-lg px-4 py-3 text-sm"
                 >
                   {doc}
                 </div>
@@ -624,7 +624,7 @@ export default function Soc2Compliance() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Start your SOC 2 readiness assessment
             </h2>
@@ -633,7 +633,7 @@ export default function Soc2Compliance() {
               readiness checklist in minutes. Free, open source, no account
               required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go
             </div>
             <div className="mt-4 flex items-center justify-center gap-4 text-sm text-ink-secondary">
@@ -699,7 +699,7 @@ export default function Soc2Compliance() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>

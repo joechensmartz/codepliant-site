@@ -47,7 +47,7 @@ const principles = [
 ];
 
 const stats = [
-  { value: "2,867", label: "Tests passing" },
+  { value: "3,177", label: "Tests passing" },
   { value: "1,200+", label: "Repos tested" },
   { value: "123+", label: "Document types" },
   { value: "13", label: "Ecosystems" },
@@ -201,15 +201,16 @@ export default function About() {
             </div>
           </section>
 
-          {/* Team */}
+          {/* Community */}
           <section className="mb-[var(--space-16)]">
-            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">Team</h2>
-            <div className="bg-surface-secondary rounded-lg p-[var(--space-6)]">
-              <h3 className="font-semibold">Open for contributors</h3>
-              <p className="text-[length:var(--text-sm)] text-brand mb-[var(--space-2)]">Maintainers</p>
-              <p className="text-[length:var(--text-sm)] text-ink-secondary leading-relaxed">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">Community-driven</h2>
+            <div className="space-y-[var(--space-4)] text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
+              <p>
                 Codepliant is maintained by a growing community of developers
-                who believe compliance should be automated, not outsourced.
+                who believe compliance should be automated, not outsourced. The
+                project welcomes contributions of all kinds — from new scanner
+                signatures and document generators to documentation and bug
+                fixes.
               </p>
             </div>
           </section>

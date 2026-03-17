@@ -397,7 +397,7 @@ export default function DataPrivacy() {
                     <a
                       key={reg.name}
                       href={reg.href}
-                      className="block bg-surface-secondary rounded-xl p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
+                      className="block bg-surface-secondary rounded-lg p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
                     >
                       {inner}
                     </a>
@@ -407,7 +407,7 @@ export default function DataPrivacy() {
                 return (
                   <div
                     key={reg.name}
-                    className="bg-surface-secondary rounded-xl p-5"
+                    className="bg-surface-secondary rounded-lg p-5"
                   >
                     {inner}
                   </div>
@@ -430,7 +430,7 @@ export default function DataPrivacy() {
               {scanCapabilities.map((cap, i) => (
                 <div
                   key={cap.label}
-                  className="flex gap-4 bg-surface-secondary rounded-xl p-5"
+                  className="flex gap-4 bg-surface-secondary rounded-lg p-5"
                 >
                   <div className="shrink-0 w-8 h-8 rounded-full bg-brand text-surface-primary flex items-center justify-center text-sm font-bold">
                     {i + 1}
@@ -459,7 +459,7 @@ export default function DataPrivacy() {
               {privacyByDesign.map((item, i) => (
                 <div
                   key={item.principle}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-1">
                     <span className="text-brand mr-2">{i + 1}.</span>
@@ -523,7 +523,7 @@ export default function DataPrivacy() {
               ].map((item) => (
                 <div
                   key={item.scenario}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.scenario}</h3>
                   <p className="text-sm text-ink-secondary">
@@ -544,7 +544,7 @@ export default function DataPrivacy() {
                 <a
                   key={page.name}
                   href={page.href}
-                  className="block bg-surface-secondary rounded-xl p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-2">{page.name}</h3>
                   <p className="text-sm text-ink-secondary">{page.desc}</p>
@@ -562,7 +562,7 @@ export default function DataPrivacy() {
               {faqs.map((faq) => (
                 <div
                   key={faq.question}
-                  className="bg-surface-secondary rounded-xl p-5"
+                  className="bg-surface-secondary rounded-lg p-5"
                 >
                   <h3 className="font-semibold mb-2">{faq.question}</h3>
                   <p className="text-sm text-ink-secondary">{faq.answer}</p>
@@ -572,7 +572,7 @@ export default function DataPrivacy() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Scan your codebase for data privacy compliance
             </h2>
@@ -581,7 +581,7 @@ export default function DataPrivacy() {
               tracking. Generate privacy documentation for every regulation that
               applies. Free, open source, no account required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
             <p className="text-xs text-ink-secondary">

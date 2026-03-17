@@ -51,7 +51,7 @@ const proofPoints = [
     linkText: "View on GitHub",
   },
   {
-    fact: "2,867 automated tests passing",
+    fact: "3,177 automated tests passing",
     detail:
       "100% scanner coverage and growing generator coverage. The full test suite runs on every commit to prevent regressions.",
     link: "https://github.com/joechensmartz/codepliant",
@@ -279,7 +279,7 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">2,867</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">3,177</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">
@@ -680,7 +680,7 @@ export default function Home() {
             One command. Full compliance.
           </h2>
           <p className="text-ink-secondary mb-[var(--space-8)] text-[length:var(--text-base)]">
-            Join thousands of developers who ship compliant software.
+            Start generating compliance documents from your codebase today.
           </p>
           <div className="flex flex-col sm:flex-row items-start gap-[var(--space-4)]">
             <code className="bg-code-bg text-code-fg px-[var(--space-6)] py-[var(--space-3)] rounded-lg font-mono text-[length:var(--text-sm)] select-all">

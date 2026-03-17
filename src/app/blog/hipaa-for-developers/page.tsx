@@ -183,7 +183,7 @@ export default function HipaaForDevelopers() {
           </p>
 
           {/* Table of Contents */}
-          <nav className="bg-surface-secondary rounded-2xl p-6 mb-12">
+          <nav className="bg-surface-secondary rounded-lg p-6 mb-12">
             <p className="text-sm font-semibold mb-3">In this article</p>
             <ul className="space-y-2 text-sm text-ink-secondary">
               <li>
@@ -248,7 +248,7 @@ export default function HipaaForDevelopers() {
           </p>
 
           <div className="space-y-4 mb-8">
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Covered Entities</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Healthcare providers (hospitals, clinics, doctors), health plans
@@ -257,7 +257,7 @@ export default function HipaaForDevelopers() {
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Business Associates</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Any person or company that creates, receives, maintains, or transmits
@@ -301,7 +301,7 @@ export default function HipaaForDevelopers() {
             </li>
           </ul>
 
-          <div className="bg-surface-secondary rounded-2xl p-6 mb-8 border-l-4 border-brand">
+          <div className="bg-surface-secondary rounded-lg p-6 mb-8 border-l-4 border-brand">
             <p className="text-sm text-ink-secondary leading-relaxed">
               <strong>Key point:</strong> You do not need to be a healthcare
               company to need HIPAA compliance. If any of your customers are
@@ -435,7 +435,7 @@ export default function HipaaForDevelopers() {
             </table>
           </div>
 
-          <div className="bg-surface-secondary rounded-2xl p-6 mb-8 border-l-4 border-brand">
+          <div className="bg-surface-secondary rounded-lg p-6 mb-8 border-l-4 border-brand">
             <p className="text-sm text-ink-secondary leading-relaxed">
               <strong>Developer trap:</strong> IP addresses and email addresses are
               HIPAA identifiers. If your application logs IP addresses alongside any
@@ -554,7 +554,7 @@ openssl s_client -connect api.yourapp.com:443 \\
             The HIPAA Security Rule requires four access control mechanisms:
           </p>
           <div className="space-y-4 mb-8">
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Unique user identification</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Every user must have a unique identifier. No shared accounts, no
@@ -563,7 +563,7 @@ openssl s_client -connect api.yourapp.com:443 \\
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Emergency access procedure</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 A documented process for accessing ePHI during an emergency. Break-glass
@@ -571,7 +571,7 @@ openssl s_client -connect api.yourapp.com:443 \\
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Automatic logoff</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Sessions must time out after a period of inactivity. Implement
@@ -580,7 +580,7 @@ openssl s_client -connect api.yourapp.com:443 \\
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Encryption and decryption</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Mechanisms to encrypt ePHI whenever it is stored or transmitted, and
@@ -657,7 +657,7 @@ openssl s_client -connect api.yourapp.com:443 \\
             </li>
           </ul>
 
-          <div className="bg-surface-secondary rounded-2xl p-6 mb-8 border-l-4 border-brand">
+          <div className="bg-surface-secondary rounded-lg p-6 mb-8 border-l-4 border-brand">
             <p className="text-sm text-ink-secondary leading-relaxed">
               <strong>Cloud provider BAAs:</strong> AWS, GCP, and Azure all offer
               BAAs, but you must explicitly sign them. AWS requires you to
@@ -714,7 +714,7 @@ Generating documents...
           </p>
 
           <div className="space-y-4 mb-8">
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Health data integrations</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Scans for FHIR/HL7 libraries, EHR API clients (Epic, Cerner,
@@ -724,7 +724,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Encryption posture</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Detects database encryption settings, TLS configuration, KMS
@@ -733,7 +733,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Audit trail implementation</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Identifies logging libraries, structured log formats, and audit-specific
@@ -742,7 +742,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Access control patterns</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Scans for authentication providers (Auth0, Okta, Cognito), RBAC
@@ -751,7 +751,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Third-party services needing BAAs</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Identifies cloud providers (AWS, GCP, Azure), communication services
@@ -790,7 +790,7 @@ Generating documents...
             generate the documentation your compliance program needs. One command:
           </p>
 
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-12">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-12">
             <h3 className="text-xl font-bold mb-3">
               Check your HIPAA readiness from your code
             </h3>
@@ -799,7 +799,7 @@ Generating documents...
               encryption gaps, audit log coverage, and access control patterns.
               Free, open source, runs locally. No PHI ever leaves your machine.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go
             </div>
             <p className="text-xs text-ink-tertiary mt-4">

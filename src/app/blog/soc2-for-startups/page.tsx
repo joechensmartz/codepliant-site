@@ -183,7 +183,7 @@ export default function Soc2ForStartups() {
           </p>
 
           {/* Table of Contents */}
-          <nav className="bg-surface-secondary rounded-2xl p-6 mb-12">
+          <nav className="bg-surface-secondary rounded-lg p-6 mb-12">
             <p className="text-sm font-semibold mb-3">In this article</p>
             <ul className="space-y-2 text-sm text-ink-secondary">
               <li>
@@ -296,7 +296,7 @@ export default function Soc2ForStartups() {
           </p>
 
           <div className="space-y-6 mb-8">
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">
                 Security (CC Series) &mdash; Required
               </p>
@@ -313,7 +313,7 @@ export default function Soc2ForStartups() {
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Availability (A Series)</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Ensures the system is available for operation as committed. This is about
@@ -326,7 +326,7 @@ export default function Soc2ForStartups() {
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Processing Integrity (PI Series)</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 System processing is complete, valid, accurate, and authorized. Relevant if
@@ -339,7 +339,7 @@ export default function Soc2ForStartups() {
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Confidentiality (C Series)</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Protects information designated as confidential. This covers trade secrets,
@@ -353,7 +353,7 @@ export default function Soc2ForStartups() {
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Privacy (P Series)</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Covers the collection, use, retention, disclosure, and disposal of personal
@@ -368,7 +368,7 @@ export default function Soc2ForStartups() {
             </div>
           </div>
 
-          <div className="bg-surface-secondary rounded-2xl p-6 mb-8 border-l-4 border-brand">
+          <div className="bg-surface-secondary rounded-lg p-6 mb-8 border-l-4 border-brand">
             <p className="text-sm text-ink-secondary leading-relaxed">
               <strong>Startup tip:</strong> Most early-stage SaaS companies start with
               Security + Availability. Only add Processing Integrity, Confidentiality, or
@@ -555,7 +555,7 @@ Generating documents...
           </p>
 
           <div className="space-y-4 mb-8">
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Authentication &amp; Access</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Scans for auth libraries (Auth0, Clerk, NextAuth, Passport), MFA
@@ -564,7 +564,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Encryption &amp; Data Protection</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Detects TLS configuration, database encryption settings, key management
@@ -573,7 +573,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">CI/CD &amp; Change Management</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Analyzes GitHub Actions, GitLab CI, and other pipeline configurations for
@@ -582,7 +582,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Logging &amp; Monitoring</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Identifies logging libraries (Winston, Pino, Bunyan), error tracking
@@ -591,7 +591,7 @@ Generating documents...
               </p>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2">Infrastructure &amp; Availability</p>
               <p className="text-sm text-ink-secondary leading-relaxed">
                 Scans Terraform, CloudFormation, and Docker configurations for backup
@@ -627,7 +627,7 @@ Generating documents...
           </p>
 
           <div className="space-y-6 mb-8">
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2 text-brand">
                 Week 1: Baseline scan &amp; gap analysis
               </p>
@@ -642,7 +642,7 @@ Generating documents...
               </ul>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2 text-brand">
                 Week 2: Close critical gaps
               </p>
@@ -655,7 +655,7 @@ Generating documents...
               </ul>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2 text-brand">
                 Week 3: Policy review &amp; team alignment
               </p>
@@ -669,7 +669,7 @@ Generating documents...
               </ul>
             </div>
 
-            <div className="bg-surface-secondary rounded-2xl p-6">
+            <div className="bg-surface-secondary rounded-lg p-6">
               <p className="font-semibold mb-2 text-brand">
                 Week 4: Auditor engagement
               </p>
@@ -701,7 +701,7 @@ jobs:
           path: compliance-docs/`}
           </CodeBlock>
 
-          <div className="bg-surface-secondary rounded-2xl p-6 mb-8 border-l-4 border-brand">
+          <div className="bg-surface-secondary rounded-lg p-6 mb-8 border-l-4 border-brand">
             <p className="text-sm text-ink-secondary leading-relaxed">
               <strong>Key insight:</strong> The 30-day timeline works because Codepliant
               automates the most time-consuming part of SOC 2 preparation &mdash;
@@ -725,7 +725,7 @@ jobs:
             One command to start:
           </p>
 
-          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-12">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-12">
             <h3 className="text-xl font-bold mb-3">
               Scan your codebase for SOC 2 readiness
             </h3>
@@ -734,7 +734,7 @@ jobs:
               identifies gaps &mdash; all from your actual code. Free, open source, runs
               locally.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go
             </div>
             <p className="text-xs text-ink-tertiary mt-4">

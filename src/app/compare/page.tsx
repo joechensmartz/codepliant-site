@@ -315,7 +315,7 @@ export default function Compare() {
           <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             Comparison
           </p>
-          <h1 className="text-4xl font-bold tracking-tight mb-6">
+          <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-6)]">
             Codepliant vs Termly vs Iubenda vs Vanta
           </h1>
           <p className="text-lg text-ink-secondary mb-12">
@@ -329,7 +329,7 @@ export default function Compare() {
           {/* Quick summary boxes */}
           <section className="mb-16">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-brand-muted border border-brand/20 rounded-xl p-5">
+              <div className="bg-brand-muted border border-brand/20 rounded-lg p-5">
                 <p className="font-semibold mb-2 text-brand">Codepliant</p>
                 <p className="text-sm text-ink-secondary">
                   Open source CLI. Scans your code, generates 123+ compliance
@@ -337,7 +337,7 @@ export default function Compare() {
                   cloud dependency, no vendor lock-in.
                 </p>
               </div>
-              <div className="bg-surface-secondary rounded-xl p-5">
+              <div className="bg-surface-secondary rounded-lg p-5">
                 <p className="font-semibold mb-2">Termly</p>
                 <p className="text-sm text-ink-secondary">
                   Web-based form wizard for privacy policies and cookie consent.
@@ -345,7 +345,7 @@ export default function Compare() {
                   plans.
                 </p>
               </div>
-              <div className="bg-surface-secondary rounded-xl p-5">
+              <div className="bg-surface-secondary rounded-lg p-5">
                 <p className="font-semibold mb-2">Iubenda</p>
                 <p className="text-sm text-ink-secondary">
                   Integrated compliance suite: cookie banners, privacy policies,
@@ -353,7 +353,7 @@ export default function Compare() {
                   clients. From $29/yr.
                 </p>
               </div>
-              <div className="bg-surface-secondary rounded-xl p-5">
+              <div className="bg-surface-secondary rounded-lg p-5">
                 <p className="font-semibold mb-2">Vanta</p>
                 <p className="text-sm text-ink-secondary">
                   Enterprise GRC platform. 30+ compliance frameworks. 300+
@@ -366,7 +366,7 @@ export default function Compare() {
 
           {/* Key difference */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
               The fundamental difference: code scanning vs form builders vs GRC
               platforms
             </h2>
@@ -410,7 +410,7 @@ export default function Compare() {
           </section>
 
           {/* The gap Codepliant fills */}
-          <section className="mb-16 bg-surface-secondary rounded-2xl p-6 sm:p-8">
+          <section className="mb-16 bg-surface-secondary rounded-lg p-6 sm:p-8">
             <h2 className="text-xl font-bold tracking-tight mb-4">
               The pricing gap Codepliant fills
             </h2>
@@ -418,7 +418,7 @@ export default function Compare() {
               There is a clear gap in the compliance tool market:
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 text-sm">
-              <div className="bg-surface-primary rounded-xl p-4 flex-1 text-center">
+              <div className="bg-surface-primary rounded-lg p-4 flex-1 text-center">
                 <p className="font-semibold mb-1">Form Wizards</p>
                 <p className="text-ink-secondary">
                   Termly at $14-20/mo
@@ -430,7 +430,7 @@ export default function Compare() {
               <div className="text-brand font-bold text-lg hidden sm:block">
                 &larr;
               </div>
-              <div className="bg-brand-muted border border-brand/20 rounded-xl p-4 flex-1 text-center">
+              <div className="bg-brand-muted border border-brand/20 rounded-lg p-4 flex-1 text-center">
                 <p className="font-semibold text-brand mb-1">Codepliant</p>
                 <p className="text-ink-secondary">
                   Free / Pro at $19/mo
@@ -442,7 +442,7 @@ export default function Compare() {
               <div className="text-brand font-bold text-lg hidden sm:block">
                 &rarr;
               </div>
-              <div className="bg-surface-primary rounded-xl p-4 flex-1 text-center">
+              <div className="bg-surface-primary rounded-lg p-4 flex-1 text-center">
                 <p className="font-semibold mb-1">Enterprise GRC</p>
                 <p className="text-ink-secondary">
                   Vanta at $10,000+/yr
@@ -456,7 +456,7 @@ export default function Compare() {
 
           {/* Feature comparison table */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
               Feature-by-feature comparison
             </h2>
             <div className="overflow-x-auto">
@@ -516,11 +516,11 @@ export default function Compare() {
 
           {/* When to use each */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
               When to use each tool
             </h2>
             <div className="space-y-4">
-              <div className="bg-brand-muted border border-brand/20 rounded-xl p-5">
+              <div className="bg-brand-muted border border-brand/20 rounded-lg p-5">
                 <p className="font-semibold mb-2 text-brand">
                   Use Codepliant when you need
                 </p>
@@ -546,7 +546,7 @@ export default function Compare() {
                   </li>
                 </ul>
               </div>
-              <div className="bg-surface-secondary rounded-xl p-5">
+              <div className="bg-surface-secondary rounded-lg p-5">
                 <p className="font-semibold mb-2">
                   Use Termly when you need
                 </p>
@@ -567,7 +567,7 @@ export default function Compare() {
                   </li>
                 </ul>
               </div>
-              <div className="bg-surface-secondary rounded-xl p-5">
+              <div className="bg-surface-secondary rounded-lg p-5">
                 <p className="font-semibold mb-2">
                   Use Iubenda when you need
                 </p>
@@ -585,7 +585,7 @@ export default function Compare() {
                   <li>Internal privacy management for non-technical teams</li>
                 </ul>
               </div>
-              <div className="bg-surface-secondary rounded-xl p-5">
+              <div className="bg-surface-secondary rounded-lg p-5">
                 <p className="font-semibold mb-2">
                   Use Vanta when you need
                 </p>
@@ -608,7 +608,7 @@ export default function Compare() {
                   </li>
                 </ul>
               </div>
-              <div className="bg-surface-tertiary rounded-xl p-5">
+              <div className="bg-surface-tertiary rounded-lg p-5">
                 <p className="font-semibold mb-2">
                   Use Codepliant + Termly/Iubenda together when you need
                 </p>
@@ -632,7 +632,7 @@ export default function Compare() {
 
           {/* Codepliant advantages deep dive */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
               Why developers choose Codepliant
             </h2>
             <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
@@ -707,7 +707,7 @@ export default function Compare() {
 
           {/* Pricing comparison */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
               Pricing comparison
             </h2>
             <div className="space-y-4">
@@ -741,8 +741,8 @@ export default function Compare() {
                   key={item.tool}
                   className={
                     item.highlight
-                      ? "bg-brand-muted border border-brand/20 rounded-xl p-5"
-                      : "bg-surface-secondary rounded-xl p-5"
+                      ? "bg-brand-muted border border-brand/20 rounded-lg p-5"
+                      : "bg-surface-secondary rounded-lg p-5"
                   }
                 >
                   <p className="font-semibold mb-2">{item.tool}</p>
@@ -760,7 +760,7 @@ export default function Compare() {
           </section>
 
           {/* CTA */}
-          <section className="bg-brand-muted border border-brand/20 rounded-2xl p-8 text-center mb-16">
+          <section className="bg-brand-muted border border-brand/20 rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Try Codepliant on your codebase
             </h2>
@@ -769,7 +769,7 @@ export default function Compare() {
               code and generate compliance documents. See what Codepliant
               detects that questionnaires miss.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-6">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block mb-6">
               npx codepliant go
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
@@ -802,7 +802,7 @@ export default function Compare() {
 
           {/* FAQ */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-8">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-8)]">
               Frequently asked questions
             </h2>
             <div className="space-y-6">
@@ -819,7 +819,7 @@ export default function Compare() {
 
           {/* Related pages */}
           <section>
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
               Explore compliance frameworks
             </h2>
             <div className="space-y-3">
@@ -858,7 +858,7 @@ export default function Compare() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-lg p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <p className="font-semibold mb-1 text-sm">{link.title}</p>
                   <p className="text-xs text-ink-secondary">{link.desc}</p>
