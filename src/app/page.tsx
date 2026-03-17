@@ -255,34 +255,15 @@ export default function Home() {
       <section className="py-[var(--space-12)] px-[var(--space-6)] border-y border-border-subtle">
         <div className="max-w-[720px] mx-auto">
           <div className="flex flex-wrap justify-center gap-x-[var(--space-8)] gap-y-[var(--space-4)] mb-[var(--space-8)]">
-            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
-                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Zero network calls
-            </div>
-            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
-                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              MIT Licensed
-            </div>
-            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
-                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              No runtime dependencies
-            </div>
-            <div className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
-                <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              1,200+ repos tested
-            </div>
+            {["Zero network calls", "MIT Licensed", "No runtime dependencies", "1,200+ repos tested"].map((label) => (
+              <div key={label} className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
+                  <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
+                  <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                {label}
+              </div>
+            ))}
           </div>
           <div className="flex flex-wrap justify-center gap-x-[var(--space-12)] gap-y-[var(--space-6)]">
             <div className="text-center">
@@ -305,29 +286,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Social proof / credibility */}
+      {/* Ecosystems & credibility */}
       <section className="py-[var(--space-20)] px-[var(--space-6)]">
         <div className="max-w-[720px] mx-auto">
-          {/* Key stats grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-6)] mb-[var(--space-12)]">
-            <div className="text-center">
-              <span className="font-display text-[length:var(--text-2xl)] font-bold block">1,367</span>
-              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">tests passing</span>
-            </div>
-            <div className="text-center">
-              <span className="font-display text-[length:var(--text-2xl)] font-bold block">1,200+</span>
-              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">repos scanned</span>
-            </div>
-            <div className="text-center">
-              <span className="font-display text-[length:var(--text-2xl)] font-bold block">120+</span>
-              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">documents</span>
-            </div>
-            <div className="text-center">
-              <span className="font-display text-[length:var(--text-2xl)] font-bold block">10+</span>
-              <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">ecosystems</span>
-            </div>
-          </div>
-
           {/* Supported ecosystems */}
           <div className="mb-[var(--space-12)]">
             <p className="text-[length:var(--text-xs)] text-ink-tertiary uppercase tracking-widest font-medium text-center mb-[var(--space-4)]">
@@ -707,7 +668,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
+      <section className="py-[var(--space-24)] px-[var(--space-6)]">
         <div className="max-w-[640px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
             One command. Full compliance.
