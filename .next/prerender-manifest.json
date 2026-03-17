@@ -1,6 +1,35 @@
 {
   "version": 4,
   "routes": {
+    "/sitemap.xml": {
+      "initialHeaders": {
+        "cache-control": "public, max-age=0, must-revalidate",
+        "content-type": "application/xml",
+        "x-next-cache-tags": "_N_T_/layout,_N_T_/sitemap.xml/layout,_N_T_/sitemap.xml/route,_N_T_/sitemap.xml"
+      },
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/sitemap.xml",
+      "dataRoute": null,
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/manifest.webmanifest": {
       "initialHeaders": {
         "cache-control": "public, max-age=0, must-revalidate",
@@ -59,12 +88,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/sitemap.xml": {
-      "initialHeaders": {
-        "cache-control": "public, max-age=0, must-revalidate",
-        "content-type": "application/xml",
-        "x-next-cache-tags": "_N_T_/layout,_N_T_/sitemap.xml/layout,_N_T_/sitemap.xml/route,_N_T_/sitemap.xml"
-      },
+    "/blog/eu-ai-act-deadline": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -77,8 +101,104 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/sitemap.xml",
-      "dataRoute": null,
+      "srcRoute": "/blog/eu-ai-act-deadline",
+      "dataRoute": "/blog/eu-ai-act-deadline.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/blog/generate-privacy-policy-from-code": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/blog/generate-privacy-policy-from-code",
+      "dataRoute": "/blog/generate-privacy-policy-from-code.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/about": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/about",
+      "dataRoute": "/about.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/changelog": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/changelog",
+      "dataRoute": "/changelog.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/blog/hipaa-for-developers": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/blog/hipaa-for-developers",
+      "dataRoute": "/blog/hipaa-for-developers.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -113,102 +233,6 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/ai-disclosure-generator": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/ai-disclosure-generator",
-      "dataRoute": "/ai-disclosure-generator.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/blog/gdpr-for-developers": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/gdpr-for-developers",
-      "dataRoute": "/blog/gdpr-for-developers.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/blog/colorado-ai-act": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/colorado-ai-act",
-      "dataRoute": "/blog/colorado-ai-act.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/changelog": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/changelog",
-      "dataRoute": "/changelog.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
     "/blog/soc2-for-startups": {
       "experimentalBypassFor": [
         {
@@ -233,7 +257,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/generate-privacy-policy-from-code": {
+    "/data-privacy": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -246,8 +270,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/generate-privacy-policy-from-code",
-      "dataRoute": "/blog/generate-privacy-policy-from-code.rsc",
+      "srcRoute": "/data-privacy",
+      "dataRoute": "/data-privacy.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -305,7 +329,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/data-privacy": {
+    "/ai-governance": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -318,8 +342,32 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/data-privacy",
-      "dataRoute": "/data-privacy.rsc",
+      "srcRoute": "/ai-governance",
+      "dataRoute": "/ai-governance.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/blog": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/blog",
+      "dataRoute": "/blog.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -353,54 +401,6 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/privacy-policy-for-saas": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/privacy-policy-for-saas",
-      "dataRoute": "/blog/privacy-policy-for-saas.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/ai-governance": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/ai-governance",
-      "dataRoute": "/ai-governance.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
     "/pricing": {
       "experimentalBypassFor": [
         {
@@ -425,30 +425,6 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/privacy-policy-generator": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/privacy-policy-generator",
-      "dataRoute": "/privacy-policy-generator.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
     "/": {
       "experimentalBypassFor": [
         {
@@ -464,6 +440,30 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/",
       "dataRoute": "/index.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/ai-disclosure-generator": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/ai-disclosure-generator",
+      "dataRoute": "/ai-disclosure-generator.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -521,6 +521,30 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/docs": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/docs",
+      "dataRoute": "/docs.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/soc2-compliance": {
       "experimentalBypassFor": [
         {
@@ -545,7 +569,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/eu-ai-act-deadline": {
+    "/privacy-policy-generator": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -558,8 +582,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/eu-ai-act-deadline",
-      "dataRoute": "/blog/eu-ai-act-deadline.rsc",
+      "srcRoute": "/privacy-policy-generator",
+      "dataRoute": "/privacy-policy-generator.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -569,7 +593,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/about": {
+    "/blog/privacy-policy-for-saas": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -582,8 +606,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/about",
-      "dataRoute": "/about.rsc",
+      "srcRoute": "/blog/privacy-policy-for-saas",
+      "dataRoute": "/blog/privacy-policy-for-saas.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -593,7 +617,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog": {
+    "/blog/gdpr-for-developers": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -606,8 +630,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog",
-      "dataRoute": "/blog.rsc",
+      "srcRoute": "/blog/gdpr-for-developers",
+      "dataRoute": "/blog/gdpr-for-developers.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -617,7 +641,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/blog/hipaa-for-developers": {
+    "/blog/colorado-ai-act": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -630,32 +654,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/blog/hipaa-for-developers",
-      "dataRoute": "/blog/hipaa-for-developers.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/docs": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/docs",
-      "dataRoute": "/docs.rsc",
+      "srcRoute": "/blog/colorado-ai-act",
+      "dataRoute": "/blog/colorado-ai-act.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
