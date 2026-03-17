@@ -69,7 +69,7 @@ const releases: Release[] = [
     date: "Coming soon",
     tag: "Upcoming",
     summary:
-      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, --dry-run preview, and 3,496 tests across 13 ecosystems.",
+      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, --dry-run preview, and 3,581 tests across 13 ecosystems.",
     changes: [
       {
         category: "new",
@@ -145,7 +145,7 @@ const releases: Release[] = [
       },
       {
         category: "tests",
-        text: "Test suite expanded from 763 to 3,496 tests (358% increase) with 100% scanner coverage and 63 generator test suites",
+        text: "Test suite expanded from 763 to 3,581 tests (370% increase) with 100% scanner coverage and 66 generator test suites",
       },
     ],
   },

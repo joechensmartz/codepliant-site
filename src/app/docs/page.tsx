@@ -47,6 +47,7 @@ function techArticleJsonLd() {
     about: {
       "@type": "SoftwareApplication",
       name: "Codepliant",
+      version: "1.1.0",
       applicationCategory: "DeveloperApplication",
     },
   };
