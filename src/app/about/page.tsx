@@ -164,7 +164,7 @@ export default function About() {
               generators, ecosystem support, documentation, and bug reports.
             </p>
             <a
-              href="https://github.com/codepliant/codepliant"
+              href="https://github.com/joechensmartz/codepliant"
               className="inline-flex items-center gap-2 bg-brand hover:bg-brand-hover text-white px-6 py-3 rounded-lg text-sm font-medium transition-colors duration-150"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
               target="_blank"

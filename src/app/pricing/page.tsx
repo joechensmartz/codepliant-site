@@ -29,7 +29,7 @@ const plans = [
     period: "forever",
     desc: "For individual developers and open source projects.",
     features: [
-      "All 25+ document types",
+      "All 35+ document types",
       "10+ ecosystem support",
       "8 ORM scanners",
       "Markdown output",
@@ -39,7 +39,7 @@ const plans = [
       "Community support",
     ],
     cta: "Get started",
-    href: "https://github.com/codepliant/codepliant",
+    href: "https://github.com/joechensmartz/codepliant",
     primary: false,
   },
   {
@@ -86,7 +86,7 @@ const faqs = [
   {
     question: "Can I use Codepliant for free?",
     answer:
-      "Yes. The CLI is free and open source under the MIT license. You get all 25+ document types, all ecosystems, and Markdown output at no cost. The Pro and Team plans add output formats, branding, and collaboration features.",
+      "Yes. The CLI is free and open source under the MIT license. You get all 35+ document types, all ecosystems, and Markdown output at no cost. The Pro and Team plans add output formats, branding, and collaboration features.",
   },
   {
     question: "Is there a free trial for Pro?",

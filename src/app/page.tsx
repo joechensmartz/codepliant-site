@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Codepliant — Compliance Documents from Your Code",
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 25+ compliance documents. One command. 97.8% precision.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 35+ compliance documents. One command. 97.8% precision.",
   alternates: { canonical: "https://codepliant.dev" },
 };
 
@@ -15,18 +15,14 @@ function jsonLd() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
-      "Open source CLI that scans your codebase and generates 25+ compliance documents automatically.",
+      "Open source CLI that scans your codebase and generates 35+ compliance documents automatically.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
       { "@type": "Offer", price: "29", priceCurrency: "USD", name: "Pro" },
       { "@type": "Offer", price: "79", priceCurrency: "USD", name: "Team" },
     ],
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      ratingCount: "100",
-      bestRating: "5",
-    },
+    url: "https://github.com/joechensmartz/codepliant",
+    downloadUrl: "https://www.npmjs.com/package/codepliant",
   };
 }
 
@@ -131,7 +127,7 @@ const plans = [
       "Open source",
     ],
     cta: "Install the CLI",
-    href: "https://github.com/codepliant/codepliant",
+    href: "https://github.com/joechensmartz/codepliant",
     primary: false,
   },
   {
@@ -168,9 +164,9 @@ const plans = [
 
 function getAiActCountdown() {
   const deadline = new Date("2026-08-02T00:00:00Z");
-  const now = new Date("2026-03-15T00:00:00Z");
+  const now = new Date();
   const diff = deadline.getTime() - now.getTime();
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
 
 export default function Home() {
@@ -211,11 +207,23 @@ export default function Home() {
               npx codepliant go
             </code>
             <a
-              href="https://github.com/codepliant/codepliant"
+              href="https://github.com/joechensmartz/codepliant"
               className="inline-flex items-center gap-[var(--space-2)] bg-brand hover:bg-brand-hover text-surface-primary px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >
               View on GitHub
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+            <a
+              href="https://www.npmjs.com/package/codepliant"
+              className="inline-flex items-center gap-[var(--space-2)] text-brand hover:text-brand-hover px-[var(--space-2)] py-[var(--space-3)] text-[length:var(--text-sm)] font-medium transition-colors duration-150"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              npm package
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -236,7 +244,7 @@ export default function Home() {
             <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
           </div>
           <div>
-            <span className="font-display text-[length:var(--text-xl)] font-bold">626</span>
+            <span className="font-display text-[length:var(--text-xl)] font-bold">763</span>
             <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
           </div>
           <div>
@@ -494,7 +502,7 @@ export default function Home() {
               npx codepliant go
             </code>
             <a
-              href="https://github.com/codepliant/codepliant"
+              href="https://github.com/joechensmartz/codepliant"
               className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150 py-[var(--space-3)]"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >

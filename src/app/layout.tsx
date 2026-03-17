@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Codepliant",
   },
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 25+ compliance documents automatically. 97.8% precision. Open source.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 35+ compliance documents automatically. 97.8% precision. Open source.",
   metadataBase: new URL("https://codepliant.dev"),
   openGraph: {
     type: "website",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "Codepliant",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
-      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 25+ compliance documents automatically.",
+      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 35+ compliance documents automatically.",
     images: [
       {
         url: "/og-image.png",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
-      "Scan your codebase and generate 25+ compliance documents. One command. 97.8% precision.",
+      "Scan your codebase and generate 35+ compliance documents. One command. 97.8% precision.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -101,7 +101,7 @@ function Header() {
             About
           </a>
           <a
-            href="https://github.com/codepliant/codepliant"
+            href="https://github.com/joechensmartz/codepliant"
             className="hover:text-ink transition-colors duration-150"
             style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             target="_blank"
@@ -147,7 +147,7 @@ function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/codepliant/codepliant"
+                  href="https://github.com/joechensmartz/codepliant"
                   className="hover:text-ink transition-colors duration-150"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -242,6 +242,20 @@ function Footer() {
   );
 }
 
+function organizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Codepliant",
+    url: "https://codepliant.dev",
+    logo: "https://codepliant.dev/og-image.png",
+    sameAs: [
+      "https://github.com/joechensmartz/codepliant",
+      "https://www.npmjs.com/package/codepliant",
+    ],
+  };
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -250,6 +264,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} ${sourceSans.variable}`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
         <Header />
         <main>{children}</main>
         <Footer />
