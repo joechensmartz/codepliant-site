@@ -52,7 +52,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - next build passes (29 static pages, 0 errors)
 - No accessibility regressions detected
 
+## Website QA
+
+### 2026-03-17 — Iteration 41 (sanity check: all pages 200)
+- All 23 pages return HTTP 200:
+  - `/` (home), `/about`, `/pricing`, `/docs`, `/blog`, `/changelog`, `/compare`
+  - `/ai-disclosure-generator`, `/ai-governance`, `/cookie-policy-generator`
+  - `/data-privacy`, `/gdpr-compliance`, `/hipaa-compliance`
+  - `/privacy-policy-generator`, `/soc2-compliance`, `/terms-of-service-generator`
+  - 7 blog posts: `colorado-ai-act`, `eu-ai-act-deadline`, `gdpr-for-developers`, `generate-privacy-policy-from-code`, `hipaa-for-developers`, `privacy-policy-for-saas`, `soc2-for-startups`
+- `/nonexistent-page` correctly returns 404
+- `/sitemap.xml` returns 200
+- `/robots.txt` returns 200
+- No issues found — site is healthy
+
 ## Website Updates
+
+### 2026-03-17 — Iteration 41
+- Synced test count from 5,386 to 5,457 across landing page, about page, and changelog
+- Updated generator coverage from 105 to 108 test suites (78.3% of 138 generators)
+- Updated percentage increase from 606% to 615% in changelog
+- `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
 
 ### 2026-03-17 — Iteration 40
 - Synced test count from 5,218 to 5,386 across landing page, about page, and changelog
