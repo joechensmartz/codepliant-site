@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "AI Governance Framework for SaaS | Codepliant",
   description:
-    "Automate AI governance documentation by scanning your codebase. Detect AI services, classify EU AI Act risk levels, and generate NIST AI RMF-aligned governance frameworks. Free, open source CLI.",
+    "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI.",
   keywords: [
     "AI governance",
     "AI governance framework",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Governance Framework for SaaS",
     description:
-      "Scan your codebase to detect AI services, classify risk levels, and generate AI governance documentation aligned with the EU AI Act and NIST AI RMF. Free, open source.",
+      "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI.",
     url: "https://codepliant.dev/ai-governance",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

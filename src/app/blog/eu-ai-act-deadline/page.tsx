@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "EU AI Act: What Developers Need to Know Before August 2, 2026",
   description:
-    "Comprehensive developer guide to the EU AI Act deadline on August 2, 2026. Risk classifications, Article 50 transparency obligations, code examples for detecting AI services, and practical compliance steps for SaaS engineering teams.",
+    "Developer guide to the EU AI Act deadline on August 2, 2026. Covers risk classifications, Article 50 transparency obligations, and practical compliance steps.",
   alternates: {
     canonical: "https://codepliant.dev/blog/eu-ai-act-deadline",
   },
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "EU AI Act: What Developers Need to Know Before August 2, 2026",
     description:
-      "The EU AI Act deadline is approaching. This developer guide covers risk classifications, transparency obligations, code examples, and practical compliance steps.",
+      "Developer guide to the EU AI Act deadline on August 2, 2026. Covers risk classifications, Article 50 transparency obligations, and practical compliance steps.",
     url: "https://codepliant.dev/blog/eu-ai-act-deadline",
     type: "article",
     publishedTime: "2026-03-15T00:00:00Z",

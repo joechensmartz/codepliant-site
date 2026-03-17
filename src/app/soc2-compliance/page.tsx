@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "SOC 2 Compliance Tool for Startups | Automate Audit Readiness",
   description:
-    "Automate SOC 2 readiness with Codepliant. Scan your codebase to generate SOC 2 checklists, control mappings, and evidence documentation. Covers all 5 Trust Service Criteria. Free, open source, built for startups.",
+    "SOC 2 compliance tool for startups. Scan your codebase to generate readiness checklists, control mappings, and evidence docs. All 5 Trust Service Criteria.",
   keywords: [
     "SOC 2 compliance",
     "SOC 2 audit",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SOC 2 Compliance Tool for Startups",
     description:
-      "Automate SOC 2 readiness checklists and control mappings from your codebase. Covers all 5 Trust Service Criteria. Free and open source.",
+      "SOC 2 compliance tool for startups. Scan your codebase to generate readiness checklists, control mappings, and evidence docs. All 5 Trust Service Criteria.",
     url: "https://codepliant.dev/soc2-compliance",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

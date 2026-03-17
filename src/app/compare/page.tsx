@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Codepliant vs Termly vs Iubenda vs Vanta — Compliance Tool Comparison",
   description:
-    "Compare Codepliant, Termly, Iubenda, and Vanta for compliance documentation. See how code-based scanning compares to form builders, cookie consent platforms, and enterprise GRC tools for privacy policies, GDPR, SOC 2, HIPAA, and AI compliance.",
+    "Compare Codepliant vs Termly, Iubenda, and Vanta. See how code-based scanning beats form builders for privacy policies, GDPR, SOC 2, and AI compliance.",
   keywords:
     "codepliant vs termly, codepliant vs iubenda, codepliant vs vanta, compliance tool comparison, privacy policy generator, GDPR compliance tool, SOC 2 compliance tool, code scanning compliance, developer compliance tool",
   alternates: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Codepliant vs Termly vs Iubenda vs Vanta — Compliance Tool Comparison",
     description:
-      "Side-by-side comparison of Codepliant, Termly, Iubenda, and Vanta. Code scanning vs form builders vs enterprise GRC for compliance documentation.",
+      "Compare Codepliant vs Termly, Iubenda, and Vanta. See how code-based scanning beats form builders for privacy policies, GDPR, SOC 2, and AI compliance.",
     url: "https://codepliant.dev/compare",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

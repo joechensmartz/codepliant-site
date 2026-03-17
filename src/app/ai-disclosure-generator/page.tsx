@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     "AI Disclosure Generator | EU AI Act Article 50 Compliance | Codepliant",
   description:
-    "AI disclosure generator that scans your codebase for AI integrations and generates EU AI Act Article 50 compliant transparency documents. Detect OpenAI, Anthropic, Google AI, Hugging Face, and more. Deadline: August 2, 2026.",
+    "AI disclosure generator for EU AI Act Article 50 compliance. Scans your code to detect AI integrations and generates transparency documents. Deadline: Aug 2026.",
   keywords: [
     "AI disclosure generator",
     "EU AI Act compliance",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Disclosure Generator | EU AI Act Article 50 Compliance",
     description:
-      "Scan your codebase for AI integrations and generate EU AI Act Article 50 compliant disclosures. Free, open source CLI.",
+      "AI disclosure generator for EU AI Act Article 50 compliance. Scans your code to detect AI integrations and generates transparency documents. Deadline: Aug 2026.",
     url: "https://codepliant.dev/ai-disclosure-generator",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

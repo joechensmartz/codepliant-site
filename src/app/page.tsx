@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Codepliant — Compliance Documents from Your Code",
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 121+ compliance documents. One command. 97.8% precision.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 122+ compliance documents. One command. 97.8% precision.",
   alternates: { canonical: "https://codepliant.dev" },
 };
 
@@ -15,7 +15,7 @@ function jsonLd() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
-      "Open source CLI that scans your codebase and generates 121+ compliance documents automatically.",
+      "Open source CLI that scans your codebase and generates 122+ compliance documents automatically.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
       { "@type": "Offer", price: "19", priceCurrency: "USD", name: "Pro" },
@@ -79,7 +79,7 @@ const steps = [
   {
     num: "03",
     title: "Ship",
-    code: "121+ documents generated",
+    code: "122+ documents generated",
     detail:
       "Privacy policy, terms of service, cookie policy, AI disclosure, and more — ready to publish.",
   },
@@ -120,7 +120,7 @@ const plans = [
     price: "$0",
     period: "forever",
     features: [
-      "All 121+ document types",
+      "All 122+ document types",
       "All ecosystems",
       "Markdown output",
       "CLI access",
@@ -199,7 +199,7 @@ export default function Home() {
             style={{ lineHeight: 1.5 }}
           >
             One command scans your codebase and generates privacy policies, terms
-            of service, AI disclosures, and 121+ compliance documents — tailored to
+            of service, AI disclosures, and 122+ compliance documents — tailored to
             what your app actually does.
           </p>
 
@@ -271,31 +271,26 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Detection precision</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">121+</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">122+</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">1,806</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">2,218</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">12</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">13</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Ecosystems</span>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Ecosystems & credibility */}
-      <section className="py-[var(--space-20)] px-[var(--space-6)]">
-        <div className="max-w-[720px] mx-auto">
           {/* Supported ecosystems */}
-          <div className="mb-[var(--space-12)]">
+          <div className="mt-[var(--space-8)]">
             <p className="text-[length:var(--text-xs)] text-ink-tertiary uppercase tracking-widest font-medium text-center mb-[var(--space-4)]">
               Works with your stack
             </p>
             <div className="flex flex-wrap justify-center gap-[var(--space-3)]">
-              {["TypeScript", "Python", "Go", "Ruby", "Rust", "Java", "PHP", "Swift", "Kotlin", "Terraform"].map(
+              {["TypeScript", "Python", "Go", "Ruby", "Rust", "Java", "PHP", ".NET", "Swift", "Kotlin", "Elixir", "Terraform", "Docker"].map(
                 (eco) => (
                   <span
                     key={eco}
@@ -307,15 +302,6 @@ export default function Home() {
               )}
             </div>
           </div>
-
-          {/* Callout quote */}
-          <blockquote className="border-l-2 border-brand pl-[var(--space-6)] py-[var(--space-2)]">
-            <p className="text-[length:var(--text-base)] text-ink leading-relaxed" style={{ fontStyle: "italic" }}>
-              &ldquo;Every document mentions your actual services by name. Not
-              &lsquo;third-party analytics&rsquo; — it says PostHog because it
-              found PostHog in your code.&rdquo;
-            </p>
-          </blockquote>
         </div>
       </section>
 
@@ -493,8 +479,40 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Real project evidence */}
+      {/* EU AI Act deadline */}
       <section className="py-[var(--space-24)] px-[var(--space-6)]">
+        <div className="max-w-[640px] mx-auto">
+          <div
+            className="bg-urgency-muted text-urgency px-[var(--space-4)] py-[var(--space-2)] rounded-md text-[length:var(--text-xs)] font-semibold uppercase tracking-wider inline-block mb-[var(--space-6)]"
+          >
+            EU AI Act deadline
+          </div>
+          <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
+            Article 50 transparency obligations take effect August 2, 2026
+          </h2>
+          <p className="font-display text-[length:var(--text-2xl)] font-bold text-urgency mb-[var(--space-1)]">
+            {daysLeft} days remaining
+          </p>
+          <p className="text-[length:var(--text-sm)] text-ink-secondary max-w-[50ch] mb-[var(--space-6)]">
+            If your application uses AI, you must disclose it to users.
+            Codepliant generates EU AI Act compliant disclosures from your
+            codebase automatically.
+          </p>
+          <a
+            href="/ai-disclosure-generator"
+            className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150"
+            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+          >
+            Learn about AI disclosure requirements
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      {/* Real project evidence */}
+      <section className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
         <div className="max-w-[640px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
             Tested on real projects
@@ -502,10 +520,10 @@ export default function Home() {
           <p className="text-ink-secondary text-[length:var(--text-base)] mb-[var(--space-8)]">
             We ran Codepliant against popular open source codebases.
           </p>
-          <div className="border border-border-subtle rounded-lg overflow-hidden">
+          <div className="border border-border-subtle rounded-lg overflow-hidden mb-[var(--space-12)]">
             <table className="w-full text-[length:var(--text-sm)]">
               <thead>
-                <tr className="bg-surface-secondary text-left">
+                <tr className="bg-surface-primary text-left">
                   <th className="font-medium text-ink-tertiary px-[var(--space-4)] py-[var(--space-3)]">
                     Project
                   </th>
@@ -534,11 +552,37 @@ export default function Home() {
               </tbody>
             </table>
           </div>
+
+          {/* Testimonials — consolidated into evidence section */}
+          <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
+            What developers are saying
+          </h2>
+          <p className="text-ink-secondary text-[length:var(--text-base)] mb-[var(--space-8)]">
+            Teams of all sizes use Codepliant to ship compliant software faster.
+          </p>
+          <div className="space-y-[var(--space-6)]">
+            {testimonials.map((t) => (
+              <blockquote
+                key={t.name}
+                className="bg-surface-primary border border-border-subtle rounded-lg p-[var(--space-6)]"
+              >
+                <p className="text-[length:var(--text-sm)] text-ink leading-relaxed mb-[var(--space-4)]">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <footer className="text-[length:var(--text-sm)]">
+                  <span className="font-medium text-ink">{t.name}</span>
+                  <span className="text-ink-tertiary ml-[var(--space-2)]">
+                    {t.role}
+                  </span>
+                </footer>
+              </blockquote>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Pricing */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary" id="pricing">
+      <section className="py-[var(--space-24)] px-[var(--space-6)]" id="pricing">
         <div className="max-w-[800px] mx-auto">
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-12)] text-center">
             Pricing
@@ -600,68 +644,6 @@ export default function Home() {
                   {plan.cta}
                 </a>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* EU AI Act deadline */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)]">
-        <div className="max-w-[640px] mx-auto">
-          <div
-            className="bg-urgency-muted text-urgency px-[var(--space-4)] py-[var(--space-2)] rounded-md text-[length:var(--text-xs)] font-semibold uppercase tracking-wider inline-block mb-[var(--space-6)]"
-          >
-            EU AI Act deadline
-          </div>
-          <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
-            Article 50 transparency obligations take effect August 2, 2026
-          </h2>
-          <p className="font-display text-[length:var(--text-2xl)] font-bold text-urgency mb-[var(--space-1)]">
-            {daysLeft} days remaining
-          </p>
-          <p className="text-[length:var(--text-sm)] text-ink-secondary max-w-[50ch] mb-[var(--space-6)]">
-            If your application uses AI, you must disclose it to users.
-            Codepliant generates EU AI Act compliant disclosures from your
-            codebase automatically.
-          </p>
-          <a
-            href="/ai-disclosure-generator"
-            className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150"
-            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-          >
-            Learn about AI disclosure requirements
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-        </div>
-      </section>
-
-      {/* Social proof */}
-      <section className="py-[var(--space-24)] px-[var(--space-6)] bg-surface-secondary">
-        <div className="max-w-[640px] mx-auto">
-          <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
-            What developers are saying
-          </h2>
-          <p className="text-ink-secondary text-[length:var(--text-base)] mb-[var(--space-8)]">
-            Teams of all sizes use Codepliant to ship compliant software faster.
-          </p>
-          <div className="space-y-[var(--space-6)]">
-            {testimonials.map((t) => (
-              <blockquote
-                key={t.name}
-                className="bg-surface-primary border border-border-subtle rounded-lg p-[var(--space-6)]"
-              >
-                <p className="text-[length:var(--text-sm)] text-ink leading-relaxed mb-[var(--space-4)]">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <footer className="text-[length:var(--text-sm)]">
-                  <span className="font-medium text-ink">{t.name}</span>
-                  <span className="text-ink-tertiary ml-[var(--space-2)]">
-                    {t.role}
-                  </span>
-                </footer>
-              </blockquote>
             ))}
           </div>
         </div>

@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     "Cookie Policy Generator for Developers | Generate from Code | Codepliant",
   description:
-    "Generate a cookie policy by scanning your codebase. Codepliant detects cookies, tracking scripts, analytics SDKs, and session storage to produce an accurate cookie policy compliant with the ePrivacy Directive and GDPR.",
+    "Cookie policy generator that scans your code to detect tracking scripts, analytics SDKs, and session cookies. GDPR and ePrivacy compliant. Free CLI.",
   keywords: [
     "cookie policy generator",
     "cookie policy generator for developers",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cookie Policy Generator for Developers",
     description:
-      "Generate cookie policies from your actual codebase. Detect tracking, analytics, session cookies, and third-party scripts automatically. Free, open source.",
+      "Cookie policy generator that scans your code to detect tracking scripts, analytics SDKs, and session cookies. GDPR and ePrivacy compliant. Free CLI.",
     url: "https://codepliant.dev/cookie-policy-generator",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

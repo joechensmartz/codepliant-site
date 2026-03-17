@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Codepliant. Every developer should have access to accurate compliance documents without paying thousands for lawyers.",
+    "Codepliant is an open source CLI that scans your code and generates compliance documents. No lawyers, no questionnaires, no network calls.",
   alternates: {
     canonical: "https://codepliant.dev/about",
   },
   openGraph: {
     title: "About | Codepliant",
     description:
-      "Open source compliance tooling built on code scanning, not questionnaires. Zero network calls, deterministic, MIT licensed.",
+      "Codepliant is an open source CLI that scans your code and generates compliance documents. No lawyers, no questionnaires, no network calls.",
     url: "https://codepliant.dev/about",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

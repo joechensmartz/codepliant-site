@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     "Terms of Service Generator for SaaS | Generate from Code | Codepliant",
   description:
-    "The terms of service generator for SaaS that scans your actual codebase. Detects payment processing, user accounts, AI features, and third-party integrations to generate accurate ToS with limitation of liability, arbitration, IP, and termination clauses. Free, open source CLI.",
+    "Terms of service generator for SaaS apps. Scans your code to detect payments, auth, and AI, then generates ToS with liability and IP clauses. Free CLI.",
   keywords: [
     "terms of service generator",
     "terms of service generator for SaaS",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Terms of Service Generator for SaaS",
     description:
-      "Generate terms of service from your actual codebase. Detects services, generates key clauses, covers SaaS-specific requirements. Free, open source.",
+      "Terms of service generator for SaaS apps. Scans your code to detect payments, auth, and AI, then generates ToS with liability and IP clauses. Free CLI.",
     url: "https://codepliant.dev/terms-of-service-generator",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

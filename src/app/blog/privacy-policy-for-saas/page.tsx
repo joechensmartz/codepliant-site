@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     "How to Write a Privacy Policy for Your SaaS App in 2026",
   description:
-    "Step-by-step guide to writing a privacy policy for SaaS applications. Covers GDPR Article 13 checklist, CCPA, data collection disclosures, third-party services, code examples with Codepliant, and a practical SaaS privacy policy template you can adapt.",
+    "How to write a SaaS privacy policy in 2026. Covers GDPR Article 13, CCPA requirements, data collection disclosures, and a practical template you can adapt.",
   alternates: {
     canonical: "https://codepliant.dev/blog/privacy-policy-for-saas",
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "How to Write a Privacy Policy for Your SaaS App in 2026",
     description:
-      "Practical guide to creating a legally compliant privacy policy for your SaaS product. Includes GDPR Article 13 checklist, code examples, and templates.",
+      "How to write a SaaS privacy policy in 2026. Covers GDPR Article 13, CCPA requirements, data collection disclosures, and a practical template you can adapt.",
     url: "https://codepliant.dev/blog/privacy-policy-for-saas",
     type: "article",
     publishedTime: "2026-03-16T00:00:00Z",

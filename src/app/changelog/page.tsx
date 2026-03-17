@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Changelog",
   description:
-    "Codepliant changelog. See what's new in each release — features, fixes, and improvements.",
+    "Codepliant changelog and version history. Track new compliance document types, ecosystem scanners, CLI features, and fixes across every release.",
   alternates: {
     canonical: "https://codepliant.dev/changelog",
   },
   openGraph: {
     title: "Changelog | Codepliant",
     description:
-      "Version history for Codepliant. New features, bug fixes, and improvements.",
+      "Codepliant changelog and version history. Track new compliance document types, ecosystem scanners, CLI features, and fixes across every release.",
     url: "https://codepliant.dev/changelog",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

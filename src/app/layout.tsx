@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Codepliant",
   },
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 121+ compliance documents automatically. 97.8% precision. Open source.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 122+ compliance documents automatically. 97.8% precision. Open source.",
   metadataBase: new URL("https://codepliant.dev"),
   openGraph: {
     type: "website",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "Codepliant",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
-      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 121+ compliance documents automatically.",
+      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 122+ compliance documents automatically.",
     images: [
       {
         url: "/og-image.png",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
-      "Scan your codebase and generate 121+ compliance documents. One command. 97.8% precision.",
+      "Scan your codebase and generate 122+ compliance documents. One command. 97.8% precision.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -253,7 +253,7 @@ function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Codepliant",
-    description: "Open-source CLI that scans codebases and generates compliance documents — privacy policies, terms of service, AI disclosures, and 121+ document types.",
+    description: "Open-source CLI that scans codebases and generates compliance documents — privacy policies, terms of service, AI disclosures, and 122+ document types.",
     url: "https://codepliant.dev",
     logo: "https://codepliant.dev/og-image.png",
     sameAs: [

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "GDPR Compliance Tool for Developers | Codepliant",
   description:
-    "Automate GDPR compliance documentation by scanning your codebase. Detect personal data processing, generate privacy policies, DPAs, DSAR guides, DPIAs, and data flow maps. Free, open source CLI.",
+    "Automate GDPR compliance by scanning your codebase. Generate privacy policies, DPAs, DSAR guides, and data flow maps from your actual code. Free CLI.",
   keywords: [
     "GDPR compliance tool",
     "GDPR for developers",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "GDPR Compliance Tool for Developers",
     description:
-      "Scan your codebase to detect personal data processing and generate GDPR compliance documentation automatically. Free, open source.",
+      "Automate GDPR compliance by scanning your codebase. Generate privacy policies, DPAs, DSAR guides, and data flow maps from your actual code. Free CLI.",
     url: "https://codepliant.dev/gdpr-compliance",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

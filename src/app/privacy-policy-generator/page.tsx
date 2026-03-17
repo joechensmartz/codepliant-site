@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     "Privacy Policy Generator for Developers | Generate from Code | Codepliant",
   description:
-    "The privacy policy generator for developers that scans your actual codebase. Detects data collection, third-party services, analytics, and storage to generate an accurate privacy policy. Free, open source CLI.",
+    "Privacy policy generator that scans your codebase to detect data collection, third-party services, and analytics. Accurate, GDPR-ready output. Free CLI.",
   keywords: [
     "privacy policy generator",
     "privacy policy generator for developers",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Privacy Policy Generator for Developers",
     description:
-      "Generate privacy policies from your actual codebase. Detects data collection, third-party services, and storage practices automatically. Free, open source.",
+      "Privacy policy generator that scans your codebase to detect data collection, third-party services, and analytics. Accurate, GDPR-ready output. Free CLI.",
     url: "https://codepliant.dev/privacy-policy-generator",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

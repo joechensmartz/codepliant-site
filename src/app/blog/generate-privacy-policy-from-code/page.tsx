@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     "How to Generate a Privacy Policy from Your Code in 30 Seconds",
   description:
-    "Generate a privacy policy directly from your codebase in under 30 seconds. Step-by-step tutorial: install Codepliant, scan your project, and get an accurate privacy policy that reflects your actual data practices.",
+    "Generate a privacy policy from your codebase in 30 seconds. Install Codepliant, scan your project, and get a policy based on your actual data practices.",
   alternates: {
     canonical: "https://codepliant.dev/blog/generate-privacy-policy-from-code",
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "How to Generate a Privacy Policy from Your Code in 30 Seconds",
     description:
-      "Stop writing privacy policies by hand. Scan your codebase to detect services, data flows, and integrations, then generate an accurate privacy policy in one command.",
+      "Generate a privacy policy from your codebase in 30 seconds. Install Codepliant, scan your project, and get a policy based on your actual data practices.",
     url: "https://codepliant.dev/blog/generate-privacy-policy-from-code",
     type: "article",
     publishedTime: "2026-03-17T00:00:00Z",

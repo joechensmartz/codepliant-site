@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     "Data Privacy Compliance Tool for Developers | GDPR, CCPA, LGPD, PIPEDA",
   description:
-    "Scan your codebase to detect personal data usage and generate privacy compliance documentation. Covers GDPR, CCPA, LGPD, PIPEDA, DPDP Act, and privacy-by-design principles. Free, open source CLI.",
+    "Detect personal data usage in your code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free, open source CLI.",
   keywords: [
     "data privacy compliance",
     "data privacy tool",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Data Privacy Compliance Tool for Developers",
     description:
-      "Scan your codebase for personal data usage. Generate privacy docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free and open source.",
+      "Detect personal data usage in your code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free, open source CLI.",
     url: "https://codepliant.dev/data-privacy",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },

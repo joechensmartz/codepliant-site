@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
   description:
-    "Developer guide to the Colorado AI Act (SB 24-205). Covers the February 1, 2026 effective date, June 30 impact assessment deadline, high-risk AI system requirements, algorithmic discrimination prevention, NIST AI RMF affirmative defense, and practical compliance steps with code examples.",
+    "Colorado AI Act (SB 24-205) compliance guide for SaaS. Covers deadlines, high-risk AI requirements, impact assessments, and NIST AI RMF affirmative defense.",
   alternates: {
     canonical: "https://codepliant.dev/blog/colorado-ai-act",
   },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
     description:
-      "The Colorado AI Act takes effect February 1, 2026 with a compliance deadline of June 30, 2026. Learn what SaaS companies must do to comply with SB 24-205.",
+      "Colorado AI Act (SB 24-205) compliance guide for SaaS. Covers deadlines, high-risk AI requirements, impact assessments, and NIST AI RMF affirmative defense.",
     url: "https://codepliant.dev/blog/colorado-ai-act",
     type: "article",
     publishedTime: "2026-03-16T00:00:00Z",

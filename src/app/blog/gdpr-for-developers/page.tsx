@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "GDPR Compliance for Developers: A Practical Guide | Codepliant",
   description:
-    "A practical GDPR guide for developers building SaaS applications. Covers data processing, consent, user rights, sub-processors, DPAs, common mistakes, code examples, and actionable steps your engineering team can take today.",
+    "Practical GDPR guide for developers. Covers consent, data subject rights, sub-processors, DPAs, common mistakes, and actionable steps for SaaS teams.",
   alternates: {
     canonical: "https://codepliant.dev/blog/gdpr-for-developers",
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "GDPR Compliance for Developers: A Practical Guide",
     description:
-      "Everything developers need to know about GDPR compliance. Practical, code-focused guidance for SaaS engineering teams.",
+      "Practical GDPR guide for developers. Covers consent, data subject rights, sub-processors, DPAs, common mistakes, and actionable steps for SaaS teams.",
     url: "https://codepliant.dev/blog/gdpr-for-developers",
     type: "article",
     publishedTime: "2026-03-16T00:00:00Z",

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "HIPAA Compliance Tool for Healthcare Apps | Codepliant",
   description:
-    "Automate HIPAA compliance documentation for healthcare SaaS. Codepliant scans your codebase to detect PHI handling, generate risk assessments, BAAs, and audit-ready policies. Free, open source CLI.",
+    "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies.",
   keywords: [
     "HIPAA compliance tool",
     "HIPAA for developers",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "HIPAA Compliance Tool for Healthcare Apps",
     description:
-      "Scan your codebase to detect PHI handling and generate HIPAA compliance documentation automatically. Free, open source.",
+      "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies.",
     url: "https://codepliant.dev/hipaa-compliance",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
