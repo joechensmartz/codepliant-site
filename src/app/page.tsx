@@ -142,7 +142,7 @@ const plans = [
       "Priority support",
     ],
     cta: "Start free trial",
-    href: "#",
+    href: "/docs",
     primary: true,
   },
   {
@@ -157,7 +157,7 @@ const plans = [
       "SLA guarantee",
     ],
     cta: "Contact sales",
-    href: "#",
+    href: "/pricing",
     primary: false,
   },
 ];

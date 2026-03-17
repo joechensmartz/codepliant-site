@@ -59,7 +59,7 @@ const plans = [
       "Priority email support",
     ],
     cta: "Start free trial",
-    href: "#",
+    href: "/docs",
     highlight: true,
   },
   {
@@ -78,7 +78,7 @@ const plans = [
       "Dedicated support with SLA",
     ],
     cta: "Contact us",
-    href: "#",
+    href: "mailto:hello@codepliant.dev",
     highlight: false,
   },
 ];

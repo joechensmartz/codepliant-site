@@ -62,6 +62,8 @@ export const metadata: Metadata = {
 };
 
 function Header() {
+  const linkStyle = { transitionTimingFunction: "var(--ease-out-quart)" } as const;
+  const linkClass = "hover:text-ink transition-colors duration-150";
   return (
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-surface-primary/90 border-b border-border-subtle">
       <nav className="max-w-[960px] mx-auto px-[var(--space-4)] md:px-[var(--space-6)] h-12 flex items-center justify-between overflow-x-hidden">
@@ -71,51 +73,50 @@ function Header() {
         >
           Codepliant
         </a>
-        <div className="flex items-center gap-[var(--space-3)] md:gap-[var(--space-6)] text-[length:var(--text-sm)] text-ink-secondary">
-          <a
-            href="/pricing"
-            className="hover:text-ink transition-colors duration-150"
-            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-          >
-            Pricing
-          </a>
-          <a
-            href="/docs"
-            className="hover:text-ink transition-colors duration-150"
-            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-          >
-            Docs
-          </a>
-          <a
-            href="/changelog"
-            className="hidden sm:inline hover:text-ink transition-colors duration-150"
-            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-          >
-            Changelog
-          </a>
-          <a
-            href="/blog"
-            className="hidden sm:inline hover:text-ink transition-colors duration-150"
-            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-          >
-            Blog
-          </a>
-          <a
-            href="/about"
-            className="hidden sm:inline hover:text-ink transition-colors duration-150"
-            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-          >
-            About
-          </a>
+
+        {/* Desktop nav */}
+        <div className="hidden sm:flex items-center gap-[var(--space-6)] text-[length:var(--text-sm)] text-ink-secondary">
+          <a href="/pricing" className={linkClass} style={linkStyle}>Pricing</a>
+          <a href="/docs" className={linkClass} style={linkStyle}>Docs</a>
+          <a href="/changelog" className={linkClass} style={linkStyle}>Changelog</a>
+          <a href="/blog" className={linkClass} style={linkStyle}>Blog</a>
+          <a href="/about" className={linkClass} style={linkStyle}>About</a>
           <a
             href="https://github.com/joechensmartz/codepliant"
-            className="hover:text-ink transition-colors duration-150"
-            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            className={linkClass}
+            style={linkStyle}
             target="_blank"
             rel="noopener noreferrer"
           >
             GitHub
           </a>
+        </div>
+
+        {/* Mobile nav — always-visible compact links + hamburger for secondary */}
+        <div className="flex sm:hidden items-center gap-[var(--space-3)] text-[length:var(--text-sm)] text-ink-secondary">
+          <a href="/docs" className={linkClass} style={linkStyle}>Docs</a>
+          <a href="/pricing" className={linkClass} style={linkStyle}>Pricing</a>
+          {/* Hamburger menu using <details> for remaining links */}
+          <details className="relative">
+            <summary className="list-none cursor-pointer p-1 hover:text-ink transition-colors duration-150" aria-label="Open navigation menu">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </summary>
+            <div className="absolute right-0 top-full mt-2 w-48 bg-surface-primary border border-border-subtle rounded-lg shadow-lg py-[var(--space-2)] z-50">
+              <a href="/blog" className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors">Blog</a>
+              <a href="/changelog" className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors">Changelog</a>
+              <a href="/about" className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors">About</a>
+              <a
+                href="https://github.com/joechensmartz/codepliant"
+                className="block px-[var(--space-4)] py-[var(--space-2)] hover:bg-surface-secondary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+            </div>
+          </details>
         </div>
       </nav>
     </header>
