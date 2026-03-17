@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Website Updates
 
+### 2026-03-17 — Iteration 28
+- Synced test count from 3,581 to 3,698 across landing page, about page, and changelog
+- Updated generator coverage from 66 to 69 test suites (50% of 138 generators) in changelog
+- Updated percentage increase from 370% to 385% in changelog
+- Verified `next build` passes (29 static pages, 0 errors)
+
 ### 2026-03-17 — Iteration 27
 - Synced test count from 3,496 to 3,581 across landing page, about page, and changelog
 - Updated generator coverage from 63 to 66 test suites in changelog
