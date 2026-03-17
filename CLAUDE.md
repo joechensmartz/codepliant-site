@@ -139,3 +139,7 @@ npx next build
   - First Load JS: 102 kB shared bundle; largest page (`/compare`) at 106 kB
   - Zero runtime dependencies; all pages static-exportable except OG image generators
 - No design or content changes; milestone build-health and stats audit only
+
+### Iteration 51 — Verification (2026-03-17)
+- Build passes: `npm run build` (TSC, zero errors)
+- No design or content changes; build-health check only

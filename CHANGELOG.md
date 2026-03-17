@@ -80,6 +80,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Website QA
 
+### 2026-03-17 — Iteration 51 (sanity check: all pages 200)
+- All 23 pages return HTTP 200:
+  - `/` (home), `/about`, `/pricing`, `/docs`, `/blog`, `/changelog`, `/compare`
+  - `/ai-disclosure-generator`, `/ai-governance`, `/cookie-policy-generator`
+  - `/data-privacy`, `/gdpr-compliance`, `/hipaa-compliance`
+  - `/privacy-policy-generator`, `/soc2-compliance`, `/terms-of-service-generator`
+  - 7 blog posts: `colorado-ai-act`, `eu-ai-act-deadline`, `gdpr-for-developers`, `generate-privacy-policy-from-code`, `hipaa-for-developers`, `privacy-policy-for-saas`, `soc2-for-startups`
+- `/nonexistent-page` correctly returns 404
+- `/sitemap.xml` returns 200
+- `/robots.txt` returns 200
+- No issues found — site is healthy
+
 ### 2026-03-17 — Iteration 46 (sanity check: all pages 200 + server restart)
 - Server was running stale build (BUILD_ID `ON8l2rLkhPDJHEh7ueDch`, CSS `39b61dbfcf3f6beb.css`) while `.next/` contained new build (BUILD_ID `TlqK3mY3aiTPc10kBnh_0`, CSS `f2ea1f5a8884d7a4.css`)
 - CSS file returned HTTP 400 due to hash mismatch — confirmed build mismatch noted in task brief
