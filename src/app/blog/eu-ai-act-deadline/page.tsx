@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
-  title: "EU AI Act: What Developers Need to Know Before August 2, 2026",
+  title: "EU AI Act: Developer Guide for 2026",
   description:
     "Developer guide to the EU AI Act deadline on August 2, 2026. Covers risk classifications, Article 50 transparency obligations, and practical compliance steps.",
   alternates: {

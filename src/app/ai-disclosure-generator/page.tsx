@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "AI Disclosure Generator | EU AI Act Article 50 Compliance",
+  title: "AI Disclosure Generator — EU AI Act",
   description:
     "AI disclosure generator for EU AI Act Article 50 compliance. Scans your code to detect AI integrations and generates transparency documents. Deadline: Aug 2026.",
   keywords: [

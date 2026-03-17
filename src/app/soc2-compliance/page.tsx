@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SOC 2 Compliance Tool for Startups | Automate Audit Readiness",
+  title: "SOC 2 Compliance Tool for Startups",
   description:
     "SOC 2 compliance tool for startups. Scan your codebase to generate readiness checklists, control mappings, and evidence docs. All 5 Trust Service Criteria.",
   keywords: [

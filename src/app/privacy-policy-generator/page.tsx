@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Privacy Policy Generator for Developers | Generate from Code",
+  title: "Privacy Policy Generator for Developers",
   description:
     "Privacy policy generator that scans your codebase to detect data collection, third-party services, and analytics. Accurate, GDPR-ready output. Free CLI.",
   keywords: [

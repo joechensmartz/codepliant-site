@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Codepliant — Open Source Compliance",
   description:
     "Codepliant is an open source CLI that scans your code and generates compliance documents. No lawyers, no questionnaires, no network calls.",
   alternates: {
@@ -47,7 +47,7 @@ const principles = [
 ];
 
 const stats = [
-  { value: "3,698", label: "Tests passing" },
+  { value: "3,800", label: "Tests passing" },
   { value: "1,200+", label: "Repos tested" },
   { value: "123+", label: "Document types" },
   { value: "13", label: "Ecosystems" },

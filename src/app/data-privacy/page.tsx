@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Data Privacy Compliance Tool for Developers | GDPR, CCPA, LGPD, PIPEDA",
+  title: "Data Privacy Compliance for Developers",
   description:
     "Detect personal data usage in your code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free, open source CLI.",
   keywords: [

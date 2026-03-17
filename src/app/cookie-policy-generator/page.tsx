@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Cookie Policy Generator for Developers | Generate from Code",
+  title: "Cookie Policy Generator for Developers",
   description:
     "Cookie policy generator that scans your code to detect tracking scripts, analytics SDKs, and session cookies. GDPR and ePrivacy compliant. Free CLI.",
   keywords: [

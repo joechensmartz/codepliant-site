@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Documentation",
+  title: "Documentation — CLI and API Reference",
   description:
     "Codepliant docs: install, configure, and generate compliance documents from your codebase. CLI commands, MCP server setup, and output format reference.",
   alternates: {

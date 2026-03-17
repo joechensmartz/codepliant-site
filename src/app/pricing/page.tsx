@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Pricing Plans for Teams and Developers",
   description:
     "Codepliant pricing plans. Free for open source, Pro at $19/month, Team at $49/month. Generate compliance documents from your code.",
   alternates: {

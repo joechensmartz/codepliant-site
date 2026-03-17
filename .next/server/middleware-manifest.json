@@ -2,7 +2,7 @@
   "version": 3,
   "middleware": {},
   "functions": {
-    "/ai-governance/opengraph-image/route": {
+    "/blog/colorado-ai-act/opengraph-image/route": {
       "files": [
         "server/middleware-build-manifest.js",
         "server/middleware-react-loadable-manifest.js",
@@ -10,14 +10,14 @@
         "server/interception-route-rewrite-manifest.js",
         "server/edge-runtime-webpack.js",
         "server/edge-chunks/852.js",
-        "server/app/ai-governance/opengraph-image/route.js"
+        "server/app/blog/colorado-ai-act/opengraph-image/route.js"
       ],
-      "name": "app/ai-governance/opengraph-image/route",
-      "page": "/ai-governance/opengraph-image/route",
+      "name": "app/blog/colorado-ai-act/opengraph-image/route",
+      "page": "/blog/colorado-ai-act/opengraph-image/route",
       "matchers": [
         {
-          "regexp": "^/ai\\-governance/opengraph\\-image$",
-          "originalSource": "/ai-governance/opengraph-image"
+          "regexp": "^/blog/colorado\\-ai\\-act/opengraph\\-image$",
+          "originalSource": "/blog/colorado-ai-act/opengraph-image"
         }
       ],
       "wasm": [
@@ -37,7 +37,7 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
@@ -79,7 +79,7 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
@@ -121,217 +121,7 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
-        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
-      }
-    },
-    "/blog/eu-ai-act-deadline/opengraph-image/route": {
-      "files": [
-        "server/middleware-build-manifest.js",
-        "server/middleware-react-loadable-manifest.js",
-        "server/next-font-manifest.js",
-        "server/interception-route-rewrite-manifest.js",
-        "server/edge-runtime-webpack.js",
-        "server/edge-chunks/852.js",
-        "server/app/blog/eu-ai-act-deadline/opengraph-image/route.js"
-      ],
-      "name": "app/blog/eu-ai-act-deadline/opengraph-image/route",
-      "page": "/blog/eu-ai-act-deadline/opengraph-image/route",
-      "matchers": [
-        {
-          "regexp": "^/blog/eu\\-ai\\-act\\-deadline/opengraph\\-image$",
-          "originalSource": "/blog/eu-ai-act-deadline/opengraph-image"
-        }
-      ],
-      "wasm": [
-        {
-          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
-          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
-        },
-        {
-          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
-          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
-        }
-      ],
-      "assets": [
-        {
-          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
-          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
-        }
-      ],
-      "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
-        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
-      }
-    },
-    "/blog/generate-privacy-policy-from-code/opengraph-image/route": {
-      "files": [
-        "server/middleware-build-manifest.js",
-        "server/middleware-react-loadable-manifest.js",
-        "server/next-font-manifest.js",
-        "server/interception-route-rewrite-manifest.js",
-        "server/edge-runtime-webpack.js",
-        "server/edge-chunks/852.js",
-        "server/app/blog/generate-privacy-policy-from-code/opengraph-image/route.js"
-      ],
-      "name": "app/blog/generate-privacy-policy-from-code/opengraph-image/route",
-      "page": "/blog/generate-privacy-policy-from-code/opengraph-image/route",
-      "matchers": [
-        {
-          "regexp": "^/blog/generate\\-privacy\\-policy\\-from\\-code/opengraph\\-image$",
-          "originalSource": "/blog/generate-privacy-policy-from-code/opengraph-image"
-        }
-      ],
-      "wasm": [
-        {
-          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
-          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
-        },
-        {
-          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
-          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
-        }
-      ],
-      "assets": [
-        {
-          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
-          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
-        }
-      ],
-      "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
-        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
-      }
-    },
-    "/blog/soc2-for-startups/opengraph-image/route": {
-      "files": [
-        "server/middleware-build-manifest.js",
-        "server/middleware-react-loadable-manifest.js",
-        "server/next-font-manifest.js",
-        "server/interception-route-rewrite-manifest.js",
-        "server/edge-runtime-webpack.js",
-        "server/edge-chunks/852.js",
-        "server/app/blog/soc2-for-startups/opengraph-image/route.js"
-      ],
-      "name": "app/blog/soc2-for-startups/opengraph-image/route",
-      "page": "/blog/soc2-for-startups/opengraph-image/route",
-      "matchers": [
-        {
-          "regexp": "^/blog/soc2\\-for\\-startups/opengraph\\-image$",
-          "originalSource": "/blog/soc2-for-startups/opengraph-image"
-        }
-      ],
-      "wasm": [
-        {
-          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
-          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
-        },
-        {
-          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
-          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
-        }
-      ],
-      "assets": [
-        {
-          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
-          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
-        }
-      ],
-      "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
-        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
-      }
-    },
-    "/blog/privacy-policy-for-saas/opengraph-image/route": {
-      "files": [
-        "server/middleware-build-manifest.js",
-        "server/middleware-react-loadable-manifest.js",
-        "server/next-font-manifest.js",
-        "server/interception-route-rewrite-manifest.js",
-        "server/edge-runtime-webpack.js",
-        "server/edge-chunks/852.js",
-        "server/app/blog/privacy-policy-for-saas/opengraph-image/route.js"
-      ],
-      "name": "app/blog/privacy-policy-for-saas/opengraph-image/route",
-      "page": "/blog/privacy-policy-for-saas/opengraph-image/route",
-      "matchers": [
-        {
-          "regexp": "^/blog/privacy\\-policy\\-for\\-saas/opengraph\\-image$",
-          "originalSource": "/blog/privacy-policy-for-saas/opengraph-image"
-        }
-      ],
-      "wasm": [
-        {
-          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
-          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
-        },
-        {
-          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
-          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
-        }
-      ],
-      "assets": [
-        {
-          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
-          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
-        }
-      ],
-      "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
-        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
-      }
-    },
-    "/gdpr-compliance/opengraph-image/route": {
-      "files": [
-        "server/middleware-build-manifest.js",
-        "server/middleware-react-loadable-manifest.js",
-        "server/next-font-manifest.js",
-        "server/interception-route-rewrite-manifest.js",
-        "server/edge-runtime-webpack.js",
-        "server/edge-chunks/852.js",
-        "server/app/gdpr-compliance/opengraph-image/route.js"
-      ],
-      "name": "app/gdpr-compliance/opengraph-image/route",
-      "page": "/gdpr-compliance/opengraph-image/route",
-      "matchers": [
-        {
-          "regexp": "^/gdpr\\-compliance/opengraph\\-image$",
-          "originalSource": "/gdpr-compliance/opengraph-image"
-        }
-      ],
-      "wasm": [
-        {
-          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
-          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
-        },
-        {
-          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
-          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
-        }
-      ],
-      "assets": [
-        {
-          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
-          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
-        }
-      ],
-      "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
@@ -373,7 +163,175 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
+        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
+      }
+    },
+    "/blog/generate-privacy-policy-from-code/opengraph-image/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/852.js",
+        "server/app/blog/generate-privacy-policy-from-code/opengraph-image/route.js"
+      ],
+      "name": "app/blog/generate-privacy-policy-from-code/opengraph-image/route",
+      "page": "/blog/generate-privacy-policy-from-code/opengraph-image/route",
+      "matchers": [
+        {
+          "regexp": "^/blog/generate\\-privacy\\-policy\\-from\\-code/opengraph\\-image$",
+          "originalSource": "/blog/generate-privacy-policy-from-code/opengraph-image"
+        }
+      ],
+      "wasm": [
+        {
+          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
+          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
+        },
+        {
+          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
+          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
+        }
+      ],
+      "assets": [
+        {
+          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
+          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
+        }
+      ],
+      "env": {
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
+        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
+      }
+    },
+    "/blog/privacy-policy-for-saas/opengraph-image/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/852.js",
+        "server/app/blog/privacy-policy-for-saas/opengraph-image/route.js"
+      ],
+      "name": "app/blog/privacy-policy-for-saas/opengraph-image/route",
+      "page": "/blog/privacy-policy-for-saas/opengraph-image/route",
+      "matchers": [
+        {
+          "regexp": "^/blog/privacy\\-policy\\-for\\-saas/opengraph\\-image$",
+          "originalSource": "/blog/privacy-policy-for-saas/opengraph-image"
+        }
+      ],
+      "wasm": [
+        {
+          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
+          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
+        },
+        {
+          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
+          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
+        }
+      ],
+      "assets": [
+        {
+          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
+          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
+        }
+      ],
+      "env": {
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
+        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
+      }
+    },
+    "/blog/soc2-for-startups/opengraph-image/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/852.js",
+        "server/app/blog/soc2-for-startups/opengraph-image/route.js"
+      ],
+      "name": "app/blog/soc2-for-startups/opengraph-image/route",
+      "page": "/blog/soc2-for-startups/opengraph-image/route",
+      "matchers": [
+        {
+          "regexp": "^/blog/soc2\\-for\\-startups/opengraph\\-image$",
+          "originalSource": "/blog/soc2-for-startups/opengraph-image"
+        }
+      ],
+      "wasm": [
+        {
+          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
+          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
+        },
+        {
+          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
+          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
+        }
+      ],
+      "assets": [
+        {
+          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
+          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
+        }
+      ],
+      "env": {
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
+        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
+      }
+    },
+    "/blog/eu-ai-act-deadline/opengraph-image/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/852.js",
+        "server/app/blog/eu-ai-act-deadline/opengraph-image/route.js"
+      ],
+      "name": "app/blog/eu-ai-act-deadline/opengraph-image/route",
+      "page": "/blog/eu-ai-act-deadline/opengraph-image/route",
+      "matchers": [
+        {
+          "regexp": "^/blog/eu\\-ai\\-act\\-deadline/opengraph\\-image$",
+          "originalSource": "/blog/eu-ai-act-deadline/opengraph-image"
+        }
+      ],
+      "wasm": [
+        {
+          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
+          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
+        },
+        {
+          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
+          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
+        }
+      ],
+      "assets": [
+        {
+          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
+          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
+        }
+      ],
+      "env": {
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
@@ -415,91 +373,7 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
-        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
-      }
-    },
-    "/blog/colorado-ai-act/opengraph-image/route": {
-      "files": [
-        "server/middleware-build-manifest.js",
-        "server/middleware-react-loadable-manifest.js",
-        "server/next-font-manifest.js",
-        "server/interception-route-rewrite-manifest.js",
-        "server/edge-runtime-webpack.js",
-        "server/edge-chunks/852.js",
-        "server/app/blog/colorado-ai-act/opengraph-image/route.js"
-      ],
-      "name": "app/blog/colorado-ai-act/opengraph-image/route",
-      "page": "/blog/colorado-ai-act/opengraph-image/route",
-      "matchers": [
-        {
-          "regexp": "^/blog/colorado\\-ai\\-act/opengraph\\-image$",
-          "originalSource": "/blog/colorado-ai-act/opengraph-image"
-        }
-      ],
-      "wasm": [
-        {
-          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
-          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
-        },
-        {
-          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
-          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
-        }
-      ],
-      "assets": [
-        {
-          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
-          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
-        }
-      ],
-      "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
-        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
-      }
-    },
-    "/soc2-compliance/opengraph-image/route": {
-      "files": [
-        "server/middleware-build-manifest.js",
-        "server/middleware-react-loadable-manifest.js",
-        "server/next-font-manifest.js",
-        "server/interception-route-rewrite-manifest.js",
-        "server/edge-runtime-webpack.js",
-        "server/edge-chunks/852.js",
-        "server/app/soc2-compliance/opengraph-image/route.js"
-      ],
-      "name": "app/soc2-compliance/opengraph-image/route",
-      "page": "/soc2-compliance/opengraph-image/route",
-      "matchers": [
-        {
-          "regexp": "^/soc2\\-compliance/opengraph\\-image$",
-          "originalSource": "/soc2-compliance/opengraph-image"
-        }
-      ],
-      "wasm": [
-        {
-          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
-          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
-        },
-        {
-          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
-          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
-        }
-      ],
-      "assets": [
-        {
-          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
-          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
-        }
-      ],
-      "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
@@ -541,14 +415,14 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
         "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
       }
     },
-    "/twitter-image/route": {
+    "/gdpr-compliance/opengraph-image/route": {
       "files": [
         "server/middleware-build-manifest.js",
         "server/middleware-react-loadable-manifest.js",
@@ -556,14 +430,14 @@
         "server/interception-route-rewrite-manifest.js",
         "server/edge-runtime-webpack.js",
         "server/edge-chunks/852.js",
-        "server/app/twitter-image/route.js"
+        "server/app/gdpr-compliance/opengraph-image/route.js"
       ],
-      "name": "app/twitter-image/route",
-      "page": "/twitter-image/route",
+      "name": "app/gdpr-compliance/opengraph-image/route",
+      "page": "/gdpr-compliance/opengraph-image/route",
       "matchers": [
         {
-          "regexp": "^/twitter\\-image$",
-          "originalSource": "/twitter-image"
+          "regexp": "^/gdpr\\-compliance/opengraph\\-image$",
+          "originalSource": "/gdpr-compliance/opengraph-image"
         }
       ],
       "wasm": [
@@ -583,7 +457,49 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
+        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
+      }
+    },
+    "/ai-governance/opengraph-image/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/852.js",
+        "server/app/ai-governance/opengraph-image/route.js"
+      ],
+      "name": "app/ai-governance/opengraph-image/route",
+      "page": "/ai-governance/opengraph-image/route",
+      "matchers": [
+        {
+          "regexp": "^/ai\\-governance/opengraph\\-image$",
+          "originalSource": "/ai-governance/opengraph-image"
+        }
+      ],
+      "wasm": [
+        {
+          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
+          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
+        },
+        {
+          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
+          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
+        }
+      ],
+      "assets": [
+        {
+          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
+          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
+        }
+      ],
+      "env": {
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
@@ -625,7 +541,91 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "YbtNFel3bBMfoIt_io_eG",
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
+        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
+      }
+    },
+    "/soc2-compliance/opengraph-image/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/852.js",
+        "server/app/soc2-compliance/opengraph-image/route.js"
+      ],
+      "name": "app/soc2-compliance/opengraph-image/route",
+      "page": "/soc2-compliance/opengraph-image/route",
+      "matchers": [
+        {
+          "regexp": "^/soc2\\-compliance/opengraph\\-image$",
+          "originalSource": "/soc2-compliance/opengraph-image"
+        }
+      ],
+      "wasm": [
+        {
+          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
+          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
+        },
+        {
+          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
+          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
+        }
+      ],
+      "assets": [
+        {
+          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
+          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
+        }
+      ],
+      "env": {
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
+        "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7100dc51708f48e08bf573502971a54d98eb01f6550954de9694027217b60c9e"
+      }
+    },
+    "/twitter-image/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "server/interception-route-rewrite-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/edge-chunks/852.js",
+        "server/app/twitter-image/route.js"
+      ],
+      "name": "app/twitter-image/route",
+      "page": "/twitter-image/route",
+      "matchers": [
+        {
+          "regexp": "^/twitter\\-image$",
+          "originalSource": "/twitter-image"
+        }
+      ],
+      "wasm": [
+        {
+          "name": "wasm_77d9faebf7af9e421806970ce10a58e9d83116d7",
+          "filePath": "server/edge-chunks/wasm_77d9faebf7af9e421806970ce10a58e9d83116d7.wasm"
+        },
+        {
+          "name": "wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020",
+          "filePath": "server/edge-chunks/wasm_ef4866ecae192fd87727067cf2c0c0cf9fb8b020.wasm"
+        }
+      ],
+      "assets": [
+        {
+          "name": "noto-sans-v27-latin-regular.5dda3fca77107598.ttf",
+          "filePath": "server/edge-chunks/asset_noto-sans-v27-latin-regular.5dda3fca77107598.ttf"
+        }
+      ],
+      "env": {
+        "__NEXT_BUILD_ID": "Q5x5GuT4xORrsb7TwU7nZ",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ijwQrNaXVR/9DLrT8UjG7eiYj43VaQaHFqjytuhuLqc=",
         "__NEXT_PREVIEW_MODE_ID": "e00e98a36867480cc3328c9ad55d0083",
         "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1bcfde65f6e289997ebe1f4b7fdaf881fa9b73376e7952a987ae71db8874e4a0",

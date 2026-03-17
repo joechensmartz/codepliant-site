@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
-  title:
-    "How to Generate a Privacy Policy from Your Code in 30 Seconds",
+  title: "Generate a Privacy Policy from Code",
   description:
     "Generate a privacy policy from your codebase in 30 seconds. Install Codepliant, scan your project, and get a policy based on your actual data practices.",
   alternates: {

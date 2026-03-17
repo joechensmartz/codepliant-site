@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Changelog",
+  title: "Changelog — Releases and Version History",
   description:
     "Codepliant changelog and version history. Track new compliance document types, ecosystem scanners, CLI features, and fixes across every release.",
   alternates: {
@@ -69,7 +69,7 @@ const releases: Release[] = [
     date: "Coming soon",
     tag: "Upcoming",
     summary:
-      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, --dry-run preview, and 3,698 tests across 13 ecosystems.",
+      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, --dry-run preview, and 3,800 tests across 13 ecosystems.",
     changes: [
       {
         category: "new",
@@ -145,7 +145,7 @@ const releases: Release[] = [
       },
       {
         category: "tests",
-        text: "Test suite expanded from 763 to 3,698 tests (385% increase) with 100% scanner coverage and 69 generator test suites",
+        text: "Test suite expanded from 763 to 3,800 tests (398% increase) with 100% scanner coverage and 72 generator test suites (52% of 138 generators)",
       },
     ],
   },

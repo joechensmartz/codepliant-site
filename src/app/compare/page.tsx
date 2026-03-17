@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Codepliant vs Termly vs Iubenda vs Vanta — Compliance Tool Comparison",
+  title: "Codepliant vs Termly vs Iubenda vs Vanta",
   description:
     "Compare Codepliant vs Termly, Iubenda, and Vanta. See how code-based scanning beats form builders for privacy policies, GDPR, SOC 2, and AI compliance.",
   keywords:

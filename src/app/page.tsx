@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Codepliant — Compliance Documents from Your Code",
+  title: {
+    absolute: "Codepliant — Compliance Docs from Code",
+  },
   description:
     "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents. One command. 97.8% precision.",
   alternates: { canonical: "https://codepliant.dev" },
@@ -51,7 +53,7 @@ const proofPoints = [
     linkText: "View on GitHub",
   },
   {
-    fact: "3,698 automated tests passing",
+    fact: "3,800 automated tests passing",
     detail:
       "100% scanner coverage and growing generator coverage. The full test suite runs on every commit to prevent regressions.",
     link: "https://github.com/joechensmartz/codepliant",
@@ -279,7 +281,7 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">3,698</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">3,800</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">

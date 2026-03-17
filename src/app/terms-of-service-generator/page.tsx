@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "Terms of Service Generator for SaaS | Generate from Code",
+  title: "Terms of Service Generator for SaaS",
   description:
     "Terms of service generator for SaaS apps. Scans your code to detect payments, auth, and AI, then generates ToS with liability and IP clauses. Free CLI.",
   keywords: [

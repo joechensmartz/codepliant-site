@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
-  title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
+  title: "Colorado AI Act: SaaS Compliance Guide",
   description:
     "Colorado AI Act (SB 24-205) compliance guide for SaaS. Covers deadlines, high-risk AI requirements, impact assessments, and NIST AI RMF affirmative defense.",
   alternates: {
