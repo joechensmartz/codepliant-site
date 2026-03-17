@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "GDPR Compliance Tool for Developers | Codepliant",
+  title: "GDPR Compliance Tool for Developers",
   description:
     "Automate GDPR compliance by scanning your codebase. Generate privacy policies, DPAs, DSAR guides, and data flow maps from your actual code. Free CLI.",
   keywords: [

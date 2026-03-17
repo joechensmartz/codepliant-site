@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "HIPAA Compliance Tool for Healthcare Apps | Codepliant",
+  title: "HIPAA Compliance Tool for Healthcare Apps",
   description:
     "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies.",
   keywords: [

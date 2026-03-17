@@ -12,11 +12,13 @@ export const metadata: Metadata = {
     description:
       "Free for open source. Pro at $19/mo. Team at $49/mo. Generate compliance documents from code.",
     url: "https://codepliant.dev/pricing",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Pricing | Codepliant",
     description: "Codepliant pricing. Free, Pro $19/mo, Team $49/mo.",
+    images: ["/opengraph-image"],
   },
 };
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
-  title: "GDPR Compliance for Developers: A Practical Guide | Codepliant",
+  title: "GDPR Compliance for Developers: A Practical Guide",
   description:
     "Practical GDPR guide for developers. Covers consent, data subject rights, sub-processors, DPAs, common mistakes, and actionable steps for SaaS teams.",
   alternates: {

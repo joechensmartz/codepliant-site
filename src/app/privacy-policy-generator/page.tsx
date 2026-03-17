@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title:
-    "Privacy Policy Generator for Developers | Generate from Code | Codepliant",
+    "Privacy Policy Generator for Developers | Generate from Code",
   description:
     "Privacy policy generator that scans your codebase to detect data collection, third-party services, and analytics. Accurate, GDPR-ready output. Free CLI.",
   keywords: [
@@ -27,12 +27,14 @@ export const metadata: Metadata = {
     description:
       "Privacy policy generator that scans your codebase to detect data collection, third-party services, and analytics. Accurate, GDPR-ready output. Free CLI.",
     url: "https://codepliant.dev/privacy-policy-generator",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Privacy Policy Generator for Developers",
     description:
       "Scan your code, generate an accurate privacy policy. No questionnaires, no guesswork.",
+    images: ["/opengraph-image"],
   },
 };
 

@@ -29,12 +29,14 @@ export const metadata: Metadata = {
     description:
       "Detect personal data usage in your code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free, open source CLI.",
     url: "https://codepliant.dev/data-privacy",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Data Privacy Compliance Tool for Developers",
     description:
       "One CLI to scan code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and more.",
+    images: ["/opengraph-image"],
   },
 };
 

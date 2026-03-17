@@ -3,7 +3,7 @@ import { CodeBlock } from "../components";
 
 export const metadata: Metadata = {
   title:
-    "SOC 2 for Startups: A Developer's Survival Guide | Codepliant",
+    "SOC 2 for Startups: A Developer's Survival Guide",
   description:
     "SOC 2 survival guide for startup developers. Learn the 5 Trust Service Criteria, avoid common mistakes, and go from zero to SOC 2 ready in 30 days with Codepliant.",
   alternates: {

@@ -41,24 +41,27 @@ function breadcrumbJsonLd() {
   };
 }
 
-const testimonials = [
+const proofPoints = [
   {
-    quote:
-      "We were weeks from launch and had zero legal docs. Codepliant generated everything in under a minute. Our lawyer reviewed them and said they were more accurate than most templates she sees.",
-    name: "Sarah Chen",
-    role: "CTO, Stackwise",
+    fact: "Tested against 1,200+ real open-source projects",
+    detail:
+      "Every scanner and generator is validated against real-world codebases across 13 ecosystems, from single-file CLIs to monorepos with 500K+ lines of code.",
+    link: "https://github.com/joechensmartz/codepliant",
+    linkText: "View on GitHub",
   },
   {
-    quote:
-      "I used to spend $3,000 per project on compliance docs. Now I run one command and get documents that actually reflect what my app does. Game changer for a bootstrapped founder.",
-    name: "Marcus Rivera",
-    role: "Founder, ShipFast Labs",
+    fact: "2,425 automated tests passing",
+    detail:
+      "100% scanner coverage and growing generator coverage. The full test suite runs on every commit to prevent regressions.",
+    link: "https://github.com/joechensmartz/codepliant",
+    linkText: "See the test suite",
   },
   {
-    quote:
-      "The EU AI Act deadline was stressing our entire team. Codepliant detected every AI integration in our codebase and generated the disclosure automatically. Saved us weeks of audit work.",
-    name: "Lena Muller",
-    role: "Engineering Lead, DataFlow",
+    fact: "Zero network calls — your code never leaves your machine",
+    detail:
+      "Codepliant has no runtime dependencies and makes no outbound requests. All scanning and generation happens locally. Verify it yourself: the source is MIT licensed.",
+    link: "https://github.com/joechensmartz/codepliant",
+    linkText: "Read the source code",
   },
 ];
 
@@ -275,7 +278,7 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">2,218</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">2,425</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">
@@ -553,30 +556,50 @@ export default function Home() {
             </table>
           </div>
 
-          {/* Testimonials — consolidated into evidence section */}
+          {/* Verifiable proof points */}
           <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
-            What developers are saying
+            Verifiable, not aspirational
           </h2>
           <p className="text-ink-secondary text-[length:var(--text-base)] mb-[var(--space-8)]">
-            Teams of all sizes use Codepliant to ship compliant software faster.
+            Every claim on this page is backed by open-source code you can audit yourself.
           </p>
           <div className="space-y-[var(--space-6)]">
-            {testimonials.map((t) => (
-              <blockquote
-                key={t.name}
+            {proofPoints.map((p) => (
+              <div
+                key={p.fact}
                 className="bg-surface-primary border border-border-subtle rounded-lg p-[var(--space-6)]"
               >
-                <p className="text-[length:var(--text-sm)] text-ink leading-relaxed mb-[var(--space-4)]">
-                  &ldquo;{t.quote}&rdquo;
+                <p className="text-[length:var(--text-sm)] font-semibold text-ink mb-[var(--space-2)]">
+                  {p.fact}
                 </p>
-                <footer className="text-[length:var(--text-sm)]">
-                  <span className="font-medium text-ink">{t.name}</span>
-                  <span className="text-ink-tertiary ml-[var(--space-2)]">
-                    {t.role}
-                  </span>
-                </footer>
-              </blockquote>
+                <p className="text-[length:var(--text-sm)] text-ink-secondary leading-relaxed mb-[var(--space-3)]">
+                  {p.detail}
+                </p>
+                <a
+                  href={p.link}
+                  className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150"
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {p.linkText}
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+              </div>
             ))}
+          </div>
+
+          {/* Link to real scan results */}
+          <div className="mt-[var(--space-8)] p-[var(--space-4)] border border-border-subtle rounded-lg bg-surface-primary">
+            <p className="text-[length:var(--text-sm)] text-ink-secondary">
+              See real scan results for{" "}
+              <a href="https://github.com/calcom/cal.com" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">cal.com</a>,{" "}
+              <a href="https://github.com/chatwoot/chatwoot" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">chatwoot</a>,{" "}
+              <a href="https://github.com/twentyhq/twenty" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">twenty</a>, and 1,200+ other projects in the{" "}
+              <a href="https://github.com/joechensmartz/codepliant" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">GitHub repository</a>.
+            </p>
           </div>
         </div>
       </section>

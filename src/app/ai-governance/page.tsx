@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Governance Framework for SaaS | Codepliant",
+  title: "AI Governance Framework for SaaS",
   description:
     "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI.",
   keywords: [

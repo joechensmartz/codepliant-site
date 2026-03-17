@@ -12,12 +12,14 @@ export const metadata: Metadata = {
     description:
       "Codepliant is an open source CLI that scans your code and generates compliance documents. No lawyers, no questionnaires, no network calls.",
     url: "https://codepliant.dev/about",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "About | Codepliant",
     description:
       "Open source compliance for every developer. Code scanning, not questionnaires.",
+    images: ["/opengraph-image"],
   },
 };
 

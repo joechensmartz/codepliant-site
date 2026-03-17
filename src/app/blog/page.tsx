@@ -13,12 +13,14 @@ export const metadata: Metadata = {
       "Developer-focused guides on GDPR, EU AI Act, privacy policies, and compliance automation.",
     url: "https://codepliant.dev/blog",
     type: "website",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Blog — Developer Compliance Guides | Codepliant",
     description:
       "Practical compliance guides for engineering teams. GDPR, EU AI Act, privacy policies, and more.",
+    images: ["/opengraph-image"],
   },
 };
 

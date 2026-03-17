@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title:
-    "Cookie Policy Generator for Developers | Generate from Code | Codepliant",
+    "Cookie Policy Generator for Developers | Generate from Code",
   description:
     "Cookie policy generator that scans your code to detect tracking scripts, analytics SDKs, and session cookies. GDPR and ePrivacy compliant. Free CLI.",
   keywords: [
@@ -29,12 +29,14 @@ export const metadata: Metadata = {
     description:
       "Cookie policy generator that scans your code to detect tracking scripts, analytics SDKs, and session cookies. GDPR and ePrivacy compliant. Free CLI.",
     url: "https://codepliant.dev/cookie-policy-generator",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Cookie Policy Generator for Developers",
     description:
       "Scan your code, generate an accurate cookie policy. No questionnaires, no guesswork.",
+    images: ["/opengraph-image"],
   },
 };
 

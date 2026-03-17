@@ -15,12 +15,14 @@ export const metadata: Metadata = {
     description:
       "Compare Codepliant vs Termly, Iubenda, and Vanta. See how code-based scanning beats form builders for privacy policies, GDPR, SOC 2, and AI compliance.",
     url: "https://codepliant.dev/compare",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Codepliant vs Termly vs Iubenda vs Vanta",
     description:
       "Compare compliance tools: code scanning vs form builders vs cookie consent vs enterprise GRC platforms.",
+    images: ["/opengraph-image"],
   },
 };
 
