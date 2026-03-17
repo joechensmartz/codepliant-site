@@ -294,7 +294,7 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">1,059</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">1,166</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">
@@ -311,7 +311,7 @@ export default function Home() {
           {/* Key stats grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-6)] mb-[var(--space-12)]">
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-2xl)] font-bold block">1,059</span>
+              <span className="font-display text-[length:var(--text-2xl)] font-bold block">1,166</span>
               <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">tests passing</span>
             </div>
             <div className="text-center">

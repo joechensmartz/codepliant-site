@@ -170,6 +170,19 @@ export default function GdprForDevelopers() {
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
+          {/* Breadcrumb */}
+          <nav className="text-sm text-ink-tertiary mb-6" aria-label="Breadcrumb">
+            <a href="/" className="hover:text-ink transition-colors">
+              Home
+            </a>
+            <span className="mx-2">/</span>
+            <a href="/blog" className="hover:text-ink transition-colors">
+              Blog
+            </a>
+            <span className="mx-2">/</span>
+            <span className="text-ink-secondary">GDPR for Developers</span>
+          </nav>
+
           <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
             <a href="/blog" className="hover:underline">
               Blog

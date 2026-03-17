@@ -1,25 +1,43 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Colorado AI Act: What SaaS Companies Need to Know",
+  title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
   description:
-    "Guide to the Colorado AI Act (SB 24-205) for SaaS companies. Covers the February 1, 2026 effective date, high-risk AI system requirements, algorithmic discrimination prevention, impact assessments, and compliance steps.",
+    "Developer guide to the Colorado AI Act (SB 24-205). Covers the February 1, 2026 effective date, June 30 impact assessment deadline, high-risk AI system requirements, algorithmic discrimination prevention, NIST AI RMF affirmative defense, and practical compliance steps with code examples.",
   alternates: {
     canonical: "https://codepliant.dev/blog/colorado-ai-act",
   },
+  keywords: [
+    "Colorado AI Act",
+    "SB 24-205",
+    "algorithmic discrimination",
+    "high-risk AI system",
+    "AI impact assessment",
+    "NIST AI RMF",
+    "AI compliance",
+    "Colorado AI regulation",
+    "AI governance",
+    "codepliant",
+    "AI bias testing",
+    "consumer transparency AI",
+  ],
   openGraph: {
-    title: "Colorado AI Act: What SaaS Companies Need to Know",
+    title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
     description:
       "The Colorado AI Act takes effect February 1, 2026 with a compliance deadline of June 30, 2026. Learn what SaaS companies must do to comply with SB 24-205.",
     url: "https://codepliant.dev/blog/colorado-ai-act",
     type: "article",
+    publishedTime: "2026-03-16T00:00:00Z",
+    modifiedTime: "2026-03-16T00:00:00Z",
+    authors: ["Codepliant"],
+    tags: ["Colorado AI Act", "AI Compliance", "Developer Guide", "SB 24-205"],
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Colorado AI Act: What SaaS Companies Need to Know",
+    title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
     description:
-      "SB 24-205 compliance guide for SaaS companies. Deadlines, requirements, impact assessments, and practical steps.",
+      "SB 24-205 compliance guide for SaaS companies. Deadlines, requirements, impact assessments, NIST AI RMF defense, and practical steps with code examples.",
     images: ["/og-image.png"],
   },
 };
@@ -28,9 +46,10 @@ function articleJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "Colorado AI Act: What SaaS Companies Need to Know",
+    headline:
+      "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
     description:
-      "Guide to the Colorado AI Act (SB 24-205) for SaaS companies. Covers high-risk AI system requirements, algorithmic discrimination prevention, impact assessments, and compliance steps.",
+      "Developer guide to the Colorado AI Act (SB 24-205). High-risk AI system requirements, algorithmic discrimination prevention, impact assessments, NIST AI RMF affirmative defense, and compliance steps with code examples.",
     datePublished: "2026-03-16",
     dateModified: "2026-03-16",
     author: {
@@ -50,6 +69,54 @@ function articleJsonLd() {
   };
 }
 
+function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "When does the Colorado AI Act take effect?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The Colorado AI Act (SB 24-205) takes effect on February 1, 2026. Deployers must complete their first impact assessments for all high-risk AI systems by June 30, 2026. Impact assessments must be updated at least annually thereafter.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does the Colorado AI Act apply to companies outside Colorado?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. The Colorado AI Act applies to any company whose AI system makes consequential decisions about Colorado residents, regardless of where the company is headquartered. If your SaaS product is used by businesses in Colorado to make decisions about their customers or employees, the Act applies to you.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is a high-risk AI system under the Colorado AI Act?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A high-risk AI system is one that makes or is a substantial factor in making consequential decisions about individuals. Consequential decisions include those affecting employment, education, financial services, housing, healthcare, legal services, and government services.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is the NIST AI RMF affirmative defense in the Colorado AI Act?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "The Colorado AI Act provides an affirmative defense for companies that comply with the NIST AI Risk Management Framework (AI RMF) or a substantially equivalent framework. If you implement and can demonstrate adherence to the NIST AI RMF, you have a strong defense against enforcement actions even if an algorithmic discrimination issue arises.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How can I detect AI services in my codebase for Colorado AI Act compliance?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Run `npx codepliant go` in your project directory. Codepliant scans your dependencies, imports, and environment variables to detect AI service integrations (OpenAI, Anthropic, Google AI, LangChain, Vercel AI SDK, and more) and generates compliance documentation including AI governance docs aligned with the NIST AI RMF.",
+        },
+      },
+    ],
+  };
+}
 
 function breadcrumbJsonLd() {
   return {
@@ -78,6 +145,27 @@ function breadcrumbJsonLd() {
   };
 }
 
+function CodeBlock({
+  filename,
+  children,
+}: {
+  filename?: string;
+  children: string;
+}) {
+  return (
+    <div className="rounded-xl overflow-hidden my-6">
+      {filename && (
+        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
+          {filename}
+        </div>
+      )}
+      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
+        <code>{children}</code>
+      </pre>
+    </div>
+  );
+}
+
 export default function ColoradoAiAct() {
   return (
     <>
@@ -85,20 +173,61 @@ export default function ColoradoAiAct() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd()) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd()),
+        }}
+      />
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
+          {/* Breadcrumb */}
+          <nav className="text-sm text-ink-tertiary mb-6">
+            <a href="/" className="hover:text-ink transition-colors">
+              Home
+            </a>
+            <span className="mx-2">/</span>
+            <a href="/blog" className="hover:text-ink transition-colors">
+              Blog
+            </a>
+            <span className="mx-2">/</span>
+            <span className="text-ink-secondary">Colorado AI Act</span>
+          </nav>
+
           <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
-            Blog
+            AI Regulation
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-4">
-            Colorado AI Act: What SaaS Companies Need to Know
+            Colorado AI Act (SB 24-205): What SaaS Companies Need to Know
           </h1>
-          <p className="text-sm text-muted mb-12">
-            Published March 16, 2026 &middot; 14 min read
+          <p className="text-sm text-ink-tertiary mb-12">
+            Published March 16, 2026 &middot; 18 min read
           </p>
 
-          <div className="prose-custom space-y-6 text-base text-muted leading-relaxed">
+          <div className="space-y-6 text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
+            {/* Urgency callout */}
+            <div className="bg-urgency-muted border border-urgency/20 rounded-xl p-5">
+              <p className="text-urgency font-semibold text-sm mb-1">
+                Compliance deadline approaching
+              </p>
+              <p className="text-sm text-ink-secondary">
+                The Colorado AI Act is now in effect as of{" "}
+                <strong className="text-ink">February 1, 2026</strong>.
+                Deployers must complete impact assessments by{" "}
+                <strong className="text-ink">June 30, 2026</strong>. Run{" "}
+                <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                  npx codepliant go
+                </code>{" "}
+                to scan your codebase for AI services and generate NIST AI RMF
+                aligned governance documentation.
+              </p>
+            </div>
+
             {/* Introduction */}
             <p>
               Colorado Senate Bill 24-205, known as the Colorado AI Act, is the
@@ -110,22 +239,122 @@ export default function ColoradoAiAct() {
               decisions that affect Colorado residents, this law applies to you.
             </p>
             <p>
-              While the EU AI Act gets most of the attention, the Colorado AI
-              Act is more immediately relevant for US-based SaaS companies. It
-              creates concrete obligations around algorithmic discrimination
-              prevention, impact assessments, transparency disclosures, and
-              governance practices. And unlike federal AI guidance, it has
-              enforcement teeth: the Colorado Attorney General can bring actions
-              against non-compliant companies.
+              While the{" "}
+              <a
+                href="/blog/eu-ai-act-deadline"
+                className="text-brand hover:underline"
+              >
+                EU AI Act
+              </a>{" "}
+              gets most of the attention, the Colorado AI Act is more
+              immediately relevant for US-based SaaS companies. It creates
+              concrete obligations around algorithmic discrimination prevention,
+              impact assessments, transparency disclosures, and governance
+              practices. And unlike federal AI guidance, it has enforcement
+              teeth: the Colorado Attorney General can bring actions against
+              non-compliant companies.
             </p>
             <p>
               This guide covers what the Colorado AI Act requires, who it
-              applies to, what the deadlines are, and what your engineering and
-              product teams need to do to comply.
+              applies to, what the deadlines are, how to detect AI services in
+              your codebase, and what your engineering and product teams need to
+              do to comply.
             </p>
 
+            {/* Table of contents */}
+            <div className="bg-surface-secondary rounded-xl p-5">
+              <h2 className="text-sm font-semibold text-ink mb-3">
+                In this guide
+              </h2>
+              <ol className="list-decimal list-inside space-y-1.5 text-sm">
+                <li>
+                  <a
+                    href="#what-is-colorado-ai-act"
+                    className="text-brand hover:underline"
+                  >
+                    What is the Colorado AI Act?
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#who-it-applies-to"
+                    className="text-brand hover:underline"
+                  >
+                    Who does it apply to?
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#key-deadlines"
+                    className="text-brand hover:underline"
+                  >
+                    Key deadlines for compliance
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#developer-obligations"
+                    className="text-brand hover:underline"
+                  >
+                    Obligations for AI developers
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#deployer-obligations"
+                    className="text-brand hover:underline"
+                  >
+                    Obligations for AI deployers
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#detecting-ai-services"
+                    className="text-brand hover:underline"
+                  >
+                    Detecting AI services in your codebase
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#affirmative-defense"
+                    className="text-brand hover:underline"
+                  >
+                    The NIST AI RMF affirmative defense
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#colorado-vs-eu"
+                    className="text-brand hover:underline"
+                  >
+                    Colorado AI Act vs. EU AI Act
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#compliance-action-plan"
+                    className="text-brand hover:underline"
+                  >
+                    Compliance action plan
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#state-landscape"
+                    className="text-brand hover:underline"
+                  >
+                    US state AI regulation landscape
+                  </a>
+                </li>
+              </ol>
+            </div>
+
             {/* What is the Colorado AI Act */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="what-is-colorado-ai-act"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               What is the Colorado AI Act (SB 24-205)?
             </h2>
             <p>
@@ -151,14 +380,17 @@ export default function ColoradoAiAct() {
             </p>
 
             {/* Who it applies to */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="who-it-applies-to"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               Who does the Colorado AI Act apply to?
             </h2>
             <p>
               The Act applies to two categories of entities:
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Developers
             </h3>
             <p>
@@ -169,7 +401,7 @@ export default function ColoradoAiAct() {
               models, or create AI-powered features that influence decisions.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Deployers
             </h3>
             <p>
@@ -182,7 +414,7 @@ export default function ColoradoAiAct() {
               about Colorado residents, the Act applies.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               What counts as a consequential decision?
             </h3>
             <p>
@@ -230,16 +462,19 @@ export default function ColoradoAiAct() {
               ].map((item) => (
                 <div
                   key={item.area}
-                  className="bg-surface rounded-xl p-5"
+                  className="bg-surface-secondary rounded-xl p-5"
                 >
-                  <h3 className="font-semibold mb-1">{item.area}</h3>
-                  <p className="text-sm text-muted">{item.examples}</p>
+                  <h3 className="font-semibold mb-1 text-ink">{item.area}</h3>
+                  <p className="text-sm text-ink-secondary">{item.examples}</p>
                 </div>
               ))}
             </div>
 
             {/* Key deadlines */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="key-deadlines"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               Key deadlines for SB 24-205 compliance
             </h2>
             <div className="space-y-4">
@@ -265,18 +500,21 @@ export default function ColoradoAiAct() {
               ].map((milestone) => (
                 <div
                   key={milestone.date}
-                  className="bg-surface rounded-xl p-5"
+                  className="bg-surface-secondary rounded-xl p-5"
                 >
-                  <h3 className="font-semibold mb-1">
+                  <h3 className="font-semibold mb-1 text-ink">
                     {milestone.date} &mdash; {milestone.event}
                   </h3>
-                  <p className="text-sm text-muted">{milestone.detail}</p>
+                  <p className="text-sm text-ink-secondary">{milestone.detail}</p>
                 </div>
               ))}
             </div>
 
             {/* Developer obligations */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="developer-obligations"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               Obligations for AI developers
             </h2>
             <p>
@@ -284,7 +522,7 @@ export default function ColoradoAiAct() {
               product), the Colorado AI Act requires:
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               1. Reasonable care to protect against algorithmic discrimination
             </h3>
             <p>
@@ -303,7 +541,7 @@ export default function ColoradoAiAct() {
               outputs, and monitoring system behavior in production.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               2. Documentation and disclosure
             </h3>
             <p>
@@ -334,7 +572,7 @@ export default function ColoradoAiAct() {
               assessments and implement appropriate safeguards.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               3. Public disclosure on your website
             </h3>
             <p>
@@ -342,11 +580,22 @@ export default function ColoradoAiAct() {
               describes the types of high-risk AI systems they develop, how
               they manage known or foreseeable risks of algorithmic
               discrimination, and the nature of the high-risk AI systems they
-              have developed.
+              have developed. Codepliant&apos;s{" "}
+              <a
+                href="/ai-disclosure-generator"
+                className="text-brand hover:underline"
+              >
+                AI Disclosure Generator
+              </a>{" "}
+              can help you create this statement based on the actual AI services
+              detected in your codebase.
             </p>
 
             {/* Deployer obligations */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="deployer-obligations"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               Obligations for AI deployers
             </h2>
             <p>
@@ -354,7 +603,7 @@ export default function ColoradoAiAct() {
               in SaaS products you subscribe to), you have deployer obligations:
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               1. Risk management policy
             </h3>
             <p>
@@ -362,10 +611,17 @@ export default function ColoradoAiAct() {
               framework for high-risk AI systems. This includes designating
               personnel responsible for AI governance, establishing processes
               for identifying and mitigating discrimination risks, and training
-              employees who interact with high-risk AI systems.
+              employees who interact with high-risk AI systems. See our{" "}
+              <a
+                href="/ai-governance"
+                className="text-brand hover:underline"
+              >
+                AI Governance Framework Generator
+              </a>{" "}
+              for NIST AI RMF aligned documentation.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               2. Impact assessments
             </h3>
             <p>
@@ -402,7 +658,7 @@ export default function ColoradoAiAct() {
               provided to the Colorado Attorney General upon request.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               3. Consumer transparency
             </h3>
             <p>
@@ -427,7 +683,7 @@ export default function ColoradoAiAct() {
               </li>
             </ul>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               4. Consumer rights
             </h3>
             <p>
@@ -447,8 +703,158 @@ export default function ColoradoAiAct() {
               </li>
             </ul>
 
+            {/* Detecting AI services */}
+            <h2
+              id="detecting-ai-services"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
+              Detecting AI services in your codebase
+            </h2>
+            <p>
+              The first step toward Colorado AI Act compliance is understanding
+              what AI services your application uses. Codepliant scans your
+              dependencies, imports, and environment variables to detect AI
+              integrations automatically.
+            </p>
+
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
+              AI providers Codepliant detects
+            </h3>
+            <div className="overflow-x-auto my-4">
+              <table className="w-full text-sm border border-border-subtle rounded-xl overflow-hidden">
+                <thead>
+                  <tr className="bg-surface-secondary text-ink text-left">
+                    <th className="px-4 py-2 font-semibold">Provider</th>
+                    <th className="px-4 py-2 font-semibold">Package / Import</th>
+                    <th className="px-4 py-2 font-semibold">Env variable</th>
+                  </tr>
+                </thead>
+                <tbody className="text-ink-secondary">
+                  {[
+                    { provider: "OpenAI", pkg: "openai", env: "OPENAI_API_KEY" },
+                    { provider: "Anthropic", pkg: "@anthropic-ai/sdk", env: "ANTHROPIC_API_KEY" },
+                    { provider: "Google AI", pkg: "@google-ai/generativelanguage", env: "GOOGLE_AI_API_KEY" },
+                    { provider: "LangChain", pkg: "langchain", env: "LANGCHAIN_API_KEY" },
+                    { provider: "Vercel AI SDK", pkg: "ai", env: "OPENAI_API_KEY" },
+                    { provider: "Cohere", pkg: "cohere-ai", env: "COHERE_API_KEY" },
+                    { provider: "Together AI", pkg: "together-ai", env: "TOGETHER_API_KEY" },
+                    { provider: "Replicate", pkg: "replicate", env: "REPLICATE_API_TOKEN" },
+                  ].map((row) => (
+                    <tr key={row.provider} className="border-t border-border-subtle">
+                      <td className="px-4 py-2 font-medium text-ink">{row.provider}</td>
+                      <td className="px-4 py-2 font-mono text-xs">{row.pkg}</td>
+                      <td className="px-4 py-2 font-mono text-xs">{row.env}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
+              Scan your codebase
+            </h3>
+            <p>
+              Run Codepliant to identify all AI services and generate an
+              inventory for your impact assessment:
+            </p>
+            <CodeBlock filename="Terminal">
+{`$ npx codepliant go
+
+  Scanning project...
+
+  Detected services:
+    ✓ OpenAI (openai) — AI / Machine Learning
+    ✓ Anthropic (@anthropic-ai/sdk) — AI / Machine Learning
+    ✓ Stripe (@stripe/stripe-js) — Payment Processing
+    ✓ PostHog (posthog-js) — Analytics
+    ✓ Sentry (@sentry/nextjs) — Error Tracking
+    ✓ Prisma (prisma) — Database
+
+  Generated documents:
+    ✓ legal/privacy-policy.md
+    ✓ legal/terms-of-service.md
+    ✓ legal/ai-disclosure.md
+    ✓ legal/cookie-policy.md
+    ✓ legal/ai-governance.md
+
+  Done in 1.2s`}
+            </CodeBlock>
+
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
+              Get structured output for impact assessments
+            </h3>
+            <p>
+              Use the JSON output mode to extract AI service data for your
+              impact assessment documentation:
+            </p>
+            <CodeBlock filename="Terminal — JSON output filtered for AI services">
+{`$ npx codepliant scan --json | jq '.services[] | select(.category == "AI / Machine Learning")'
+
+{
+  "name": "OpenAI",
+  "package": "openai",
+  "category": "AI / Machine Learning",
+  "dataCollected": [
+    "user prompts",
+    "conversation history",
+    "API usage metadata"
+  ],
+  "detectedVia": ["dependency", "import", "env"]
+}
+{
+  "name": "Anthropic",
+  "package": "@anthropic-ai/sdk",
+  "category": "AI / Machine Learning",
+  "dataCollected": [
+    "user prompts",
+    "conversation history",
+    "API usage metadata"
+  ],
+  "detectedVia": ["dependency", "import"]
+}`}
+            </CodeBlock>
+
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
+              Automate compliance in CI/CD
+            </h3>
+            <p>
+              Keep your impact assessment documentation current by running
+              Codepliant in your CI/CD pipeline. This ensures documentation is
+              regenerated whenever your AI integrations change:
+            </p>
+            <CodeBlock filename=".github/workflows/compliance.yml">
+{`name: Compliance Docs
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'requirements.txt'
+      - '.env.example'
+
+jobs:
+  compliance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npx codepliant go
+      - name: Commit updated docs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add legal/
+          git diff --cached --quiet || git commit -m "Update compliance docs"
+          git push`}
+            </CodeBlock>
+
             {/* Affirmative defense */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="affirmative-defense"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               The affirmative defense: NIST AI RMF alignment
             </h2>
             <p>
@@ -463,15 +869,49 @@ export default function ColoradoAiAct() {
               This is significant because it gives companies a clear path to
               compliance. If you implement the NIST AI RMF and can demonstrate
               adherence, you have a strong defense even if an algorithmic
-              discrimination issue arises. Codepliant generates AI governance
-              documentation aligned with the NIST AI RMF, giving you a starting
-              point for this defense.
+              discrimination issue arises. Codepliant generates{" "}
+              <a
+                href="/ai-governance"
+                className="text-brand hover:underline"
+              >
+                AI governance documentation
+              </a>{" "}
+              aligned with the NIST AI RMF, giving you a starting point for
+              this defense.
+            </p>
+            <p>
+              The NIST AI RMF consists of four core functions: Govern (establish
+              policies and accountability), Map (identify and categorize AI
+              risks), Measure (assess and analyze risks), and Manage (prioritize
+              and act on risks). When you run{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                npx codepliant go
+              </code>
+              , the generated{" "}
+              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                ai-governance.md
+              </code>{" "}
+              document maps your detected AI services to these four functions,
+              providing a concrete starting point for NIST AI RMF compliance.
             </p>
 
             {/* How it differs from the EU AI Act */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="colorado-vs-eu"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               Colorado AI Act vs. EU AI Act: key differences
             </h2>
+            <p>
+              If you are also preparing for the{" "}
+              <a
+                href="/blog/eu-ai-act-deadline"
+                className="text-brand hover:underline"
+              >
+                EU AI Act deadline on August 2, 2026
+              </a>
+              , here is how the two regulations compare:
+            </p>
             <div className="space-y-4">
               {[
                 {
@@ -499,19 +939,46 @@ export default function ColoradoAiAct() {
                   comparison:
                     "The Colorado Act provides an explicit affirmative defense for NIST AI RMF compliance. The EU AI Act has no equivalent safe harbor.",
                 },
+                {
+                  dimension: "Data privacy overlap",
+                  comparison:
+                    "The Colorado Act intersects with the Colorado Privacy Act (CPA). The EU AI Act intersects with GDPR. Both require understanding how personal data flows through AI systems.",
+                },
               ].map((item) => (
                 <div
                   key={item.dimension}
-                  className="bg-surface rounded-xl p-5"
+                  className="bg-surface-secondary rounded-xl p-5"
                 >
-                  <h3 className="font-semibold mb-1">{item.dimension}</h3>
-                  <p className="text-sm text-muted">{item.comparison}</p>
+                  <h3 className="font-semibold mb-1 text-ink">{item.dimension}</h3>
+                  <p className="text-sm text-ink-secondary">{item.comparison}</p>
                 </div>
               ))}
             </div>
+            <p>
+              For companies that need to comply with both regulations,
+              Codepliant generates documentation that covers overlapping
+              requirements. See our guides on the{" "}
+              <a
+                href="/blog/eu-ai-act-deadline"
+                className="text-brand hover:underline"
+              >
+                EU AI Act
+              </a>{" "}
+              and{" "}
+              <a
+                href="/blog/gdpr-for-developers"
+                className="text-brand hover:underline"
+              >
+                GDPR for developers
+              </a>{" "}
+              for more detail on international compliance.
+            </p>
 
             {/* Compliance steps */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="compliance-action-plan"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               Compliance action plan for SaaS companies
             </h2>
             <p>
@@ -520,59 +987,74 @@ export default function ColoradoAiAct() {
             </p>
             <ol className="list-decimal list-inside space-y-3 ml-2">
               <li>
-                <strong>Identify your high-risk AI systems.</strong> Review
-                every AI feature in your product. Does it make or substantially
-                influence decisions about employment, education, finance,
-                housing, healthcare, or other consequential areas? If yes, it
-                is a high-risk system under the Act. Run Codepliant to generate
-                an AI inventory from your codebase.
+                <strong className="text-ink">Identify your high-risk AI systems.</strong>{" "}
+                Review every AI feature in your product. Does it make or
+                substantially influence decisions about employment, education,
+                finance, housing, healthcare, or other consequential areas? If
+                yes, it is a high-risk system under the Act. Run{" "}
+                <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
+                  npx codepliant go
+                </code>{" "}
+                to generate an AI inventory from your codebase.
               </li>
               <li>
-                <strong>Determine your role.</strong> Are you a developer
-                (building the AI), a deployer (using the AI), or both? Most
-                SaaS companies that build AI features into their products are
-                both.
+                <strong className="text-ink">Determine your role.</strong>{" "}
+                Are you a developer (building the AI), a deployer (using the
+                AI), or both? Most SaaS companies that build AI features into
+                their products are both.
               </li>
               <li>
-                <strong>Conduct impact assessments.</strong> For each high-risk
-                AI system, document its purpose, data inputs, decision outputs,
-                discrimination risks, fairness metrics, and mitigation
-                measures. This assessment must be completed by June 30, 2026.
+                <strong className="text-ink">Conduct impact assessments.</strong>{" "}
+                For each high-risk AI system, document its purpose, data
+                inputs, decision outputs, discrimination risks, fairness
+                metrics, and mitigation measures. This assessment must be
+                completed by June 30, 2026.
               </li>
               <li>
-                <strong>Test for bias.</strong> Evaluate your AI systems for
-                differential treatment across protected characteristics. Use
-                statistical fairness metrics appropriate to your use case
-                (demographic parity, equalized odds, calibration).
+                <strong className="text-ink">Test for bias.</strong>{" "}
+                Evaluate your AI systems for differential treatment across
+                protected characteristics. Use statistical fairness metrics
+                appropriate to your use case (demographic parity, equalized
+                odds, calibration).
               </li>
               <li>
-                <strong>Implement transparency notices.</strong> Build consumer-
-                facing disclosures that inform users when high-risk AI is used
-                in decisions affecting them. Include appeal and opt-out
-                mechanisms.
+                <strong className="text-ink">Implement transparency notices.</strong>{" "}
+                Build consumer-facing disclosures that inform users when
+                high-risk AI is used in decisions affecting them. Include
+                appeal and opt-out mechanisms. See our{" "}
+                <a
+                  href="/ai-disclosure-generator"
+                  className="text-brand hover:underline"
+                >
+                  AI Disclosure Generator
+                </a>{" "}
+                for a starting point.
               </li>
               <li>
-                <strong>Establish governance.</strong> Designate AI governance
-                responsibility, create risk management policies, and train
-                relevant staff. Use the NIST AI RMF as your framework to take
-                advantage of the affirmative defense.
+                <strong className="text-ink">Establish governance.</strong>{" "}
+                Designate AI governance responsibility, create risk management
+                policies, and train relevant staff. Use the NIST AI RMF as
+                your framework to take advantage of the affirmative defense.
               </li>
               <li>
-                <strong>Generate documentation.</strong> Use Codepliant to
-                generate AI governance documentation aligned with NIST AI RMF.
-                This documentation supports both compliance and the affirmative
-                defense.
+                <strong className="text-ink">Generate documentation.</strong>{" "}
+                Use Codepliant to generate AI governance documentation aligned
+                with NIST AI RMF. This documentation supports both compliance
+                and the affirmative defense.
               </li>
               <li>
-                <strong>Plan for ongoing compliance.</strong> Impact assessments
-                must be updated annually and whenever significant system changes
-                occur. Integrate Codepliant into your CI/CD pipeline to keep
-                documentation current.
+                <strong className="text-ink">Plan for ongoing compliance.</strong>{" "}
+                Impact assessments must be updated annually and whenever
+                significant system changes occur. Integrate Codepliant into
+                your CI/CD pipeline to keep documentation current.
               </li>
             </ol>
 
             {/* Other state AI laws */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="state-landscape"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
+            >
               Beyond Colorado: the US state AI regulation landscape
             </h2>
             <p>
@@ -582,24 +1064,25 @@ export default function ColoradoAiAct() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-2">
               <li>
-                <strong>Illinois:</strong> The Illinois AI Video Interview Act
-                already regulates AI in hiring. Broader AI legislation is under
-                consideration.
+                <strong className="text-ink">Illinois:</strong> The Illinois AI
+                Video Interview Act already regulates AI in hiring. Broader AI
+                legislation is under consideration.
               </li>
               <li>
-                <strong>California:</strong> Multiple AI bills were introduced
-                in 2024-2025, including proposals for algorithmic impact
-                assessments and AI transparency requirements.
+                <strong className="text-ink">California:</strong> Multiple AI
+                bills were introduced in 2024-2025, including proposals for
+                algorithmic impact assessments and AI transparency
+                requirements.
               </li>
               <li>
-                <strong>New York City:</strong> Local Law 144 regulates
-                automated employment decision tools, requiring annual bias
-                audits.
+                <strong className="text-ink">New York City:</strong> Local Law
+                144 regulates automated employment decision tools, requiring
+                annual bias audits.
               </li>
               <li>
-                <strong>Connecticut:</strong> Enacted an AI governance
-                framework in 2024 with disclosure and assessment requirements
-                for state agencies.
+                <strong className="text-ink">Connecticut:</strong> Enacted an
+                AI governance framework in 2024 with disclosure and assessment
+                requirements for state agencies.
               </li>
             </ul>
             <p>
@@ -607,26 +1090,69 @@ export default function ColoradoAiAct() {
               States. Building compliance infrastructure now &mdash; impact
               assessment frameworks, transparency systems, governance processes
               &mdash; prepares you for the regulations that follow Colorado.
+              If you also handle personal data of EU residents, read our{" "}
+              <a
+                href="/blog/gdpr-for-developers"
+                className="text-brand hover:underline"
+              >
+                GDPR compliance guide
+              </a>{" "}
+              and{" "}
+              <a
+                href="/blog/privacy-policy-for-saas"
+                className="text-brand hover:underline"
+              >
+                privacy policy guide for SaaS
+              </a>{" "}
+              to cover the data privacy side.
             </p>
           </div>
 
           {/* CTA */}
-          <section className="bg-surface rounded-2xl p-8 text-center mt-16 mb-16">
-            <h2 className="text-xl font-bold mb-3">
+          <section className="bg-brand-muted border border-brand/20 rounded-2xl p-8 text-center mt-16 mb-16">
+            <h2 className="text-xl font-bold mb-3 text-ink">
               Prepare for the Colorado AI Act deadline
             </h2>
-            <p className="text-muted text-sm mb-6">
-              Scan your codebase to generate AI governance documentation aligned
-              with NIST AI RMF. Free, open source, no account required.
+            <p className="text-ink-secondary text-sm mb-2">
+              Scan your codebase to detect AI services and generate governance
+              documentation aligned with the NIST AI RMF. Free, open source, no
+              account required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <p className="text-ink-tertiary text-xs mb-6">
+              Detects OpenAI, Anthropic, Google AI, LangChain, Vercel AI SDK,
+              Cohere, Replicate, Together AI, and more.
+            </p>
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
+            <p className="text-xs text-ink-tertiary">
+              <a
+                href="https://github.com/joechensmartz/codepliant"
+                className="text-brand hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on GitHub
+              </a>
+              {" "}&middot;{" "}
+              <a
+                href="https://www.npmjs.com/package/codepliant"
+                className="text-brand hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                npm package
+              </a>
+              {" "}&middot;{" "}
+              <a href="/docs" className="text-brand hover:underline">
+                Documentation
+              </a>
+            </p>
           </section>
 
           {/* Related pages */}
           <section>
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
+            <h2 className="text-2xl font-bold tracking-tight mb-6 text-ink">
               Related resources
             </h2>
             <div className="space-y-3">
@@ -642,6 +1168,16 @@ export default function ColoradoAiAct() {
                   desc: "Comprehensive guide to the EU AI Act deadline on August 2, 2026.",
                 },
                 {
+                  title: "GDPR Compliance for Developers",
+                  href: "/blog/gdpr-for-developers",
+                  desc: "Developer-focused guide to GDPR compliance with code examples.",
+                },
+                {
+                  title: "Privacy Policy for SaaS",
+                  href: "/blog/privacy-policy-for-saas",
+                  desc: "How to generate a privacy policy based on your actual codebase.",
+                },
+                {
                   title: "AI Disclosure Generator",
                   href: "/ai-disclosure-generator",
                   desc: "Generate AI transparency disclosures for your SaaS product.",
@@ -655,10 +1191,12 @@ export default function ColoradoAiAct() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
-                  <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
-                  <p className="text-xs text-muted">{link.desc}</p>
+                  <h3 className="font-semibold mb-1 text-sm text-ink">
+                    {link.title}
+                  </h3>
+                  <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </a>
               ))}
             </div>
