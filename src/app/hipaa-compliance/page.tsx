@@ -468,15 +468,15 @@ export default function HipaaCompliance() {
                 indicate health data processing — FHIR client libraries,
                 HL7 parsers, medical imaging packages, and healthcare-specific
                 SDKs. Environment variables like{" "}
-                <code className="bg-surface-secondary px-1.5 py-0.5 rounded text-sm">
+                <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-sm">
                   EHR_API_KEY
                 </code>
                 ,{" "}
-                <code className="bg-surface-secondary px-1.5 py-0.5 rounded text-sm">
+                <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-sm">
                   FHIR_BASE_URL
                 </code>
                 , and{" "}
-                <code className="bg-surface-secondary px-1.5 py-0.5 rounded text-sm">
+                <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-sm">
                   HIPAA_AUDIT_LOG
                 </code>{" "}
                 are flagged as indicators of health data handling.
