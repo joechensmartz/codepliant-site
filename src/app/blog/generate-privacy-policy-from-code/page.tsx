@@ -140,7 +140,7 @@ function faqJsonLd() {
         name: "What languages and frameworks does Codepliant support?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Codepliant supports 12 ecosystems: Node.js/npm, Python/pip, Ruby/gems, PHP/Composer, Java/Maven and Gradle, Go modules, Rust/Cargo, .NET/NuGet, Elixir/Mix, Kotlin, and Terraform/IaC. It scans dependency manifests, source code imports, and environment variables across all supported ecosystems.",
+          text: "Codepliant supports 13 ecosystems: Node.js/npm, Python/pip, Ruby/gems, PHP/Composer, Java/Maven and Gradle, Go modules, Rust/Cargo, .NET/NuGet, Elixir/Mix, Kotlin, Terraform/IaC, and Flutter/Dart. It scans dependency manifests, source code imports, and environment variables across all supported ecosystems.",
         },
       },
       {
@@ -724,7 +724,7 @@ jobs:
               What if a service is not recognized?
             </h3>
             <p>
-              Codepliant recognizes hundreds of services across 12 ecosystems.
+              Codepliant recognizes hundreds of services across 13 ecosystems.
               If a service is not in the database, the generated privacy policy
               will not include it &mdash; which is why you should still review
               the output. You can also{" "}

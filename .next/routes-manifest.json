@@ -111,6 +111,12 @@
       "namedRegex": "^/blog/generate\\-privacy\\-policy\\-from\\-code/opengraph\\-image(?:/)?$"
     },
     {
+      "page": "/blog/hipaa-for-developers",
+      "regex": "^/blog/hipaa\\-for\\-developers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/hipaa\\-for\\-developers(?:/)?$"
+    },
+    {
       "page": "/blog/privacy-policy-for-saas",
       "regex": "^/blog/privacy\\-policy\\-for\\-saas(?:/)?$",
       "routeKeys": {},

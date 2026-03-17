@@ -35,7 +35,7 @@ const faqs = [
   {
     question: "Is Codepliant really free?",
     answer:
-      "The core CLI is free and open source under the MIT license. You get all 120+ document types, all ecosystems, and Markdown output at no cost. Pro ($19/mo) adds HTML/PDF output, custom branding, and CI/CD integration. Team ($49/mo) adds monorepo support and a compliance API.",
+      "The core CLI is free and open source under the MIT license. You get all 122+ document types, all ecosystems, and Markdown output at no cost. Pro ($19/mo) adds HTML/PDF output, custom branding, and CI/CD integration. Team ($49/mo) adds monorepo support and a compliance API.",
   },
   {
     question: "Why is code scanning better than form builders?",
@@ -145,7 +145,7 @@ const features: FeatureRow[] = [
   },
   {
     feature: "Total Document Types",
-    codepliant: "120+",
+    codepliant: "122+",
     termly: "~10",
     iubenda: "~10",
     vanta: "N/A (audit evidence, not docs)",
@@ -243,7 +243,7 @@ function softwareJsonLd() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
-      "Open source compliance tool that scans your codebase and generates 120+ compliance documents including privacy policies, SOC 2 checklists, HIPAA risk assessments, and AI disclosures.",
+      "Open source compliance tool that scans your codebase and generates 122+ compliance documents including privacy policies, SOC 2 checklists, HIPAA risk assessments, and AI disclosures.",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -331,7 +331,7 @@ export default function Compare() {
               <div className="bg-brand-muted border border-brand/20 rounded-xl p-5">
                 <p className="font-semibold mb-2 text-brand">Codepliant</p>
                 <p className="text-sm text-ink-secondary">
-                  Open source CLI. Scans your code, generates 120+ compliance
+                  Open source CLI. Scans your code, generates 122+ compliance
                   documents. Free tier with all features. No questionnaires, no
                   cloud dependency, no vendor lock-in.
                 </p>
@@ -649,14 +649,14 @@ export default function Compare() {
               </p>
 
               <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-                120+ document types vs 10
+                122+ document types vs 10
               </h3>
               <p>
                 Termly generates approximately 10 document types: privacy
                 policy, terms and conditions, cookie policy, EULA, disclaimer,
                 return policy, shipping policy, acceptable use policy, and
                 impressum. Iubenda covers a similar range. Codepliant generates
-                120+ document types covering GDPR (privacy policy, DPA, DSAR
+                122+ document types covering GDPR (privacy policy, DPA, DSAR
                 guide, DPIA, data flow map), SOC 2 (readiness checklist, control
                 mapping, gap analysis), HIPAA (risk assessment, BAA, PHI
                 detection report), the EU AI Act (AI disclosure, model
@@ -713,7 +713,7 @@ export default function Compare() {
               {[
                 {
                   tool: "Codepliant",
-                  free: "All 120+ document types, all ecosystems, Markdown output, unlimited scans",
+                  free: "All 122+ document types, all ecosystems, Markdown output, unlimited scans",
                   paid: "Pro at $19/mo (HTML/PDF, branding, CI/CD). Team at $49/mo (monorepo, API, dashboard).",
                   highlight: true,
                 },

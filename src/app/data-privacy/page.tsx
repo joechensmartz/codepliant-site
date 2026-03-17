@@ -237,7 +237,7 @@ const faqs = [
   {
     question: "What documents does Codepliant generate for data privacy?",
     answer:
-      "Codepliant generates privacy policies, cookie policies, data processing agreements, data flow maps, DSAR guides, data retention policies, consent documentation, AI disclosures, terms of service, and many more — over 120 document types across all supported compliance frameworks.",
+      "Codepliant generates privacy policies, cookie policies, data processing agreements, data flow maps, DSAR guides, data retention policies, consent documentation, AI disclosures, terms of service, and many more — over 122 document types across all supported compliance frameworks.",
   },
 ];
 

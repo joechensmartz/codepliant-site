@@ -168,7 +168,7 @@ const faqs = [
   },
   {
     q: "What languages and frameworks are supported?",
-    a: "Codepliant supports 12 ecosystems: TypeScript/Node.js, Python/Django, Ruby on Rails, Go, Java/Spring, PHP/Laravel, Rust, .NET/C#, Swift/iOS, Kotlin, Elixir, and Terraform/IaC. It scans package manifests, source code imports, environment variables, and configuration files.",
+    a: "Codepliant supports 13 ecosystems: TypeScript/Node.js, Python/Django, Ruby on Rails, Go, Java/Spring, PHP/Laravel, Rust, .NET/C#, Swift/iOS, Kotlin, Elixir, Terraform/IaC, and Flutter/Dart. It scans package manifests, source code imports, environment variables, and configuration files.",
   },
   {
     q: "How does Codepliant detect services?",
@@ -176,7 +176,7 @@ const faqs = [
   },
   {
     q: "What documents can Codepliant generate?",
-    a: "Over 120 document types including Privacy Policy, Terms of Service, Cookie Policy, AI Disclosure, EU AI Act Checklist, Data Processing Agreement, SBOM, Security Policy, Data Flow Map, Data Classification, DSAR procedures, and many more.",
+    a: "Over 122 document types including Privacy Policy, Terms of Service, Cookie Policy, AI Disclosure, EU AI Act Checklist, Data Processing Agreement, SBOM, Security Policy, Data Flow Map, Data Classification, DSAR procedures, and many more.",
   },
   {
     q: "How do I keep documents up to date?",
@@ -275,7 +275,7 @@ export default function Docs() {
 ├── SECURITY.md
 ├── DATA_FLOW_MAP.md
 ├── DATA_CLASSIFICATION.md
-└── ... (121+ document types)
+└── ... (122+ document types)
 
 Generated in ~1.2s`}</pre>
               </div>

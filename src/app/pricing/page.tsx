@@ -32,7 +32,7 @@ const plans = [
       "Full CLI scanning",
       "Markdown output",
       "Up to 5 document types",
-      "12 ecosystem support",
+      "13 ecosystem support",
       "8 ORM scanners",
       "4 languages (EN/DE/FR/ES)",
       "Open source (MIT)",
@@ -117,7 +117,7 @@ const faqs = [
   {
     question: "What happens if I exceed 5 document types on Free?",
     answer:
-      "The Free plan generates up to 5 document types per scan. If your project needs more, upgrading to Pro unlocks all 120+ document types with no limits.",
+      "The Free plan generates up to 5 document types per scan. If your project needs more, upgrading to Pro unlocks all 122+ document types with no limits.",
   },
   {
     question: "Can I self-host the Team dashboard?",

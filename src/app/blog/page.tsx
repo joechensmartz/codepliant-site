@@ -26,6 +26,16 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "hipaa-for-developers",
+    title: "HIPAA for SaaS Developers: What You Actually Need to Know",
+    description:
+      "Who needs HIPAA compliance (not just healthcare), the 18 PHI identifiers, technical safeguards for encryption, audit logs, and access controls, plus BAAs and how to automate compliance from code.",
+    date: "March 17, 2026",
+    readTime: "11 min read",
+    tag: "HIPAA",
+    tagColor: "text-brand",
+  },
+  {
     slug: "soc2-for-startups",
     title: "SOC 2 for Startups: A Developer's Survival Guide",
     description:
@@ -164,7 +174,7 @@ export default function BlogIndex() {
             </h2>
             <p className="text-ink-secondary text-sm mb-6">
               Scan your codebase to detect services, data flows, and AI
-              integrations. Generate 121+ compliance documents automatically.
+              integrations. Generate 122+ compliance documents automatically.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
               npx codepliant go

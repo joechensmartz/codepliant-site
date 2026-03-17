@@ -69,7 +69,7 @@ const releases: Release[] = [
     date: "Coming soon",
     tag: "Upcoming",
     summary:
-      "Interactive setup wizard, SBOM generation, Terraform scanning, Flutter, Swift/iOS, and 12 ecosystems.",
+      "Interactive setup wizard, SBOM generation, Terraform scanning, Flutter, Swift/iOS, and 13 ecosystems.",
     changes: [
       {
         category: "new",
@@ -105,7 +105,7 @@ const releases: Release[] = [
       },
       {
         category: "tests",
-        text: "Test suite expanded from 763 to 1,806 tests (119% increase)",
+        text: "Test suite expanded from 763 to 2,523 tests (231% increase)",
       },
     ],
   },
@@ -114,15 +114,15 @@ const releases: Release[] = [
     date: "2026-03-16",
     tag: "Latest",
     summary:
-      "The stable release. 120+ document types, 12 ecosystems, 200+ service signatures.",
+      "The stable release. 122+ document types, 13 ecosystems, 200+ service signatures.",
     changes: [
       {
         category: "new",
-        text: "Stable release with 120+ compliance document types",
+        text: "Stable release with 122+ compliance document types",
       },
       {
         category: "new",
-        text: "12 ecosystem scanners: TypeScript, Python, Go, Ruby, Rust, Java, PHP, Swift, Kotlin, C#, Elixir, Terraform",
+        text: "13 ecosystem scanners: TypeScript, Python, Go, Ruby, Rust, Java, PHP, Swift, Kotlin, C#, Elixir, Terraform, Flutter/Dart",
       },
       {
         category: "new",
