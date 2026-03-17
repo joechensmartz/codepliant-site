@@ -128,3 +128,14 @@ npx next build
 - Both builds pass: `npm run build` (TSC, zero errors) and `npx next build` (Next.js, all routes compile)
 - Static/dynamic route inventory unchanged: 24 static pages + OG/meta dynamic routes
 - Build-health check only; no design or content changes
+
+### Iteration 50 — Milestone Verification (2026-03-17)
+- **Both builds pass**: `npm run build` (TSC, zero errors) and `npx next build` (Next.js 15.5.12, compiled in 1345 ms, zero errors)
+- **Final stats at iteration 50**:
+  - 23 page routes, 12 OG image routes, 6 meta routes (sitemap, robots, manifest, icon, apple-icon, twitter-image)
+  - 29 static pre-rendered routes + 13 dynamic server-rendered routes = 42 total build outputs
+  - 315 TypeScript/TSX source files across `src/`; ~19,100 lines in `src/app/` (website); ~109,300 lines total in `src/`
+  - 155-line `globals.css` with full dark-mode palette, design tokens, and accessibility rules
+  - First Load JS: 102 kB shared bundle; largest page (`/compare`) at 106 kB
+  - Zero runtime dependencies; all pages static-exportable except OG image generators
+- No design or content changes; milestone build-health and stats audit only

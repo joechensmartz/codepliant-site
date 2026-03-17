@@ -1300,6 +1300,89 @@ All 23 pages return HTTP 200:
 
 **Overall: PASS — 0 issues. All 23 pages return 200, CSS loads correctly, SEO files present.**
 
+### Iteration 50 — MILESTONE QA — 2026-03-17
+
+**Server:** Next.js, production mode (`next start -p 5001`)
+
+#### 1. All Pages 200 (23/23)
+
+| Group | Pages | Status |
+|-------|-------|--------|
+| Core (7) | `/` `/about` `/pricing` `/docs` `/blog` `/changelog` `/compare` | All 200 |
+| Compliance (5) | `/gdpr-compliance` `/hipaa-compliance` `/soc2-compliance` `/ai-governance` `/data-privacy` | All 200 |
+| Generators (4) | `/ai-disclosure-generator` `/cookie-policy-generator` `/privacy-policy-generator` `/terms-of-service-generator` | All 200 |
+| Blog posts (7) | `/blog/colorado-ai-act` `/blog/eu-ai-act-deadline` `/blog/gdpr-for-developers` `/blog/generate-privacy-policy-from-code` `/blog/hipaa-for-developers` `/blog/privacy-policy-for-saas` `/blog/soc2-for-startups` | All 200 |
+| 404 test | `/nonexistent-page-xyz` | 404 (correct) |
+
+#### 2. OG Images (12 routes)
+
+| Route | Status |
+|-------|--------|
+| `/opengraph-image` (root, shared by 13 pages) | 200 (image/png) |
+| `/blog/colorado-ai-act/opengraph-image` | 200 |
+| `/blog/eu-ai-act-deadline/opengraph-image` | 200 |
+| `/blog/gdpr-for-developers/opengraph-image` | 200 |
+| `/blog/generate-privacy-policy-from-code/opengraph-image` | 200 |
+| `/blog/hipaa-for-developers/opengraph-image` | 200 |
+| `/blog/privacy-policy-for-saas/opengraph-image` | 200 |
+| `/blog/soc2-for-startups/opengraph-image` | 200 |
+| `/gdpr-compliance/opengraph-image` | 200 |
+| `/hipaa-compliance/opengraph-image` | 200 |
+| `/soc2-compliance/opengraph-image` | 200 |
+| `/ai-governance/opengraph-image` | 200 |
+| `/twitter-image` | 200 (image/png) |
+
+All 12 OG image routes + 1 twitter-image route return 200 with `image/png`. Pages without dedicated OG routes (`/about`, `/pricing`, `/docs`, `/changelog`, `/compare`, `/data-privacy`, generators) correctly reference the root `/opengraph-image` in their `og:image` meta tag.
+
+#### 3. Sitemap
+
+- `/sitemap.xml` returns 200 (valid XML)
+- 23 URLs listed, all under `https://codepliant.dev`
+- Priorities range from 1.0 (homepage) to 0.5 (generators, about)
+- `changefreq` and `lastmod` present on all entries
+- **PASS**
+
+#### 4. Favicon
+
+| Route | Status |
+|-------|--------|
+| `/icon` (32x32 favicon) | **500 Internal Server Error** |
+| `/apple-icon` (180x180) | **500 Internal Server Error** |
+
+Both icon routes use `runtime = "edge"` with `ImageResponse` from `next/og`. The source code in `src/app/icon.tsx` and `src/app/apple-icon.tsx` appears correct (valid JSX with SVG shield+checkmark). The 500 error is a server-side runtime failure, likely an edge runtime issue with the current Node.js/Next.js configuration.
+
+**Impact:** Browsers will not display a favicon. The HTML references `/icon?8c95f6b01be1aca1` and `/apple-icon?27d62e5017286fe6` which both 500. This is a cosmetic issue -- no data loss, no broken navigation -- but it degrades the professional appearance of the site (browser tabs show a generic icon).
+
+**Note:** This may be an existing issue that was not caught in previous iterations because favicon was not explicitly tested (prior QA checked for 200 on `/icon` but the edge runtime error may have been introduced by a rebuild or environment change).
+
+#### 5. Static Assets
+
+| Asset | Status |
+|-------|--------|
+| CSS (`f2ea1f5a8884d7a4.css`, 49 KB) | 200 |
+| `robots.txt` | 200 |
+| `manifest.webmanifest` | 200 |
+| Fonts (2 woff2 files) | loaded via preload |
+
+#### Milestone Summary
+
+| Check | Result |
+|-------|--------|
+| All 23 pages return 200 | **PASS** |
+| 404 handling | **PASS** |
+| OG images (12 routes + twitter) | **PASS** (all 200, image/png) |
+| OG meta tags in HTML | **PASS** (all pages reference valid OG image URLs) |
+| Sitemap (23 URLs, valid XML) | **PASS** |
+| Favicon (`/icon`) | **FAIL** (500 — edge runtime error) |
+| Apple icon (`/apple-icon`) | **FAIL** (500 — edge runtime error) |
+| CSS stylesheet | **PASS** |
+| `robots.txt` | **PASS** |
+| `manifest.webmanifest` | **PASS** |
+
+**Overall: FAIL — 1 issue (favicon/apple-icon 500). All other milestone checks pass.**
+
+**Cumulative stats at iteration 50:** 23 page routes, 12 OG image routes, 13 meta/asset routes. 19 consecutive iterations with all pages returning 200 (since iteration 32 CSS fix). Favicon 500 is the only open defect.
+
 ---
 
 ## Blockers
