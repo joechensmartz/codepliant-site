@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Website Design
 
+### 2026-03-17 — Iteration 45 (build verification)
+- `tsc -p tsconfig.cli.json` build: passes (0 errors)
+- `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
+- Tests: 758 passing across 128 suites, 0 failures
+- No code changes required — site is stable
+
 ### 2026-03-17 — Iteration 42 (build verification)
 - `tsc -p tsconfig.cli.json` build: passes (0 errors)
 - `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
@@ -75,6 +81,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No issues found — site is healthy
 
 ## Website Updates
+
+### 2026-03-17 — Iteration 45
+- Synced test count from 5,873 to 6,030 across landing page, about page, and changelog
+- Updated generator coverage from 117 to 120 test suites (86.9% of 138 generators)
+- Updated percentage increase from 670% to 690% in changelog
+- `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
 
 ### 2026-03-17 — Iteration 44
 - Synced test count from 5,723 to 5,873 across landing page, about page, and changelog

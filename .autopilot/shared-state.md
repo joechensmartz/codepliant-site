@@ -1152,6 +1152,49 @@ All 23 pages return HTTP 200:
 
 **Overall: PASS — 0 issues. All 23 pages return 200, CSS loads correctly, SEO files present.**
 
+### Iteration 45 — 2026-03-17
+
+**Server:** Next.js, production mode (`next start -p 5001`)
+
+#### Page Status (23 pages)
+
+All 23 pages return HTTP 200:
+
+| Group | Pages |
+|-------|-------|
+| Core | `/` `/about` `/pricing` `/docs` `/blog` `/changelog` `/compare` |
+| Compliance | `/gdpr-compliance` `/hipaa-compliance` `/soc2-compliance` `/ai-governance` `/data-privacy` |
+| Generators | `/ai-disclosure-generator` `/cookie-policy-generator` `/privacy-policy-generator` `/terms-of-service-generator` |
+| Blog posts | `/blog/colorado-ai-act` `/blog/eu-ai-act-deadline` `/blog/gdpr-for-developers` `/blog/generate-privacy-policy-from-code` `/blog/hipaa-for-developers` `/blog/privacy-policy-for-saas` `/blog/soc2-for-startups` |
+| 404 test | `/nonexistent-page-xyz` returns 404 (correct) |
+
+#### Static Assets
+
+| Asset | Status |
+|-------|--------|
+| CSS (`39b61dbfcf3f6beb.css`) | **400 Bad Request** |
+| `robots.txt` | 200 |
+| `sitemap.xml` | 200 |
+
+#### REGRESSION: CSS Stylesheet Returns 400
+
+The HTML references `/_next/static/css/39b61dbfcf3f6beb.css` but the `.next` build directory on disk contains `f2ea1f5a8884d7a4.css` (build ID `vVmISufquK8JQEHxK08no`). The project was rebuilt after the server started, causing a build/server mismatch identical to iteration 32.
+
+**Impact:** All pages serve correct HTML content but Tailwind CSS will not load in the browser. The site will appear unstyled.
+
+**Fix:** Restart the server so it picks up the current build output: `npx next start -p 5001`
+
+#### Summary
+
+| Check | Result |
+|-------|--------|
+| All pages 200 | PASS |
+| 404 handling | PASS |
+| CSS stylesheet | **FAIL** (400 — build/server mismatch, needs server restart) |
+| SEO files | PASS |
+
+**Overall: FAIL — 1 critical issue. CSS returns 400 due to stale server process. Server restart required.**
+
 ---
 
 ## Blockers
