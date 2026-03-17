@@ -5,6 +5,13 @@ All notable changes to Codepliant are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Website Updates
+
+### 2026-03-17 — Iteration 46 (stats sync)
+- Synced test count from 6,030 to 6,181 across landing page, about page, and changelog
+- Updated generator coverage from 120 to 123 test suites (89.1% of 138 generators)
+- `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
+
 ## Website Design
 
 ### 2026-03-17 — Iteration 45 (build verification)
@@ -67,6 +74,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No accessibility regressions detected
 
 ## Website QA
+
+### 2026-03-17 — Iteration 46 (sanity check: all pages 200 + server restart)
+- Server was running stale build (BUILD_ID `ON8l2rLkhPDJHEh7ueDch`, CSS `39b61dbfcf3f6beb.css`) while `.next/` contained new build (BUILD_ID `TlqK3mY3aiTPc10kBnh_0`, CSS `f2ea1f5a8884d7a4.css`)
+- CSS file returned HTTP 400 due to hash mismatch — confirmed build mismatch noted in task brief
+- Restarted Next.js server on port 5001; CSS now serves correctly (HTTP 200)
+- All 23 pages return HTTP 200 after restart:
+  - `/` (home), `/about`, `/pricing`, `/docs`, `/blog`, `/changelog`, `/compare`
+  - `/ai-disclosure-generator`, `/ai-governance`, `/cookie-policy-generator`
+  - `/data-privacy`, `/gdpr-compliance`, `/hipaa-compliance`
+  - `/privacy-policy-generator`, `/soc2-compliance`, `/terms-of-service-generator`
+  - 7 blog posts: `colorado-ai-act`, `eu-ai-act-deadline`, `gdpr-for-developers`, `generate-privacy-policy-from-code`, `hipaa-for-developers`, `privacy-policy-for-saas`, `soc2-for-startups`
+- `/nonexistent-page` correctly returns 404
+- `/sitemap.xml` and `/robots.txt` return 200
+- Static assets verified: CSS (`f2ea1f5a8884d7a4.css`), 2 font files (woff2), manifest — all HTTP 200
+- No issues remain after restart — site is healthy
 
 ### 2026-03-17 — Iteration 41 (sanity check: all pages 200)
 - All 23 pages return HTTP 200:
