@@ -150,7 +150,7 @@ export default function Soc2Compliance() {
         }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
           {/* Breadcrumb navigation */}
           <nav aria-label="Breadcrumb" className="mb-8">
@@ -279,7 +279,7 @@ export default function Soc2Compliance() {
                       className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ml-3 ${
                         tsc.status === "Required"
                           ? "bg-brand/10 text-brand"
-                          : "bg-surface-secondary text-ink-secondary border border-border"
+                          : "bg-surface-secondary text-ink-secondary border border-border-subtle"
                       }`}
                     >
                       {tsc.status}
@@ -366,7 +366,7 @@ export default function Soc2Compliance() {
                 },
               ].map((item) => (
                 <div key={item.step} className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-sm font-bold">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand text-surface-primary flex items-center justify-center text-sm font-bold">
                     {item.step}
                   </div>
                   <div className="flex-1">
@@ -421,7 +421,7 @@ export default function Soc2Compliance() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse min-w-[480px]">
                 <thead>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-border-subtle">
                     <th className="text-left py-3 pr-4 font-semibold"></th>
                     <th className="text-left py-3 px-4 font-semibold">
                       Manual approach
@@ -432,7 +432,7 @@ export default function Soc2Compliance() {
                   </tr>
                 </thead>
                 <tbody className="text-ink-secondary">
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-border-subtle">
                     <td className="py-3 pr-4 font-medium text-ink-primary">
                       Documentation time
                     </td>
@@ -441,7 +441,7 @@ export default function Soc2Compliance() {
                       Minutes
                     </td>
                   </tr>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-border-subtle">
                     <td className="py-3 pr-4 font-medium text-ink-primary">
                       Total prep time (Type I)
                     </td>
@@ -450,7 +450,7 @@ export default function Soc2Compliance() {
                       2-6 weeks
                     </td>
                   </tr>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-border-subtle">
                     <td className="py-3 pr-4 font-medium text-ink-primary">
                       Compliance consultant
                     </td>
@@ -459,7 +459,7 @@ export default function Soc2Compliance() {
                       $0 (open source)
                     </td>
                   </tr>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-border-subtle">
                     <td className="py-3 pr-4 font-medium text-ink-primary">
                       GRC platform
                     </td>
@@ -468,7 +468,7 @@ export default function Soc2Compliance() {
                       $0 (open source)
                     </td>
                   </tr>
-                  <tr className="border-b border-border">
+                  <tr className="border-b border-border-subtle">
                     <td className="py-3 pr-4 font-medium text-ink-primary">
                       Engineering hours
                     </td>

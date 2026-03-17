@@ -176,7 +176,7 @@ const faqs = [
   },
   {
     q: "What documents can Codepliant generate?",
-    a: "Over 122 document types including Privacy Policy, Terms of Service, Cookie Policy, AI Disclosure, EU AI Act Checklist, Data Processing Agreement, SBOM, Security Policy, Data Flow Map, Data Classification, DSAR procedures, and many more.",
+    a: "Over 123 document types including Privacy Policy, Terms of Service, Cookie Policy, AI Disclosure, EU AI Act Checklist, Data Processing Agreement, SBOM, Security Policy, Data Flow Map, Data Classification, DSAR procedures, and many more.",
   },
   {
     q: "How do I keep documents up to date?",
@@ -275,7 +275,7 @@ export default function Docs() {
 ├── SECURITY.md
 ├── DATA_FLOW_MAP.md
 ├── DATA_CLASSIFICATION.md
-└── ... (122+ document types)
+└── ... (123+ document types)
 
 Generated in ~1.2s`}</pre>
               </div>

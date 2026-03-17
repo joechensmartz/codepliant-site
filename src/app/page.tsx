@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Codepliant — Compliance Documents from Your Code",
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 122+ compliance documents. One command. 97.8% precision.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents. One command. 97.8% precision.",
   alternates: { canonical: "https://codepliant.dev" },
 };
 
@@ -15,7 +15,7 @@ function jsonLd() {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
-      "Open source CLI that scans your codebase and generates 122+ compliance documents automatically.",
+      "Open source CLI that scans your codebase and generates 123+ compliance documents automatically.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
       { "@type": "Offer", price: "19", priceCurrency: "USD", name: "Pro" },
@@ -82,7 +82,7 @@ const steps = [
   {
     num: "03",
     title: "Ship",
-    code: "122+ documents generated",
+    code: "123+ documents generated",
     detail:
       "Privacy policy, terms of service, cookie policy, AI disclosure, and more — ready to publish.",
   },
@@ -123,11 +123,11 @@ const plans = [
     price: "$0",
     period: "forever",
     features: [
-      "All 122+ document types",
-      "All ecosystems",
+      "Up to 5 document types",
+      "All 13 ecosystems",
       "Markdown output",
       "CLI access",
-      "Open source",
+      "Open source (MIT)",
     ],
     cta: "Install the CLI",
     href: "https://github.com/joechensmartz/codepliant",
@@ -138,8 +138,8 @@ const plans = [
     price: "$19",
     period: "/month",
     features: [
-      "Everything in Free",
-      "HTML & PDF output",
+      "All 123+ document types",
+      "HTML, PDF & DOCX output",
       "Custom branding",
       "CI/CD integration",
       "Priority support",
@@ -202,7 +202,7 @@ export default function Home() {
             style={{ lineHeight: 1.5 }}
           >
             One command scans your codebase and generates privacy policies, terms
-            of service, AI disclosures, and 122+ compliance documents — tailored to
+            of service, AI disclosures, and 123+ compliance documents — tailored to
             what your app actually does.
           </p>
 
@@ -274,7 +274,7 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Detection precision</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">122+</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">123+</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">

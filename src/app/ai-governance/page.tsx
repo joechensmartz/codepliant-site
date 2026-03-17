@@ -152,7 +152,7 @@ export default function AiGovernance() {
         }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
           {/* Breadcrumb navigation */}
           <nav

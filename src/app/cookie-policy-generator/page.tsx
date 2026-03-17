@@ -149,7 +149,7 @@ export default function CookiePolicyGenerator() {
         }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
           {/* Breadcrumb navigation */}
           <nav aria-label="Breadcrumb" className="mb-8">
@@ -231,7 +231,7 @@ export default function CookiePolicyGenerator() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="border border-border rounded-xl px-5 py-4"
+                  className="border border-border-subtle rounded-xl px-5 py-4"
                 >
                   <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
                   <p className="text-ink-secondary text-sm">{item.desc}</p>
@@ -289,7 +289,7 @@ export default function CookiePolicyGenerator() {
               ].map((item) => (
                 <div
                   key={item.type}
-                  className="border border-border rounded-xl px-5 py-4"
+                  className="border border-border-subtle rounded-xl px-5 py-4"
                 >
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <h3 className="font-semibold text-sm">{item.type}</h3>
@@ -354,7 +354,7 @@ export default function CookiePolicyGenerator() {
                 },
               ].map((item) => (
                 <div key={item.step} className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-sm font-bold">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand text-surface-primary flex items-center justify-center text-sm font-bold">
                     {item.step}
                   </div>
                   <div>
@@ -416,8 +416,8 @@ export default function CookiePolicyGenerator() {
 
             <div className="space-y-6">
               {/* Before: Generic template */}
-              <div className="border border-border rounded-2xl overflow-hidden">
-                <div className="bg-surface-secondary px-5 py-3 border-b border-border flex items-center gap-2">
+              <div className="border border-border-subtle rounded-2xl overflow-hidden">
+                <div className="bg-surface-secondary px-5 py-3 border-b border-border-subtle flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-red-400" />
                   <span className="text-sm font-medium text-ink-secondary">
                     Generic template
@@ -653,7 +653,7 @@ export default function CookiePolicyGenerator() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block border border-border rounded-xl px-5 py-4 hover:border-brand transition-colors"
+                  className="block border border-border-subtle rounded-xl px-5 py-4 hover:border-brand transition-colors"
                 >
                   <h3 className="font-semibold text-sm mb-1">{link.title}</h3>
                   <p className="text-ink-secondary text-sm">{link.desc}</p>

@@ -247,7 +247,7 @@ const faqs = [
   {
     question: "What documents does Codepliant generate for data privacy?",
     answer:
-      "Codepliant generates privacy policies, cookie policies, data processing agreements, data flow maps, DSAR guides, data retention policies, consent documentation, AI disclosures, terms of service, and many more — over 122 document types across all supported compliance frameworks.",
+      "Codepliant generates privacy policies, cookie policies, data processing agreements, data flow maps, DSAR guides, data retention policies, consent documentation, AI disclosures, terms of service, and many more — over 123 document types across all supported compliance frameworks.",
   },
 ];
 
@@ -322,7 +322,7 @@ export default function DataPrivacy() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
           {/* Breadcrumb navigation */}
           <nav aria-label="Breadcrumb" className="mb-8">
@@ -431,7 +431,7 @@ export default function DataPrivacy() {
                   key={cap.label}
                   className="flex gap-4 bg-surface-secondary rounded-xl p-5"
                 >
-                  <div className="shrink-0 w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-sm font-bold">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-brand text-surface-primary flex items-center justify-center text-sm font-bold">
                     {i + 1}
                   </div>
                   <div>

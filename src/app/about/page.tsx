@@ -49,7 +49,7 @@ const principles = [
 const stats = [
   { value: "2,759", label: "Tests passing" },
   { value: "1,200+", label: "Repos tested" },
-  { value: "122+", label: "Document types" },
+  { value: "123+", label: "Document types" },
   { value: "13", label: "Ecosystems" },
 ];
 
@@ -84,22 +84,22 @@ export default function About() {
         }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
-          <h1 className="text-4xl font-bold tracking-tight mb-4">
+          <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">
             About Codepliant
           </h1>
-          <p className="text-lg text-ink-secondary mb-16">
+          <p className="text-[length:var(--text-lg)] text-ink-secondary mb-[var(--space-16)]">
             Every developer should have access to accurate compliance documents
             without paying thousands for lawyers.
           </p>
 
           {/* Mission */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-4">
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
               Our mission
             </h2>
-            <div className="space-y-4 text-base text-ink-secondary leading-relaxed">
+            <div className="space-y-[var(--space-4)] text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
               <p>
                 Every application that collects user data needs legal documents
                 — privacy policies, terms of service, cookie disclosures, AI
@@ -118,11 +118,11 @@ export default function About() {
           </section>
 
           {/* How it works */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-4">
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
               How it works
             </h2>
-            <div className="space-y-4 text-base text-ink-secondary leading-relaxed">
+            <div className="space-y-[var(--space-4)] text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
               <p>
                 Codepliant takes a fundamentally different approach to
                 compliance. Instead of asking you to fill out forms about what
@@ -145,15 +145,15 @@ export default function About() {
           </section>
 
           {/* Key principles */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-8">
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-8)]">
               Key principles
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-6)]">
               {principles.map((p) => (
-                <div key={p.title} className="bg-surface-secondary rounded-xl p-5">
-                  <h3 className="font-semibold mb-2">{p.title}</h3>
-                  <p className="text-sm text-ink-secondary leading-relaxed">
+                <div key={p.title} className="bg-surface-secondary rounded-lg p-[var(--space-6)]">
+                  <h3 className="font-semibold mb-[var(--space-2)]">{p.title}</h3>
+                  <p className="text-[length:var(--text-sm)] text-ink-secondary leading-relaxed">
                     {p.description}
                   </p>
                 </div>
@@ -162,28 +162,28 @@ export default function About() {
           </section>
 
           {/* Stats */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-8">
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-8)]">
               By the numbers
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-6)]">
               {stats.map((s) => (
                 <div key={s.label} className="text-center">
-                  <div className="text-3xl font-bold tracking-tight text-brand">
+                  <div className="font-display text-[length:var(--text-xl)] font-bold text-brand">
                     {s.value}
                   </div>
-                  <div className="text-sm text-ink-secondary mt-1">{s.label}</div>
+                  <div className="text-[length:var(--text-sm)] text-ink-secondary mt-[var(--space-1)]">{s.label}</div>
                 </div>
               ))}
             </div>
           </section>
 
           {/* Open source */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-4">
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
               Open source commitment
             </h2>
-            <div className="space-y-4 text-base text-ink-secondary leading-relaxed">
+            <div className="space-y-[var(--space-4)] text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
               <p>
                 Codepliant is open source under the{" "}
                 <strong>MIT license</strong>. The
@@ -202,12 +202,12 @@ export default function About() {
           </section>
 
           {/* Team */}
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold tracking-tight mb-4">Team</h2>
-            <div className="bg-surface-secondary rounded-xl p-5">
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">Team</h2>
+            <div className="bg-surface-secondary rounded-lg p-[var(--space-6)]">
               <h3 className="font-semibold">Open for contributors</h3>
-              <p className="text-sm text-brand mb-2">Maintainers</p>
-              <p className="text-sm text-ink-secondary leading-relaxed">
+              <p className="text-[length:var(--text-sm)] text-brand mb-[var(--space-2)]">Maintainers</p>
+              <p className="text-[length:var(--text-sm)] text-ink-secondary leading-relaxed">
                 Codepliant is maintained by a growing community of developers
                 who believe compliance should be automated, not outsourced.
               </p>
@@ -216,20 +216,20 @@ export default function About() {
 
           {/* CTA */}
           <section>
-            <h2 className="text-2xl font-bold tracking-tight mb-4">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">
               Get involved
             </h2>
-            <p className="text-base text-ink-secondary leading-relaxed mb-6">
+            <p className="text-[length:var(--text-base)] text-ink-secondary leading-relaxed mb-[var(--space-6)]">
               Check out the repository, read the contributing guide, or just run{" "}
-              <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-sm">
+              <code className="bg-code-bg text-code-fg px-[var(--space-2)] py-[var(--space-1)] rounded text-[length:var(--text-sm)]">
                 npx codepliant go
               </code>{" "}
               in your project to see it in action.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-[var(--space-3)]">
               <a
                 href="https://github.com/joechensmartz/codepliant"
-                className="inline-flex items-center gap-2 bg-brand hover:bg-brand-hover text-white px-6 py-3 rounded-lg text-sm font-medium transition-colors duration-150"
+                className="inline-flex items-center gap-[var(--space-2)] bg-brand hover:bg-brand-hover text-surface-primary px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
                 style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -253,7 +253,7 @@ export default function About() {
               </a>
               <a
                 href="https://github.com/joechensmartz/codepliant/blob/main/CONTRIBUTING.md"
-                className="inline-flex items-center gap-2 border border-border hover:bg-surface-secondary px-6 py-3 rounded-lg text-sm font-medium transition-colors duration-150"
+                className="inline-flex items-center gap-[var(--space-2)] border border-border-subtle hover:border-brand hover:text-brand px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
                 style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
                 target="_blank"
                 rel="noopener noreferrer"

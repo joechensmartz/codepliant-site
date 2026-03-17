@@ -214,7 +214,7 @@ export default function GeneratePrivacyPolicyFromCode() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
           {/* Breadcrumb */}
           <nav className="text-sm text-ink-secondary mb-6" aria-label="Breadcrumb">
@@ -528,7 +528,7 @@ data.
             <p>
               The generated document also includes sections for data retention,
               user rights (GDPR and CCPA), cookie disclosures, and contact
-              information placeholders. Codepliant generates 122+ document
+              information placeholders. Codepliant generates 123+ document
               types across privacy policies, terms of service, cookie policies,
               AI disclosures, EULAs, and more.
             </p>

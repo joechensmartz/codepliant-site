@@ -114,11 +114,11 @@ const releases: Release[] = [
     date: "2026-03-16",
     tag: "Latest",
     summary:
-      "The stable release. 122+ document types, 13 ecosystems, 200+ service signatures.",
+      "The stable release. 123+ document types, 13 ecosystems, 200+ service signatures.",
     changes: [
       {
         category: "new",
-        text: "Stable release with 122+ compliance document types",
+        text: "Stable release with 123+ compliance document types",
       },
       {
         category: "new",
@@ -340,7 +340,7 @@ function VersionBadge({ tag }: { tag: "Latest" | "Upcoming" }) {
     );
   }
   return (
-    <span className="text-xs font-semibold uppercase tracking-wider bg-brand text-white px-2 py-0.5 rounded">
+    <span className="text-[length:var(--text-xs)] font-semibold uppercase tracking-wider bg-brand text-surface-primary px-[var(--space-2)] py-0.5 rounded">
       {tag}
     </span>
   );
@@ -356,16 +356,16 @@ export default function Changelog() {
         }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[720px] mx-auto">
           {/* Header */}
-          <h1 className="text-4xl font-bold tracking-tight mb-4">Changelog</h1>
-          <p className="text-lg text-ink-secondary mb-4">
+          <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">Changelog</h1>
+          <p className="text-[length:var(--text-lg)] text-ink-secondary mb-[var(--space-4)]">
             Every release of Codepliant, from day one to now.
           </p>
 
           {/* Legend */}
-          <div className="flex flex-wrap gap-3 mb-12 text-sm">
+          <div className="flex flex-wrap gap-[var(--space-3)] mb-[var(--space-12)] text-[length:var(--text-sm)]">
             {(Object.keys(categoryConfig) as ChangeCategory[]).map((cat) => (
               <div key={cat} className="flex items-center gap-1.5">
                 <CategoryBadge category={cat} />
@@ -424,16 +424,17 @@ export default function Changelog() {
           </div>
 
           {/* Subscribe CTA */}
-          <div className="mt-16 border border-border-subtle rounded-lg p-6 text-center bg-surface-secondary">
-            <p className="text-sm font-semibold mb-1">Stay up to date</p>
-            <p className="text-sm text-ink-secondary mb-4">
+          <div className="mt-[var(--space-16)] border border-border-subtle rounded-lg p-[var(--space-6)] text-center bg-surface-secondary">
+            <p className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">Stay up to date</p>
+            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
               Star the repo on GitHub to get notified of new releases.
             </p>
             <a
               href="https://github.com/joechensmartz/codepliant"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-medium bg-brand text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] font-medium bg-brand text-surface-primary px-[var(--space-4)] py-[var(--space-2)] rounded-lg hover:bg-brand-hover transition-colors duration-150"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >
               <svg
                 className="w-4 h-4"

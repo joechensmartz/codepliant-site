@@ -31,7 +31,7 @@ export default function NotFound() {
         <div className="inline-flex flex-col items-center gap-[var(--space-3)]">
           <a
             href="/"
-            className="inline-flex items-center gap-[var(--space-2)] bg-brand text-white font-medium text-[length:var(--text-sm)] rounded-lg px-[var(--space-6)] py-[var(--space-3)] hover:bg-brand-hover transition-colors duration-150"
+            className="inline-flex items-center gap-[var(--space-2)] bg-brand text-surface-primary font-medium text-[length:var(--text-sm)] rounded-lg px-[var(--space-6)] py-[var(--space-3)] hover:bg-brand-hover transition-colors duration-150"
           >
             Go home
           </a>

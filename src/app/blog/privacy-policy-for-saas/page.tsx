@@ -174,7 +174,7 @@ export default function PrivacyPolicyForSaas() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}
       />
 
-      <article className="py-20 px-6">
+      <article className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
           {/* Breadcrumb */}
           <nav className="text-sm text-ink-secondary mb-6" aria-label="Breadcrumb">

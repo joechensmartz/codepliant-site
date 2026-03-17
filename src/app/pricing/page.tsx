@@ -117,7 +117,7 @@ const faqs = [
   {
     question: "What happens if I exceed 5 document types on Free?",
     answer:
-      "The Free plan generates up to 5 document types per scan. If your project needs more, upgrading to Pro unlocks all 122+ document types with no limits.",
+      "The Free plan generates up to 5 document types per scan. If your project needs more, upgrading to Pro unlocks all 123+ document types with no limits.",
   },
   {
     question: "Can I self-host the Team dashboard?",
@@ -177,21 +177,21 @@ export default function Pricing() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}
       />
 
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold tracking-tight mb-4">Pricing</h1>
-            <p className="text-lg text-ink-secondary">
+      <section className="py-[var(--space-24)] px-[var(--space-6)]">
+        <div className="max-w-[960px] mx-auto">
+          <div className="text-center mb-[var(--space-16)]">
+            <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">Pricing</h1>
+            <p className="text-[length:var(--text-lg)] text-ink-secondary">
               Free for open source. Pay only when you need more.
             </p>
           </div>
 
           {/* Pricing cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-6)]">
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl p-8 flex flex-col ${
+                className={`relative rounded-lg p-[var(--space-8)] flex flex-col ${
                   plan.highlight
                     ? "bg-brand text-surface-primary ring-2 ring-brand scale-[1.02]"
                     : "bg-surface-primary ring-1 ring-border-subtle"
@@ -200,19 +200,19 @@ export default function Pricing() {
                 {/* "Most Popular" badge */}
                 {"badge" in plan && plan.badge && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-surface-primary text-brand text-xs font-bold px-3 py-1 rounded-full shadow-sm whitespace-nowrap">
+                    <span className="bg-surface-primary text-brand text-[length:var(--text-xs)] font-bold px-[var(--space-3)] py-[var(--space-1)] rounded-full shadow-sm whitespace-nowrap">
                       {plan.badge}
                     </span>
                   </div>
                 )}
 
                 {/* Plan header */}
-                <div className="mb-6">
-                  <h2 className="text-lg font-bold mb-2">{plan.name}</h2>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold">{plan.price}</span>
+                <div className="mb-[var(--space-6)]">
+                  <h2 className="text-[length:var(--text-lg)] font-bold mb-[var(--space-2)]">{plan.name}</h2>
+                  <div className="flex items-baseline gap-[var(--space-1)]">
+                    <span className="font-display text-[length:var(--text-2xl)] font-bold">{plan.price}</span>
                     <span
-                      className={`text-sm font-normal ${
+                      className={`text-[length:var(--text-sm)] font-normal ${
                         plan.highlight ? "text-surface-primary/70" : "text-ink-secondary"
                       }`}
                     >
@@ -220,7 +220,7 @@ export default function Pricing() {
                     </span>
                   </div>
                   <p
-                    className={`text-sm mt-3 ${
+                    className={`text-[length:var(--text-sm)] mt-[var(--space-3)] ${
                       plan.highlight ? "text-surface-primary/70" : "text-ink-secondary"
                     }`}
                   >
@@ -230,17 +230,17 @@ export default function Pricing() {
 
                 {/* Divider */}
                 <div
-                  className={`border-t mb-6 ${
-                    plan.highlight ? "border-white/20" : "border-border-subtle"
+                  className={`border-t mb-[var(--space-6)] ${
+                    plan.highlight ? "border-surface-primary/20" : "border-border-subtle"
                   }`}
                 />
 
                 {/* Features */}
-                <ul className="space-y-3 text-sm mb-8 flex-1">
+                <ul className="space-y-[var(--space-3)] text-[length:var(--text-sm)] mb-[var(--space-8)] flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5">
+                    <li key={f} className="flex items-start gap-[var(--space-2)]">
                       <svg
-                        className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
+                        className={`w-4 h-4 mt-0.5 shrink-0 ${
                           plan.highlight ? "text-surface-primary" : "text-brand"
                         }`}
                         fill="none"
@@ -263,11 +263,12 @@ export default function Pricing() {
                 {/* CTA button */}
                 <a
                   href={plan.href}
-                  className={`block text-center py-3 rounded-xl text-sm font-medium transition-colors ${
+                  className={`block text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 ${
                     plan.highlight
                       ? "bg-surface-primary text-brand hover:bg-surface-secondary"
                       : "bg-surface-secondary border border-border-subtle hover:bg-surface-tertiary"
                   }`}
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
                 >
                   {plan.cta}
                 </a>
@@ -276,21 +277,21 @@ export default function Pricing() {
           </div>
 
           {/* Annual savings note */}
-          <p className="text-center text-sm text-ink-secondary mt-8">
+          <p className="text-center text-[length:var(--text-sm)] text-ink-secondary mt-[var(--space-8)]">
             Save up to 34% with annual billing. All plans include a 14-day free
             trial.
           </p>
 
           {/* FAQ section */}
-          <div className="mt-20">
-            <h2 className="text-2xl font-bold tracking-tight mb-10 text-center">
+          <div className="mt-[var(--space-24)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-12)] text-center">
               Frequently Asked Questions
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[var(--space-12)] gap-y-[var(--space-8)]">
               {faqs.map((faq) => (
                 <div key={faq.question}>
-                  <h3 className="font-semibold mb-2">{faq.question}</h3>
-                  <p className="text-sm text-ink-secondary leading-relaxed">
+                  <h3 className="font-semibold mb-[var(--space-2)]">{faq.question}</h3>
+                  <p className="text-[length:var(--text-sm)] text-ink-secondary leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

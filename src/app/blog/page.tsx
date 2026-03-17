@@ -132,7 +132,7 @@ export default function BlogIndex() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd()) }}
       />
 
-      <section className="py-20 px-6">
+      <section className="py-[var(--space-16)] px-[var(--space-6)]">
         <div className="max-w-[680px] mx-auto">
           <h1 className="text-4xl font-bold tracking-tight mb-4">Blog</h1>
           <p className="text-ink-secondary text-[length:var(--text-lg)] mb-12">
@@ -174,7 +174,7 @@ export default function BlogIndex() {
             </h2>
             <p className="text-ink-secondary text-sm mb-6">
               Scan your codebase to detect services, data flows, and AI
-              integrations. Generate 122+ compliance documents automatically.
+              integrations. Generate 123+ compliance documents automatically.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
               npx codepliant go

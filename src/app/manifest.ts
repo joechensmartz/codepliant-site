@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Codepliant",
     short_name: "Codepliant",
     description:
-      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 122+ compliance documents automatically.",
+      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents automatically.",
     start_url: "/",
     display: "standalone",
     background_color: "#faf8f5",
