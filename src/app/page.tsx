@@ -53,9 +53,9 @@ const proofPoints = [
     linkText: "View on GitHub",
   },
   {
-    fact: "6,181 automated tests passing",
+    fact: "6,330 automated tests passing",
     detail:
-      "100% scanner coverage and 89.1% generator coverage (123 of 138). The full test suite runs on every commit to prevent regressions.",
+      "100% scanner coverage and 91.3% generator coverage (126 of 138). The full test suite runs on every commit to prevent regressions.",
     link: "https://github.com/joechensmartz/codepliant",
     linkText: "See the test suite",
   },
@@ -281,7 +281,7 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">6,181</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">6,330</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">

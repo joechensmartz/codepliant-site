@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Website Design
 
+### 2026-03-17 — Iteration 47 (build verification)
+- `tsc -p tsconfig.cli.json` build: passes (0 errors)
+- `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
+- No code changes required — site is stable
+
 ### 2026-03-17 — Iteration 45 (build verification)
 - `tsc -p tsconfig.cli.json` build: passes (0 errors)
 - `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
