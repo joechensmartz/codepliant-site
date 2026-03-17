@@ -188,16 +188,21 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Compliance */}
           <div>
             <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
-              Legal
+              Compliance
             </h3>
             <ul className="space-y-[var(--space-2)] text-ink-secondary">
               <li><a href="/privacy-policy-generator" className={linkClass}>Privacy Policy</a></li>
               <li><a href="/terms-of-service-generator" className={linkClass}>Terms of Service</a></li>
-              <li><a href="/data-privacy" className={linkClass}>Data Privacy</a></li>
+              <li><a href="/cookie-policy-generator" className={linkClass}>Cookie Policy</a></li>
+              <li><a href="/ai-disclosure-generator" className={linkClass}>AI Disclosure</a></li>
               <li><a href="/gdpr-compliance" className={linkClass}>GDPR</a></li>
+              <li><a href="/soc2-compliance" className={linkClass}>SOC 2</a></li>
+              <li><a href="/hipaa-compliance" className={linkClass}>HIPAA</a></li>
+              <li><a href="/ai-governance" className={linkClass}>AI Governance</a></li>
+              <li><a href="/data-privacy" className={linkClass}>Data Privacy</a></li>
             </ul>
           </div>
 
