@@ -723,9 +723,9 @@ export default function AiGovernance() {
                   desc: "SOC 2 readiness checklists and control mappings for startups.",
                 },
                 {
-                  title: "Codepliant vs Termly vs Iubenda",
-                  href: "/compare",
-                  desc: "See how code-based scanning compares to form builders for compliance documentation.",
+                  title: "HIPAA Compliance Tool",
+                  href: "/hipaa-compliance",
+                  desc: "HIPAA documentation automation for AI-powered healthcare applications handling PHI.",
                 },
               ].map((link) => (
                 <a

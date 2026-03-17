@@ -697,6 +697,122 @@ Generated in ~1.2s`}</pre>
             </div>
           </section>
 
+          {/* Compliance frameworks */}
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
+              Compliance Frameworks
+            </h2>
+            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-6)]" style={{ lineHeight: 1.6 }}>
+              Codepliant generates documentation for multiple compliance frameworks. Each page explains the framework requirements and how Codepliant automates documentation.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-3)]">
+              {[
+                {
+                  title: "GDPR Compliance",
+                  href: "/gdpr-compliance",
+                  desc: "Privacy policies, DPAs, data flow maps, and 12+ GDPR documents from your code.",
+                },
+                {
+                  title: "HIPAA Compliance",
+                  href: "/hipaa-compliance",
+                  desc: "PHI detection, risk assessments, BAA templates, and audit-ready HIPAA documentation.",
+                },
+                {
+                  title: "SOC 2 Compliance",
+                  href: "/soc2-compliance",
+                  desc: "Readiness checklists, control mappings, and evidence docs for all 5 Trust Service Criteria.",
+                },
+                {
+                  title: "AI Governance",
+                  href: "/ai-governance",
+                  desc: "EU AI Act and NIST AI RMF aligned governance documentation for AI-powered applications.",
+                },
+                {
+                  title: "Data Privacy Hub",
+                  href: "/data-privacy",
+                  desc: "GDPR, CCPA, LGPD, PIPEDA, and DPDP Act documentation from a single scan.",
+                },
+              ].map((page) => (
+                <a
+                  key={page.href}
+                  href={page.href}
+                  className="block border border-border-subtle rounded-lg p-[var(--space-4)] hover:border-brand transition-colors duration-150"
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                >
+                  <h3 className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">
+                    {page.title}
+                  </h3>
+                  <p className="text-[length:var(--text-xs)] text-ink-secondary">
+                    {page.desc}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          {/* Blog guides */}
+          <section className="mb-[var(--space-16)]">
+            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
+              Guides &amp; Tutorials
+            </h2>
+            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-6)]" style={{ lineHeight: 1.6 }}>
+              In-depth guides covering specific compliance topics, with practical examples and code snippets.
+            </p>
+            <div className="space-y-[var(--space-3)]">
+              {[
+                {
+                  title: "Generate a Privacy Policy from Code in 30 Seconds",
+                  href: "/blog/generate-privacy-policy-from-code",
+                  desc: "Step-by-step tutorial for scanning your codebase and generating an accurate privacy policy.",
+                },
+                {
+                  title: "GDPR Compliance for Developers",
+                  href: "/blog/gdpr-for-developers",
+                  desc: "Practical guide to consent, data subject rights, DPAs, and common GDPR mistakes.",
+                },
+                {
+                  title: "How to Write a Privacy Policy for Your SaaS App",
+                  href: "/blog/privacy-policy-for-saas",
+                  desc: "GDPR Article 13, CCPA requirements, and a template you can adapt.",
+                },
+                {
+                  title: "SOC 2 for Startups: A Developer's Survival Guide",
+                  href: "/blog/soc2-for-startups",
+                  desc: "Trust Service Criteria, common mistakes, and a 30-day readiness timeline.",
+                },
+                {
+                  title: "HIPAA for SaaS Developers",
+                  href: "/blog/hipaa-for-developers",
+                  desc: "PHI identifiers, technical safeguards, BAAs, and compliance automation.",
+                },
+                {
+                  title: "EU AI Act: What Developers Need to Know",
+                  href: "/blog/eu-ai-act-deadline",
+                  desc: "Risk classifications, Article 50 transparency, and the August 2026 deadline.",
+                },
+                {
+                  title: "Colorado AI Act Compliance Guide",
+                  href: "/blog/colorado-ai-act",
+                  desc: "SB 24-205 requirements, algorithmic impact assessments, and NIST AI RMF defense.",
+                },
+              ].map((post) => (
+                <a
+                  key={post.href}
+                  href={post.href}
+                  className="block border border-border-subtle rounded-lg p-[var(--space-4)] hover:border-brand transition-colors duration-150"
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                >
+                  <h3 className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">
+                    {post.title}
+                  </h3>
+                  <p className="text-[length:var(--text-xs)] text-ink-secondary">
+                    {post.desc}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+
           {/* Bottom CTA */}
           <div className="border border-border-subtle rounded-lg p-[var(--space-8)] text-center bg-surface-secondary">
             <p className="font-display font-semibold text-[length:var(--text-base)] mb-[var(--space-3)]">

@@ -1175,9 +1175,14 @@ $ npx codepliant go
                   desc: "Colorado's AI Act obligations for SaaS developers using AI in consequential decisions.",
                 },
                 {
-                  title: "Codepliant vs Termly vs Iubenda",
-                  href: "/compare",
-                  desc: "Compare compliance tools: code scanning vs form builders.",
+                  title: "SOC 2 for Startups",
+                  href: "/blog/soc2-for-startups",
+                  desc: "Developer survival guide to SOC 2 compliance with a 30-day readiness timeline.",
+                },
+                {
+                  title: "Privacy Policy for SaaS",
+                  href: "/blog/privacy-policy-for-saas",
+                  desc: "How to write a privacy policy that satisfies GDPR and CCPA requirements.",
                 },
                 {
                   title: "Data Privacy Compliance Hub",

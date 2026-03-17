@@ -680,9 +680,19 @@ export default function GdprCompliance() {
                   desc: "See how code-based scanning compares to form builders for GDPR compliance.",
                 },
                 {
-                  title: "EU AI Act Developer Guide",
-                  href: "/blog/eu-ai-act-deadline",
-                  desc: "Everything developers need to know about the August 2026 deadline.",
+                  title: "AI Governance Framework",
+                  href: "/ai-governance",
+                  desc: "EU AI Act and NIST AI RMF compliance documentation for AI-powered applications.",
+                },
+                {
+                  title: "GDPR for Developers Guide",
+                  href: "/blog/gdpr-for-developers",
+                  desc: "Practical GDPR guide with code examples for engineering teams.",
+                },
+                {
+                  title: "Privacy Policy for SaaS",
+                  href: "/blog/privacy-policy-for-saas",
+                  desc: "How to write a SaaS privacy policy that satisfies GDPR Article 13.",
                 },
               ].map((link) => (
                 <a

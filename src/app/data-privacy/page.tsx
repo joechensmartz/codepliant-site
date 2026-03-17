@@ -195,6 +195,16 @@ const relatedPages = [
     href: "/blog/privacy-policy-for-saas",
     desc: "What your SaaS privacy policy must include and how to generate one from your codebase.",
   },
+  {
+    name: "SOC 2 Compliance Tool",
+    href: "/soc2-compliance",
+    desc: "SOC 2 readiness checklists and control mappings for startups selling to enterprise.",
+  },
+  {
+    name: "AI Governance Framework",
+    href: "/ai-governance",
+    desc: "EU AI Act and NIST AI RMF compliance documentation for AI-powered applications.",
+  },
 ];
 
 const faqs = [

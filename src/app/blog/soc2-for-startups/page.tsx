@@ -770,6 +770,22 @@ jobs:
                   How to Generate a Privacy Policy from Your Code in 30 Seconds
                 </a>
               </li>
+              <li>
+                <a
+                  href="/blog/hipaa-for-developers"
+                  className="text-brand hover:underline"
+                >
+                  HIPAA for SaaS Developers: What You Actually Need to Know
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/blog/privacy-policy-for-saas"
+                  className="text-brand hover:underline"
+                >
+                  How to Write a Privacy Policy for Your SaaS App
+                </a>
+              </li>
             </ul>
           </div>
         </div>

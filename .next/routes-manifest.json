@@ -57,6 +57,12 @@
       "namedRegex": "^/ai\\-governance/opengraph\\-image(?:/)?$"
     },
     {
+      "page": "/apple-icon",
+      "regex": "^/apple\\-icon(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/apple\\-icon(?:/)?$"
+    },
+    {
       "page": "/blog",
       "regex": "^/blog(?:/)?$",
       "routeKeys": {},
@@ -115,6 +121,12 @@
       "regex": "^/blog/hipaa\\-for\\-developers(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/hipaa\\-for\\-developers(?:/)?$"
+    },
+    {
+      "page": "/blog/hipaa-for-developers/opengraph-image",
+      "regex": "^/blog/hipaa\\-for\\-developers/opengraph\\-image(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/hipaa\\-for\\-developers/opengraph\\-image(?:/)?$"
     },
     {
       "page": "/blog/privacy-policy-for-saas",
@@ -193,6 +205,18 @@
       "regex": "^/hipaa\\-compliance/opengraph\\-image(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/hipaa\\-compliance/opengraph\\-image(?:/)?$"
+    },
+    {
+      "page": "/icon",
+      "regex": "^/icon(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/icon(?:/)?$"
+    },
+    {
+      "page": "/manifest.webmanifest",
+      "regex": "^/manifest\\.webmanifest(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/manifest\\.webmanifest(?:/)?$"
     },
     {
       "page": "/opengraph-image",

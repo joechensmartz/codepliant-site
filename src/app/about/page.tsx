@@ -47,7 +47,7 @@ const principles = [
 ];
 
 const stats = [
-  { value: "2,523", label: "Tests passing" },
+  { value: "2,759", label: "Tests passing" },
   { value: "1,200+", label: "Repos tested" },
   { value: "122+", label: "Document types" },
   { value: "13", label: "Ecosystems" },

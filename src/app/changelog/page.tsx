@@ -105,7 +105,7 @@ const releases: Release[] = [
       },
       {
         category: "tests",
-        text: "Test suite expanded from 763 to 2,523 tests (231% increase)",
+        text: "Test suite expanded from 763 to 2,759 tests (262% increase)",
       },
     ],
   },

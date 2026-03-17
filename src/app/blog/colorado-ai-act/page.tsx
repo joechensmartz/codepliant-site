@@ -1156,6 +1156,11 @@ jobs:
                   desc: "How to generate a privacy policy based on your actual codebase.",
                 },
                 {
+                  title: "SOC 2 for Startups",
+                  href: "/blog/soc2-for-startups",
+                  desc: "Developer survival guide to SOC 2 compliance with a 30-day readiness timeline.",
+                },
+                {
                   title: "AI Disclosure Generator",
                   href: "/ai-disclosure-generator",
                   desc: "Generate AI transparency disclosures for your SaaS product.",

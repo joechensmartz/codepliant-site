@@ -835,6 +835,22 @@ Generating documents...
                   GDPR Compliance for Developers: A Practical Guide
                 </a>
               </li>
+              <li>
+                <a
+                  href="/blog/privacy-policy-for-saas"
+                  className="text-brand hover:underline"
+                >
+                  How to Write a Privacy Policy for Your SaaS App
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/blog/generate-privacy-policy-from-code"
+                  className="text-brand hover:underline"
+                >
+                  Generate a Privacy Policy from Your Code in 30 Seconds
+                </a>
+              </li>
             </ul>
           </div>
         </div>

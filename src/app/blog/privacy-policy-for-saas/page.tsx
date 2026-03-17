@@ -1108,6 +1108,21 @@ jobs:
                   desc: "State-level AI regulation and what it means for your SaaS application.",
                 },
                 {
+                  title: "Generate Privacy Policy from Code in 30 Seconds",
+                  href: "/blog/generate-privacy-policy-from-code",
+                  desc: "Step-by-step tutorial for scanning your codebase and generating an accurate privacy policy.",
+                },
+                {
+                  title: "HIPAA for SaaS Developers",
+                  href: "/blog/hipaa-for-developers",
+                  desc: "HIPAA compliance guide for SaaS developers handling health data.",
+                },
+                {
+                  title: "SOC 2 for Startups",
+                  href: "/blog/soc2-for-startups",
+                  desc: "Developer survival guide to SOC 2 compliance with a 30-day readiness timeline.",
+                },
+                {
                   title: "Privacy Policy Generator",
                   href: "/privacy-policy-generator",
                   desc: "Generate a privacy policy from your codebase in seconds.",

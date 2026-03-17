@@ -675,9 +675,9 @@ export default function HipaaCompliance() {
                   desc: "EU AI Act and NIST AI RMF compliance for AI-powered healthcare applications.",
                 },
                 {
-                  title: "Terms of Service Generator",
-                  href: "/terms-of-service-generator",
-                  desc: "Generate Terms of Service from your codebase instead of using generic templates.",
+                  title: "HIPAA for SaaS Developers Guide",
+                  href: "/blog/hipaa-for-developers",
+                  desc: "Practical HIPAA guide covering PHI identifiers, technical safeguards, and BAAs.",
                 },
                 {
                   title: "Codepliant vs Termly vs Iubenda",

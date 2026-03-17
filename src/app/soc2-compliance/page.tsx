@@ -685,9 +685,9 @@ export default function Soc2Compliance() {
                   desc: "EU AI Act and NIST AI RMF compliance documentation for AI-powered applications.",
                 },
                 {
-                  title: "Terms of Service Generator",
-                  href: "/terms-of-service-generator",
-                  desc: "Generate Terms of Service from your codebase instead of using generic templates.",
+                  title: "SOC 2 for Startups Guide",
+                  href: "/blog/soc2-for-startups",
+                  desc: "Developer survival guide with a 30-day timeline to SOC 2 readiness.",
                 },
                 {
                   title: "Codepliant vs Termly vs Iubenda",

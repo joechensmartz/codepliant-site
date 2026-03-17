@@ -1076,9 +1076,19 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
                   desc: "What the Colorado AI Act means for developers building AI-powered applications.",
                 },
                 {
-                  title: "Privacy Policy Generator",
-                  href: "/privacy-policy-generator",
-                  desc: "Generate a privacy policy from your codebase in seconds.",
+                  title: "Generate Privacy Policy from Code",
+                  href: "/blog/generate-privacy-policy-from-code",
+                  desc: "Step-by-step tutorial for scanning your codebase and generating a privacy policy in 30 seconds.",
+                },
+                {
+                  title: "SOC 2 for Startups",
+                  href: "/blog/soc2-for-startups",
+                  desc: "Developer survival guide to SOC 2 compliance with a 30-day readiness timeline.",
+                },
+                {
+                  title: "HIPAA for SaaS Developers",
+                  href: "/blog/hipaa-for-developers",
+                  desc: "PHI identifiers, technical safeguards, BAAs, and HIPAA compliance automation.",
                 },
                 {
                   title: "Data Privacy Compliance Hub",

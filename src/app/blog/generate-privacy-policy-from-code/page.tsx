@@ -768,6 +768,45 @@ jobs:
               </a>, we have guides for those too.
             </p>
 
+            {/* Related reading */}
+            <div className="border-t border-border-subtle pt-8 mt-8">
+              <h3 className="text-lg font-bold tracking-tight text-ink mb-4">Related reading</h3>
+              <ul className="space-y-2 text-sm text-ink-secondary">
+                <li>
+                  <a
+                    href="/blog/gdpr-for-developers"
+                    className="text-brand hover:underline"
+                  >
+                    GDPR Compliance for Developers: A Practical Guide
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/blog/privacy-policy-for-saas"
+                    className="text-brand hover:underline"
+                  >
+                    How to Write a Privacy Policy for Your SaaS App
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/blog/soc2-for-startups"
+                    className="text-brand hover:underline"
+                  >
+                    SOC 2 for Startups: A Developer&apos;s Survival Guide
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/blog/hipaa-for-developers"
+                    className="text-brand hover:underline"
+                  >
+                    HIPAA for SaaS Developers: What You Actually Need to Know
+                  </a>
+                </li>
+              </ul>
+            </div>
+
             {/* CTA */}
             <section className="bg-surface-secondary rounded-2xl p-8 text-center mt-8">
               <h2 className="text-xl font-bold mb-3 text-ink">
