@@ -4,23 +4,41 @@ export const metadata: Metadata = {
   title:
     "How to Write a Privacy Policy for Your SaaS App in 2026",
   description:
-    "Step-by-step guide to writing a privacy policy for SaaS applications. Covers GDPR, CCPA, data collection disclosures, third-party services, and a practical SaaS privacy policy template you can adapt.",
+    "Step-by-step guide to writing a privacy policy for SaaS applications. Covers GDPR Article 13 checklist, CCPA, data collection disclosures, third-party services, code examples with Codepliant, and a practical SaaS privacy policy template you can adapt.",
   alternates: {
     canonical: "https://codepliant.dev/blog/privacy-policy-for-saas",
   },
+  keywords: [
+    "SaaS privacy policy",
+    "privacy policy template",
+    "GDPR privacy policy",
+    "CCPA privacy policy",
+    "privacy policy generator",
+    "SaaS compliance",
+    "data privacy",
+    "GDPR Article 13",
+    "privacy policy requirements",
+    "codepliant",
+    "privacy policy for apps",
+    "SaaS legal documents",
+  ],
   openGraph: {
     title: "How to Write a Privacy Policy for Your SaaS App in 2026",
     description:
-      "Practical guide to creating a legally compliant privacy policy for your SaaS product. Includes templates and real-world examples.",
+      "Practical guide to creating a legally compliant privacy policy for your SaaS product. Includes GDPR Article 13 checklist, code examples, and templates.",
     url: "https://codepliant.dev/blog/privacy-policy-for-saas",
     type: "article",
+    publishedTime: "2026-03-16T00:00:00Z",
+    modifiedTime: "2026-03-16T00:00:00Z",
+    authors: ["Codepliant"],
+    tags: ["Privacy Policy", "SaaS Compliance", "GDPR", "CCPA"],
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "How to Write a Privacy Policy for Your SaaS App in 2026",
     description:
-      "SaaS privacy policy template and step-by-step guide covering GDPR, CCPA, and modern data privacy requirements.",
+      "SaaS privacy policy template and step-by-step guide covering GDPR Article 13, CCPA, and modern data privacy requirements.",
     images: ["/og-image.png"],
   },
 };
@@ -32,7 +50,7 @@ function articleJsonLd() {
     headline:
       "How to Write a Privacy Policy for Your SaaS App in 2026",
     description:
-      "Step-by-step guide to writing a privacy policy for SaaS applications. Covers GDPR, CCPA, data collection disclosures, third-party services, and a practical SaaS privacy policy template.",
+      "Step-by-step guide to writing a privacy policy for SaaS applications. Covers GDPR Article 13 checklist, CCPA, data collection disclosures, third-party services, and a practical SaaS privacy policy template.",
     datePublished: "2026-03-16",
     dateModified: "2026-03-16",
     author: {
@@ -52,6 +70,54 @@ function articleJsonLd() {
   };
 }
 
+function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What must a GDPR-compliant privacy policy contain?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Under GDPR Article 13, a privacy policy must disclose: the identity and contact details of the data controller, the purposes and legal basis for processing, categories of personal data collected, recipients or categories of recipients, data retention periods, international transfer safeguards, data subject rights (access, rectification, erasure, portability, restriction, objection), the right to lodge a complaint with a supervisory authority, and whether data is used for automated decision-making or profiling.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do I generate a privacy policy from my codebase?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Run 'npx codepliant go' in your project directory. Codepliant scans your package.json, source code imports, environment variables, and configuration files to detect third-party services like Stripe, Google Analytics, Sentry, and OpenAI. It then generates a privacy policy that accurately reflects your application's data practices, along with terms of service, cookie policy, and AI disclosure documentation.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Do I need a privacy policy for my SaaS application?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. GDPR requires a privacy policy if you have any EU users. CCPA requires one for California users. Over 15 US states now have comprehensive privacy laws. Additionally, app stores, payment processors, and enterprise buyers all require a privacy policy before doing business. It is both a legal requirement and a business necessity.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How often should I update my SaaS privacy policy?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "You should review and update your privacy policy whenever you add a new third-party integration, ship an AI feature, expand to new markets, change data retention practices, or add new data collection points. Running Codepliant in your CI/CD pipeline can automatically detect when your data practices change and regenerate compliance documents accordingly.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What is the difference between a data controller and data processor for SaaS?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "For SaaS applications, you are typically a data controller for data you collect about users (analytics, billing, support) and a data processor for data your customers store using your service (customer content, user-generated data). Different GDPR obligations apply to each role, and your privacy policy must distinguish between these two categories of data.",
+        },
+      },
+    ],
+  };
+}
 
 function breadcrumbJsonLd() {
   return {
@@ -80,6 +146,40 @@ function breadcrumbJsonLd() {
   };
 }
 
+function CodeBlock({
+  filename,
+  children,
+}: {
+  filename?: string;
+  children: string;
+}) {
+  return (
+    <div className="rounded-xl overflow-hidden my-6">
+      {filename && (
+        <div className="bg-code-bg px-4 py-2 text-code-fg text-xs font-mono opacity-70 border-b border-border-subtle">
+          {filename}
+        </div>
+      )}
+      <pre className="bg-code-bg text-code-fg px-4 py-4 overflow-x-auto text-sm leading-relaxed">
+        <code>{children}</code>
+      </pre>
+    </div>
+  );
+}
+
+const tocItems = [
+  { id: "why-privacy-policy-matters", label: "Why your privacy policy matters" },
+  { id: "legal-requirements", label: "Legal requirements" },
+  { id: "gdpr-article-13-checklist", label: "GDPR Article 13 checklist" },
+  { id: "saas-specific-considerations", label: "SaaS-specific considerations" },
+  { id: "step-by-step", label: "Step-by-step guide" },
+  { id: "detecting-services-codepliant", label: "Detecting services with Codepliant" },
+  { id: "common-mistakes", label: "Common mistakes" },
+  { id: "template-outline", label: "Template outline" },
+  { id: "generate-privacy-policy", label: "Generate your privacy policy" },
+  { id: "keeping-current", label: "Keeping your policy current" },
+];
+
 export default function PrivacyPolicyForSaas() {
   return (
     <>
@@ -87,9 +187,26 @@ export default function PrivacyPolicyForSaas() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd()) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}
+      />
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
+          {/* Breadcrumb */}
+          <nav className="text-sm text-muted mb-6" aria-label="Breadcrumb">
+            <a href="/" className="hover:text-foreground transition-colors">Home</a>
+            {" / "}
+            <a href="/blog" className="hover:text-foreground transition-colors">Blog</a>
+            {" / "}
+            <span className="text-foreground">Privacy Policy for SaaS</span>
+          </nav>
+
           <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
             Blog
           </p>
@@ -97,8 +214,27 @@ export default function PrivacyPolicyForSaas() {
             How to Write a Privacy Policy for Your SaaS App in 2026
           </h1>
           <p className="text-sm text-muted mb-12">
-            Published March 16, 2026 &middot; 14 min read
+            Published March 16, 2026 &middot; 18 min read
           </p>
+
+          {/* Table of Contents */}
+          <nav className="bg-surface rounded-xl p-6 mb-12" aria-label="Table of contents">
+            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide mb-3">
+              Table of contents
+            </h2>
+            <ol className="space-y-2 text-sm">
+              {tocItems.map((item, i) => (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    className="text-muted hover:text-accent transition-colors"
+                  >
+                    {i + 1}. {item.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
 
           <div className="prose-custom space-y-6 text-base text-muted leading-relaxed">
             {/* Introduction */}
@@ -122,29 +258,41 @@ export default function PrivacyPolicyForSaas() {
               what your users expect, and how to create a document that
               accurately reflects your application&apos;s data practices.
               Whether you are pre-launch or updating an existing policy, you will
-              find practical, actionable guidance here.
+              find practical, actionable guidance here. If you are also working
+              on{" "}
+              <a href="/blog/gdpr-for-developers" className="text-accent hover:underline">
+                GDPR compliance more broadly
+              </a>, this post pairs well with our developer-focused GDPR guide.
             </p>
 
             {/* Why it matters */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="why-privacy-policy-matters"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               Why your SaaS privacy policy matters more than you think
             </h2>
             <p>
               A privacy policy is not just a legal document. It is a trust
               signal. Enterprise buyers review it during procurement. Privacy-
               conscious users read it before signing up. Regulators use it as
-              the first evidence in enforcement actions. And increasingly, AI
-              governance frameworks reference privacy policies as baseline
-              compliance documentation.
+              the first evidence in enforcement actions. And increasingly,{" "}
+              <a href="/ai-governance" className="text-accent hover:underline">
+                AI governance frameworks
+              </a>{" "}
+              reference privacy policies as baseline compliance documentation.
             </p>
             <p>
               In 2026, the stakes are higher than ever. GDPR enforcement has
               produced over 4.5 billion EUR in fines across more than 2,000
               cases. The CCPA (now CPRA) has an active enforcement division.
               New state privacy laws in Texas, Oregon, Montana, and others took
-              effect in 2024 and 2025. The EU AI Act adds transparency
-              requirements for AI-powered applications. Your privacy policy
-              needs to address all of these.
+              effect in 2024 and 2025. The{" "}
+              <a href="/blog/eu-ai-act-deadline" className="text-accent hover:underline">
+                EU AI Act
+              </a>{" "}
+              adds transparency requirements for AI-powered applications. Your
+              privacy policy needs to address all of these.
             </p>
             <p>
               A well-written SaaS privacy policy also reduces support burden.
@@ -155,7 +303,10 @@ export default function PrivacyPolicyForSaas() {
             </p>
 
             {/* Legal requirements */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="legal-requirements"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               Legal requirements: what the law says you must include
             </h2>
             <p>
@@ -261,11 +412,114 @@ export default function PrivacyPolicyForSaas() {
               processes and opt-out preference signals. A well-structured GDPR
               and CCPA compliant privacy policy will cover most state
               requirements, but you should verify against each state where you
-              have significant user populations.
+              have significant user populations. For state-specific AI
+              regulations, see our{" "}
+              <a href="/blog/colorado-ai-act" className="text-accent hover:underline">
+                Colorado AI Act guide
+              </a>.
             </p>
 
+            {/* GDPR Article 13 Checklist */}
+            <h2
+              id="gdpr-article-13-checklist"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
+              GDPR Article 13 checklist: what your privacy policy must contain
+            </h2>
+            <p>
+              Article 13 of the GDPR specifies exactly what information must be
+              provided when personal data is collected directly from the data
+              subject. Use this checklist to audit your existing privacy policy
+              or ensure your new one is complete:
+            </p>
+
+            <div className="bg-surface rounded-xl p-6 my-6">
+              <h3 className="text-lg font-bold text-foreground mb-4">
+                Article 13 Required Disclosures
+              </h3>
+              <div className="space-y-3 text-sm">
+                {[
+                  {
+                    ref: "Art. 13(1)(a)",
+                    item: "Identity and contact details of the controller (and representative, if applicable)",
+                  },
+                  {
+                    ref: "Art. 13(1)(b)",
+                    item: "Contact details of the Data Protection Officer (if appointed)",
+                  },
+                  {
+                    ref: "Art. 13(1)(c)",
+                    item: "Purposes of the processing and the legal basis for each purpose",
+                  },
+                  {
+                    ref: "Art. 13(1)(d)",
+                    item: "Legitimate interests pursued (if processing is based on Art. 6(1)(f))",
+                  },
+                  {
+                    ref: "Art. 13(1)(e)",
+                    item: "Recipients or categories of recipients of the personal data",
+                  },
+                  {
+                    ref: "Art. 13(1)(f)",
+                    item: "Details of international data transfers and applicable safeguards (SCCs, adequacy decisions, BCRs)",
+                  },
+                  {
+                    ref: "Art. 13(2)(a)",
+                    item: "Data retention period, or the criteria used to determine the retention period",
+                  },
+                  {
+                    ref: "Art. 13(2)(b)",
+                    item: "Right to access, rectification, erasure, restriction, objection, and data portability",
+                  },
+                  {
+                    ref: "Art. 13(2)(c)",
+                    item: "Right to withdraw consent at any time (where consent is the legal basis)",
+                  },
+                  {
+                    ref: "Art. 13(2)(d)",
+                    item: "Right to lodge a complaint with a supervisory authority",
+                  },
+                  {
+                    ref: "Art. 13(2)(e)",
+                    item: "Whether providing personal data is a statutory/contractual requirement and consequences of not providing it",
+                  },
+                  {
+                    ref: "Art. 13(2)(f)",
+                    item: "Existence of automated decision-making, including profiling, and meaningful information about the logic involved",
+                  },
+                ].map((entry) => (
+                  <label
+                    key={entry.ref}
+                    className="flex items-start gap-3 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      className="mt-1 shrink-0 accent-accent"
+                      readOnly
+                    />
+                    <span>
+                      <strong className="text-foreground">{entry.ref}:</strong>{" "}
+                      {entry.item}
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-xs text-muted mt-4">
+                Codepliant automatically detects which of these disclosures apply
+                to your application based on the services and data flows it finds
+                in your codebase. Run{" "}
+                <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs">
+                  npx codepliant go
+                </code>{" "}
+                to generate a privacy policy that addresses each applicable item.
+              </p>
+            </div>
+
             {/* SaaS-specific considerations */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="saas-specific-considerations"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               SaaS-specific considerations most templates miss
             </h2>
             <p>
@@ -314,11 +568,18 @@ export default function PrivacyPolicyForSaas() {
               If your SaaS uses AI &mdash; and most do in 2026 &mdash; your
               privacy policy must address it. GDPR Article 22 gives users the
               right not to be subject to decisions based solely on automated
-              processing. The EU AI Act adds transparency requirements for AI
-              systems. Your privacy policy should disclose what AI features your
-              application includes, what data they process, whether they make
-              or influence decisions, and how users can opt out or request human
-              review.
+              processing. The{" "}
+              <a href="/blog/eu-ai-act-deadline" className="text-accent hover:underline">
+                EU AI Act
+              </a>{" "}
+              adds transparency requirements for AI systems. Your privacy policy
+              should disclose what AI features your application includes, what
+              data they process, whether they make or influence decisions, and
+              how users can opt out or request human review. See our{" "}
+              <a href="/ai-disclosure-generator" className="text-accent hover:underline">
+                AI Disclosure Generator
+              </a>{" "}
+              for automated AI transparency documentation.
             </p>
 
             <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
@@ -334,7 +595,10 @@ export default function PrivacyPolicyForSaas() {
             </p>
 
             {/* Step-by-step guide */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="step-by-step"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               Step-by-step: writing your SaaS privacy policy
             </h2>
             <p>
@@ -479,8 +743,126 @@ export default function PrivacyPolicyForSaas() {
               privacy policy stays in sync with your actual data practices.
             </p>
 
+            {/* Detecting services with Codepliant */}
+            <h2
+              id="detecting-services-codepliant"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
+              Detecting services and generating a privacy policy with Codepliant
+            </h2>
+            <p>
+              Codepliant scans your project to detect every third-party service
+              that touches user data. Here is what the scan looks like for a
+              typical SaaS application:
+            </p>
+
+            <CodeBlock filename="Terminal">
+{`$ npx codepliant go
+
+Scanning project...
+  ✓ package.json dependencies
+  ✓ Source code imports
+  ✓ Environment variables
+  ✓ Configuration files
+
+Detected services:
+  Payment    Stripe          (stripe, @stripe/stripe-js)
+  Analytics  PostHog         (posthog-js)
+  Analytics  Google Analytics (NEXT_PUBLIC_GA_ID)
+  Auth       NextAuth        (next-auth)
+  Error      Sentry          (@sentry/nextjs, SENTRY_DSN)
+  Email      Resend          (resend, RESEND_API_KEY)
+  AI         OpenAI          (openai, OPENAI_API_KEY)
+  Database   Prisma          (@prisma/client)
+
+Generating documents...
+  ✓ ./compliance/privacy-policy.md
+  ✓ ./compliance/terms-of-service.md
+  ✓ ./compliance/cookie-policy.md
+  ✓ ./compliance/ai-disclosure.md
+
+Done. 4 documents generated.`}
+            </CodeBlock>
+
+            <p>
+              The generated privacy policy includes service-specific disclosures
+              for every detected integration. For example, if Codepliant detects
+              Stripe, the privacy policy will include a section about payment
+              data processed by Stripe, the categories of data involved (payment
+              card numbers, billing addresses, transaction history), and a
+              reference to Stripe&apos;s own privacy policy.
+            </p>
+
+            <p>
+              You can also use the JSON output to inspect exactly which services
+              were detected and what data categories apply:
+            </p>
+
+            <CodeBlock filename="Terminal — JSON scan output">
+{`$ npx codepliant scan --json | jq '.services[] | {name, category, dataCollected}'
+
+{
+  "name": "Stripe",
+  "category": "payment",
+  "dataCollected": ["payment card numbers", "billing addresses", "transaction history"]
+}
+{
+  "name": "PostHog",
+  "category": "analytics",
+  "dataCollected": ["page views", "click events", "session recordings", "IP addresses"]
+}
+{
+  "name": "Sentry",
+  "category": "error-tracking",
+  "dataCollected": ["error stack traces", "browser metadata", "IP addresses"]
+}
+{
+  "name": "OpenAI",
+  "category": "ai",
+  "dataCollected": ["user prompts", "API request metadata"]
+}`}
+            </CodeBlock>
+
+            <p>
+              This structured output makes it straightforward to build a data
+              map for your privacy policy. Each detected service maps directly
+              to a disclosure requirement under GDPR Article 13(1)(e)
+              (recipients of personal data) and Article 13(1)(c) (purposes of
+              processing).
+            </p>
+
+            <p>
+              For CI/CD integration, add Codepliant to your deployment pipeline
+              so compliance documents are regenerated whenever your dependencies
+              change:
+            </p>
+
+            <CodeBlock filename=".github/workflows/compliance.yml">
+{`name: Compliance Docs
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'requirements.txt'
+      - '.env.example'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx codepliant go
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: regenerate compliance documents"`}
+            </CodeBlock>
+
             {/* Common mistakes */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="common-mistakes"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               Common privacy policy mistakes SaaS companies make
             </h2>
             <div className="space-y-4">
@@ -521,7 +903,10 @@ export default function PrivacyPolicyForSaas() {
             </div>
 
             {/* SaaS privacy policy template outline */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="template-outline"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               SaaS privacy policy template: what to include in each section
             </h2>
             <p>
@@ -603,7 +988,10 @@ export default function PrivacyPolicyForSaas() {
             </ul>
 
             {/* Generating with Codepliant */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="generate-privacy-policy"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               Generate your privacy policy from your codebase
             </h2>
             <p>
@@ -629,13 +1017,22 @@ export default function PrivacyPolicyForSaas() {
             </div>
             <p>
               Codepliant produces a markdown privacy policy alongside terms of
-              service, cookie policy, and AI disclosure documentation. Run it
-              in your CI/CD pipeline to keep your compliance documents
-              synchronized with your code.
+              service,{" "}
+              <a href="/cookie-policy-generator" className="text-accent hover:underline">
+                cookie policy
+              </a>, and{" "}
+              <a href="/ai-disclosure-generator" className="text-accent hover:underline">
+                AI disclosure
+              </a>{" "}
+              documentation. Run it in your CI/CD pipeline to keep your
+              compliance documents synchronized with your code.
             </p>
 
             {/* Keeping it updated */}
-            <h2 className="text-2xl font-bold tracking-tight text-foreground pt-4">
+            <h2
+              id="keeping-current"
+              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+            >
               Keeping your privacy policy current
             </h2>
             <p>
@@ -664,12 +1061,49 @@ export default function PrivacyPolicyForSaas() {
             <h2 className="text-xl font-bold mb-3">
               Generate your SaaS privacy policy
             </h2>
-            <p className="text-muted text-sm mb-6">
+            <p className="text-muted text-sm mb-4">
               Scan your codebase to generate a privacy policy based on your
               actual data practices. Free, open source, no account required.
             </p>
-            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
+            <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
               npx codepliant go
+            </div>
+            <p className="text-xs text-muted">
+              Run this command in your project directory to generate a privacy
+              policy, terms of service, cookie policy, and AI disclosure.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 mt-4 text-xs">
+              <a
+                href="https://github.com/joechensmartz/codepliant"
+                className="text-accent hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+              <span className="text-muted">|</span>
+              <a
+                href="https://www.npmjs.com/package/codepliant"
+                className="text-accent hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                npm
+              </a>
+              <span className="text-muted">|</span>
+              <a
+                href="/docs"
+                className="text-accent hover:underline"
+              >
+                Documentation
+              </a>
+              <span className="text-muted">|</span>
+              <a
+                href="/privacy-policy-generator"
+                className="text-accent hover:underline"
+              >
+                Privacy Policy Generator
+              </a>
             </div>
           </section>
 
@@ -681,14 +1115,24 @@ export default function PrivacyPolicyForSaas() {
             <div className="space-y-3">
               {[
                 {
-                  title: "Privacy Policy Generator",
-                  href: "/privacy-policy-generator",
-                  desc: "Generate a privacy policy from your codebase in seconds.",
-                },
-                {
                   title: "GDPR Compliance for Developers",
                   href: "/blog/gdpr-for-developers",
                   desc: "Practical GDPR guide for engineering teams building SaaS products.",
+                },
+                {
+                  title: "EU AI Act: What Developers Need to Know",
+                  href: "/blog/eu-ai-act-deadline",
+                  desc: "Comprehensive guide to EU AI Act deadlines, risk classifications, and compliance steps.",
+                },
+                {
+                  title: "Colorado AI Act Guide",
+                  href: "/blog/colorado-ai-act",
+                  desc: "State-level AI regulation and what it means for your SaaS application.",
+                },
+                {
+                  title: "Privacy Policy Generator",
+                  href: "/privacy-policy-generator",
+                  desc: "Generate a privacy policy from your codebase in seconds.",
                 },
                 {
                   title: "GDPR Compliance Hub",

@@ -123,126 +123,119 @@ function Header() {
 }
 
 function Footer() {
+  const linkClass = "hover:text-ink transition-colors duration-150";
   return (
     <footer className="border-t border-border-subtle mt-[var(--space-24)]">
-      <div className="max-w-[960px] mx-auto px-[var(--space-6)] py-[var(--space-12)]">
+      <div className="max-w-[960px] mx-auto px-[var(--space-4)] md:px-[var(--space-6)] py-[var(--space-12)]">
+        {/* Footer CTA */}
+        <div className="mb-[var(--space-12)] text-center">
+          <p className="font-display font-semibold text-[length:var(--text-base)] text-ink mb-[var(--space-3)]">
+            Generate compliance docs in one command
+          </p>
+          <div className="inline-flex items-center bg-[var(--color-gray-900)] text-[var(--color-gray-100)] rounded-lg px-[var(--space-4)] py-[var(--space-2)] font-mono text-[length:var(--text-sm)]">
+            <span className="text-ink-tertiary mr-[var(--space-2)] select-none">$</span>
+            <span>npx codepliant go</span>
+          </div>
+          <p className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-2)]">
+            No account needed. No API key. Works offline.
+          </p>
+        </div>
+
+        {/* Footer columns */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-8)] text-[length:var(--text-sm)]">
+          {/* Product */}
           <div>
             <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
               Product
             </h3>
             <ul className="space-y-[var(--space-2)] text-ink-secondary">
-              <li>
-                <a href="/pricing" className="hover:text-ink transition-colors duration-150">
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a href="/docs" className="hover:text-ink transition-colors duration-150">
-                  Documentation
-                </a>
-              </li>
-              <li>
-                <a href="/changelog" className="hover:text-ink transition-colors duration-150">
-                  Changelog
-                </a>
-              </li>
-              <li>
-                <a href="/about" className="hover:text-ink transition-colors duration-150">
-                  About
-                </a>
-              </li>
+              <li><a href="/docs" className={linkClass}>Documentation</a></li>
+              <li><a href="/pricing" className={linkClass}>Pricing</a></li>
+              <li><a href="/compare" className={linkClass}>Compare</a></li>
+              <li><a href="/docs" className={linkClass}>Get Started</a></li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
+              Resources
+            </h3>
+            <ul className="space-y-[var(--space-2)] text-ink-secondary">
+              <li><a href="/blog" className={linkClass}>Blog</a></li>
+              <li><a href="/changelog" className={linkClass}>Changelog</a></li>
               <li>
                 <a
                   href="https://github.com/joechensmartz/codepliant"
-                  className="hover:text-ink transition-colors duration-150"
+                  className={linkClass}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   GitHub
                 </a>
               </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
-              Generators
-            </h3>
-            <ul className="space-y-[var(--space-2)] text-ink-secondary">
               <li>
-                <a href="/privacy-policy-generator" className="hover:text-ink transition-colors duration-150">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="/terms-of-service-generator" className="hover:text-ink transition-colors duration-150">
-                  Terms of Service
-                </a>
-              </li>
-              <li>
-                <a href="/cookie-policy-generator" className="hover:text-ink transition-colors duration-150">
-                  Cookie Policy
+                <a
+                  href="https://www.npmjs.com/package/codepliant"
+                  className={linkClass}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  npm
                 </a>
               </li>
             </ul>
           </div>
-          <div>
-            <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
-              Compliance
-            </h3>
-            <ul className="space-y-[var(--space-2)] text-ink-secondary">
-              <li>
-                <a href="/data-privacy" className="hover:text-ink transition-colors duration-150">
-                  Data Privacy
-                </a>
-              </li>
-              <li>
-                <a href="/gdpr-compliance" className="hover:text-ink transition-colors duration-150">
-                  GDPR
-                </a>
-              </li>
-              <li>
-                <a href="/soc2-compliance" className="hover:text-ink transition-colors duration-150">
-                  SOC 2
-                </a>
-              </li>
-              <li>
-                <a href="/hipaa-compliance" className="hover:text-ink transition-colors duration-150">
-                  HIPAA
-                </a>
-              </li>
-              <li>
-                <a href="/ai-governance" className="hover:text-ink transition-colors duration-150">
-                  AI Governance
-                </a>
-              </li>
-              <li>
-                <a href="/ai-disclosure-generator" className="hover:text-ink transition-colors duration-150">
-                  EU AI Act
-                </a>
-              </li>
-            </ul>
-          </div>
+
+          {/* Legal */}
           <div>
             <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
               Legal
             </h3>
             <ul className="space-y-[var(--space-2)] text-ink-secondary">
+              <li><a href="/privacy-policy-generator" className={linkClass}>Privacy Policy</a></li>
+              <li><a href="/terms-of-service-generator" className={linkClass}>Terms of Service</a></li>
+              <li><a href="/data-privacy" className={linkClass}>Data Privacy</a></li>
+              <li><a href="/gdpr-compliance" className={linkClass}>GDPR</a></li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
+              Company
+            </h3>
+            <ul className="space-y-[var(--space-2)] text-ink-secondary">
+              <li><a href="/about" className={linkClass}>About</a></li>
               <li>
-                <a href="/privacy-policy-generator" className="hover:text-ink transition-colors duration-150">
-                  Privacy
-                </a>
-              </li>
-              <li>
-                <a href="/terms-of-service-generator" className="hover:text-ink transition-colors duration-150">
-                  Terms
+                <a
+                  href="https://github.com/joechensmartz/codepliant"
+                  className={linkClass}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open Source
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <div className="mt-[var(--space-12)] pt-[var(--space-8)] border-t border-border-subtle text-[length:var(--text-xs)] text-ink-tertiary">
-          <p>&copy; {new Date().getFullYear()} Codepliant. Open source under MIT License.</p>
+
+        {/* Badges + copyright */}
+        <div className="mt-[var(--space-12)] pt-[var(--space-8)] border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-[var(--space-4)]">
+          <div className="flex items-center gap-[var(--space-3)]">
+            <span className="inline-flex items-center gap-[var(--space-1)] rounded-full border border-border-subtle px-[var(--space-3)] py-1 text-[length:var(--text-xs)] text-ink-secondary">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="text-green-600" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z" fill="currentColor"/></svg>
+              MIT Licensed
+            </span>
+            <span className="inline-flex items-center gap-[var(--space-1)] rounded-full border border-border-subtle px-[var(--space-3)] py-1 text-[length:var(--text-xs)] text-ink-secondary">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="text-green-600" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z" fill="currentColor"/></svg>
+              Zero network calls
+            </span>
+          </div>
+          <p className="text-[length:var(--text-xs)] text-ink-tertiary">
+            &copy; {new Date().getFullYear()} Codepliant. Open source under MIT License.
+          </p>
         </div>
       </div>
     </footer>
