@@ -123,3 +123,8 @@ npx next build
 - Both builds confirmed passing: `npm run build` (TSC) and `npx next build` (Next.js)
 - 24 static routes + dynamic OG/meta routes all compile without errors
 - No new pages or design changes in this iteration; build-health check only
+
+### Iteration 49 — Verification (2026-03-17)
+- Both builds pass: `npm run build` (TSC, zero errors) and `npx next build` (Next.js, all routes compile)
+- Static/dynamic route inventory unchanged: 24 static pages + OG/meta dynamic routes
+- Build-health check only; no design or content changes
