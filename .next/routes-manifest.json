@@ -75,6 +75,12 @@
       "namedRegex": "^/blog/gdpr\\-for\\-developers(?:/)?$"
     },
     {
+      "page": "/blog/generate-privacy-policy-from-code",
+      "regex": "^/blog/generate\\-privacy\\-policy\\-from\\-code(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog/generate\\-privacy\\-policy\\-from\\-code(?:/)?$"
+    },
+    {
       "page": "/blog/privacy-policy-for-saas",
       "regex": "^/blog/privacy\\-policy\\-for\\-saas(?:/)?$",
       "routeKeys": {},

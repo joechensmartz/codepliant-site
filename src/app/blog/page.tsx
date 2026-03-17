@@ -26,6 +26,16 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "generate-privacy-policy-from-code",
+    title: "How to Generate a Privacy Policy from Your Code in 30 Seconds",
+    description:
+      "Step-by-step tutorial: one command scans your codebase, detects services and data flows, and generates an accurate privacy policy. No templates, no guesswork.",
+    date: "March 17, 2026",
+    readTime: "10 min read",
+    tag: "Tutorial",
+    tagColor: "text-brand",
+  },
+  {
     slug: "eu-ai-act-deadline",
     title: "EU AI Act: What Developers Need to Know Before August 2, 2026",
     description:

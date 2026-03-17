@@ -66,7 +66,7 @@ function Header() {
   const linkClass = "hover:text-ink transition-colors duration-150";
   return (
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-surface-primary/90 border-b border-border-subtle">
-      <nav className="max-w-[960px] mx-auto px-[var(--space-4)] md:px-[var(--space-6)] h-12 flex items-center justify-between overflow-x-hidden">
+      <nav aria-label="Main navigation" className="max-w-[960px] mx-auto px-[var(--space-4)] md:px-[var(--space-6)] h-12 flex items-center justify-between overflow-x-hidden">
         <a
           href="/"
           className="font-display font-semibold text-[length:var(--text-base)] tracking-tight shrink-0"
@@ -88,7 +88,7 @@ function Header() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            GitHub
+            GitHub<span className="sr-only"> (opens in new tab)</span>
           </a>
         </div>
 
@@ -113,7 +113,7 @@ function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub
+                GitHub<span className="sr-only"> (opens in new tab)</span>
               </a>
             </div>
           </details>
@@ -126,7 +126,7 @@ function Header() {
 function Footer() {
   const linkClass = "hover:text-ink transition-colors duration-150";
   return (
-    <footer className="border-t border-border-subtle mt-[var(--space-24)]">
+    <footer aria-label="Site footer" className="border-t border-border-subtle mt-[var(--space-24)]">
       <div className="max-w-[960px] mx-auto px-[var(--space-4)] md:px-[var(--space-6)] py-[var(--space-12)]">
         {/* Footer CTA */}
         <div className="mb-[var(--space-12)] text-center">
@@ -143,7 +143,7 @@ function Footer() {
         </div>
 
         {/* Footer columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-8)] text-[length:var(--text-sm)]">
+        <nav aria-label="Footer navigation" className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-8)] text-[length:var(--text-sm)]">
           {/* Product */}
           <div>
             <h3 className="font-display font-semibold mb-[var(--space-3)] text-ink">
@@ -172,7 +172,7 @@ function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  GitHub
+                  GitHub<span className="sr-only"> (opens in new tab)</span>
                 </a>
               </li>
               <li>
@@ -182,7 +182,7 @@ function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  npm
+                  npm<span className="sr-only"> (opens in new tab)</span>
                 </a>
               </li>
             </ul>
@@ -220,12 +220,12 @@ function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Open Source
+                  Open Source<span className="sr-only"> (opens in new tab)</span>
                 </a>
               </li>
             </ul>
           </div>
-        </div>
+        </nav>
 
         {/* Badges + copyright */}
         <div className="mt-[var(--space-12)] pt-[var(--space-8)] border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-[var(--space-4)]">
@@ -275,8 +275,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
         />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-brand focus:text-surface-primary focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-medium"
+        >
+          Skip to main content
+        </a>
         <Header />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer />
       </body>
     </html>
