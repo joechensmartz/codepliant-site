@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Website Design
 
+### 2026-03-17 — Iteration 37 (build verification)
+- `next build`: passes (29 static pages, 12 dynamic routes, 0 errors)
+- `tsc -p tsconfig.cli.json` build: passes (0 errors)
+- Tests: 758 passing across 128 suites, 0 failures
+- No code changes required — site is stable
+
 ### 2026-03-17 — Iteration 35 (build verification + tsconfig fix)
 - Fixed `tsc` build failure caused by Next.js auto-injecting `.next/types/**/*.ts` into tsconfig.json, conflicting with `rootDir: "src"`
 - Created `tsconfig.cli.json` (CLI-only config without `.next/types`) so Next.js can freely modify `tsconfig.json`
