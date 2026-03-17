@@ -5,6 +5,14 @@ All notable changes to Codepliant are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Website Updates
+
+### 2026-03-17 — Iteration 26
+- Synced test count from 3,376 to 3,496 across landing page, about page, and changelog
+- Updated generator coverage from 60 to 63 test suites in changelog
+- Updated percentage increase from 342% to 358% in changelog
+- Verified `next build` passes (29 static pages, 0 errors)
+
 ## [241.0.0 – 250.0.0] - 2026-03-16
 
 ### Added
