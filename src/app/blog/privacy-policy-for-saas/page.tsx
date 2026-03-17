@@ -199,27 +199,27 @@ export default function PrivacyPolicyForSaas() {
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
           {/* Breadcrumb */}
-          <nav className="text-sm text-muted mb-6" aria-label="Breadcrumb">
-            <a href="/" className="hover:text-foreground transition-colors">Home</a>
+          <nav className="text-sm text-ink-secondary mb-6" aria-label="Breadcrumb">
+            <a href="/" className="hover:text-ink transition-colors">Home</a>
             {" / "}
-            <a href="/blog" className="hover:text-foreground transition-colors">Blog</a>
+            <a href="/blog" className="hover:text-ink transition-colors">Blog</a>
             {" / "}
-            <span className="text-foreground">Privacy Policy for SaaS</span>
+            <span className="text-ink">Privacy Policy for SaaS</span>
           </nav>
 
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             Blog
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-4">
             How to Write a Privacy Policy for Your SaaS App in 2026
           </h1>
-          <p className="text-sm text-muted mb-12">
+          <p className="text-sm text-ink-secondary mb-12">
             Published March 16, 2026 &middot; 18 min read
           </p>
 
           {/* Table of Contents */}
-          <nav className="bg-surface rounded-xl p-6 mb-12" aria-label="Table of contents">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide mb-3">
+          <nav className="bg-surface-secondary rounded-xl p-6 mb-12" aria-label="Table of contents">
+            <h2 className="text-sm font-semibold text-ink uppercase tracking-wide mb-3">
               Table of contents
             </h2>
             <ol className="space-y-2 text-sm">
@@ -227,7 +227,7 @@ export default function PrivacyPolicyForSaas() {
                 <li key={item.id}>
                   <a
                     href={`#${item.id}`}
-                    className="text-muted hover:text-accent transition-colors"
+                    className="text-ink-secondary hover:text-brand transition-colors"
                   >
                     {i + 1}. {item.label}
                   </a>
@@ -236,7 +236,7 @@ export default function PrivacyPolicyForSaas() {
             </ol>
           </nav>
 
-          <div className="prose-custom space-y-6 text-base text-muted leading-relaxed">
+          <div className="prose-custom space-y-6 text-base text-ink-secondary leading-relaxed">
             {/* Introduction */}
             <p>
               Every SaaS application needs a privacy policy. It is not optional.
@@ -260,7 +260,7 @@ export default function PrivacyPolicyForSaas() {
               Whether you are pre-launch or updating an existing policy, you will
               find practical, actionable guidance here. If you are also working
               on{" "}
-              <a href="/blog/gdpr-for-developers" className="text-accent hover:underline">
+              <a href="/blog/gdpr-for-developers" className="text-brand hover:underline">
                 GDPR compliance more broadly
               </a>, this post pairs well with our developer-focused GDPR guide.
             </p>
@@ -268,7 +268,7 @@ export default function PrivacyPolicyForSaas() {
             {/* Why it matters */}
             <h2
               id="why-privacy-policy-matters"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               Why your SaaS privacy policy matters more than you think
             </h2>
@@ -277,7 +277,7 @@ export default function PrivacyPolicyForSaas() {
               signal. Enterprise buyers review it during procurement. Privacy-
               conscious users read it before signing up. Regulators use it as
               the first evidence in enforcement actions. And increasingly,{" "}
-              <a href="/ai-governance" className="text-accent hover:underline">
+              <a href="/ai-governance" className="text-brand hover:underline">
                 AI governance frameworks
               </a>{" "}
               reference privacy policies as baseline compliance documentation.
@@ -288,7 +288,7 @@ export default function PrivacyPolicyForSaas() {
               cases. The CCPA (now CPRA) has an active enforcement division.
               New state privacy laws in Texas, Oregon, Montana, and others took
               effect in 2024 and 2025. The{" "}
-              <a href="/blog/eu-ai-act-deadline" className="text-accent hover:underline">
+              <a href="/blog/eu-ai-act-deadline" className="text-brand hover:underline">
                 EU AI Act
               </a>{" "}
               adds transparency requirements for AI-powered applications. Your
@@ -305,7 +305,7 @@ export default function PrivacyPolicyForSaas() {
             {/* Legal requirements */}
             <h2
               id="legal-requirements"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               Legal requirements: what the law says you must include
             </h2>
@@ -315,7 +315,7 @@ export default function PrivacyPolicyForSaas() {
               you must include to comply with the major frameworks:
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               GDPR requirements (EU/EEA users)
             </h3>
             <p>
@@ -364,7 +364,7 @@ export default function PrivacyPolicyForSaas() {
               </li>
             </ul>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               CCPA/CPRA requirements (California users)
             </h3>
             <p>
@@ -402,7 +402,7 @@ export default function PrivacyPolicyForSaas() {
               </li>
             </ul>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Other US state privacy laws
             </h3>
             <p>
@@ -414,7 +414,7 @@ export default function PrivacyPolicyForSaas() {
               requirements, but you should verify against each state where you
               have significant user populations. For state-specific AI
               regulations, see our{" "}
-              <a href="/blog/colorado-ai-act" className="text-accent hover:underline">
+              <a href="/blog/colorado-ai-act" className="text-brand hover:underline">
                 Colorado AI Act guide
               </a>.
             </p>
@@ -422,7 +422,7 @@ export default function PrivacyPolicyForSaas() {
             {/* GDPR Article 13 Checklist */}
             <h2
               id="gdpr-article-13-checklist"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               GDPR Article 13 checklist: what your privacy policy must contain
             </h2>
@@ -433,8 +433,8 @@ export default function PrivacyPolicyForSaas() {
               or ensure your new one is complete:
             </p>
 
-            <div className="bg-surface rounded-xl p-6 my-6">
-              <h3 className="text-lg font-bold text-foreground mb-4">
+            <div className="bg-surface-secondary rounded-xl p-6 my-6">
+              <h3 className="text-lg font-bold text-ink mb-4">
                 Article 13 Required Disclosures
               </h3>
               <div className="space-y-3 text-sm">
@@ -498,13 +498,13 @@ export default function PrivacyPolicyForSaas() {
                       readOnly
                     />
                     <span>
-                      <strong className="text-foreground">{entry.ref}:</strong>{" "}
+                      <strong className="text-ink">{entry.ref}:</strong>{" "}
                       {entry.item}
                     </span>
                   </label>
                 ))}
               </div>
-              <p className="text-xs text-muted mt-4">
+              <p className="text-xs text-ink-secondary mt-4">
                 Codepliant automatically detects which of these disclosures apply
                 to your application based on the services and data flows it finds
                 in your codebase. Run{" "}
@@ -518,7 +518,7 @@ export default function PrivacyPolicyForSaas() {
             {/* SaaS-specific considerations */}
             <h2
               id="saas-specific-considerations"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               SaaS-specific considerations most templates miss
             </h2>
@@ -528,7 +528,7 @@ export default function PrivacyPolicyForSaas() {
               disclosures. Here is what most templates miss:
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               User-generated content and customer data
             </h3>
             <p>
@@ -542,7 +542,7 @@ export default function PrivacyPolicyForSaas() {
               obligations apply.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Third-party integrations and sub-processors
             </h3>
             <p>
@@ -561,7 +561,7 @@ export default function PrivacyPolicyForSaas() {
               sub-processor name, purpose, data processed, and location.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               AI features and automated decision-making
             </h3>
             <p>
@@ -569,20 +569,20 @@ export default function PrivacyPolicyForSaas() {
               privacy policy must address it. GDPR Article 22 gives users the
               right not to be subject to decisions based solely on automated
               processing. The{" "}
-              <a href="/blog/eu-ai-act-deadline" className="text-accent hover:underline">
+              <a href="/blog/eu-ai-act-deadline" className="text-brand hover:underline">
                 EU AI Act
               </a>{" "}
               adds transparency requirements for AI systems. Your privacy policy
               should disclose what AI features your application includes, what
               data they process, whether they make or influence decisions, and
               how users can opt out or request human review. See our{" "}
-              <a href="/ai-disclosure-generator" className="text-accent hover:underline">
+              <a href="/ai-disclosure-generator" className="text-brand hover:underline">
                 AI Disclosure Generator
               </a>{" "}
               for automated AI transparency documentation.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Multi-tenant data isolation
             </h3>
             <p>
@@ -597,7 +597,7 @@ export default function PrivacyPolicyForSaas() {
             {/* Step-by-step guide */}
             <h2
               id="step-by-step"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               Step-by-step: writing your SaaS privacy policy
             </h2>
@@ -606,7 +606,7 @@ export default function PrivacyPolicyForSaas() {
               both legally compliant and genuinely useful.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Step 1: Audit your actual data practices
             </h3>
             <p>
@@ -628,7 +628,7 @@ export default function PrivacyPolicyForSaas() {
               and which third parties it shares data with.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Step 2: Map data flows
             </h3>
             <p>
@@ -646,7 +646,7 @@ export default function PrivacyPolicyForSaas() {
               must be disclosed.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Step 3: Structure the document
             </h3>
             <p>
@@ -709,7 +709,7 @@ export default function PrivacyPolicyForSaas() {
               </li>
             </ol>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Step 4: Write in plain language
             </h3>
             <p>
@@ -731,7 +731,7 @@ export default function PrivacyPolicyForSaas() {
               updates at any time from your account settings.&quot;
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Step 5: Keep it accurate and up to date
             </h3>
             <p>
@@ -746,7 +746,7 @@ export default function PrivacyPolicyForSaas() {
             {/* Detecting services with Codepliant */}
             <h2
               id="detecting-services-codepliant"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               Detecting services and generating a privacy policy with Codepliant
             </h2>
@@ -861,7 +861,7 @@ jobs:
             {/* Common mistakes */}
             <h2
               id="common-mistakes"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               Common privacy policy mistakes SaaS companies make
             </h2>
@@ -894,10 +894,10 @@ jobs:
               ].map((item) => (
                 <div
                   key={item.mistake}
-                  className="bg-surface rounded-xl p-5"
+                  className="bg-surface-secondary rounded-xl p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.mistake}</h3>
-                  <p className="text-sm text-muted">{item.why}</p>
+                  <p className="text-sm text-ink-secondary">{item.why}</p>
                 </div>
               ))}
             </div>
@@ -905,7 +905,7 @@ jobs:
             {/* SaaS privacy policy template outline */}
             <h2
               id="template-outline"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               SaaS privacy policy template: what to include in each section
             </h2>
@@ -916,7 +916,7 @@ jobs:
               adapt to your actual data practices.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Information we collect
             </h3>
             <p>
@@ -955,7 +955,7 @@ jobs:
               </li>
             </ul>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               How we use your information
             </h3>
             <p>
@@ -990,7 +990,7 @@ jobs:
             {/* Generating with Codepliant */}
             <h2
               id="generate-privacy-policy"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               Generate your privacy policy from your codebase
             </h2>
@@ -1018,10 +1018,10 @@ jobs:
             <p>
               Codepliant produces a markdown privacy policy alongside terms of
               service,{" "}
-              <a href="/cookie-policy-generator" className="text-accent hover:underline">
+              <a href="/cookie-policy-generator" className="text-brand hover:underline">
                 cookie policy
               </a>, and{" "}
-              <a href="/ai-disclosure-generator" className="text-accent hover:underline">
+              <a href="/ai-disclosure-generator" className="text-brand hover:underline">
                 AI disclosure
               </a>{" "}
               documentation. Run it in your CI/CD pipeline to keep your
@@ -1031,7 +1031,7 @@ jobs:
             {/* Keeping it updated */}
             <h2
               id="keeping-current"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4 scroll-mt-24"
+              className="text-2xl font-bold tracking-tight text-ink pt-4 scroll-mt-24"
             >
               Keeping your privacy policy current
             </h2>
@@ -1057,50 +1057,50 @@ jobs:
           </div>
 
           {/* CTA */}
-          <section className="bg-surface rounded-2xl p-8 text-center mt-16 mb-16">
+          <section className="bg-surface-secondary rounded-2xl p-8 text-center mt-16 mb-16">
             <h2 className="text-xl font-bold mb-3">
               Generate your SaaS privacy policy
             </h2>
-            <p className="text-muted text-sm mb-4">
+            <p className="text-ink-secondary text-sm mb-4">
               Scan your codebase to generate a privacy policy based on your
               actual data practices. Free, open source, no account required.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
-            <p className="text-xs text-muted">
+            <p className="text-xs text-ink-secondary">
               Run this command in your project directory to generate a privacy
               policy, terms of service, cookie policy, and AI disclosure.
             </p>
             <div className="flex flex-wrap justify-center gap-3 mt-4 text-xs">
               <a
                 href="https://github.com/joechensmartz/codepliant"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 GitHub
               </a>
-              <span className="text-muted">|</span>
+              <span className="text-ink-secondary">|</span>
               <a
                 href="https://www.npmjs.com/package/codepliant"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 npm
               </a>
-              <span className="text-muted">|</span>
+              <span className="text-ink-secondary">|</span>
               <a
                 href="/docs"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 Documentation
               </a>
-              <span className="text-muted">|</span>
+              <span className="text-ink-secondary">|</span>
               <a
                 href="/privacy-policy-generator"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 Privacy Policy Generator
               </a>
@@ -1148,10 +1148,10 @@ jobs:
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
-                  <p className="text-xs text-muted">{link.desc}</p>
+                  <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </a>
               ))}
             </div>

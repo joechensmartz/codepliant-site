@@ -135,13 +135,13 @@ export default function AiDisclosureGenerator() {
             <div className="text-xs mt-1 opacity-70">August 2, 2026</div>
           </div>
 
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             EU AI Act Compliance
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-6">
             EU AI Act Compliance Tool — AI Disclosure Generator
           </h1>
-          <p className="text-lg text-muted mb-12">
+          <p className="text-lg text-ink-secondary mb-12">
             Article 50 of the EU AI Act requires transparency when users
             interact with AI systems. Codepliant scans your codebase, detects AI
             integrations, and generates the required disclosure documents
@@ -152,7 +152,7 @@ export default function AiDisclosureGenerator() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               Article 50 requirements explained
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 The EU AI Act is the world&apos;s first comprehensive AI
                 regulation. Article 50 specifically addresses transparency
@@ -178,8 +178,8 @@ export default function AiDisclosureGenerator() {
                     desc: "When AI is used to make or assist decisions that affect individuals, transparency about the AI's role is required.",
                   },
                 ].map((req) => (
-                  <div key={req.title} className="bg-surface rounded-xl p-5">
-                    <h3 className="font-semibold text-foreground mb-2">
+                  <div key={req.title} className="bg-surface-secondary rounded-xl p-5">
+                    <h3 className="font-semibold text-ink mb-2">
                       {req.title}
                     </h3>
                     <p className="text-sm">{req.desc}</p>
@@ -208,7 +208,7 @@ export default function AiDisclosureGenerator() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="bg-surface rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
                 >
                   {item}
                 </div>
@@ -239,19 +239,19 @@ export default function AiDisclosureGenerator() {
                   desc: "AI-specific data processing disclosures integrated into your privacy policy.",
                 },
               ].map((doc) => (
-                <div key={doc.name} className="bg-surface rounded-xl p-5">
+                <div key={doc.name} className="bg-surface-secondary rounded-xl p-5">
                   <div className="font-semibold mb-1">{doc.name}</div>
-                  <p className="text-sm text-muted">{doc.desc}</p>
+                  <p className="text-sm text-ink-secondary">{doc.desc}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="bg-surface rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Prepare for August 2, 2026
             </h2>
-            <p className="text-muted text-sm mb-6">
+            <p className="text-ink-secondary text-sm mb-6">
               Scan your codebase for AI integrations and generate disclosure
               documents today.
             </p>
@@ -268,7 +268,7 @@ export default function AiDisclosureGenerator() {
               {faqs.map((faq) => (
                 <div key={faq.question}>
                   <h3 className="font-semibold mb-2">{faq.question}</h3>
-                  <p className="text-sm text-muted leading-relaxed">
+                  <p className="text-sm text-ink-secondary leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

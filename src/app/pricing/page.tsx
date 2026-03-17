@@ -180,7 +180,7 @@ export default function Pricing() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-4xl font-bold tracking-tight mb-4">Pricing</h1>
-            <p className="text-lg text-muted">
+            <p className="text-lg text-ink-secondary">
               Free for open source. Pay only when you need more.
             </p>
           </div>
@@ -192,14 +192,14 @@ export default function Pricing() {
                 key={plan.name}
                 className={`relative rounded-2xl p-8 flex flex-col ${
                   plan.highlight
-                    ? "bg-brand text-white ring-2 ring-brand scale-[1.02]"
-                    : "bg-surface ring-1 ring-border-subtle"
+                    ? "bg-brand text-surface-primary ring-2 ring-brand scale-[1.02]"
+                    : "bg-surface-primary ring-1 ring-border-subtle"
                 }`}
               >
                 {/* "Most Popular" badge */}
                 {"badge" in plan && plan.badge && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-white text-brand text-xs font-bold px-3 py-1 rounded-full shadow-sm whitespace-nowrap">
+                    <span className="bg-surface-primary text-brand text-xs font-bold px-3 py-1 rounded-full shadow-sm whitespace-nowrap">
                       {plan.badge}
                     </span>
                   </div>
@@ -212,7 +212,7 @@ export default function Pricing() {
                     <span className="text-4xl font-bold">{plan.price}</span>
                     <span
                       className={`text-sm font-normal ${
-                        plan.highlight ? "text-white/70" : "text-muted"
+                        plan.highlight ? "text-surface-primary/70" : "text-ink-secondary"
                       }`}
                     >
                       {plan.period}
@@ -220,7 +220,7 @@ export default function Pricing() {
                   </div>
                   <p
                     className={`text-sm mt-3 ${
-                      plan.highlight ? "text-white/70" : "text-muted"
+                      plan.highlight ? "text-surface-primary/70" : "text-ink-secondary"
                     }`}
                   >
                     {plan.desc}
@@ -240,7 +240,7 @@ export default function Pricing() {
                     <li key={f} className="flex items-start gap-2.5">
                       <svg
                         className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
-                          plan.highlight ? "text-white" : "text-brand"
+                          plan.highlight ? "text-surface-primary" : "text-brand"
                         }`}
                         fill="none"
                         viewBox="0 0 24 24"
@@ -264,7 +264,7 @@ export default function Pricing() {
                   href={plan.href}
                   className={`block text-center py-3 rounded-xl text-sm font-medium transition-colors ${
                     plan.highlight
-                      ? "bg-white text-brand hover:bg-gray-100"
+                      ? "bg-surface-primary text-brand hover:bg-surface-secondary"
                       : "bg-surface-secondary border border-border-subtle hover:bg-surface-tertiary"
                   }`}
                 >
@@ -275,7 +275,7 @@ export default function Pricing() {
           </div>
 
           {/* Annual savings note */}
-          <p className="text-center text-sm text-muted mt-8">
+          <p className="text-center text-sm text-ink-secondary mt-8">
             Save up to 34% with annual billing. All plans include a 14-day free
             trial.
           </p>
@@ -289,7 +289,7 @@ export default function Pricing() {
               {faqs.map((faq) => (
                 <div key={faq.question}>
                   <h3 className="font-semibold mb-2">{faq.question}</h3>
-                  <p className="text-sm text-muted leading-relaxed">
+                  <p className="text-sm text-ink-secondary leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

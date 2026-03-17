@@ -183,7 +183,7 @@ export default function GdprForDevelopers() {
             <span className="text-ink-secondary">GDPR for Developers</span>
           </nav>
 
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             <a href="/blog" className="hover:underline">
               Blog
             </a>
@@ -191,20 +191,20 @@ export default function GdprForDevelopers() {
           <h1 className="text-4xl font-bold tracking-tight mb-4">
             GDPR Compliance for Developers: A Practical Guide
           </h1>
-          <p className="text-sm text-muted mb-12">
+          <p className="text-sm text-ink-secondary mb-12">
             Published March 16, 2026 &middot; 20 min read
           </p>
 
           {/* Table of Contents */}
-          <nav className="bg-surface rounded-2xl p-6 mb-12">
-            <h2 className="text-sm font-bold tracking-wide uppercase text-foreground mb-4">
+          <nav className="bg-surface-secondary rounded-2xl p-6 mb-12">
+            <h2 className="text-sm font-bold tracking-wide uppercase text-ink mb-4">
               Table of contents
             </h2>
-            <ol className="space-y-2 text-sm text-muted list-decimal list-inside">
+            <ol className="space-y-2 text-sm text-ink-secondary list-decimal list-inside">
               <li>
                 <a
                   href="#core-concepts"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   GDPR core concepts developers need to understand
                 </a>
@@ -212,7 +212,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#engineering-checklist"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   What you need to build: the GDPR engineering checklist
                 </a>
@@ -220,7 +220,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#detecting-gdpr-services"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   Detecting GDPR-relevant services with Codepliant
                 </a>
@@ -228,7 +228,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#common-mistakes"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   Common GDPR mistakes developers make
                 </a>
@@ -236,7 +236,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#implementation-patterns"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   Common GDPR implementation patterns for SaaS
                 </a>
@@ -244,7 +244,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#international-transfers"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   International data transfers
                 </a>
@@ -252,7 +252,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#gdpr-and-ai"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   GDPR and AI: additional obligations
                 </a>
@@ -260,7 +260,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#enforcement"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   GDPR enforcement: the numbers
                 </a>
@@ -268,7 +268,7 @@ export default function GdprForDevelopers() {
               <li>
                 <a
                   href="#action-plan"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-ink transition-colors"
                 >
                   Action plan for your engineering team
                 </a>
@@ -276,7 +276,7 @@ export default function GdprForDevelopers() {
             </ol>
           </nav>
 
-          <div className="prose-custom space-y-6 text-base text-muted leading-relaxed">
+          <div className="prose-custom space-y-6 text-base text-ink-secondary leading-relaxed">
             {/* Introduction */}
             <p>
               GDPR has been in effect since May 2018, yet most developers still
@@ -296,7 +296,7 @@ export default function GdprForDevelopers() {
               application also uses AI, see our{" "}
               <a
                 href="/blog/eu-ai-act-deadline"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 EU AI Act developer guide
               </a>{" "}
@@ -306,12 +306,12 @@ export default function GdprForDevelopers() {
             {/* Core concepts */}
             <h2
               id="core-concepts"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               GDPR core concepts developers need to understand
             </h2>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Controller vs. processor
             </h3>
             <p>
@@ -331,7 +331,7 @@ export default function GdprForDevelopers() {
               data export APIs, deletion endpoints, and access controls.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Personal data is broader than you think
             </h3>
             <p>
@@ -350,7 +350,7 @@ export default function GdprForDevelopers() {
               personal data.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Legal bases for processing
             </h3>
             <p>
@@ -384,12 +384,12 @@ export default function GdprForDevelopers() {
             {/* What you need to build */}
             <h2
               id="engineering-checklist"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               What you need to build: the GDPR engineering checklist
             </h2>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               1. Consent management
             </h3>
             <p>
@@ -410,7 +410,7 @@ export default function GdprForDevelopers() {
               withdrawal.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               2. Data subject rights endpoints
             </h3>
             <p>
@@ -448,15 +448,15 @@ export default function GdprForDevelopers() {
               ].map((item) => (
                 <div
                   key={item.right}
-                  className="bg-surface rounded-xl p-5"
+                  className="bg-surface-secondary rounded-xl p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.right}</h3>
-                  <p className="text-sm text-muted">{item.implementation}</p>
+                  <p className="text-sm text-ink-secondary">{item.implementation}</p>
                 </div>
               ))}
             </div>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               3. Data minimization
             </h3>
             <p>
@@ -475,7 +475,7 @@ export default function GdprForDevelopers() {
               increases your compliance burden and your attack surface.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               4. Breach notification system
             </h3>
             <p>
@@ -504,7 +504,7 @@ export default function GdprForDevelopers() {
               incident response process is essential to meeting this deadline.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               5. Data Processing Agreements (DPAs)
             </h3>
             <p>
@@ -524,7 +524,7 @@ export default function GdprForDevelopers() {
               our{" "}
               <a
                 href="/privacy-policy-generator"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 Privacy Policy Generator
               </a>{" "}
@@ -534,7 +534,7 @@ export default function GdprForDevelopers() {
             {/* Detecting GDPR services with Codepliant */}
             <h2
               id="detecting-gdpr-services"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               Detecting GDPR-relevant services with Codepliant
             </h2>
@@ -670,14 +670,14 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               data categories to disclose in your{" "}
               <a
                 href="/privacy-policy-generator"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 privacy policy
               </a>
               , and which services need entries in your{" "}
               <a
                 href="/cookie-policy-generator"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 cookie policy
               </a>
@@ -693,7 +693,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             {/* Common GDPR mistakes */}
             <h2
               id="common-mistakes"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               Common GDPR mistakes developers make
             </h2>
@@ -743,10 +743,10 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               ].map((item) => (
                 <div
                   key={item.mistake}
-                  className="bg-surface rounded-xl p-5"
+                  className="bg-surface-secondary rounded-xl p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.mistake}</h3>
-                  <p className="text-sm text-muted">{item.detail}</p>
+                  <p className="text-sm text-ink-secondary">{item.detail}</p>
                 </div>
               ))}
             </div>
@@ -754,12 +754,12 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             {/* Common technical patterns */}
             <h2
               id="implementation-patterns"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               Common GDPR implementation patterns for SaaS
             </h2>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Soft delete with scheduled purge
             </h3>
             <p>
@@ -772,7 +772,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               to sub-processors.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Anonymization for analytics
             </h3>
             <p>
@@ -783,7 +783,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               data is outside GDPR scope entirely.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Encryption at rest and in transit
             </h3>
             <p>
@@ -797,7 +797,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               information.
             </p>
 
-            <h3 className="text-xl font-bold tracking-tight text-foreground pt-2">
+            <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
               Audit logging
             </h3>
             <p>
@@ -811,7 +811,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             {/* International data transfers */}
             <h2
               id="international-transfers"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               International data transfers
             </h2>
@@ -843,7 +843,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               and document it. Your{" "}
               <a
                 href="/privacy-policy-generator"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 privacy policy
               </a>{" "}
@@ -853,7 +853,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               view of data privacy requirements, visit our{" "}
               <a
                 href="/data-privacy"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 Data Privacy Compliance Hub
               </a>
@@ -863,7 +863,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             {/* GDPR and AI */}
             <h2
               id="gdpr-and-ai"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               GDPR and AI: additional obligations for AI-powered SaaS
             </h2>
@@ -873,14 +873,14 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               regulation, see our{" "}
               <a
                 href="/blog/eu-ai-act-deadline"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 EU AI Act developer guide
               </a>{" "}
               and the{" "}
               <a
                 href="/ai-governance"
-                className="text-accent hover:underline"
+                className="text-brand hover:underline"
               >
                 AI Governance Hub
               </a>
@@ -902,7 +902,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
                 Codepliant can generate an{" "}
                 <a
                   href="/ai-disclosure-generator"
-                  className="text-accent hover:underline"
+                  className="text-brand hover:underline"
                 >
                   AI Disclosure document
                 </a>{" "}
@@ -927,7 +927,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             {/* Enforcement reality */}
             <h2
               id="enforcement"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               GDPR enforcement: the numbers developers should know
             </h2>
@@ -972,10 +972,10 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
               ].map((item) => (
                 <div
                   key={item.violation}
-                  className="bg-surface rounded-xl p-5"
+                  className="bg-surface-secondary rounded-xl p-5"
                 >
                   <h3 className="font-semibold mb-1">{item.violation}</h3>
-                  <p className="text-sm text-muted">{item.detail}</p>
+                  <p className="text-sm text-ink-secondary">{item.detail}</p>
                 </div>
               ))}
             </div>
@@ -983,7 +983,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             {/* Practical steps */}
             <h2
               id="action-plan"
-              className="text-2xl font-bold tracking-tight text-foreground pt-4"
+              className="text-2xl font-bold tracking-tight text-ink pt-4"
             >
               Action plan: GDPR compliance for your engineering team
             </h2>
@@ -1012,7 +1012,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
                 processing if applicable. Use the{" "}
                 <a
                   href="/privacy-policy-generator"
-                  className="text-accent hover:underline"
+                  className="text-brand hover:underline"
                 >
                   Privacy Policy Generator
                 </a>{" "}
@@ -1024,7 +1024,7 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
                 are blocked until opt-in. See our{" "}
                 <a
                   href="/cookie-policy-generator"
-                  className="text-accent hover:underline"
+                  className="text-brand hover:underline"
                 >
                   Cookie Policy Generator
                 </a>{" "}
@@ -1045,11 +1045,11 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
           </div>
 
           {/* CTA */}
-          <section className="bg-surface rounded-2xl p-8 text-center mt-16 mb-16">
+          <section className="bg-surface-secondary rounded-2xl p-8 text-center mt-16 mb-16">
             <h2 className="text-xl font-bold mb-3">
               Check your GDPR compliance now
             </h2>
-            <p className="text-muted text-sm mb-6">
+            <p className="text-ink-secondary text-sm mb-6">
               Run{" "}
               <code className="bg-code-bg text-code-fg px-1.5 py-0.5 rounded text-xs font-mono">
                 npx codepliant go
@@ -1061,9 +1061,9 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block mb-4">
               npx codepliant go
             </div>
-            <p className="text-xs text-muted mt-4">
+            <p className="text-xs text-ink-secondary mt-4">
               Works with Node.js, Python, Ruby, Go, Java, PHP, and more.{" "}
-              <a href="/docs" className="text-accent hover:underline">
+              <a href="/docs" className="text-brand hover:underline">
                 Read the docs
               </a>
               .
@@ -1111,10 +1111,10 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
-                  <p className="text-xs text-muted">{link.desc}</p>
+                  <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </a>
               ))}
             </div>

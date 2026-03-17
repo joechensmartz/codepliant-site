@@ -20,13 +20,13 @@ export default function TermsOfServiceGenerator() {
   return (
     <article className="py-20 px-6">
       <div className="max-w-[680px] mx-auto">
-        <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+        <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
           Document Generator
         </p>
         <h1 className="text-4xl font-bold tracking-tight mb-6">
           Terms of Service Generator from Your Code
         </h1>
-        <p className="text-lg text-muted mb-12">
+        <p className="text-lg text-ink-secondary mb-12">
           Your terms of service should reflect what your application actually
           does. Codepliant scans your codebase to understand your product's
           features, data practices, and third-party integrations, then generates
@@ -48,18 +48,18 @@ export default function TermsOfServiceGenerator() {
               "Limitation of liability",
               "Termination clauses",
             ].map((item) => (
-              <div key={item} className="bg-surface rounded-xl px-4 py-3 text-sm">
+              <div key={item} className="bg-surface-secondary rounded-xl px-4 py-3 text-sm">
                 {item}
               </div>
             ))}
           </div>
         </section>
 
-        <section className="bg-surface rounded-2xl p-8 text-center">
+        <section className="bg-surface-secondary rounded-2xl p-8 text-center">
           <h2 className="text-xl font-bold mb-3">
             Generate your terms of service
           </h2>
-          <p className="text-muted text-sm mb-6">
+          <p className="text-ink-secondary text-sm mb-6">
             Free, open source, no account required.
           </p>
           <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">

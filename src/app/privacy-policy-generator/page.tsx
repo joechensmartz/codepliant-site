@@ -20,13 +20,13 @@ export default function PrivacyPolicyGenerator() {
   return (
     <article className="py-20 px-6">
       <div className="max-w-[680px] mx-auto">
-        <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+        <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
           Document Generator
         </p>
         <h1 className="text-4xl font-bold tracking-tight mb-6">
           Privacy Policy Generator from Your Code
         </h1>
-        <p className="text-lg text-muted mb-12">
+        <p className="text-lg text-ink-secondary mb-12">
           Most privacy policy generators ask you to fill out a questionnaire.
           Codepliant takes a different approach — it scans your actual codebase
           to understand what data you collect, how you process it, and who you
@@ -49,18 +49,18 @@ export default function PrivacyPolicyGenerator() {
               "Third-party API integrations",
               "Cookie & session usage",
             ].map((item) => (
-              <div key={item} className="bg-surface rounded-xl px-4 py-3 text-sm">
+              <div key={item} className="bg-surface-secondary rounded-xl px-4 py-3 text-sm">
                 {item}
               </div>
             ))}
           </div>
         </section>
 
-        <section className="bg-surface rounded-2xl p-8 text-center mb-16">
+        <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
           <h2 className="text-xl font-bold mb-3">
             Generate your privacy policy
           </h2>
-          <p className="text-muted text-sm mb-6">
+          <p className="text-ink-secondary text-sm mb-6">
             Free, open source, no account required.
           </p>
           <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">

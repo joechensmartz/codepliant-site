@@ -114,13 +114,13 @@ export default function Soc2Compliance() {
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             SOC 2 Compliance
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-6">
             SOC 2 Compliance Tool for Startups
           </h1>
-          <p className="text-lg text-muted mb-12">
+          <p className="text-lg text-ink-secondary mb-12">
             SOC 2 compliance is the gold standard for SaaS security, and
             enterprise buyers expect it. Codepliant scans your codebase to
             generate a SOC 2 readiness checklist, map your existing controls to
@@ -152,9 +152,9 @@ export default function Soc2Compliance() {
                   desc: "Prove you identify and mitigate risks. Codepliant generates a risk assessment based on third-party dependencies, data handling patterns, and infrastructure configuration.",
                 },
               ].map((req) => (
-                <div key={req.title} className="bg-surface rounded-xl p-5">
+                <div key={req.title} className="bg-surface-secondary rounded-xl p-5">
                   <h3 className="font-semibold mb-2">{req.title}</h3>
-                  <p className="text-sm text-muted">{req.desc}</p>
+                  <p className="text-sm text-ink-secondary">{req.desc}</p>
                 </div>
               ))}
             </div>
@@ -180,7 +180,7 @@ export default function Soc2Compliance() {
               ].map((doc) => (
                 <div
                   key={doc}
-                  className="bg-surface rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
                 >
                   {doc}
                 </div>
@@ -193,7 +193,7 @@ export default function Soc2Compliance() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               How Codepliant automates SOC 2 preparation
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 SOC 2 automation starts with understanding what your application
                 actually does. Codepliant performs static analysis across your
@@ -226,7 +226,7 @@ export default function Soc2Compliance() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               Why startups need SOC 2 compliance
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 Enterprise sales cycles stall without SOC 2. According to
                 Vanta&apos;s 2025 Trust Report, 76% of enterprise procurement
@@ -246,11 +246,11 @@ export default function Soc2Compliance() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Start your SOC 2 readiness assessment
             </h2>
-            <p className="text-muted text-sm mb-6">
+            <p className="text-ink-secondary text-sm mb-6">
               Free, open source, no account required.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
@@ -284,10 +284,10 @@ export default function Soc2Compliance() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
-                  <p className="text-xs text-muted">{link.desc}</p>
+                  <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </a>
               ))}
             </div>
@@ -302,7 +302,7 @@ export default function Soc2Compliance() {
               {faqs.map((faq) => (
                 <div key={faq.question}>
                   <h3 className="font-semibold mb-2">{faq.question}</h3>
-                  <p className="text-sm text-muted leading-relaxed">
+                  <p className="text-sm text-ink-secondary leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

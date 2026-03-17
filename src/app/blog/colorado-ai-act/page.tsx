@@ -199,7 +199,7 @@ export default function ColoradoAiAct() {
             <span className="text-ink-secondary">Colorado AI Act</span>
           </nav>
 
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             AI Regulation
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-4">

@@ -118,13 +118,13 @@ export default function DataPrivacy() {
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             Data Privacy
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-6">
             Data Privacy Compliance for Developers
           </h1>
-          <p className="text-lg text-muted mb-12">
+          <p className="text-lg text-ink-secondary mb-12">
             Data privacy regulations are multiplying. GDPR, HIPAA, SOC 2, the
             EU AI Act — each with its own documentation requirements. Codepliant
             is a developer privacy tool that scans your codebase once and
@@ -142,10 +142,10 @@ export default function DataPrivacy() {
                 <a
                   key={fw.name}
                   href={fw.href}
-                  className="block bg-surface rounded-xl p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-xl p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-2">{fw.name}</h3>
-                  <p className="text-sm text-muted mb-3">{fw.desc}</p>
+                  <p className="text-sm text-ink-secondary mb-3">{fw.desc}</p>
                   <div className="flex flex-wrap gap-2">
                     {fw.tags.map((tag) => (
                       <span
@@ -171,7 +171,7 @@ export default function DataPrivacy() {
                 <a
                   key={gen.name}
                   href={gen.href}
-                  className="bg-surface rounded-xl px-4 py-3 text-sm font-medium hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm font-medium hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   {gen.name}
                 </a>
@@ -184,7 +184,7 @@ export default function DataPrivacy() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               One scan, every framework
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 Most compliance tools focus on a single regulation. Codepliant
                 takes a different approach: it scans your codebase to understand
@@ -236,9 +236,9 @@ export default function DataPrivacy() {
                   frameworks: "Privacy policy, terms of service, cookie policy at minimum",
                 },
               ].map((item) => (
-                <div key={item.scenario} className="bg-surface rounded-xl p-5">
+                <div key={item.scenario} className="bg-surface-secondary rounded-xl p-5">
                   <h3 className="font-semibold mb-1">{item.scenario}</h3>
-                  <p className="text-sm text-muted">{item.frameworks}</p>
+                  <p className="text-sm text-ink-secondary">{item.frameworks}</p>
                 </div>
               ))}
             </div>
@@ -251,12 +251,12 @@ export default function DataPrivacy() {
             </h2>
             <a
               href="/compare"
-              className="block bg-surface rounded-xl p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
+              className="block bg-surface-secondary rounded-xl p-5 hover:ring-1 hover:ring-border-strong transition-shadow"
             >
               <h3 className="font-semibold mb-2">
                 Codepliant vs Termly vs Iubenda
               </h3>
-              <p className="text-sm text-muted">
+              <p className="text-sm text-ink-secondary">
                 See how code-based scanning compares to form builders and cookie
                 consent platforms for compliance documentation. Feature-by-feature
                 comparison across privacy policies, GDPR, SOC 2, HIPAA, and AI
@@ -266,11 +266,11 @@ export default function DataPrivacy() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Scan your codebase for data privacy compliance
             </h2>
-            <p className="text-muted text-sm mb-6">
+            <p className="text-ink-secondary text-sm mb-6">
               Free, open source, no account required.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">

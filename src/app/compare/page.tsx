@@ -35,7 +35,7 @@ const faqs = [
   {
     question: "Is Codepliant really free?",
     answer:
-      "The core CLI is free and open source under the MIT license. You get all 120+ document types, all ecosystems, and Markdown output at no cost. Pro ($29/mo) adds HTML/PDF output, custom branding, and CI/CD integration. Team ($79/mo) adds monorepo support and a compliance API.",
+      "The core CLI is free and open source under the MIT license. You get all 120+ document types, all ecosystems, and Markdown output at no cost. Pro ($19/mo) adds HTML/PDF output, custom branding, and CI/CD integration. Team ($49/mo) adds monorepo support and a compliance API.",
   },
   {
     question: "Why is code scanning better than form builders?",
@@ -198,7 +198,7 @@ const features: FeatureRow[] = [
   },
   {
     feature: "Pricing",
-    codepliant: "Free / Pro $29/mo",
+    codepliant: "Free / Pro $19/mo",
     termly: "$14-20/mo",
     iubenda: "From $29/yr",
     vanta: "$10,000+/yr",
@@ -432,7 +432,7 @@ export default function Compare() {
               <div className="bg-brand-muted border border-brand/20 rounded-xl p-4 flex-1 text-center">
                 <p className="font-semibold text-brand mb-1">Codepliant</p>
                 <p className="text-ink-secondary">
-                  Free / Pro at $29/mo
+                  Free / Pro at $19/mo
                 </p>
                 <p className="text-ink-tertiary text-xs mt-1">
                   Scans your actual code
@@ -714,7 +714,7 @@ export default function Compare() {
                 {
                   tool: "Codepliant",
                   free: "All 120+ document types, all ecosystems, Markdown output, unlimited scans",
-                  paid: "Pro at $29/mo (HTML/PDF, branding, CI/CD). Team at $79/mo (monorepo, API, dashboard).",
+                  paid: "Pro at $19/mo (HTML/PDF, branding, CI/CD). Team at $49/mo (monorepo, API, dashboard).",
                   highlight: true,
                 },
                 {

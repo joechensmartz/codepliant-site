@@ -18,8 +18,8 @@ function jsonLd() {
       "Open source CLI that scans your codebase and generates 35+ compliance documents automatically.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
-      { "@type": "Offer", price: "29", priceCurrency: "USD", name: "Pro" },
-      { "@type": "Offer", price: "79", priceCurrency: "USD", name: "Team" },
+      { "@type": "Offer", price: "19", priceCurrency: "USD", name: "Pro" },
+      { "@type": "Offer", price: "49", priceCurrency: "USD", name: "Team" },
     ],
     url: "https://github.com/joechensmartz/codepliant",
     downloadUrl: "https://www.npmjs.com/package/codepliant",
@@ -96,7 +96,7 @@ const comparisons = [
   },
   {
     before: "Pay a lawyer $2,000+ per document",
-    after: "Free for open source, $29/mo for teams",
+    after: "Free for open source, $19/mo for teams",
   },
   {
     before: "Documents outdated within weeks",
@@ -132,7 +132,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$29",
+    price: "$19",
     period: "/month",
     features: [
       "Everything in Free",
@@ -147,7 +147,7 @@ const plans = [
   },
   {
     name: "Team",
-    price: "$79",
+    price: "$49",
     period: "/month",
     features: [
       "Everything in Pro",
@@ -294,7 +294,7 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">1,166</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">1,367</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">
@@ -311,7 +311,7 @@ export default function Home() {
           {/* Key stats grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-[var(--space-6)] mb-[var(--space-12)]">
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-2xl)] font-bold block">1,166</span>
+              <span className="font-display text-[length:var(--text-2xl)] font-bold block">1,367</span>
               <span className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)] block">tests passing</span>
             </div>
             <div className="text-center">

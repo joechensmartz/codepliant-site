@@ -114,13 +114,13 @@ export default function HipaaCompliance() {
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             HIPAA Compliance
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-6">
             HIPAA Compliance Tool for Healthcare Apps
           </h1>
-          <p className="text-lg text-muted mb-12">
+          <p className="text-lg text-ink-secondary mb-12">
             Building a healthcare application means handling Protected Health
             Information (PHI) under strict federal regulations. Codepliant scans
             your codebase to detect health data collection patterns, identify
@@ -152,9 +152,9 @@ export default function HipaaCompliance() {
                   desc: "Guard against unauthorized access to ePHI during transmission. Codepliant checks for TLS configuration, encrypted API endpoints, and secure data transfer mechanisms.",
                 },
               ].map((req) => (
-                <div key={req.title} className="bg-surface rounded-xl p-5">
+                <div key={req.title} className="bg-surface-secondary rounded-xl p-5">
                   <h3 className="font-semibold mb-2">{req.title}</h3>
-                  <p className="text-sm text-muted">{req.desc}</p>
+                  <p className="text-sm text-ink-secondary">{req.desc}</p>
                 </div>
               ))}
             </div>
@@ -165,7 +165,7 @@ export default function HipaaCompliance() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               How Codepliant detects health data in your code
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 HIPAA defines 18 types of identifiers that constitute PHI when
                 linked to health information. Codepliant scans your ORM schemas,
@@ -212,7 +212,7 @@ export default function HipaaCompliance() {
               ].map((doc) => (
                 <div
                   key={doc}
-                  className="bg-surface rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
                 >
                   {doc}
                 </div>
@@ -225,7 +225,7 @@ export default function HipaaCompliance() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               Why healthcare app developers need compliance tooling
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 HIPAA violations carry penalties from $100 to $50,000 per
                 violation, with an annual maximum of $1.5 million per violation
@@ -244,11 +244,11 @@ export default function HipaaCompliance() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Scan your healthcare app for HIPAA readiness
             </h2>
-            <p className="text-muted text-sm mb-6">
+            <p className="text-ink-secondary text-sm mb-6">
               Free, open source, no account required.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
@@ -282,10 +282,10 @@ export default function HipaaCompliance() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="block bg-surface rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
+                  className="block bg-surface-secondary rounded-xl p-4 hover:ring-1 hover:ring-border-strong transition-shadow"
                 >
                   <h3 className="font-semibold mb-1 text-sm">{link.title}</h3>
-                  <p className="text-xs text-muted">{link.desc}</p>
+                  <p className="text-xs text-ink-secondary">{link.desc}</p>
                 </a>
               ))}
             </div>
@@ -300,7 +300,7 @@ export default function HipaaCompliance() {
               {faqs.map((faq) => (
                 <div key={faq.question}>
                   <h3 className="font-semibold mb-2">{faq.question}</h3>
-                  <p className="text-sm text-muted leading-relaxed">
+                  <p className="text-sm text-ink-secondary leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>

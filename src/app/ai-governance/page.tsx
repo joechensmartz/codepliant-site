@@ -114,13 +114,13 @@ export default function AiGovernance() {
 
       <article className="py-20 px-6">
         <div className="max-w-[680px] mx-auto">
-          <p className="text-sm font-medium text-accent mb-4 tracking-wide uppercase">
+          <p className="text-sm font-medium text-brand mb-4 tracking-wide uppercase">
             AI Governance
           </p>
           <h1 className="text-4xl font-bold tracking-tight mb-6">
             AI Governance Framework for SaaS
           </h1>
-          <p className="text-lg text-muted mb-12">
+          <p className="text-lg text-ink-secondary mb-12">
             AI regulation is here. The EU AI Act takes effect in 2026, and the
             NIST AI Risk Management Framework is becoming the de facto standard
             in the US. Codepliant scans your codebase to detect AI usage, classify
@@ -152,9 +152,9 @@ export default function AiGovernance() {
                   desc: "Implement ongoing risk management. Codepliant documents your monitoring setup, logging configurations, and human oversight mechanisms for AI-powered features.",
                 },
               ].map((item) => (
-                <div key={item.title} className="bg-surface rounded-xl p-5">
+                <div key={item.title} className="bg-surface-secondary rounded-xl p-5">
                   <h3 className="font-semibold mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted">{item.desc}</p>
+                  <p className="text-sm text-ink-secondary">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -165,7 +165,7 @@ export default function AiGovernance() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               EU AI Act compliance by risk level
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 The EU AI Act categorizes AI systems into risk tiers, each with
                 different obligations. Codepliant analyzes your AI integrations
@@ -186,9 +186,9 @@ export default function AiGovernance() {
                     desc: "AI in hiring, credit scoring, critical infrastructure, education, and law enforcement. Requires conformity assessments, risk management systems, and human oversight. Codepliant generates the full documentation package.",
                   },
                 ].map((tier) => (
-                  <div key={tier.level} className="bg-surface rounded-xl p-5">
+                  <div key={tier.level} className="bg-surface-secondary rounded-xl p-5">
                     <h3 className="font-semibold mb-2">{tier.level}</h3>
-                    <p className="text-sm text-muted">{tier.desc}</p>
+                    <p className="text-sm text-ink-secondary">{tier.desc}</p>
                   </div>
                 ))}
               </div>
@@ -215,7 +215,7 @@ export default function AiGovernance() {
               ].map((doc) => (
                 <div
                   key={doc}
-                  className="bg-surface rounded-xl px-4 py-3 text-sm"
+                  className="bg-surface-secondary rounded-xl px-4 py-3 text-sm"
                 >
                   {doc}
                 </div>
@@ -228,7 +228,7 @@ export default function AiGovernance() {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               Why AI governance matters now
             </h2>
-            <div className="space-y-6 text-base text-muted leading-relaxed">
+            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
               <p>
                 The EU AI Act&apos;s transparency obligations (Article 50) take
                 effect on August 2, 2026. Companies deploying AI systems in the
@@ -253,11 +253,11 @@ export default function AiGovernance() {
           </section>
 
           {/* CTA */}
-          <section className="bg-surface rounded-2xl p-8 text-center mb-16">
+          <section className="bg-surface-secondary rounded-2xl p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Generate your AI governance framework
             </h2>
-            <p className="text-muted text-sm mb-6">
+            <p className="text-ink-secondary text-sm mb-6">
               Free, open source, no account required.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-xl font-mono text-sm inline-block">
@@ -274,7 +274,7 @@ export default function AiGovernance() {
               {faqs.map((faq) => (
                 <div key={faq.question}>
                   <h3 className="font-semibold mb-2">{faq.question}</h3>
-                  <p className="text-sm text-muted leading-relaxed">
+                  <p className="text-sm text-ink-secondary leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
