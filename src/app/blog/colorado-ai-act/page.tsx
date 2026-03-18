@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Colorado AI Act (SB 24-205) compliance guide for SaaS. Covers deadlines, high-risk AI requirements, impact assessments, and NIST AI RMF affirmative defense.",
   alternates: {
-    canonical: "https://codepliant.site/blog/colorado-ai-act",
+    canonical: "https://www.codepliant.site/blog/colorado-ai-act",
   },
   keywords: [
     "Colorado AI Act",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "Colorado AI Act (SB 24-205): Compliance Guide for SaaS Companies",
     description:
       "Colorado AI Act (SB 24-205) compliance guide for SaaS. Covers deadlines, high-risk AI requirements, impact assessments, and NIST AI RMF affirmative defense.",
-    url: "https://codepliant.site/blog/colorado-ai-act",
+    url: "https://www.codepliant.site/blog/colorado-ai-act",
     type: "article",
     publishedTime: "2026-03-16T00:00:00Z",
     modifiedTime: "2026-03-16T00:00:00Z",
@@ -54,16 +54,16 @@ function articleJsonLd() {
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://codepliant.site/blog/colorado-ai-act",
+      "@id": "https://www.codepliant.site/blog/colorado-ai-act",
     },
   };
 }
@@ -126,19 +126,19 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://codepliant.site/blog",
+        item: "https://www.codepliant.site/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Colorado AI Act",
-        item: "https://codepliant.site/blog/colorado-ai-act",
+        item: "https://www.codepliant.site/blog/colorado-ai-act",
       },
     ],
   };

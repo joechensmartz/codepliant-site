@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     "Colorado AI Act",
   ],
   alternates: {
-    canonical: "https://codepliant.site/ai-governance",
+    canonical: "https://www.codepliant.site/ai-governance",
   },
   openGraph: {
     title: "AI Governance Framework for SaaS",
     description:
       "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI.",
-    url: "https://codepliant.site/ai-governance",
+    url: "https://www.codepliant.site/ai-governance",
     images: [{ url: "/ai-governance/opengraph-image", width: 1200, height: 630, alt: "AI Governance Framework for SaaS — Codepliant" }],
   },
   twitter: {
@@ -90,11 +90,11 @@ function webPageJsonLd() {
     name: "AI Governance Framework Generator",
     description:
       "Generate EU AI Act and NIST AI RMF aligned governance documentation for AI-powered applications by scanning your codebase.",
-    url: "https://codepliant.site/ai-governance",
+    url: "https://www.codepliant.site/ai-governance",
     isPartOf: {
       "@type": "WebSite",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     about: {
       "@type": "Thing",
@@ -147,13 +147,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "AI Governance",
-        item: "https://codepliant.site/ai-governance",
+        item: "https://www.codepliant.site/ai-governance",
       },
     ],
   };

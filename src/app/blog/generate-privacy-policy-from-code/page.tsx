@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Generate a privacy policy from your codebase in 30 seconds. Install Codepliant, scan your project, and get a policy based on your actual data practices.",
   alternates: {
-    canonical: "https://codepliant.site/blog/generate-privacy-policy-from-code",
+    canonical: "https://www.codepliant.site/blog/generate-privacy-policy-from-code",
   },
   keywords: [
     "generate privacy policy from code",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "How to Generate a Privacy Policy from Your Code in 30 Seconds",
     description:
       "Generate a privacy policy from your codebase in 30 seconds. Install Codepliant, scan your project, and get a policy based on your actual data practices.",
-    url: "https://codepliant.site/blog/generate-privacy-policy-from-code",
+    url: "https://www.codepliant.site/blog/generate-privacy-policy-from-code",
     type: "article",
     publishedTime: "2026-03-17T00:00:00Z",
     modifiedTime: "2026-03-17T00:00:00Z",
@@ -54,16 +54,16 @@ function articleJsonLd() {
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://codepliant.site/blog/generate-privacy-policy-from-code",
+      "@id": "https://www.codepliant.site/blog/generate-privacy-policy-from-code",
     },
   };
 }
@@ -163,19 +163,19 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://codepliant.site/blog",
+        item: "https://www.codepliant.site/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Generate Privacy Policy from Code",
-        item: "https://codepliant.site/blog/generate-privacy-policy-from-code",
+        item: "https://www.codepliant.site/blog/generate-privacy-policy-from-code",
       },
     ],
   };
