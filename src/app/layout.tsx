@@ -73,6 +73,7 @@ function Header() {
           <a href="/changelog" className={linkClass} style={linkStyle}>Changelog</a>
           <a href="/blog" className={linkClass} style={linkStyle}>Blog</a>
           <a href="/about" className={linkClass} style={linkStyle}>About</a>
+          <a href="/contact" className="inline-flex items-center px-[var(--space-3)] py-1 rounded-md text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover" style={linkStyle}>Get Help</a>
           <a
             href="https://github.com/joechensmartz/codepliant"
             className={linkClass}
@@ -99,6 +100,7 @@ function Header() {
               <a href="/blog" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Blog</a>
               <a href="/changelog" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Changelog</a>
               <a href="/about" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">About</a>
+              <a href="/contact" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors font-medium text-brand">Get Help</a>
               <a
                 href="https://github.com/joechensmartz/codepliant"
                 role="menuitem"
@@ -206,6 +208,7 @@ function Footer() {
             </h3>
             <ul className="space-y-[var(--space-2)] text-ink-secondary">
               <li><a href="/about" className={linkClass}>About</a></li>
+              <li><a href="/contact" className={linkClass}>Get Compliance Help</a></li>
               <li>
                 <a
                   href="https://github.com/joechensmartz/codepliant"

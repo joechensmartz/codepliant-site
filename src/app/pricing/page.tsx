@@ -187,13 +187,22 @@ export default function Pricing() {
             </a>
           </div>
 
-          {/* Enterprise note */}
-          <p className="text-center text-[length:var(--text-sm)] text-ink-secondary mt-[var(--space-8)]">
-            Enterprise support and custom features coming soon — contact{" "}
-            <a href="mailto:hello@codepliant.site" className="text-brand hover:text-brand-hover font-medium">
-              hello@codepliant.site
+          {/* CTA banner */}
+          <div className="mt-[var(--space-8)] rounded-lg border border-brand/20 bg-brand/5 p-[var(--space-6)] text-center">
+            <p className="font-display font-semibold text-[length:var(--text-base)] text-ink mb-[var(--space-2)]">
+              Need expert compliance help?
+            </p>
+            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
+              Get a compliance review, custom package, or enterprise consultation tailored to your project.
+            </p>
+            <a
+              href="/contact"
+              className="inline-block py-[var(--space-3)] px-[var(--space-6)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            >
+              Get Compliance Help
             </a>
-          </p>
+          </div>
 
           {/* FAQ section */}
           <div className="mt-[var(--space-24)]">

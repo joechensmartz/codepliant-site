@@ -165,6 +165,12 @@
       "namedRegex": "^/compare(?:/)?$"
     },
     {
+      "page": "/contact",
+      "regex": "^/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/contact(?:/)?$"
+    },
+    {
       "page": "/cookie-policy-generator",
       "regex": "^/cookie\\-policy\\-generator(?:/)?$",
       "routeKeys": {},
