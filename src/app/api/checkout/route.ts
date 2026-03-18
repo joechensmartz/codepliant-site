@@ -2,12 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-05-28.basil",
+  apiVersion: "2025-05-28.basil" as Stripe.LatestApiVersion,
 });
 
-const PACKAGES: Record<string, { name: string; price: number; description: string }> = {
-  starter: { name: "Starter Plan", price: 1000, description: "5 document generations per month" },
-  pro: { name: "Pro Plan", price: 3000, description: "30 document generations per month" },
+const PLANS: Record<string, { priceId: string; credits: number }> = {
+  starter: {
+    priceId: process.env.STRIPE_STARTER_PRICE_ID || "price_1TCMwFAtfPJoMV5JtQX5Cep0",
+    credits: 5,
+  },
+  pro: {
+    priceId: process.env.STRIPE_PRO_PRICE_ID || "price_1TCMwoAtfPJoMV5J0n7j9o2i",
+    credits: 30,
+  },
 };
 
 export async function POST(req: NextRequest) {
@@ -22,10 +28,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const pkg = PACKAGES[packageType];
-    if (!pkg) {
+    const plan = PLANS[packageType];
+    if (!plan) {
       return NextResponse.json(
-        { error: "Invalid package type" },
+        { error: "Invalid package type. Use 'starter' or 'pro'" },
         { status: 400 }
       );
     }
@@ -37,18 +43,11 @@ export async function POST(req: NextRequest) {
       customer_email: email,
       line_items: [
         {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `Codepliant — ${pkg.name}`,
-              description: `${pkg.description}. Compliance documents generated from ${repoUrl}`,
-            },
-            unit_amount: pkg.price,
-          },
+          price: plan.priceId,
           quantity: 1,
         },
       ],
-      mode: "payment",
+      mode: "subscription",
       success_url: `${origin}/generate/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/generate`,
       metadata: {
@@ -56,6 +55,16 @@ export async function POST(req: NextRequest) {
         companyName: companyName || "",
         email,
         packageType,
+        credits: String(plan.credits),
+      },
+      subscription_data: {
+        metadata: {
+          repoUrl,
+          companyName: companyName || "",
+          email,
+          packageType,
+          credits: String(plan.credits),
+        },
       },
     });
 
