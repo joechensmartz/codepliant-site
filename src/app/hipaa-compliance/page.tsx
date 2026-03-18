@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     "healthcare compliance automation",
   ],
   alternates: {
-    canonical: "https://codepliant.site/hipaa-compliance",
+    canonical: "https://www.codepliant.site/hipaa-compliance",
   },
   openGraph: {
     title: "HIPAA Compliance Tool for Healthcare Apps",
     description:
       "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies.",
-    url: "https://codepliant.site/hipaa-compliance",
+    url: "https://www.codepliant.site/hipaa-compliance",
     images: [{ url: "/hipaa-compliance/opengraph-image", width: 1200, height: 630, alt: "HIPAA Compliance Tool for Healthcare Apps — Codepliant" }],
   },
   twitter: {
@@ -89,11 +89,11 @@ function webPageJsonLd() {
     name: "HIPAA Compliance Tool for Healthcare Apps",
     description:
       "Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready HIPAA policies.",
-    url: "https://codepliant.site/hipaa-compliance",
+    url: "https://www.codepliant.site/hipaa-compliance",
     isPartOf: {
       "@type": "WebSite",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     about: {
       "@type": "Thing",
@@ -146,13 +146,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "HIPAA Compliance",
-        item: "https://codepliant.site/hipaa-compliance",
+        item: "https://www.codepliant.site/hipaa-compliance",
       },
     ],
   };

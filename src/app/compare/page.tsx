@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   keywords:
     "codepliant vs termly, codepliant vs iubenda, codepliant vs vanta, compliance tool comparison, privacy policy generator, GDPR compliance tool, SOC 2 compliance tool, code scanning compliance, developer compliance tool",
   alternates: {
-    canonical: "https://codepliant.site/compare",
+    canonical: "https://www.codepliant.site/compare",
   },
   openGraph: {
     title: "Codepliant vs Termly vs Iubenda vs Vanta — Compliance Tool Comparison",
     description:
       "Compare Codepliant vs Termly, Iubenda, and Vanta. See how code-based scanning beats form builders for privacy policies, GDPR, SOC 2, and AI compliance.",
-    url: "https://codepliant.site/compare",
+    url: "https://www.codepliant.site/compare",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -262,13 +262,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Compare",
-        item: "https://codepliant.site/compare",
+        item: "https://www.codepliant.site/compare",
       },
     ],
   };

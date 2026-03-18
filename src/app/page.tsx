@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   },
   description:
     "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents. One command. Try free with npx codepliant go.",
-  alternates: { canonical: "https://codepliant.site" },
+  alternates: { canonical: "https://www.codepliant.site" },
 };
 
 function jsonLd() {
@@ -36,7 +36,7 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
     ],
   };

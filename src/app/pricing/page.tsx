@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Codepliant is free and open source under the MIT license. All 123+ document types, all 13 ecosystems included. Start scanning with npx codepliant go.",
   alternates: {
-    canonical: "https://codepliant.site/pricing",
+    canonical: "https://www.codepliant.site/pricing",
   },
   openGraph: {
     title: "Pricing | Codepliant",
     description:
       "Free forever. MIT licensed. All features included. Generate compliance documents from code.",
-    url: "https://codepliant.site/pricing",
+    url: "https://www.codepliant.site/pricing",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -103,13 +103,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Pricing",
-        item: "https://codepliant.site/pricing",
+        item: "https://www.codepliant.site/pricing",
       },
     ],
   };

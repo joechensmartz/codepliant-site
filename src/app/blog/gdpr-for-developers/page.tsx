@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Practical GDPR guide for developers. Covers consent, data subject rights, sub-processors, DPAs, and common mistakes. Actionable steps for SaaS teams.",
   alternates: {
-    canonical: "https://codepliant.site/blog/gdpr-for-developers",
+    canonical: "https://www.codepliant.site/blog/gdpr-for-developers",
   },
   keywords: [
     "GDPR compliance",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "GDPR Compliance for Developers: A Practical Guide",
     description:
       "Practical GDPR guide for developers. Covers consent, data subject rights, sub-processors, DPAs, common mistakes, and actionable steps for SaaS teams.",
-    url: "https://codepliant.site/blog/gdpr-for-developers",
+    url: "https://www.codepliant.site/blog/gdpr-for-developers",
     type: "article",
     publishedTime: "2026-03-16T00:00:00Z",
     modifiedTime: "2026-03-16T00:00:00Z",
@@ -62,16 +62,16 @@ function articleJsonLd() {
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://codepliant.site/blog/gdpr-for-developers",
+      "@id": "https://www.codepliant.site/blog/gdpr-for-developers",
     },
   };
 }
@@ -118,19 +118,19 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.site",
+        item: "https://www.codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://codepliant.site/blog",
+        item: "https://www.codepliant.site/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "GDPR for Developers",
-        item: "https://codepliant.site/blog/gdpr-for-developers",
+        item: "https://www.codepliant.site/blog/gdpr-for-developers",
       },
     ],
   };

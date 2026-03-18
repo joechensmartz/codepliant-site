@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Developer-focused guides on GDPR, EU AI Act, privacy policies, and compliance automation. Practical articles for engineering teams building compliant software.",
   alternates: {
-    canonical: "https://codepliant.site/blog",
+    canonical: "https://www.codepliant.site/blog",
   },
   openGraph: {
     title: "Blog — Developer Compliance Guides | Codepliant",
     description:
       "Developer-focused guides on GDPR, EU AI Act, privacy policies, and compliance automation.",
-    url: "https://codepliant.site/blog",
+    url: "https://www.codepliant.site/blog",
     type: "website",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
@@ -104,17 +104,17 @@ function blogListJsonLd() {
     name: "Codepliant Blog",
     description:
       "Developer-focused guides on compliance, privacy, and AI regulation.",
-    url: "https://codepliant.site/blog",
+    url: "https://www.codepliant.site/blog",
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.site",
+      url: "https://www.codepliant.site",
     },
     blogPost: posts.map((post) => ({
       "@type": "BlogPosting",
       headline: post.title,
       description: post.description,
-      url: `https://codepliant.site/blog/${post.slug}`,
+      url: `https://www.codepliant.site/blog/${post.slug}`,
       datePublished: "2026-03-15",
       author: {
         "@type": "Organization",
