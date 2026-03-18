@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Developer guide to the EU AI Act deadline on August 2, 2026. Covers risk classifications, Article 50 transparency obligations, and practical compliance steps.",
   alternates: {
-    canonical: "https://codepliant.dev/blog/eu-ai-act-deadline",
+    canonical: "https://codepliant.site/blog/eu-ai-act-deadline",
   },
   keywords: [
     "EU AI Act",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "EU AI Act: What Developers Need to Know Before August 2, 2026",
     description:
       "Developer guide to the EU AI Act deadline on August 2, 2026. Covers risk classifications, Article 50 transparency obligations, and practical compliance steps.",
-    url: "https://codepliant.dev/blog/eu-ai-act-deadline",
+    url: "https://codepliant.site/blog/eu-ai-act-deadline",
     type: "article",
     publishedTime: "2026-03-15T00:00:00Z",
     modifiedTime: "2026-03-16T00:00:00Z",
@@ -51,16 +51,16 @@ function articleJsonLd() {
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://codepliant.dev/blog/eu-ai-act-deadline",
+      "@id": "https://codepliant.site/blog/eu-ai-act-deadline",
     },
   };
 }
@@ -123,19 +123,19 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://codepliant.dev/blog",
+        item: "https://codepliant.site/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "EU AI Act Deadline",
-        item: "https://codepliant.dev/blog/eu-ai-act-deadline",
+        item: "https://codepliant.site/blog/eu-ai-act-deadline",
       },
     ],
   };

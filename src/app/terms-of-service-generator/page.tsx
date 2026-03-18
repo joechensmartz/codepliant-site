@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     "open source terms of service generator",
   ],
   alternates: {
-    canonical: "https://codepliant.dev/terms-of-service-generator",
+    canonical: "https://codepliant.site/terms-of-service-generator",
   },
   openGraph: {
     title: "Terms of Service Generator for SaaS",
     description:
       "Terms of service generator for SaaS apps. Scans your code to detect payments, auth, and AI, then generates ToS with liability and IP clauses. Free CLI.",
-    url: "https://codepliant.dev/terms-of-service-generator",
+    url: "https://codepliant.site/terms-of-service-generator",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -123,13 +123,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Terms of Service Generator",
-        item: "https://codepliant.dev/terms-of-service-generator",
+        item: "https://codepliant.site/terms-of-service-generator",
       },
     ],
   };

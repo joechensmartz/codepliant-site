@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     "AI system transparency",
   ],
   alternates: {
-    canonical: "https://codepliant.dev/ai-disclosure-generator",
+    canonical: "https://codepliant.site/ai-disclosure-generator",
   },
   openGraph: {
     title: "AI Disclosure Generator | EU AI Act Article 50 Compliance",
     description:
       "AI disclosure generator for EU AI Act Article 50 compliance. Scans your code to detect AI integrations and generates transparency documents. Deadline: Aug 2026.",
-    url: "https://codepliant.dev/ai-disclosure-generator",
+    url: "https://codepliant.site/ai-disclosure-generator",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -125,13 +125,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "AI Disclosure Generator",
-        item: "https://codepliant.dev/ai-disclosure-generator",
+        item: "https://codepliant.site/ai-disclosure-generator",
       },
     ],
   };

@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Codepliant docs: install, configure, and generate compliance documents from your codebase. CLI commands, MCP server setup, and output format reference.",
   alternates: {
-    canonical: "https://codepliant.dev/docs",
+    canonical: "https://codepliant.site/docs",
   },
   openGraph: {
     title: "Documentation | Codepliant",
     description:
       "Codepliant docs: install, configure, and generate compliance documents from your codebase. CLI commands, MCP server setup, and output format reference.",
-    url: "https://codepliant.dev/docs",
+    url: "https://codepliant.site/docs",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -30,18 +30,18 @@ function techArticleJsonLd() {
     headline: "Codepliant Documentation",
     description:
       "Install, configure, and generate compliance documents from your codebase. CLI commands, MCP server setup, and output format reference.",
-    url: "https://codepliant.dev/docs",
+    url: "https://codepliant.site/docs",
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
-    mainEntityOfPage: "https://codepliant.dev/docs",
+    mainEntityOfPage: "https://codepliant.site/docs",
     proficiencyLevel: "Beginner",
     dependencies: "Node.js 18+",
     about: {
@@ -85,19 +85,19 @@ function howToJsonLd() {
         "@type": "HowToStep",
         name: "Run the CLI",
         text: "Run npx codepliant go in your project directory. No account or API key needed.",
-        url: "https://codepliant.dev/docs#quick-start",
+        url: "https://codepliant.site/docs#quick-start",
       },
       {
         "@type": "HowToStep",
         name: "Review generated documents",
         text: "Documents appear in your project's legal/ directory, including privacy policies, terms of service, and more.",
-        url: "https://codepliant.dev/docs#quick-start",
+        url: "https://codepliant.site/docs#quick-start",
       },
       {
         "@type": "HowToStep",
         name: "Customize with a config file",
         text: "Run codepliant init to create a .codepliantrc.json with your company name, email, jurisdiction, and other settings.",
-        url: "https://codepliant.dev/docs#configuration",
+        url: "https://codepliant.site/docs#configuration",
       },
     ],
   };
@@ -112,13 +112,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Documentation",
-        item: "https://codepliant.dev/docs",
+        item: "https://codepliant.site/docs",
       },
     ],
   };

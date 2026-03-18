@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Codepliant is free and open source under the MIT license. All 123+ document types, all 13 ecosystems included. Start scanning with npx codepliant go.",
   alternates: {
-    canonical: "https://codepliant.dev/pricing",
+    canonical: "https://codepliant.site/pricing",
   },
   openGraph: {
     title: "Pricing | Codepliant",
     description:
       "Free forever. MIT licensed. All features included. Generate compliance documents from code.",
-    url: "https://codepliant.dev/pricing",
+    url: "https://codepliant.site/pricing",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -54,7 +54,7 @@ const faqs = [
   {
     question: "Do you offer enterprise support?",
     answer:
-      "Enterprise support and custom features are coming soon. Contact hello@codepliant.dev if you are interested.",
+      "Enterprise support and custom features are coming soon. Contact hello@codepliant.site if you are interested.",
   },
 ];
 
@@ -103,13 +103,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Pricing",
-        item: "https://codepliant.dev/pricing",
+        item: "https://codepliant.site/pricing",
       },
     ],
   };
@@ -190,8 +190,8 @@ export default function Pricing() {
           {/* Enterprise note */}
           <p className="text-center text-[length:var(--text-sm)] text-ink-secondary mt-[var(--space-8)]">
             Enterprise support and custom features coming soon — contact{" "}
-            <a href="mailto:hello@codepliant.dev" className="text-brand hover:text-brand-hover font-medium">
-              hello@codepliant.dev
+            <a href="mailto:hello@codepliant.site" className="text-brand hover:text-brand-hover font-medium">
+              hello@codepliant.site
             </a>
           </p>
 

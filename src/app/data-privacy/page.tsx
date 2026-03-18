@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     "privacy regulations",
   ],
   alternates: {
-    canonical: "https://codepliant.dev/data-privacy",
+    canonical: "https://codepliant.site/data-privacy",
   },
   openGraph: {
     title: "Data Privacy Compliance Tool for Developers",
     description:
       "Detect personal data usage in your code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free, open source CLI.",
-    url: "https://codepliant.dev/data-privacy",
+    url: "https://codepliant.site/data-privacy",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -257,11 +257,11 @@ function webPageJsonLd() {
     name: "Data Privacy Compliance Hub",
     description:
       "Generate documentation for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act from a single code scan. Multi-jurisdiction data privacy compliance for developers.",
-    url: "https://codepliant.dev/data-privacy",
+    url: "https://codepliant.site/data-privacy",
     isPartOf: {
       "@type": "WebSite",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     about: {
       "@type": "Thing",
@@ -299,13 +299,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Data Privacy",
-        item: "https://codepliant.dev/data-privacy",
+        item: "https://codepliant.site/data-privacy",
       },
     ],
   };

@@ -217,7 +217,7 @@ export function saveConfig(
   const configPath = path.join(projectPath, CONFIG_FILENAME);
   // Add $schema reference for IDE autocompletion
   const withSchema = {
-    $schema: "https://codepliant.dev/schema/codepliantrc.json",
+    $schema: "https://codepliant.site/schema/codepliantrc.json",
     ...config,
   };
   fs.writeFileSync(configPath, JSON.stringify(withSchema, null, 2) + "\n", "utf-8");

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Practical HIPAA guide for developers. The 18 PHI identifiers, encryption and audit log requirements, BAAs, and how to automate compliance from your code.",
   alternates: {
-    canonical: "https://codepliant.dev/blog/hipaa-for-developers",
+    canonical: "https://codepliant.site/blog/hipaa-for-developers",
   },
   keywords: [
     "HIPAA for developers",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: "HIPAA for SaaS Developers: What You Actually Need to Know",
     description:
       "Practical HIPAA guide for developers. PHI identifiers, technical safeguards, BAAs, and how to automate compliance from your code.",
-    url: "https://codepliant.dev/blog/hipaa-for-developers",
+    url: "https://codepliant.site/blog/hipaa-for-developers",
     type: "article",
     publishedTime: "2026-03-17T00:00:00Z",
     modifiedTime: "2026-03-17T00:00:00Z",
@@ -63,16 +63,16 @@ function articleJsonLd() {
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://codepliant.dev/blog/hipaa-for-developers",
+      "@id": "https://codepliant.site/blog/hipaa-for-developers",
     },
   };
 }
@@ -119,19 +119,19 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://codepliant.dev/blog",
+        item: "https://codepliant.site/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "HIPAA for Developers",
-        item: "https://codepliant.dev/blog/hipaa-for-developers",
+        item: "https://codepliant.site/blog/hipaa-for-developers",
       },
     ],
   };

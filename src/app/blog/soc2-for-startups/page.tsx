@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "SOC 2 survival guide for startup developers. Learn the 5 Trust Service Criteria, avoid common mistakes, and go from zero to SOC 2 ready in 30 days with Codepliant.",
   alternates: {
-    canonical: "https://codepliant.dev/blog/soc2-for-startups",
+    canonical: "https://codepliant.site/blog/soc2-for-startups",
   },
   keywords: [
     "SOC 2 for startups",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: "SOC 2 for Startups: A Developer's Survival Guide",
     description:
       "SOC 2 survival guide for startup developers. Learn the 5 Trust Service Criteria, avoid common mistakes, and go from zero to SOC 2 ready in 30 days.",
-    url: "https://codepliant.dev/blog/soc2-for-startups",
+    url: "https://codepliant.site/blog/soc2-for-startups",
     type: "article",
     publishedTime: "2026-03-17T00:00:00Z",
     modifiedTime: "2026-03-17T00:00:00Z",
@@ -63,16 +63,16 @@ function articleJsonLd() {
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://codepliant.dev",
+      url: "https://codepliant.site",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://codepliant.dev/blog/soc2-for-startups",
+      "@id": "https://codepliant.site/blog/soc2-for-startups",
     },
   };
 }
@@ -119,19 +119,19 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://codepliant.dev/blog",
+        item: "https://codepliant.site/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "SOC 2 for Startups",
-        item: "https://codepliant.dev/blog/soc2-for-startups",
+        item: "https://codepliant.site/blog/soc2-for-startups",
       },
     ],
   };

@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     "open source cookie policy generator",
   ],
   alternates: {
-    canonical: "https://codepliant.dev/cookie-policy-generator",
+    canonical: "https://codepliant.site/cookie-policy-generator",
   },
   openGraph: {
     title: "Cookie Policy Generator for Developers",
     description:
       "Cookie policy generator that scans your code to detect tracking scripts, analytics SDKs, and session cookies. GDPR and ePrivacy compliant. Free CLI.",
-    url: "https://codepliant.dev/cookie-policy-generator",
+    url: "https://codepliant.site/cookie-policy-generator",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -119,13 +119,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://codepliant.dev",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Cookie Policy Generator",
-        item: "https://codepliant.dev/cookie-policy-generator",
+        item: "https://codepliant.site/cookie-policy-generator",
       },
     ],
   };
