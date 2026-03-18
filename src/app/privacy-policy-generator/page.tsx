@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     "open source privacy policy generator",
   ],
   alternates: {
-    canonical: "https://www.codepliant.site/privacy-policy-generator",
+    canonical: "https://codepliant.site/privacy-policy-generator",
   },
   openGraph: {
     title: "Privacy Policy Generator for Developers",
     description:
       "Privacy policy generator that scans your codebase to detect data collection, third-party services, and analytics. Accurate, GDPR-ready output. Free CLI.",
-    url: "https://www.codepliant.site/privacy-policy-generator",
+    url: "https://codepliant.site/privacy-policy-generator",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -122,13 +122,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://www.codepliant.site",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Privacy Policy Generator",
-        item: "https://www.codepliant.site/privacy-policy-generator",
+        item: "https://codepliant.site/privacy-policy-generator",
       },
     ],
   };

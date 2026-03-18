@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     "GDPR consent management",
   ],
   alternates: {
-    canonical: "https://www.codepliant.site/gdpr-compliance",
+    canonical: "https://codepliant.site/gdpr-compliance",
   },
   openGraph: {
     title: "GDPR Compliance Tool for Developers",
     description:
       "Automate GDPR compliance by scanning your codebase. Generate privacy policies, DPAs, DSAR guides, and data flow maps from your actual code. Free CLI.",
-    url: "https://www.codepliant.site/gdpr-compliance",
+    url: "https://codepliant.site/gdpr-compliance",
     images: [{ url: "/gdpr-compliance/opengraph-image", width: 1200, height: 630, alt: "GDPR Compliance Tool for Developers — Codepliant" }],
   },
   twitter: {
@@ -88,11 +88,11 @@ function webPageJsonLd() {
     name: "GDPR Compliance Tool for Developers",
     description:
       "Automate GDPR compliance by scanning your codebase. Generate privacy policies, DPAs, DSAR guides, and data flow maps from your actual code.",
-    url: "https://www.codepliant.site/gdpr-compliance",
+    url: "https://codepliant.site/gdpr-compliance",
     isPartOf: {
       "@type": "WebSite",
       name: "Codepliant",
-      url: "https://www.codepliant.site",
+      url: "https://codepliant.site",
     },
     about: {
       "@type": "Thing",
@@ -145,13 +145,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://www.codepliant.site",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "GDPR Compliance",
-        item: "https://www.codepliant.site/gdpr-compliance",
+        item: "https://codepliant.site/gdpr-compliance",
       },
     ],
   };

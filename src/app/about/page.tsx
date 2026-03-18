@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Codepliant is an open source CLI that scans your code and generates 123+ compliance documents. No lawyers, no questionnaires, no network calls. MIT licensed.",
   alternates: {
-    canonical: "https://www.codepliant.site/about",
+    canonical: "https://codepliant.site/about",
   },
   openGraph: {
     title: "About | Codepliant",
     description:
       "Codepliant is an open source CLI that scans your code and generates compliance documents. No lawyers, no questionnaires, no network calls.",
-    url: "https://www.codepliant.site/about",
+    url: "https://codepliant.site/about",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -62,13 +62,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://www.codepliant.site",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "About",
-        item: "https://www.codepliant.site/about",
+        item: "https://codepliant.site/about",
       },
     ],
   };

@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Codepliant changelog: every release from v0.1 to v1.1. Track new compliance document types, ecosystem scanners, CLI features, and bug fixes across versions.",
   alternates: {
-    canonical: "https://www.codepliant.site/changelog",
+    canonical: "https://codepliant.site/changelog",
   },
   openGraph: {
     title: "Changelog | Codepliant",
     description:
       "Codepliant changelog and version history. Track new compliance document types, ecosystem scanners, CLI features, and fixes across every release.",
-    url: "https://www.codepliant.site/changelog",
+    url: "https://codepliant.site/changelog",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
@@ -348,13 +348,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://www.codepliant.site",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Changelog",
-        item: "https://www.codepliant.site/changelog",
+        item: "https://codepliant.site/changelog",
       },
     ],
   };

@@ -42,7 +42,7 @@ export interface BillingPortalResult {
 
 // ── Constants ─────────────────────────────────────────────────────
 
-const PORTAL_URL = "https://www.codepliant.site/billing";
+const PORTAL_URL = "https://codepliant.site/billing";
 const FREE_PLAN = {
   name: "Free",
   price: "$0/mo",

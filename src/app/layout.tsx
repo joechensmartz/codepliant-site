@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   },
   description:
     "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents automatically. 97.8% precision. Open source.",
-  metadataBase: new URL("https://www.codepliant.site"),
+  metadataBase: new URL("https://codepliant.site"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.codepliant.site",
+    url: "https://codepliant.site",
     siteName: "Codepliant",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
@@ -246,8 +246,8 @@ function organizationJsonLd() {
     "@type": "Organization",
     name: "Codepliant",
     description: "Open-source CLI that scans codebases and generates compliance documents — privacy policies, terms of service, AI disclosures, and 123+ document types.",
-    url: "https://www.codepliant.site",
-    logo: "https://www.codepliant.site/opengraph-image",
+    url: "https://codepliant.site",
+    logo: "https://codepliant.site/opengraph-image",
     sameAs: [
       "https://github.com/joechensmartz/codepliant",
       "https://www.npmjs.com/package/codepliant",
@@ -260,14 +260,14 @@ function webSiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Codepliant",
-    url: "https://www.codepliant.site",
+    url: "https://codepliant.site",
     description:
       "Open-source CLI that scans codebases and generates 123+ compliance documents automatically.",
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://www.codepliant.site/docs?q={search_term_string}",
+        urlTemplate: "https://codepliant.site/docs?q={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },

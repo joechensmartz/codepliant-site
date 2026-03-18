@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "How to write a SaaS privacy policy in 2026. Covers GDPR Article 13, CCPA requirements, data collection disclosures, and a practical template you can adapt.",
   alternates: {
-    canonical: "https://www.codepliant.site/blog/privacy-policy-for-saas",
+    canonical: "https://codepliant.site/blog/privacy-policy-for-saas",
   },
   keywords: [
     "SaaS privacy policy",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "How to Write a Privacy Policy for Your SaaS App in 2026",
     description:
       "How to write a SaaS privacy policy in 2026. Covers GDPR Article 13, CCPA requirements, data collection disclosures, and a practical template you can adapt.",
-    url: "https://www.codepliant.site/blog/privacy-policy-for-saas",
+    url: "https://codepliant.site/blog/privacy-policy-for-saas",
     type: "article",
     publishedTime: "2026-03-16T00:00:00Z",
     modifiedTime: "2026-03-16T00:00:00Z",
@@ -55,16 +55,16 @@ function articleJsonLd() {
     author: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://www.codepliant.site",
+      url: "https://codepliant.site",
     },
     publisher: {
       "@type": "Organization",
       name: "Codepliant",
-      url: "https://www.codepliant.site",
+      url: "https://codepliant.site",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://www.codepliant.site/blog/privacy-policy-for-saas",
+      "@id": "https://codepliant.site/blog/privacy-policy-for-saas",
     },
   };
 }
@@ -127,19 +127,19 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://www.codepliant.site",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://www.codepliant.site/blog",
+        item: "https://codepliant.site/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Privacy Policy for SaaS",
-        item: "https://www.codepliant.site/blog/privacy-policy-for-saas",
+        item: "https://codepliant.site/blog/privacy-policy-for-saas",
       },
     ],
   };

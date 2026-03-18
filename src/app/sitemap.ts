@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.codepliant.site";
+  const baseUrl = "https://codepliant.site";
   const today = new Date("2026-03-17");
   const recent = new Date("2026-03-15");
 

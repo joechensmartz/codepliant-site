@@ -39,6 +39,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/_next/", "/api/"],
       },
     ],
-    sitemap: "https://www.codepliant.site/sitemap.xml",
+    sitemap: "https://codepliant.site/sitemap.xml",
   };
 }

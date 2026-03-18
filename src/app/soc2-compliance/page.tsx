@@ -20,13 +20,13 @@ export const metadata: Metadata = {
     "SOC 2 evidence",
   ],
   alternates: {
-    canonical: "https://www.codepliant.site/soc2-compliance",
+    canonical: "https://codepliant.site/soc2-compliance",
   },
   openGraph: {
     title: "SOC 2 Compliance Tool for Startups",
     description:
       "SOC 2 compliance tool for startups. Scan your codebase to generate readiness checklists, control mappings, and evidence docs. All 5 Trust Service Criteria.",
-    url: "https://www.codepliant.site/soc2-compliance",
+    url: "https://codepliant.site/soc2-compliance",
     images: [{ url: "/soc2-compliance/opengraph-image", width: 1200, height: 630, alt: "SOC 2 Compliance Tool for Startups — Codepliant" }],
   },
   twitter: {
@@ -88,11 +88,11 @@ function webPageJsonLd() {
     name: "SOC 2 Compliance Tool for Startups",
     description:
       "Scan your codebase and generate SOC 2 readiness checklists, control mappings, and evidence documentation for all five Trust Service Criteria.",
-    url: "https://www.codepliant.site/soc2-compliance",
+    url: "https://codepliant.site/soc2-compliance",
     isPartOf: {
       "@type": "WebSite",
       name: "Codepliant",
-      url: "https://www.codepliant.site",
+      url: "https://codepliant.site",
     },
     about: {
       "@type": "Thing",
@@ -145,13 +145,13 @@ function breadcrumbJsonLd() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://www.codepliant.site",
+        item: "https://codepliant.site",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "SOC 2 Compliance",
-        item: "https://www.codepliant.site/soc2-compliance",
+        item: "https://codepliant.site/soc2-compliance",
       },
     ],
   };
