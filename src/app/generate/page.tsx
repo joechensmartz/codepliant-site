@@ -3,28 +3,23 @@
 import { useState, useEffect } from "react";
 import { getUser } from "../../lib/auth";
 
-const packages = [
+const plans = [
   {
-    id: "single",
-    name: "Single Document",
-    price: "$9",
-    description: "One compliance document of your choice",
-    features: ["Privacy Policy, ToS, or AI Disclosure", "Based on your actual code", "Markdown format"],
+    id: "starter",
+    name: "Starter",
+    price: "$10",
+    period: "/mo",
+    description: "5 document generations per month",
+    features: ["5 generations/mo", "120+ docs per generation", "All formats (MD, HTML, PDF, DOCX)", "Email support"],
   },
   {
-    id: "bundle",
-    name: "Full Bundle",
-    price: "$49",
-    description: "All compliance documents your project needs",
-    features: ["All detected document types", "Full code analysis", "Markdown + HTML formats"],
+    id: "pro",
+    name: "Pro",
+    price: "$30",
+    period: "/mo",
+    description: "30 document generations per month",
+    features: ["30 generations/mo", "Everything in Starter", "Priority support", "Custom branding"],
     popular: true,
-  },
-  {
-    id: "branded",
-    name: "Branded Bundle",
-    price: "$99",
-    description: "Full bundle with your company branding",
-    features: ["Everything in Full Bundle", "Company name & branding", "Contact info embedded", "Ready to publish"],
   },
 ];
 
@@ -32,7 +27,7 @@ export default function GeneratePage() {
   const [repoUrl, setRepoUrl] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
-  const [packageType, setPackageType] = useState("bundle");
+  const [selectedPlan, setSelectedPlan] = useState("pro");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,7 +45,7 @@ export default function GeneratePage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ repoUrl, companyName, email, packageType }),
+        body: JSON.stringify({ repoUrl, companyName, email, packageType: selectedPlan }),
       });
 
       const data = await res.json();
@@ -148,40 +143,43 @@ export default function GeneratePage() {
             </p>
           </div>
 
-          {/* Package Selection */}
+          {/* Plan Selection */}
           <div>
             <p className="text-[length:var(--text-sm)] font-medium mb-[var(--space-4)]">
-              Select a Package
+              Select a Plan
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-4)]">
-              {packages.map((pkg) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-4)]">
+              {plans.map((plan) => (
                 <button
-                  key={pkg.id}
+                  key={plan.id}
                   type="button"
-                  onClick={() => setPackageType(pkg.id)}
+                  onClick={() => setSelectedPlan(plan.id)}
                   className={`relative text-left rounded-lg p-[var(--space-4)] border-2 transition-colors duration-150 ${
-                    packageType === pkg.id
+                    selectedPlan === plan.id
                       ? "border-brand bg-brand-muted"
                       : "border-border-subtle bg-surface-primary hover:border-border-strong"
                   }`}
                   style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
                 >
-                  {pkg.popular && (
+                  {plan.popular && (
                     <span className="absolute -top-3 left-[var(--space-4)] bg-brand text-surface-primary text-[length:var(--text-xs)] font-medium px-[var(--space-2)] py-0.5 rounded">
                       Most Popular
                     </span>
                   )}
-                  <div className="font-display font-semibold text-[length:var(--text-lg)] mb-[var(--space-1)]">
-                    {pkg.price}
+                  <div className="flex items-baseline gap-[var(--space-1)] mb-[var(--space-1)]">
+                    <span className="font-display font-semibold text-[length:var(--text-lg)]">
+                      {plan.price}
+                    </span>
+                    <span className="text-[length:var(--text-sm)] text-ink-secondary">{plan.period}</span>
                   </div>
                   <div className="font-medium text-[length:var(--text-sm)] mb-[var(--space-2)]">
-                    {pkg.name}
+                    {plan.name}
                   </div>
                   <p className="text-[length:var(--text-xs)] text-ink-secondary mb-[var(--space-3)]">
-                    {pkg.description}
+                    {plan.description}
                   </p>
                   <ul className="space-y-[var(--space-1)]">
-                    {pkg.features.map((f) => (
+                    {plan.features.map((f) => (
                       <li
                         key={f}
                         className="text-[length:var(--text-xs)] text-ink-secondary flex items-start gap-[var(--space-1)]"
@@ -233,13 +231,22 @@ export default function GeneratePage() {
             className="w-full py-[var(--space-4)] rounded-lg text-[length:var(--text-base)] font-semibold transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
           >
-            {loading ? "Redirecting to payment..." : "Generate & Pay"}
+            {loading ? "Redirecting to payment..." : "Start Generating"}
           </button>
 
           <p className="text-[length:var(--text-xs)] text-ink-tertiary text-center">
             Secure payment via Stripe. Documents delivered instantly after payment.
           </p>
         </form>
+
+        {/* Free CLI note */}
+        <div className="mt-[var(--space-8)] rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-4)] text-center">
+          <p className="text-[length:var(--text-sm)] text-ink-secondary">
+            The CLI is always free. Run{" "}
+            <code className="font-mono text-brand">npx codepliant go</code>{" "}
+            locally at no cost.
+          </p>
+        </div>
       </div>
     </section>
   );

@@ -19,7 +19,7 @@
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/css/fcac3895241fddbf.css",
+      "static/css/1b666a83e8771b9a.css",
       "static/chunks/2373-b1c568bdb60f24cf.js",
       "static/chunks/app/layout-62e04cf518b2eacc.js"
     ],
@@ -101,27 +101,6 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/ai-disclosure-generator/page-7d2e523297696325.js"
     ],
-    "/ai-governance/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/ai-governance/page-7d2e523297696325.js"
-    ],
-    "/blog/gdpr-for-developers/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/gdpr-for-developers/page-7d2e523297696325.js"
-    ],
-    "/blog/generate-privacy-policy-from-code/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/generate-privacy-policy-from-code/page-7d2e523297696325.js"
-    ],
     "/blog/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -136,33 +115,19 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/blog/eu-ai-act-deadline/page-7d2e523297696325.js"
     ],
-    "/blog/colorado-ai-act/page": [
+    "/ai-governance/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/colorado-ai-act/page-7d2e523297696325.js"
+      "static/chunks/app/ai-governance/page-7d2e523297696325.js"
     ],
-    "/blog/hipaa-for-developers/page": [
+    "/blog/generate-privacy-policy-from-code/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/hipaa-for-developers/page-7d2e523297696325.js"
-    ],
-    "/blog/soc2-for-startups/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/soc2-for-startups/page-7d2e523297696325.js"
-    ],
-    "/changelog/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/changelog/page-7d2e523297696325.js"
+      "static/chunks/app/blog/generate-privacy-policy-from-code/page-7d2e523297696325.js"
     ],
     "/blog/privacy-policy-for-saas/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
@@ -171,6 +136,20 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/blog/privacy-policy-for-saas/page-7d2e523297696325.js"
     ],
+    "/blog/colorado-ai-act/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/colorado-ai-act/page-7d2e523297696325.js"
+    ],
+    "/blog/soc2-for-startups/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/soc2-for-startups/page-7d2e523297696325.js"
+    ],
     "/compare/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -178,12 +157,26 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/compare/page-fc891a7fdb137f83.js"
     ],
-    "/data-privacy/page": [
+    "/blog/gdpr-for-developers/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/data-privacy/page-7d2e523297696325.js"
+      "static/chunks/app/blog/gdpr-for-developers/page-7d2e523297696325.js"
+    ],
+    "/changelog/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/changelog/page-7d2e523297696325.js"
+    ],
+    "/pricing/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/pricing/page-7d2e523297696325.js"
     ],
     "/cookie-policy-generator/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
@@ -199,33 +192,33 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/hipaa-compliance/page-7d2e523297696325.js"
     ],
+    "/blog/hipaa-for-developers/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/hipaa-for-developers/page-7d2e523297696325.js"
+    ],
+    "/docs/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/docs/page-7d2e523297696325.js"
+    ],
+    "/data-privacy/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/data-privacy/page-7d2e523297696325.js"
+    ],
     "/privacy-policy-generator/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/privacy-policy-generator/page-7d2e523297696325.js"
-    ],
-    "/gdpr-compliance/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/gdpr-compliance/page-7d2e523297696325.js"
-    ],
-    "/pricing/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/pricing/page-7d2e523297696325.js"
-    ],
-    "/soc2-compliance/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/soc2-compliance/page-7d2e523297696325.js"
     ],
     "/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
@@ -241,12 +234,19 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/terms-of-service-generator/page-7d2e523297696325.js"
     ],
-    "/docs/page": [
+    "/soc2-compliance/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/docs/page-7d2e523297696325.js"
+      "static/chunks/app/soc2-compliance/page-7d2e523297696325.js"
+    ],
+    "/gdpr-compliance/page": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/gdpr-compliance/page-7d2e523297696325.js"
     ],
     "/contact/layout": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
@@ -277,29 +277,6 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/generate/success/page-0445cdb009385294.js"
     ],
-    "/login/layout": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/login/layout-7d2e523297696325.js"
-    ],
-    "/login/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/2373-b1c568bdb60f24cf.js",
-      "static/chunks/app/login/page-2b4f78848c597b77.js"
-    ],
-    "/generate/page": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/2373-b1c568bdb60f24cf.js",
-      "static/chunks/app/generate/page-3f9f7060678cd523.js"
-    ],
     "/signup/layout": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -315,47 +292,28 @@
       "static/chunks/2373-b1c568bdb60f24cf.js",
       "static/chunks/app/signup/page-3792f159212f911d.js"
     ],
-    "/blog/gdpr-for-developers/opengraph-image/route": [
+    "/generate/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/gdpr-for-developers/opengraph-image/route-7d2e523297696325.js"
+      "static/chunks/2373-b1c568bdb60f24cf.js",
+      "static/chunks/app/generate/page-d45dd7710ce69700.js"
     ],
-    "/blog/colorado-ai-act/opengraph-image/route": [
+    "/login/layout": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/colorado-ai-act/opengraph-image/route-7d2e523297696325.js"
+      "static/chunks/app/login/layout-7d2e523297696325.js"
     ],
-    "/blog/hipaa-for-developers/opengraph-image/route": [
+    "/login/page": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/hipaa-for-developers/opengraph-image/route-7d2e523297696325.js"
-    ],
-    "/blog/generate-privacy-policy-from-code/opengraph-image/route": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/generate-privacy-policy-from-code/opengraph-image/route-7d2e523297696325.js"
-    ],
-    "/blog/privacy-policy-for-saas/opengraph-image/route": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/privacy-policy-for-saas/opengraph-image/route-7d2e523297696325.js"
-    ],
-    "/blog/soc2-for-startups/opengraph-image/route": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/blog/soc2-for-startups/opengraph-image/route-7d2e523297696325.js"
+      "static/chunks/2373-b1c568bdb60f24cf.js",
+      "static/chunks/app/login/page-2b4f78848c597b77.js"
     ],
     "/blog/eu-ai-act-deadline/opengraph-image/route": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
@@ -364,6 +322,41 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/blog/eu-ai-act-deadline/opengraph-image/route-7d2e523297696325.js"
     ],
+    "/blog/colorado-ai-act/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/colorado-ai-act/opengraph-image/route-7d2e523297696325.js"
+    ],
+    "/blog/generate-privacy-policy-from-code/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/generate-privacy-policy-from-code/opengraph-image/route-7d2e523297696325.js"
+    ],
+    "/blog/hipaa-for-developers/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/hipaa-for-developers/opengraph-image/route-7d2e523297696325.js"
+    ],
+    "/blog/gdpr-for-developers/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/gdpr-for-developers/opengraph-image/route-7d2e523297696325.js"
+    ],
+    "/blog/privacy-policy-for-saas/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/privacy-policy-for-saas/opengraph-image/route-7d2e523297696325.js"
+    ],
     "/ai-governance/opengraph-image/route": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
@@ -371,12 +364,33 @@
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/ai-governance/opengraph-image/route-7d2e523297696325.js"
     ],
+    "/blog/soc2-for-startups/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/blog/soc2-for-startups/opengraph-image/route-7d2e523297696325.js"
+    ],
+    "/hipaa-compliance/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/hipaa-compliance/opengraph-image/route-7d2e523297696325.js"
+    ],
     "/soc2-compliance/opengraph-image/route": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
       "static/chunks/4bd1b696-f785427dddbba9fb.js",
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/soc2-compliance/opengraph-image/route-7d2e523297696325.js"
+    ],
+    "/gdpr-compliance/opengraph-image/route": [
+      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
+      "static/chunks/4bd1b696-f785427dddbba9fb.js",
+      "static/chunks/1255-a390e12b70b4a9fb.js",
+      "static/chunks/main-app-cf650e450ca2423f.js",
+      "static/chunks/app/gdpr-compliance/opengraph-image/route-7d2e523297696325.js"
     ],
     "/opengraph-image/route": [
       "static/chunks/webpack-d5e6ad1a1d71d32b.js",
@@ -391,20 +405,6 @@
       "static/chunks/1255-a390e12b70b4a9fb.js",
       "static/chunks/main-app-cf650e450ca2423f.js",
       "static/chunks/app/twitter-image/route-7d2e523297696325.js"
-    ],
-    "/hipaa-compliance/opengraph-image/route": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/hipaa-compliance/opengraph-image/route-7d2e523297696325.js"
-    ],
-    "/gdpr-compliance/opengraph-image/route": [
-      "static/chunks/webpack-d5e6ad1a1d71d32b.js",
-      "static/chunks/4bd1b696-f785427dddbba9fb.js",
-      "static/chunks/1255-a390e12b70b4a9fb.js",
-      "static/chunks/main-app-cf650e450ca2423f.js",
-      "static/chunks/app/gdpr-compliance/opengraph-image/route-7d2e523297696325.js"
     ]
   }
 }

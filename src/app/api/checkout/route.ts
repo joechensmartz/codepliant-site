@@ -5,10 +5,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-05-28.basil",
 });
 
-const PACKAGES: Record<string, { name: string; price: number }> = {
-  single: { name: "Single Document", price: 900 },
-  bundle: { name: "Full Bundle", price: 4900 },
-  branded: { name: "Branded Bundle", price: 9900 },
+const PACKAGES: Record<string, { name: string; price: number; description: string }> = {
+  starter: { name: "Starter Plan", price: 1000, description: "5 document generations per month" },
+  pro: { name: "Pro Plan", price: 3000, description: "30 document generations per month" },
 };
 
 export async function POST(req: NextRequest) {
@@ -42,7 +41,7 @@ export async function POST(req: NextRequest) {
             currency: "usd",
             product_data: {
               name: `Codepliant — ${pkg.name}`,
-              description: `Compliance documents generated from ${repoUrl}`,
+              description: `${pkg.description}. Compliance documents generated from ${repoUrl}`,
             },
             unit_amount: pkg.price,
           },

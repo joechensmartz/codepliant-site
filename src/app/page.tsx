@@ -100,7 +100,7 @@ const comparisons = [
   },
   {
     before: "Pay a lawyer $2,000+ per document",
-    after: "Free and open source for everyone",
+    after: "CLI is free. Generation service from $10/mo",
   },
   {
     before: "Documents outdated within weeks",

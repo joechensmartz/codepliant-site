@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pricing — Free CLI & Document Generation Service",
+  title: "Pricing — Starter $10/mo & Pro $30/mo",
   description:
-    "Codepliant CLI is free and open source. We also offer a paid document generation service: single documents from $9, full bundles from $49. All 123+ document types, 13 ecosystems.",
+    "Codepliant CLI is free and open source. Document generation service: Starter at $10/mo (5 generations) or Pro at $30/mo (30 generations). Each generation produces 120+ compliance documents.",
   alternates: {
     canonical: "https://www.codepliant.site/pricing",
   },
   openGraph: {
     title: "Pricing | Codepliant",
     description:
-      "Free CLI for scanning code. Paid generation service from $9. All 123+ compliance document types included.",
+      "Free CLI for scanning code. Document generation from $10/mo. 120+ compliance documents per generation.",
     url: "https://www.codepliant.site/pricing",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Pricing | Codepliant",
-    description: "Free open source CLI + paid document generation service from $9.",
+    description: "Free open source CLI + document generation service from $10/mo.",
     images: ["/opengraph-image"],
   },
 };
 
-const features = [
+const cliFeatures = [
   "Full CLI scanning",
   "All 123+ document types",
   "Markdown output",
@@ -35,43 +35,70 @@ const features = [
   "No runtime dependencies",
 ];
 
-const servicePackages = [
+const subscriptionPlans = [
   {
-    name: "Single Document",
-    price: "$9",
-    description: "One compliance document as PDF",
-    features: ["Choose any document type", "Based on your actual code", "Delivered as PDF"],
+    name: "Starter",
+    price: "$10",
+    period: "/mo",
+    description: "5 document generations per month",
+    features: [
+      "5 generations per month",
+      "120+ compliance documents per generation",
+      "All output formats (Markdown, HTML, PDF, DOCX)",
+      "All ecosystems (13+)",
+      "Email support",
+    ],
   },
   {
-    name: "Full Bundle",
-    price: "$49",
-    description: "All 120+ documents as ZIP",
-    features: ["Every detected document type", "Full code analysis", "Delivered as ZIP archive"],
+    name: "Pro",
+    price: "$30",
+    period: "/mo",
+    description: "30 document generations per month",
+    features: [
+      "30 generations per month",
+      "Everything in Starter",
+      "Priority support",
+      "Custom branding on documents",
+    ],
     popular: true,
   },
-  {
-    name: "Branded Bundle",
-    price: "$99",
-    description: "Full bundle with your company branding",
-    features: ["Everything in Full Bundle", "Your company name & logo", "Contact info embedded", "Ready to publish"],
-  },
+];
+
+const exampleDocs = [
+  "Privacy Policy",
+  "Terms of Service",
+  "AI Disclosure",
+  "Cookie Policy",
+  "Data Processing Agreement",
+  "Security Policy",
+  "Incident Response Plan",
+  "Data Flow Map",
+  "DSAR Handling Guide",
+  "Data Retention Policy",
+  "Access Control Policy",
+  "Vendor Security Questionnaire",
 ];
 
 const faqs = [
   {
     question: "Can I use Codepliant for free?",
     answer:
-      "The CLI is free and open source under the MIT license. We also offer a paid document generation service where we scan your repo and deliver publication-ready documents starting at $9.",
+      "Yes. The CLI is free and open source under the MIT license. Run npx codepliant go locally at no cost. The subscription plans are for our hosted document generation service where we scan your repo and deliver publication-ready documents.",
+  },
+  {
+    question: "What counts as one generation?",
+    answer:
+      "One generation means scanning one repository and producing all applicable compliance documents. Each generation typically produces 120+ documents tailored to your codebase.",
+  },
+  {
+    question: "What output formats are included?",
+    answer:
+      "Every generation includes documents in Markdown, HTML, PDF, and DOCX formats. All formats are included in both Starter and Pro plans.",
   },
   {
     question: "What does \"codepliant diff\" do?",
     answer:
       "The diff command compares your current scan against a previous snapshot and shows what changed — new services detected, removed services, and which compliance documents need updating. It is essential for CI/CD workflows and audit trails.",
-  },
-  {
-    question: "Is there a limit on document types?",
-    answer:
-      "No. You get access to all 123+ document types with no limits. Every feature is available for free.",
   },
   {
     question: "Do you offer enterprise support?",
@@ -95,28 +122,33 @@ function jsonLd() {
         name: "Free CLI",
         price: "0",
         priceCurrency: "USD",
-        description: features.slice(0, 3).join(", "),
+        description: cliFeatures.slice(0, 3).join(", "),
       },
       {
         "@type": "Offer",
-        name: "Single Document",
-        price: "9",
+        name: "Starter Plan",
+        price: "10",
         priceCurrency: "USD",
-        description: "One compliance document as PDF",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "10",
+          priceCurrency: "USD",
+          billingDuration: "P1M",
+        },
+        description: "5 document generations per month, 120+ documents each",
       },
       {
         "@type": "Offer",
-        name: "Full Bundle",
-        price: "49",
+        name: "Pro Plan",
+        price: "30",
         priceCurrency: "USD",
-        description: "All 120+ documents as ZIP",
-      },
-      {
-        "@type": "Offer",
-        name: "Branded Bundle",
-        price: "99",
-        priceCurrency: "USD",
-        description: "Full bundle with your company branding",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "30",
+          priceCurrency: "USD",
+          billingDuration: "P1M",
+        },
+        description: "30 document generations per month with priority support and custom branding",
       },
     ],
   };
@@ -178,114 +210,164 @@ export default function Pricing() {
         <div className="max-w-[640px] mx-auto">
           <div className="text-center mb-[var(--space-16)]">
             <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">
-              Free &amp; Open Source
+              Simple, transparent pricing
             </h1>
             <p className="text-[length:var(--text-lg)] text-ink-secondary">
-              Free forever. MIT licensed. All features included.
+              The CLI is always free. Subscription plans for our hosted generation service.
             </p>
           </div>
 
-          {/* Single plan card */}
-          <div className="rounded-lg p-[var(--space-8)] bg-surface-primary ring-1 ring-border-subtle max-w-[480px] mx-auto">
-            <div className="mb-[var(--space-6)]">
-              <div className="flex items-baseline gap-[var(--space-2)]">
-                <span className="font-display text-[length:var(--text-2xl)] font-bold">$0</span>
-                <span className="text-[length:var(--text-sm)] text-ink-secondary">forever</span>
+          {/* Subscription plans */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-6)] max-w-[560px] mx-auto mb-[var(--space-16)]">
+            {subscriptionPlans.map((plan) => (
+              <div
+                key={plan.name}
+                className={`relative rounded-lg p-[var(--space-6)] bg-surface-primary ring-1 ${
+                  plan.popular ? "ring-brand" : "ring-border-subtle"
+                }`}
+              >
+                {plan.popular && (
+                  <span className="absolute -top-3 left-[var(--space-4)] bg-brand text-surface-primary text-[length:var(--text-xs)] font-medium px-[var(--space-2)] py-0.5 rounded">
+                    Most Popular
+                  </span>
+                )}
+                <div className="mb-[var(--space-4)]">
+                  <div className="font-medium text-[length:var(--text-base)] mb-[var(--space-1)]">
+                    {plan.name}
+                  </div>
+                  <div className="flex items-baseline gap-[var(--space-1)]">
+                    <span className="font-display text-[length:var(--text-2xl)] font-bold">{plan.price}</span>
+                    <span className="text-[length:var(--text-sm)] text-ink-secondary">{plan.period}</span>
+                  </div>
+                  <p className="text-[length:var(--text-sm)] mt-[var(--space-2)] text-ink-secondary">
+                    {plan.description}
+                  </p>
+                </div>
+
+                <div className="border-t border-border-subtle mb-[var(--space-4)]" />
+
+                <ul className="space-y-[var(--space-3)] text-[length:var(--text-sm)] mb-[var(--space-6)]">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-[var(--space-2)]">
+                      <svg
+                        className="w-4 h-4 mt-0.5 shrink-0 text-brand"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href="/generate"
+                  className="block text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover"
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                >
+                  Start Generating
+                </a>
               </div>
-              <p className="text-[length:var(--text-sm)] mt-[var(--space-3)] text-ink-secondary">
-                Everything you need to scan your codebase and generate compliance documents. No restrictions.
-              </p>
+            ))}
+          </div>
+
+          {/* Free CLI section */}
+          <div className="rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-6)] mb-[var(--space-16)]">
+            <div className="flex items-baseline gap-[var(--space-2)] mb-[var(--space-3)]">
+              <span className="font-display text-[length:var(--text-lg)] font-bold">Free CLI</span>
+              <span className="text-[length:var(--text-sm)] text-ink-secondary">$0 forever</span>
             </div>
-
-            <div className="border-t border-border-subtle mb-[var(--space-6)]" />
-
-            <ul className="space-y-[var(--space-3)] text-[length:var(--text-sm)] mb-[var(--space-8)]">
-              {features.map((f) => (
-                <li key={f} className="flex items-start gap-[var(--space-2)]">
+            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
+              The CLI is always free. Run{" "}
+              <code className="font-mono text-brand">npx codepliant go</code>{" "}
+              locally at no cost.
+            </p>
+            <div className="grid grid-cols-2 gap-[var(--space-2)]">
+              {cliFeatures.map((f) => (
+                <div key={f} className="flex items-start gap-[var(--space-2)] text-[length:var(--text-xs)] text-ink-secondary">
                   <svg
-                    className="w-4 h-4 mt-0.5 shrink-0 text-brand"
+                    className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     strokeWidth={2.5}
                     aria-hidden="true"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>{f}</span>
-                </li>
+                  {f}
+                </div>
               ))}
-            </ul>
-
+            </div>
             <a
               href="https://github.com/joechensmartz/codepliant"
-              className="block text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover"
+              className="inline-block mt-[var(--space-4)] text-[length:var(--text-sm)] text-brand hover:text-brand-hover font-medium transition-colors duration-150"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >
               Get started on GitHub
             </a>
           </div>
 
-          {/* Document Generation Service */}
-          <div className="mt-[var(--space-16)]">
+          {/* Example Output section */}
+          <div className="mb-[var(--space-16)]">
             <div className="text-center mb-[var(--space-8)]">
               <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
-                Document Generation Service
+                See what you get
               </h2>
               <p className="text-[length:var(--text-base)] text-ink-secondary">
-                Point us at your repo. We scan your code and deliver publication-ready compliance documents.
+                Each generation produces 120+ compliance documents tailored to your codebase.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-4)] max-w-[720px] mx-auto">
-              {servicePackages.map((pkg) => (
-                <a
-                  key={pkg.name}
-                  href="/generate"
-                  className="relative rounded-lg p-[var(--space-6)] bg-surface-primary ring-1 ring-border-subtle hover:ring-brand transition-colors duration-150 block"
-                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-                >
-                  {pkg.popular && (
-                    <span className="absolute -top-3 left-[var(--space-4)] bg-brand text-surface-primary text-[length:var(--text-xs)] font-medium px-[var(--space-2)] py-0.5 rounded">
-                      Most Popular
-                    </span>
-                  )}
-                  <div className="font-display text-[length:var(--text-xl)] font-bold mb-[var(--space-1)]">
-                    {pkg.price}
+
+            <div className="rounded-lg border border-border-subtle bg-surface-primary p-[var(--space-6)]">
+              <a
+                href="/example-compliance-docs.zip"
+                download
+                className="flex items-center gap-[var(--space-3)] mb-[var(--space-6)] py-[var(--space-3)] px-[var(--space-4)] rounded-lg bg-brand text-surface-primary hover:bg-brand-hover transition-colors duration-150 text-[length:var(--text-sm)] font-medium"
+                style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+              >
+                <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download example ZIP (generated from a real Next.js project)
+              </a>
+
+              <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
+                What&apos;s inside:
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-[var(--space-2)]">
+                {exampleDocs.map((doc) => (
+                  <div key={doc} className="flex items-start gap-[var(--space-2)] text-[length:var(--text-xs)] text-ink-secondary">
+                    <svg
+                      className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {doc}
                   </div>
-                  <div className="font-medium text-[length:var(--text-sm)] mb-[var(--space-2)]">
-                    {pkg.name}
-                  </div>
-                  <p className="text-[length:var(--text-xs)] text-ink-secondary mb-[var(--space-4)]">
-                    {pkg.description}
-                  </p>
-                  <ul className="space-y-[var(--space-2)] text-[length:var(--text-xs)]">
-                    {pkg.features.map((f) => (
-                      <li key={f} className="flex items-start gap-[var(--space-2)] text-ink-secondary">
-                        <svg
-                          className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2.5}
-                          aria-hidden="true"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </a>
-              ))}
+                ))}
+              </div>
+              <p className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-4)]">
+                ...and 100+ more documents covering security, governance, audit, HR, and vendor management.
+              </p>
             </div>
           </div>
 
           {/* CTA banner */}
-          <div className="mt-[var(--space-8)] rounded-lg border border-brand/20 bg-brand/5 p-[var(--space-6)] text-center">
+          <div className="rounded-lg border border-brand/20 bg-brand/5 p-[var(--space-6)] text-center mb-[var(--space-16)]">
             <p className="font-display font-semibold text-[length:var(--text-base)] text-ink mb-[var(--space-2)]">
               Need expert compliance help?
             </p>

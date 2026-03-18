@@ -35,7 +35,7 @@ const faqs = [
   {
     question: "Is Codepliant really free?",
     answer:
-      "Yes. Codepliant is completely free and open source under the MIT license. You get all 123+ document types, all ecosystems, and all features at no cost. There are no paid tiers or feature restrictions.",
+      "The CLI is completely free and open source under the MIT license. You get all 123+ document types, all ecosystems, and all features at no cost locally. We also offer a hosted generation service starting at $10/mo for teams that want us to scan their repos and deliver publication-ready documents.",
   },
   {
     question: "Why is code scanning better than form builders?",
@@ -198,7 +198,7 @@ const features: FeatureRow[] = [
   },
   {
     feature: "Pricing",
-    codepliant: "Free (MIT License)",
+    codepliant: "Free CLI / From $10/mo",
     termly: "$14-20/mo",
     iubenda: "From $29/yr",
     vanta: "$10,000+/yr",
@@ -433,7 +433,7 @@ export default function Compare() {
               <div className="bg-brand-muted border border-brand/20 rounded-lg p-4 flex-1 text-center">
                 <p className="font-semibold text-brand mb-1">Codepliant</p>
                 <p className="text-ink-secondary">
-                  Free (MIT License)
+                  Free CLI / From $10/mo
                 </p>
                 <p className="text-ink-tertiary text-xs mt-1">
                   Scans your actual code
@@ -541,8 +541,8 @@ export default function Compare() {
                     Self-hosted, open source tooling with no vendor lock-in
                   </li>
                   <li>
-                    Compliance documentation without $10K+/year enterprise
-                    pricing
+                    Compliance documentation from $10/mo instead of $10K+/year
+                    enterprise pricing
                   </li>
                 </ul>
               </div>
@@ -665,7 +665,7 @@ export default function Compare() {
               </p>
 
               <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-                $0 vs $10,000+/year
+                From $10/mo vs $10,000+/year
               </h3>
               <p>
                 Vanta starts at $10,000/year for a single framework. Add-ons
@@ -673,7 +673,8 @@ export default function Compare() {
                 ($11,200/year) push costs higher. For a 5-person startup that
                 needs SOC 2 documentation, that is a significant expense.
                 Codepliant generates SOC 2 readiness checklists, control
-                mappings, and gap analyses from your codebase for free. When you
+                mappings, and gap analyses from your codebase — free with the CLI
+                or from $10/mo with our hosted service. When you
                 are ready for a formal audit, Vanta makes sense. Until then,
                 Codepliant gives you the documentation you need.
               </p>
@@ -715,7 +716,7 @@ export default function Compare() {
                 {
                   tool: "Codepliant",
                   free: "All 123+ document types, all ecosystems, all features, unlimited scans",
-                  paid: "No paid tiers. Everything is free and open source under the MIT license.",
+                  paid: "Starter at $10/mo (5 generations) or Pro at $30/mo (30 generations). CLI remains free and open source under the MIT license.",
                   highlight: true,
                 },
                 {
