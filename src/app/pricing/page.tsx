@@ -35,33 +35,56 @@ const cliFeatures = [
   "No runtime dependencies",
 ];
 
-const subscriptionPlans = [
+const allPlans = [
+  {
+    name: "Free CLI",
+    price: "$0",
+    period: "forever",
+    description: "Run locally, generate Markdown",
+    features: [
+      "Unlimited generations",
+      "All 123+ document types",
+      "Markdown output",
+      "All 13 ecosystems",
+      "Open source (MIT)",
+      "Zero network calls",
+    ],
+    cta: "npx codepliant go",
+    ctaHref: "/docs",
+    ctaStyle: "outline" as const,
+  },
   {
     name: "Starter",
     price: "$10",
     period: "/mo",
-    description: "5 document generations per month",
+    description: "5 PDF/DOCX/HTML generations per month",
     features: [
       "5 generations per month",
       "Publication-ready PDF, DOCX, HTML",
       "Professional formatting",
       "Download as ZIP",
-      "No CLI needed — just paste your GitHub repo URL",
+      "Just paste your GitHub repo URL",
       "Email support",
     ],
+    popular: true,
+    cta: "Start Generating",
+    ctaHref: "/generate",
+    ctaStyle: "solid" as const,
   },
   {
     name: "Pro",
     price: "$30",
     period: "/mo",
-    description: "30 document generations per month",
+    description: "30 PDF/DOCX/HTML generations per month",
     features: [
       "30 generations per month",
       "Everything in Starter",
       "Company branding on documents",
       "Priority support",
     ],
-    popular: true,
+    cta: "Start Generating",
+    ctaHref: "/generate",
+    ctaStyle: "solid" as const,
   },
 ];
 
@@ -208,7 +231,7 @@ export default function Pricing() {
       />
 
       <section className="py-[var(--space-24)] px-[var(--space-6)]">
-        <div className="max-w-[640px] mx-auto">
+        <div className="max-w-[960px] mx-auto">
           <div className="text-center mb-[var(--space-16)]">
             <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">
               Simple, transparent pricing
@@ -226,13 +249,14 @@ export default function Pricing() {
             </p>
           </div>
 
-          {/* Subscription plans */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-6)] max-w-[560px] mx-auto mb-[var(--space-16)]">
-            {subscriptionPlans.map((plan) => (
+          {/* All plans — 3 columns */}
+          <div className="max-w-[960px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-6)] mb-[var(--space-16)]">
+            {allPlans.map((plan) => (
               <div
                 key={plan.name}
                 className={`relative rounded-lg p-[var(--space-6)] bg-surface-primary ring-1 ${
-                  plan.popular ? "ring-brand" : "ring-border-subtle"
+                  plan.popular ? "ring-2 ring-brand" : "ring-border-subtle"
                 }`}
               >
                 {plan.popular && (
@@ -278,24 +302,25 @@ export default function Pricing() {
                 </ul>
 
                 <a
-                  href="/generate"
-                  className="block text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover"
+                  href={plan.ctaHref}
+                  className={`block text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 ${
+                    plan.ctaStyle === "solid"
+                      ? "bg-brand text-surface-primary hover:bg-brand-hover"
+                      : "bg-surface-secondary border border-border-subtle text-ink hover:bg-surface-primary"
+                  }`}
                   style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
                 >
-                  Start Generating
+                  {plan.cta}
                 </a>
               </div>
             ))}
           </div>
+          </div>
 
-          {/* Free CLI section */}
+          {/* Example output section */}
           <div className="rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-6)] mb-[var(--space-16)]">
-            <div className="flex items-baseline gap-[var(--space-2)] mb-[var(--space-3)]">
-              <span className="font-display text-[length:var(--text-lg)] font-bold">Free CLI — always free</span>
-              <span className="text-[length:var(--text-sm)] text-ink-secondary">$0 forever</span>
-            </div>
             <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
-              Generates Markdown documents locally. Unlimited generations, all 123+ document types, all 13 ecosystems. Run{" "}
+              Run{" "}
               <code className="font-mono text-brand">npx codepliant go</code>{" "}
               in your project directory — no account needed.
             </p>
