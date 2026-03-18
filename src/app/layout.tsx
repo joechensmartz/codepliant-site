@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Source_Sans_3 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -299,6 +300,7 @@ export default function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
