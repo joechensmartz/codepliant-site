@@ -191,14 +191,14 @@ const features: FeatureRow[] = [
   },
   {
     feature: "Free Tier",
-    codepliant: "All features, unlimited scans",
+    codepliant: "CLI: all features, unlimited Markdown",
     termly: "Limited (1 policy, Termly branding)",
     iubenda: "Limited (basic policy only)",
     vanta: "No free tier",
   },
   {
     feature: "Pricing",
-    codepliant: "Free CLI / From $10/mo",
+    codepliant: "CLI free (Markdown) / From $10/mo (PDF, DOCX, HTML)",
     termly: "$14-20/mo",
     iubenda: "From $29/yr",
     vanta: "$10,000+/yr",
@@ -333,8 +333,8 @@ export default function Compare() {
                 <p className="font-semibold mb-2 text-brand">Codepliant</p>
                 <p className="text-sm text-ink-secondary">
                   Open source CLI. Scans your code, generates 123+ compliance
-                  documents. Free tier with all features. No questionnaires, no
-                  cloud dependency, no vendor lock-in.
+                  documents. CLI is free (Markdown output, unlimited). Web service
+                  from $10/mo for publication-ready PDF, DOCX, and HTML.
                 </p>
               </div>
               <div className="bg-surface-secondary rounded-lg p-5">
@@ -433,7 +433,7 @@ export default function Compare() {
               <div className="bg-brand-muted border border-brand/20 rounded-lg p-4 flex-1 text-center">
                 <p className="font-semibold text-brand mb-1">Codepliant</p>
                 <p className="text-ink-secondary">
-                  Free CLI / From $10/mo
+                  Free CLI (Markdown) / $10/mo (PDF/DOCX/HTML)
                 </p>
                 <p className="text-ink-tertiary text-xs mt-1">
                   Scans your actual code
@@ -715,8 +715,8 @@ export default function Compare() {
               {[
                 {
                   tool: "Codepliant",
-                  free: "All 123+ document types, all ecosystems, all features, unlimited scans",
-                  paid: "Starter at $10/mo (5 generations) or Pro at $30/mo (30 generations). CLI remains free and open source under the MIT license.",
+                  free: "CLI: all 123+ document types, all ecosystems, unlimited Markdown generation",
+                  paid: "Web service: Starter at $10/mo (5 generations) or Pro at $30/mo (30 generations). Publication-ready PDF, DOCX, and HTML with professional formatting.",
                   highlight: true,
                 },
                 {

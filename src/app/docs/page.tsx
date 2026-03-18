@@ -224,13 +224,13 @@ const configFields = [
 
 const outputFormats = [
   { format: "Markdown", flag: "--format markdown", desc: "Default. Clean .md files ready for GitHub, docs sites, or static generators.", free: true },
-  { format: "HTML", flag: "--format html", desc: "Styled HTML documents ready to embed on your website.", free: false },
-  { format: "PDF", flag: "--format pdf", desc: "Print-ready PDFs. Requires Puppeteer.", free: false },
+  { format: "HTML", flag: "--format html", desc: "Styled HTML documents ready to embed on your website. Available via web service.", free: false },
+  { format: "PDF", flag: "--format pdf", desc: "Publication-ready PDFs with professional formatting. Available via web service.", free: false },
   { format: "JSON", flag: "--format json", desc: "Structured JSON output for programmatic consumption.", free: true },
-  { format: "Notion", flag: "--format notion", desc: "Notion-compatible markdown with block structure.", free: false },
-  { format: "Confluence", flag: "--format confluence", desc: "Confluence wiki markup.", free: false },
-  { format: "DOCX", flag: "--format docx", desc: "Microsoft Word documents for legal review.", free: false },
-  { format: "All", flag: "--format all", desc: "Generate every format at once.", free: false },
+  { format: "Notion", flag: "--format notion", desc: "Notion-compatible markdown with block structure. Available via web service.", free: false },
+  { format: "Confluence", flag: "--format confluence", desc: "Confluence wiki markup. Available via web service.", free: false },
+  { format: "DOCX", flag: "--format docx", desc: "Microsoft Word documents for legal review. Available via web service.", free: false },
+  { format: "All", flag: "--format all", desc: "Generate every format at once. Paid formats require web service.", free: false },
 ];
 
 const faqs = [
@@ -584,9 +584,10 @@ Generated in ~1.2s`}</pre>
               Output Formats
             </h2>
             <p className="text-[length:var(--text-base)] text-ink-secondary mb-[var(--space-6)]" style={{ lineHeight: 1.6 }}>
-              Codepliant can output documents in multiple formats. Markdown and
-              JSON are available on the free tier. Other formats require a Pro
-              or Team plan.
+              The free CLI generates Markdown and JSON locally — unlimited, no account needed.
+              Publication-ready PDF, DOCX, and HTML are available through our{" "}
+              <a href="/generate" className="text-brand hover:text-brand-hover transition-colors duration-150">web service</a>{" "}
+              starting at $10/mo.
             </p>
 
             <div className="border border-border-subtle rounded-lg overflow-hidden">
@@ -642,7 +643,7 @@ Generated in ~1.2s`}</pre>
                           </svg>
                         ) : (
                           <span className="text-[length:var(--text-xs)] text-ink-tertiary">
-                            Pro
+                            Paid
                           </span>
                         )}
                       </td>

@@ -10,7 +10,7 @@ const plans = [
     price: "$10",
     period: "/mo",
     description: "5 document generations per month",
-    features: ["5 generations/mo", "120+ docs per generation", "All formats (MD, HTML, PDF, DOCX)", "Email support"],
+    features: ["5 generations/mo", "Publication-ready PDF, DOCX, HTML", "Professional formatting", "Download as ZIP"],
   },
   {
     id: "pro",
@@ -18,7 +18,7 @@ const plans = [
     price: "$30",
     period: "/mo",
     description: "30 document generations per month",
-    features: ["30 generations/mo", "Everything in Starter", "Priority support", "Custom branding"],
+    features: ["30 generations/mo", "Everything in Starter", "Company branding on documents", "Priority support"],
     popular: true,
   },
 ];
@@ -73,10 +73,17 @@ export default function GeneratePage() {
           <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">
             Generate Compliance Documents
           </h1>
-          <p className="text-[length:var(--text-lg)] text-ink-secondary max-w-[560px] mx-auto">
+          <p className="text-[length:var(--text-lg)] text-ink-secondary max-w-[560px] mx-auto mb-[var(--space-4)]">
             Point us at your repo. We scan your code and generate
             publication-ready compliance documents.
           </p>
+          <div className="rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-3)] max-w-[560px] mx-auto">
+            <p className="text-[length:var(--text-sm)] text-ink-secondary text-center">
+              The CLI generates free Markdown documents locally via{" "}
+              <code className="font-mono text-brand">npx codepliant go</code>.
+              This service generates publication-ready PDF, DOCX, and HTML.
+            </p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-[var(--space-8)]">

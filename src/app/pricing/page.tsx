@@ -23,10 +23,10 @@ export const metadata: Metadata = {
 };
 
 const cliFeatures = [
-  "Full CLI scanning",
+  "Unlimited generations",
   "All 123+ document types",
   "Markdown output",
-  "13 ecosystem support",
+  "All 13 ecosystems",
   "8 ORM scanners",
   "4 languages (EN/DE/FR/ES)",
   "Open source (MIT)",
@@ -43,9 +43,10 @@ const subscriptionPlans = [
     description: "5 document generations per month",
     features: [
       "5 generations per month",
-      "120+ compliance documents per generation",
-      "All output formats (Markdown, HTML, PDF, DOCX)",
-      "All ecosystems (13+)",
+      "Publication-ready PDF, DOCX, HTML",
+      "Professional formatting",
+      "Download as ZIP",
+      "No CLI needed — just paste your GitHub repo URL",
       "Email support",
     ],
   },
@@ -57,8 +58,8 @@ const subscriptionPlans = [
     features: [
       "30 generations per month",
       "Everything in Starter",
+      "Company branding on documents",
       "Priority support",
-      "Custom branding on documents",
     ],
     popular: true,
   },
@@ -83,7 +84,7 @@ const faqs = [
   {
     question: "Can I use Codepliant for free?",
     answer:
-      "Yes. The CLI is free and open source under the MIT license. Run npx codepliant go locally at no cost. The subscription plans are for our hosted document generation service where we scan your repo and deliver publication-ready documents.",
+      "Yes. The CLI is free and open source under the MIT license. Run npx codepliant go to generate Markdown documents locally — unlimited, forever free. The subscription plans are for our web service that generates publication-ready PDF, DOCX, and HTML documents with professional formatting.",
   },
   {
     question: "What counts as one generation?",
@@ -93,7 +94,7 @@ const faqs = [
   {
     question: "What output formats are included?",
     answer:
-      "Every generation includes documents in Markdown, HTML, PDF, and DOCX formats. All formats are included in both Starter and Pro plans.",
+      "The free CLI generates Markdown documents locally. The paid web service generates publication-ready PDF, DOCX, and HTML with professional formatting. All paid formats are included in both Starter and Pro plans.",
   },
   {
     question: "What does \"codepliant diff\" do?",
@@ -213,7 +214,15 @@ export default function Pricing() {
               Simple, transparent pricing
             </h1>
             <p className="text-[length:var(--text-lg)] text-ink-secondary">
-              The CLI is always free. Subscription plans for our hosted generation service.
+              Markdown is free. PDF, DOCX, and HTML are paid.
+            </p>
+          </div>
+
+          {/* Free vs Paid distinction */}
+          <div className="rounded-lg border border-brand/20 bg-brand/5 p-[var(--space-4)] text-center mb-[var(--space-12)]">
+            <p className="text-[length:var(--text-sm)] text-ink-secondary">
+              <strong className="text-ink">Free CLI</strong> generates Markdown locally, always free, unlimited.{" "}
+              <strong className="text-ink">Paid service</strong> generates publication-ready PDF, DOCX, and HTML — ready to send to lawyers, investors, and partners.
             </p>
           </div>
 
@@ -282,13 +291,13 @@ export default function Pricing() {
           {/* Free CLI section */}
           <div className="rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-6)] mb-[var(--space-16)]">
             <div className="flex items-baseline gap-[var(--space-2)] mb-[var(--space-3)]">
-              <span className="font-display text-[length:var(--text-lg)] font-bold">Free CLI</span>
+              <span className="font-display text-[length:var(--text-lg)] font-bold">Free CLI — always free</span>
               <span className="text-[length:var(--text-sm)] text-ink-secondary">$0 forever</span>
             </div>
             <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
-              The CLI is always free. Run{" "}
+              Generates Markdown documents locally. Unlimited generations, all 123+ document types, all 13 ecosystems. Run{" "}
               <code className="font-mono text-brand">npx codepliant go</code>{" "}
-              locally at no cost.
+              in your project directory — no account needed.
             </p>
             <div className="grid grid-cols-2 gap-[var(--space-2)]">
               {cliFeatures.map((f) => (

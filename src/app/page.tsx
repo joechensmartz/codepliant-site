@@ -171,13 +171,13 @@ export default function Home() {
 
           {/* Generate service link */}
           <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-6)]">
-            or{" "}
+            Free CLI generates Markdown. Need PDF/DOCX?{" "}
             <a
               href="/generate"
               className="text-brand hover:text-brand-hover font-medium transition-colors duration-150 inline-flex items-center gap-[var(--space-1)]"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >
-              let us generate them for you
+              Use our web service
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
