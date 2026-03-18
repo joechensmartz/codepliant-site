@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import type { Metadata } from "next";
+import { useState, useEffect } from "react";
+import { getUser } from "../../lib/auth";
 
 const packages = [
   {
@@ -35,6 +35,11 @@ export default function GeneratePage() {
   const [packageType, setPackageType] = useState("bundle");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    getUser().then((user) => setIsLoggedIn(!!user));
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -209,6 +214,16 @@ export default function GeneratePage() {
             <div className="rounded-lg bg-urgency-muted border border-urgency/20 p-[var(--space-4)] text-[length:var(--text-sm)] text-urgency">
               {error}
             </div>
+          )}
+
+          {/* Auth note */}
+          {!isLoggedIn && (
+            <p className="text-[length:var(--text-xs)] text-ink-tertiary text-center">
+              <a href="/login" className="text-brand hover:text-brand-hover transition-colors duration-150">
+                Sign in
+              </a>{" "}
+              to track your orders and re-download documents from your dashboard.
+            </p>
           )}
 
           {/* Submit */}

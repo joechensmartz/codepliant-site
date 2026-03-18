@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Source_Sans_3 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import AuthNav from "../components/AuthNav";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -83,6 +84,7 @@ function Header() {
           >
             GitHub<span className="sr-only"> (opens in new tab)</span>
           </a>
+          <AuthNav />
         </div>
 
         {/* Mobile nav — always-visible compact links + hamburger for secondary */}
@@ -111,6 +113,9 @@ function Header() {
               >
                 GitHub<span className="sr-only"> (opens in new tab)</span>
               </a>
+              <div role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">
+                <AuthNav />
+              </div>
             </div>
           </details>
         </div>

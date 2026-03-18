@@ -70,6 +70,17 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Check if we can associate this order with an authenticated user
+    let userId: string | null = null;
+    const authHeader = req.headers.get("authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      const token = authHeader.slice(7);
+      const { data: { user: authUser } } = await supabase.auth.getUser(token);
+      if (authUser) {
+        userId = authUser.id;
+      }
+    }
+
     // Insert pending order
     await supabase.from("orders").upsert(
       {
@@ -80,6 +91,7 @@ export async function POST(req: NextRequest) {
         package_type: packageType || "single",
         amount_cents: session.amount_total || 0,
         status: "processing",
+        ...(userId ? { user_id: userId } : {}),
       },
       { onConflict: "stripe_session_id" }
     );
