@@ -26,12 +26,14 @@ export const metadata: Metadata = {
     description:
       "Automate GDPR compliance by scanning your codebase. Generate privacy policies, DPAs, DSAR guides, and data flow maps from your actual code. Free CLI.",
     url: "https://codepliant.dev/gdpr-compliance",
+    images: [{ url: "/gdpr-compliance/opengraph-image", width: 1200, height: 630, alt: "GDPR Compliance Tool for Developers — Codepliant" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "GDPR Compliance Tool for Developers",
     description:
-      "Detect personal data in your code and generate GDPR compliance docs automatically.",
+      "Detect personal data in your code and generate GDPR compliance docs automatically. Try it free with npx codepliant go.",
+    images: ["/gdpr-compliance/opengraph-image"],
   },
 };
 

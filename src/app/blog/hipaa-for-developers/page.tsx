@@ -4,7 +4,7 @@ import { CodeBlock } from "../components";
 export const metadata: Metadata = {
   title: "HIPAA for SaaS Developers: What You Actually Need to Know",
   description:
-    "Practical HIPAA guide for developers. Learn what counts as PHI, the 18 HIPAA identifiers, technical safeguards (encryption, audit logs, access controls), BAAs, and how to automate HIPAA compliance from your code.",
+    "Practical HIPAA guide for developers. The 18 PHI identifiers, encryption and audit log requirements, BAAs, and how to automate compliance from your code.",
   alternates: {
     canonical: "https://codepliant.dev/blog/hipaa-for-developers",
   },

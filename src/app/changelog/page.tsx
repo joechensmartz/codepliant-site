@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Changelog — Releases and Version History",
   description:
-    "Codepliant changelog and version history. Track new compliance document types, ecosystem scanners, CLI features, and fixes across every release.",
+    "Codepliant changelog: every release from v0.1 to v1.1. Track new compliance document types, ecosystem scanners, CLI features, and bug fixes across versions.",
   alternates: {
     canonical: "https://codepliant.dev/changelog",
   },

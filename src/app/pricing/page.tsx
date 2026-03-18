@@ -1,103 +1,45 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pricing Plans for Teams and Developers",
+  title: "Pricing — Free & Open Source",
   description:
-    "Codepliant pricing plans. Free for open source, Pro at $19/month, Team at $49/month. Generate compliance documents from your code.",
+    "Codepliant is free and open source under the MIT license. All 123+ document types, all 13 ecosystems included. Start scanning with npx codepliant go.",
   alternates: {
     canonical: "https://codepliant.dev/pricing",
   },
   openGraph: {
     title: "Pricing | Codepliant",
     description:
-      "Free for open source. Pro at $19/mo. Team at $49/mo. Generate compliance documents from code.",
+      "Free forever. MIT licensed. All features included. Generate compliance documents from code.",
     url: "https://codepliant.dev/pricing",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Pricing | Codepliant",
-    description: "Codepliant pricing. Free, Pro $19/mo, Team $49/mo.",
+    description: "Codepliant is free and open source. All features included.",
     images: ["/opengraph-image"],
   },
 };
 
-const plans = [
-  {
-    name: "Free",
-    price: "$0",
-    period: "forever",
-    desc: "For individual developers and open source projects.",
-    features: [
-      "Full CLI scanning",
-      "Markdown output",
-      "Up to 5 document types",
-      "13 ecosystem support",
-      "8 ORM scanners",
-      "4 languages (EN/DE/FR/ES)",
-      "Open source (MIT)",
-      "Community support",
-    ],
-    cta: "Get started",
-    href: "https://github.com/joechensmartz/codepliant",
-    highlight: false,
-  },
-  {
-    name: "Pro",
-    price: "$19",
-    period: "/month",
-    badge: "Most Popular",
-    desc: "For solo developers, freelancers, and startups.",
-    features: [
-      "Everything in Free",
-      "Unlimited document types",
-      "HTML, PDF, DOCX & JSON output",
-      "Change detection (codepliant diff)",
-      "Notion & Confluence export",
-      "CI/CD GitHub Action",
-      "Custom branding & templates",
-      "Priority email support",
-    ],
-    cta: "Start free trial",
-    href: "/docs",
-    highlight: true,
-  },
-  {
-    name: "Team",
-    price: "$49",
-    period: "/month",
-    desc: "For teams and organizations managing multiple projects.",
-    features: [
-      "Everything in Pro",
-      "Team dashboard",
-      "Multi-project scanning (scan-all)",
-      "Webhook notifications",
-      "Custom compliance templates",
-      "Shared template library",
-      "SSO / SAML",
-      "Dedicated support with SLA",
-    ],
-    cta: "Contact us",
-    href: "mailto:hello@codepliant.dev",
-    highlight: false,
-  },
+const features = [
+  "Full CLI scanning",
+  "All 123+ document types",
+  "Markdown output",
+  "13 ecosystem support",
+  "8 ORM scanners",
+  "4 languages (EN/DE/FR/ES)",
+  "Open source (MIT)",
+  "Community support",
+  "Zero network calls",
+  "No runtime dependencies",
 ];
 
 const faqs = [
   {
     question: "Can I use Codepliant for free?",
     answer:
-      "Yes. The CLI is free and open source under the MIT license. You get full scanning, Markdown output, and up to 5 document types at no cost. The Pro and Team plans unlock additional output formats, unlimited document types, and collaboration features.",
-  },
-  {
-    question: "Is there a free trial for Pro?",
-    answer:
-      "Yes. Pro comes with a 14-day free trial. No credit card required to start.",
-  },
-  {
-    question: "Can I cancel anytime?",
-    answer:
-      "Yes. Both Pro and Team plans are month-to-month. Cancel anytime from your dashboard. No long-term contracts.",
+      "Yes. Codepliant is completely free and open source under the MIT license. All features are included — there are no paid tiers or feature restrictions.",
   },
   {
     question: "What does \"codepliant diff\" do?",
@@ -105,24 +47,14 @@ const faqs = [
       "The diff command compares your current scan against a previous snapshot and shows what changed — new services detected, removed services, and which compliance documents need updating. It is essential for CI/CD workflows and audit trails.",
   },
   {
-    question: "Do you offer annual billing?",
+    question: "Is there a limit on document types?",
     answer:
-      "Yes. Pro is $149/year (save $79) and Team is $399/year (save $189). Contact us for annual pricing.",
+      "No. You get access to all 123+ document types with no limits. Every feature is available for free.",
   },
   {
-    question: "Do you offer discounts for startups?",
+    question: "Do you offer enterprise support?",
     answer:
-      "Yes. We offer 50% off the first year for startups with fewer than 10 employees. Contact us for details.",
-  },
-  {
-    question: "What happens if I exceed 5 document types on Free?",
-    answer:
-      "The Free plan generates up to 5 document types per scan. If your project needs more, upgrading to Pro unlocks all 123+ document types with no limits.",
-  },
-  {
-    question: "Can I self-host the Team dashboard?",
-    answer:
-      "Not yet, but it is on the roadmap. Currently the Team dashboard is a hosted solution. Enterprise customers can contact us about on-premise deployment options.",
+      "Enterprise support and custom features are coming soon. Contact hello@codepliant.dev if you are interested.",
   },
 ];
 
@@ -135,14 +67,15 @@ function jsonLd() {
     description: "Open-source CLI that scans codebases and generates compliance documents automatically.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
-    offers: plans.map((p) => ({
-      "@type": "Offer",
-      name: p.name,
-      price: p.price.replace("$", ""),
-      priceCurrency: "USD",
-      ...(p.period === "/month" ? { billingIncrement: "P1M" } : {}),
-      description: p.features.slice(0, 3).join(", "),
-    })),
+    offers: [
+      {
+        "@type": "Offer",
+        name: "Free",
+        price: "0",
+        priceCurrency: "USD",
+        description: features.slice(0, 3).join(", "),
+      },
+    ],
   };
 }
 
@@ -199,108 +132,67 @@ export default function Pricing() {
       />
 
       <section className="py-[var(--space-24)] px-[var(--space-6)]">
-        <div className="max-w-[960px] mx-auto">
+        <div className="max-w-[640px] mx-auto">
           <div className="text-center mb-[var(--space-16)]">
-            <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">Pricing</h1>
+            <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">
+              Free &amp; Open Source
+            </h1>
             <p className="text-[length:var(--text-lg)] text-ink-secondary">
-              Free for open source. Pay only when you need more.
+              Free forever. MIT licensed. All features included.
             </p>
           </div>
 
-          {/* Pricing cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-6)]">
-            {plans.map((plan) => (
-              <div
-                key={plan.name}
-                className={`relative rounded-lg p-[var(--space-8)] flex flex-col ${
-                  plan.highlight
-                    ? "bg-brand text-surface-primary ring-2 ring-brand scale-[1.02]"
-                    : "bg-surface-primary ring-1 ring-border-subtle"
-                }`}
-              >
-                {/* "Most Popular" badge */}
-                {"badge" in plan && plan.badge && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-surface-primary text-brand text-[length:var(--text-xs)] font-bold px-[var(--space-3)] py-[var(--space-1)] rounded-full shadow-sm whitespace-nowrap">
-                      {plan.badge}
-                    </span>
-                  </div>
-                )}
-
-                {/* Plan header */}
-                <div className="mb-[var(--space-6)]">
-                  <h2 className="text-[length:var(--text-lg)] font-bold mb-[var(--space-2)]">{plan.name}</h2>
-                  <div className="flex items-baseline gap-[var(--space-1)]">
-                    <span className="font-display text-[length:var(--text-2xl)] font-bold">{plan.price}</span>
-                    <span
-                      className={`text-[length:var(--text-sm)] font-normal ${
-                        plan.highlight ? "text-surface-primary/70" : "text-ink-secondary"
-                      }`}
-                    >
-                      {plan.period}
-                    </span>
-                  </div>
-                  <p
-                    className={`text-[length:var(--text-sm)] mt-[var(--space-3)] ${
-                      plan.highlight ? "text-surface-primary/70" : "text-ink-secondary"
-                    }`}
-                  >
-                    {plan.desc}
-                  </p>
-                </div>
-
-                {/* Divider */}
-                <div
-                  className={`border-t mb-[var(--space-6)] ${
-                    plan.highlight ? "border-surface-primary/20" : "border-border-subtle"
-                  }`}
-                />
-
-                {/* Features */}
-                <ul className="space-y-[var(--space-3)] text-[length:var(--text-sm)] mb-[var(--space-8)] flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-[var(--space-2)]">
-                      <svg
-                        className={`w-4 h-4 mt-0.5 shrink-0 ${
-                          plan.highlight ? "text-surface-primary" : "text-brand"
-                        }`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA button */}
-                <a
-                  href={plan.href}
-                  className={`block text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 ${
-                    plan.highlight
-                      ? "bg-surface-primary text-brand hover:bg-surface-secondary"
-                      : "bg-surface-secondary border border-border-subtle hover:bg-surface-tertiary"
-                  }`}
-                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-                >
-                  {plan.cta}
-                </a>
+          {/* Single plan card */}
+          <div className="rounded-lg p-[var(--space-8)] bg-surface-primary ring-1 ring-border-subtle max-w-[480px] mx-auto">
+            <div className="mb-[var(--space-6)]">
+              <div className="flex items-baseline gap-[var(--space-2)]">
+                <span className="font-display text-[length:var(--text-2xl)] font-bold">$0</span>
+                <span className="text-[length:var(--text-sm)] text-ink-secondary">forever</span>
               </div>
-            ))}
+              <p className="text-[length:var(--text-sm)] mt-[var(--space-3)] text-ink-secondary">
+                Everything you need to scan your codebase and generate compliance documents. No restrictions.
+              </p>
+            </div>
+
+            <div className="border-t border-border-subtle mb-[var(--space-6)]" />
+
+            <ul className="space-y-[var(--space-3)] text-[length:var(--text-sm)] mb-[var(--space-8)]">
+              {features.map((f) => (
+                <li key={f} className="flex items-start gap-[var(--space-2)]">
+                  <svg
+                    className="w-4 h-4 mt-0.5 shrink-0 text-brand"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="https://github.com/joechensmartz/codepliant"
+              className="block text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            >
+              Get started on GitHub
+            </a>
           </div>
 
-          {/* Annual savings note */}
+          {/* Enterprise note */}
           <p className="text-center text-[length:var(--text-sm)] text-ink-secondary mt-[var(--space-8)]">
-            Save up to 34% with annual billing. All plans include a 14-day free
-            trial.
+            Enterprise support and custom features coming soon — contact{" "}
+            <a href="mailto:hello@codepliant.dev" className="text-brand hover:text-brand-hover font-medium">
+              hello@codepliant.dev
+            </a>
           </p>
 
           {/* FAQ section */}

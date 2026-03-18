@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "HIPAA Compliance Tool for Healthcare Apps",
   description:
-    "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies.",
+    "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies. Free CLI.",
   keywords: [
     "HIPAA compliance tool",
     "HIPAA for developers",
@@ -26,12 +26,14 @@ export const metadata: Metadata = {
     description:
       "HIPAA compliance tool for healthcare apps. Scan your codebase to detect PHI handling and generate risk assessments, BAAs, and audit-ready policies.",
     url: "https://codepliant.dev/hipaa-compliance",
+    images: [{ url: "/hipaa-compliance/opengraph-image", width: 1200, height: 630, alt: "HIPAA Compliance Tool for Healthcare Apps — Codepliant" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "HIPAA Compliance Tool for Healthcare Apps",
     description:
-      "Detect PHI in your code and generate HIPAA compliance docs automatically.",
+      "Detect PHI in your code and generate HIPAA risk assessments, BAAs, and audit-ready policies. Try it free.",
+    images: ["/hipaa-compliance/opengraph-image"],
   },
 };
 

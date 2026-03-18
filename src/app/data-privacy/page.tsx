@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Data Privacy Compliance for Developers",
   description:
-    "Detect personal data usage in your code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free, open source CLI.",
+    "Detect personal data usage in your code and generate privacy compliance docs for GDPR, CCPA, LGPD, PIPEDA, and DPDP Act. Free CLI — try npx codepliant go.",
   keywords: [
     "data privacy compliance",
     "data privacy tool",

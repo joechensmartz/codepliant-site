@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "AI Governance Framework for SaaS",
   description:
-    "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI.",
+    "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI. Try it today.",
   keywords: [
     "AI governance",
     "AI governance framework",
@@ -29,12 +29,14 @@ export const metadata: Metadata = {
     description:
       "Scan your codebase to detect AI services and generate governance docs aligned with the EU AI Act and NIST AI RMF. Free, open source CLI.",
     url: "https://codepliant.dev/ai-governance",
+    images: [{ url: "/ai-governance/opengraph-image", width: 1200, height: 630, alt: "AI Governance Framework for SaaS — Codepliant" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Governance Framework for SaaS",
     description:
-      "Detect AI services in your code and generate governance documentation aligned with the EU AI Act and NIST AI RMF.",
+      "Detect AI services in your code and generate governance docs aligned with the EU AI Act and NIST AI RMF. Try it free.",
+    images: ["/ai-governance/opengraph-image"],
   },
 };
 

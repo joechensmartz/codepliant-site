@@ -1,6 +1,7 @@
 {
-  "name": "codepliant",
-  "version": "410.0.0",
+  "name": "codepliant-site",
+  "version": "1.0.0",
+  "private": true,
   "description": "Scan your codebase, generate compliance documents. Privacy Policy, Terms of Service, AI Disclosure, Cookie Policy, DPA — all from your actual code.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +37,7 @@
     "codepliant-mcp": "dist/mcp/server.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.cli.json",
+    "build": "next build",
     "dev": "tsx src/cli.ts",
     "test": "tsx --test src/**/*.test.ts",
     "mcp": "node dist/mcp/server.js",

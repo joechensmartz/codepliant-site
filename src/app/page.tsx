@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     absolute: "Codepliant — Compliance Docs from Code",
   },
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents. One command. 97.8% precision.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents. One command. Try free with npx codepliant go.",
   alternates: { canonical: "https://codepliant.dev" },
 };
 
@@ -21,8 +21,6 @@ function jsonLd() {
       "Open source CLI that scans your codebase and generates 123+ compliance documents automatically.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
-      { "@type": "Offer", price: "19", priceCurrency: "USD", name: "Pro" },
-      { "@type": "Offer", price: "49", priceCurrency: "USD", name: "Team" },
     ],
     url: "https://github.com/joechensmartz/codepliant",
     downloadUrl: "https://www.npmjs.com/package/codepliant",
@@ -102,7 +100,7 @@ const comparisons = [
   },
   {
     before: "Pay a lawyer $2,000+ per document",
-    after: "Free for open source, $19/mo for teams",
+    after: "Free and open source for everyone",
   },
   {
     before: "Documents outdated within weeks",
@@ -118,54 +116,6 @@ const evidence = [
   { project: "cal.com", docs: 23, kind: "Scheduling platform" },
   { project: "chatwoot", docs: 24, kind: "Customer engagement" },
   { project: "twenty", docs: 19, kind: "Open source CRM" },
-];
-
-const plans = [
-  {
-    name: "Free",
-    price: "$0",
-    period: "forever",
-    features: [
-      "Up to 5 document types",
-      "All 13 ecosystems",
-      "Markdown output",
-      "CLI access",
-      "Open source (MIT)",
-    ],
-    cta: "Install the CLI",
-    href: "https://github.com/joechensmartz/codepliant",
-    primary: false,
-  },
-  {
-    name: "Pro",
-    price: "$19",
-    period: "/month",
-    features: [
-      "All 123+ document types",
-      "HTML, PDF & DOCX output",
-      "Custom branding",
-      "CI/CD integration",
-      "Priority support",
-    ],
-    cta: "Start free trial",
-    href: "/docs",
-    primary: true,
-  },
-  {
-    name: "Team",
-    price: "$49",
-    period: "/month",
-    features: [
-      "Everything in Pro",
-      "Monorepo support",
-      "Compliance API",
-      "Team dashboard",
-      "SLA guarantee",
-    ],
-    cta: "Contact sales",
-    href: "/pricing",
-    primary: false,
-  },
 ];
 
 function getAiActCountdown() {
@@ -607,71 +557,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section aria-label="Pricing plans" className="py-[var(--space-24)] px-[var(--space-6)]" id="pricing">
-        <div className="max-w-[800px] mx-auto">
-          <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-12)] text-center">
-            Pricing
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-4)]">
-            {plans.map((plan) => (
-              <div
-                key={plan.name}
-                className={`rounded-lg p-[var(--space-6)] ${
-                  plan.primary
-                    ? "bg-brand text-surface-primary ring-1 ring-brand"
-                    : "bg-surface-primary border border-border-subtle"
-                }`}
-              >
-                <div className="text-[length:var(--text-sm)] font-medium mb-[var(--space-1)]">
-                  {plan.name}
-                </div>
-                <div className="font-display text-[length:var(--text-xl)] font-bold">
-                  {plan.price}
-                  <span
-                    className="text-[length:var(--text-sm)] font-normal ml-[var(--space-1)]"
-                    style={{ opacity: 0.7 }}
-                  >
-                    {plan.period}
-                  </span>
-                </div>
-                <ul className="mt-[var(--space-6)] space-y-[var(--space-2)] text-[length:var(--text-sm)]">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-[var(--space-2)]">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        className="shrink-0 mt-0.5"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M3.5 8.5L6.5 11.5L12.5 5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={plan.href}
-                  className={`block mt-[var(--space-6)] text-center py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 ${
-                    plan.primary
-                      ? "bg-surface-primary text-brand hover:bg-surface-secondary"
-                      : "bg-surface-secondary hover:bg-surface-tertiary text-ink"
-                  }`}
-                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-                >
-                  {plan.cta}
-                </a>
-              </div>
-            ))}
-          </div>
+      {/* Free & open source badge */}
+      <section aria-label="Free and open source" className="py-[var(--space-16)] px-[var(--space-6)]" id="pricing">
+        <div className="max-w-[640px] mx-auto text-center">
+          <span className="inline-flex items-center gap-[var(--space-2)] rounded-full border border-border-subtle bg-surface-secondary px-[var(--space-4)] py-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary font-medium">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-green-600 shrink-0" aria-hidden="true">
+              <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
+              <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Free &amp; open source — all features included, MIT licensed
+          </span>
         </div>
       </section>
 

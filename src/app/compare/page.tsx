@@ -35,7 +35,7 @@ const faqs = [
   {
     question: "Is Codepliant really free?",
     answer:
-      "The core CLI is free and open source under the MIT license. You get all 123+ document types, all ecosystems, and Markdown output at no cost. Pro ($19/mo) adds HTML/PDF output, custom branding, and CI/CD integration. Team ($49/mo) adds monorepo support and a compliance API.",
+      "Yes. Codepliant is completely free and open source under the MIT license. You get all 123+ document types, all ecosystems, and all features at no cost. There are no paid tiers or feature restrictions.",
   },
   {
     question: "Why is code scanning better than form builders?",
@@ -198,7 +198,7 @@ const features: FeatureRow[] = [
   },
   {
     feature: "Pricing",
-    codepliant: "Free / Pro $19/mo",
+    codepliant: "Free (MIT License)",
     termly: "$14-20/mo",
     iubenda: "From $29/yr",
     vanta: "$10,000+/yr",
@@ -206,7 +206,7 @@ const features: FeatureRow[] = [
   },
   {
     feature: "CI/CD Integration",
-    codepliant: "Yes (Pro plan)",
+    codepliant: "Yes",
     termly: "No",
     iubenda: "No",
     vanta: "Yes (via integrations)",
@@ -433,7 +433,7 @@ export default function Compare() {
               <div className="bg-brand-muted border border-brand/20 rounded-lg p-4 flex-1 text-center">
                 <p className="font-semibold text-brand mb-1">Codepliant</p>
                 <p className="text-ink-secondary">
-                  Free / Pro at $19/mo
+                  Free (MIT License)
                 </p>
                 <p className="text-ink-tertiary text-xs mt-1">
                   Scans your actual code
@@ -714,8 +714,8 @@ export default function Compare() {
               {[
                 {
                   tool: "Codepliant",
-                  free: "Up to 5 document types, all ecosystems, Markdown output, unlimited scans",
-                  paid: "Pro at $19/mo (HTML/PDF, branding, CI/CD). Team at $49/mo (monorepo, API, dashboard).",
+                  free: "All 123+ document types, all ecosystems, all features, unlimited scans",
+                  paid: "No paid tiers. Everything is free and open source under the MIT license.",
                   highlight: true,
                 },
                 {
