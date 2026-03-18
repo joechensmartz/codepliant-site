@@ -201,6 +201,18 @@
       "namedRegex": "^/gdpr\\-compliance/opengraph\\-image(?:/)?$"
     },
     {
+      "page": "/generate",
+      "regex": "^/generate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/generate(?:/)?$"
+    },
+    {
+      "page": "/generate/success",
+      "regex": "^/generate/success(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/generate/success(?:/)?$"
+    },
+    {
       "page": "/hipaa-compliance",
       "regex": "^/hipaa\\-compliance(?:/)?$",
       "routeKeys": {},

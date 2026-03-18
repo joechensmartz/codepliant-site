@@ -14,6 +14,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
 
+    // Generate — 0.9
+    {
+      url: `${baseUrl}/generate`,
+      lastModified: today,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+
     // Contact — 0.8
     {
       url: `${baseUrl}/contact`,

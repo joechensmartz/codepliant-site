@@ -1,0 +1,231 @@
+"use client";
+
+import { useState } from "react";
+import type { Metadata } from "next";
+
+const packages = [
+  {
+    id: "single",
+    name: "Single Document",
+    price: "$9",
+    description: "One compliance document of your choice",
+    features: ["Privacy Policy, ToS, or AI Disclosure", "Based on your actual code", "Markdown format"],
+  },
+  {
+    id: "bundle",
+    name: "Full Bundle",
+    price: "$49",
+    description: "All compliance documents your project needs",
+    features: ["All detected document types", "Full code analysis", "Markdown + HTML formats"],
+    popular: true,
+  },
+  {
+    id: "branded",
+    name: "Branded Bundle",
+    price: "$99",
+    description: "Full bundle with your company branding",
+    features: ["Everything in Full Bundle", "Company name & branding", "Contact info embedded", "Ready to publish"],
+  },
+];
+
+export default function GeneratePage() {
+  const [repoUrl, setRepoUrl] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [email, setEmail] = useState("");
+  const [packageType, setPackageType] = useState("bundle");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ repoUrl, companyName, email, packageType }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
+
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+      setLoading(false);
+    }
+  }
+
+  const inputClass =
+    "w-full px-[var(--space-4)] py-[var(--space-3)] rounded-lg bg-surface-secondary border border-border-subtle text-ink text-[length:var(--text-sm)] placeholder:text-ink-tertiary focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors";
+
+  return (
+    <section className="py-[var(--space-24)] px-[var(--space-6)]">
+      <div className="max-w-[720px] mx-auto">
+        <div className="text-center mb-[var(--space-16)]">
+          <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">
+            Generate Compliance Documents
+          </h1>
+          <p className="text-[length:var(--text-lg)] text-ink-secondary max-w-[560px] mx-auto">
+            Point us at your repo. We scan your code and generate
+            publication-ready compliance documents.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-[var(--space-8)]">
+          {/* Repository URL */}
+          <div>
+            <label
+              htmlFor="repoUrl"
+              className="block text-[length:var(--text-sm)] font-medium mb-[var(--space-2)]"
+            >
+              GitHub Repository URL
+            </label>
+            <input
+              id="repoUrl"
+              type="url"
+              required
+              placeholder="https://github.com/your-org/your-repo"
+              value={repoUrl}
+              onChange={(e) => setRepoUrl(e.target.value)}
+              className={inputClass}
+            />
+            <p className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">
+              Must be a public repository. We clone it to scan your dependencies and source code.
+            </p>
+          </div>
+
+          {/* Company Name */}
+          <div>
+            <label
+              htmlFor="companyName"
+              className="block text-[length:var(--text-sm)] font-medium mb-[var(--space-2)]"
+            >
+              Company Name{" "}
+              <span className="text-ink-tertiary font-normal">(optional)</span>
+            </label>
+            <input
+              id="companyName"
+              type="text"
+              placeholder="Acme Inc."
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              className={inputClass}
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-[length:var(--text-sm)] font-medium mb-[var(--space-2)]"
+            >
+              Contact Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              placeholder="legal@yourcompany.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={inputClass}
+            />
+            <p className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">
+              Used as the contact email in your compliance documents.
+            </p>
+          </div>
+
+          {/* Package Selection */}
+          <div>
+            <p className="text-[length:var(--text-sm)] font-medium mb-[var(--space-4)]">
+              Select a Package
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-4)]">
+              {packages.map((pkg) => (
+                <button
+                  key={pkg.id}
+                  type="button"
+                  onClick={() => setPackageType(pkg.id)}
+                  className={`relative text-left rounded-lg p-[var(--space-4)] border-2 transition-colors duration-150 ${
+                    packageType === pkg.id
+                      ? "border-brand bg-brand-muted"
+                      : "border-border-subtle bg-surface-primary hover:border-border-strong"
+                  }`}
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                >
+                  {pkg.popular && (
+                    <span className="absolute -top-3 left-[var(--space-4)] bg-brand text-surface-primary text-[length:var(--text-xs)] font-medium px-[var(--space-2)] py-0.5 rounded">
+                      Most Popular
+                    </span>
+                  )}
+                  <div className="font-display font-semibold text-[length:var(--text-lg)] mb-[var(--space-1)]">
+                    {pkg.price}
+                  </div>
+                  <div className="font-medium text-[length:var(--text-sm)] mb-[var(--space-2)]">
+                    {pkg.name}
+                  </div>
+                  <p className="text-[length:var(--text-xs)] text-ink-secondary mb-[var(--space-3)]">
+                    {pkg.description}
+                  </p>
+                  <ul className="space-y-[var(--space-1)]">
+                    {pkg.features.map((f) => (
+                      <li
+                        key={f}
+                        className="text-[length:var(--text-xs)] text-ink-secondary flex items-start gap-[var(--space-1)]"
+                      >
+                        <svg
+                          className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="rounded-lg bg-urgency-muted border border-urgency/20 p-[var(--space-4)] text-[length:var(--text-sm)] text-urgency">
+              {error}
+            </div>
+          )}
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-[var(--space-4)] rounded-lg text-[length:var(--text-base)] font-semibold transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover disabled:opacity-60 disabled:cursor-not-allowed"
+            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+          >
+            {loading ? "Redirecting to payment..." : "Generate & Pay"}
+          </button>
+
+          <p className="text-[length:var(--text-xs)] text-ink-tertiary text-center">
+            Secure payment via Stripe. Documents delivered instantly after payment.
+          </p>
+        </form>
+      </div>
+    </section>
+  );
+}
