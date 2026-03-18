@@ -65,11 +65,21 @@ const categoryConfig: Record<
 
 const releases: Release[] = [
   {
-    version: "1.1.0",
-    date: "Coming soon",
-    tag: "Upcoming",
+    version: "1.1.1",
+    date: "2026-03-17",
+    tag: "Latest",
     summary:
-      "21 new generators, 5 new scanners, shell completions, fuzzy command matching, tree-view output, --dry-run preview, and 6,711 tests across 13 ecosystems. v1.1.0 tag created — ready for npm publish.",
+      "Patch release: removed broken demo GIF from README, fixed npm package display.",
+    changes: [
+      { category: "fix", text: "Removed broken demo.gif reference from README" },
+      { category: "fix", text: "npm page now displays README correctly" },
+    ],
+  },
+  {
+    version: "1.1.0",
+    date: "2026-03-17",
+    summary:
+      "Major update: 5 new ecosystem scanners, 4 new generators, 12+ CLI features, and 6,700+ tests across 13 ecosystems.",
     changes: [
       {
         category: "new",
@@ -152,7 +162,6 @@ const releases: Release[] = [
   {
     version: "1.0.0",
     date: "2026-03-16",
-    tag: "Latest",
     summary:
       "The stable release. 123+ document types, 13 ecosystems, 200+ service signatures.",
     changes: [
