@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pricing — Free & Open Source",
+  title: "Pricing — Free CLI & Document Generation Service",
   description:
-    "Codepliant is free and open source under the MIT license. All 123+ document types, all 13 ecosystems included. Start scanning with npx codepliant go.",
+    "Codepliant CLI is free and open source. We also offer a paid document generation service: single documents from $9, full bundles from $49. All 123+ document types, 13 ecosystems.",
   alternates: {
     canonical: "https://www.codepliant.site/pricing",
   },
   openGraph: {
     title: "Pricing | Codepliant",
     description:
-      "Free forever. MIT licensed. All features included. Generate compliance documents from code.",
+      "Free CLI for scanning code. Paid generation service from $9. All 123+ compliance document types included.",
     url: "https://www.codepliant.site/pricing",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Pricing | Codepliant",
-    description: "Codepliant is free and open source. All features included.",
+    description: "Free open source CLI + paid document generation service from $9.",
     images: ["/opengraph-image"],
   },
 };
@@ -35,11 +35,33 @@ const features = [
   "No runtime dependencies",
 ];
 
+const servicePackages = [
+  {
+    name: "Single Document",
+    price: "$9",
+    description: "One compliance document as PDF",
+    features: ["Choose any document type", "Based on your actual code", "Delivered as PDF"],
+  },
+  {
+    name: "Full Bundle",
+    price: "$49",
+    description: "All 120+ documents as ZIP",
+    features: ["Every detected document type", "Full code analysis", "Delivered as ZIP archive"],
+    popular: true,
+  },
+  {
+    name: "Branded Bundle",
+    price: "$99",
+    description: "Full bundle with your company branding",
+    features: ["Everything in Full Bundle", "Your company name & logo", "Contact info embedded", "Ready to publish"],
+  },
+];
+
 const faqs = [
   {
     question: "Can I use Codepliant for free?",
     answer:
-      "Yes. Codepliant is completely free and open source under the MIT license. All features are included — there are no paid tiers or feature restrictions.",
+      "The CLI is free and open source under the MIT license. We also offer a paid document generation service where we scan your repo and deliver publication-ready documents starting at $9.",
   },
   {
     question: "What does \"codepliant diff\" do?",
@@ -70,10 +92,31 @@ function jsonLd() {
     offers: [
       {
         "@type": "Offer",
-        name: "Free",
+        name: "Free CLI",
         price: "0",
         priceCurrency: "USD",
         description: features.slice(0, 3).join(", "),
+      },
+      {
+        "@type": "Offer",
+        name: "Single Document",
+        price: "9",
+        priceCurrency: "USD",
+        description: "One compliance document as PDF",
+      },
+      {
+        "@type": "Offer",
+        name: "Full Bundle",
+        price: "49",
+        priceCurrency: "USD",
+        description: "All 120+ documents as ZIP",
+      },
+      {
+        "@type": "Offer",
+        name: "Branded Bundle",
+        price: "99",
+        priceCurrency: "USD",
+        description: "Full bundle with your company branding",
       },
     ],
   };
@@ -185,6 +228,60 @@ export default function Pricing() {
             >
               Get started on GitHub
             </a>
+          </div>
+
+          {/* Document Generation Service */}
+          <div className="mt-[var(--space-16)]">
+            <div className="text-center mb-[var(--space-8)]">
+              <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
+                Document Generation Service
+              </h2>
+              <p className="text-[length:var(--text-base)] text-ink-secondary">
+                Point us at your repo. We scan your code and deliver publication-ready compliance documents.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-4)] max-w-[720px] mx-auto">
+              {servicePackages.map((pkg) => (
+                <a
+                  key={pkg.name}
+                  href="/generate"
+                  className="relative rounded-lg p-[var(--space-6)] bg-surface-primary ring-1 ring-border-subtle hover:ring-brand transition-colors duration-150 block"
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                >
+                  {pkg.popular && (
+                    <span className="absolute -top-3 left-[var(--space-4)] bg-brand text-surface-primary text-[length:var(--text-xs)] font-medium px-[var(--space-2)] py-0.5 rounded">
+                      Most Popular
+                    </span>
+                  )}
+                  <div className="font-display text-[length:var(--text-xl)] font-bold mb-[var(--space-1)]">
+                    {pkg.price}
+                  </div>
+                  <div className="font-medium text-[length:var(--text-sm)] mb-[var(--space-2)]">
+                    {pkg.name}
+                  </div>
+                  <p className="text-[length:var(--text-xs)] text-ink-secondary mb-[var(--space-4)]">
+                    {pkg.description}
+                  </p>
+                  <ul className="space-y-[var(--space-2)] text-[length:var(--text-xs)]">
+                    {pkg.features.map((f) => (
+                      <li key={f} className="flex items-start gap-[var(--space-2)] text-ink-secondary">
+                        <svg
+                          className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          aria-hidden="true"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* CTA banner */}

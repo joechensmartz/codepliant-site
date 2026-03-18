@@ -806,6 +806,26 @@ jobs:
               </ul>
             </div>
 
+            {/* Generate service CTA */}
+            <div className="rounded-lg border border-brand/20 bg-brand/5 p-6 mt-8">
+              <p className="text-[length:var(--text-sm)] text-ink mb-[var(--space-2)] font-semibold">
+                Want us to generate your privacy policy?
+              </p>
+              <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
+                Point us at your GitHub repo and get a publication-ready privacy policy delivered as PDF. No CLI needed.
+              </p>
+              <a
+                href="/generate"
+                className="inline-flex items-center gap-[var(--space-2)] text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium transition-colors duration-150"
+                style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+              >
+                Try our automated service
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
             {/* CTA */}
             <section className="bg-surface-secondary rounded-lg p-8 text-center mt-8">
               <h2 className="text-xl font-bold mb-3 text-ink">

@@ -101,6 +101,16 @@ export default function ContactPage() {
             </p>
           </div>
 
+          <div className="rounded-lg border border-brand/20 bg-brand/5 p-[var(--space-4)] mb-[var(--space-8)] text-center">
+            <p className="text-[length:var(--text-sm)] text-ink-secondary">
+              Looking for automated document generation? Try our{" "}
+              <a href="/generate" className="text-brand hover:text-brand-hover font-medium transition-colors duration-150">
+                self-service tool
+              </a>{" "}
+              — scan your repo and get documents delivered instantly.
+            </p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-[var(--space-6)]">
             {/* Name */}
             <div>

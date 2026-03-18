@@ -4,7 +4,7 @@
 type AppRoutes = "/" | "/about" | "/ai-disclosure-generator" | "/ai-governance" | "/blog" | "/blog/colorado-ai-act" | "/blog/eu-ai-act-deadline" | "/blog/gdpr-for-developers" | "/blog/generate-privacy-policy-from-code" | "/blog/hipaa-for-developers" | "/blog/privacy-policy-for-saas" | "/blog/soc2-for-startups" | "/changelog" | "/compare" | "/contact" | "/cookie-policy-generator" | "/dashboard" | "/data-privacy" | "/docs" | "/gdpr-compliance" | "/generate" | "/generate/success" | "/hipaa-compliance" | "/login" | "/pricing" | "/privacy-policy-generator" | "/signup" | "/soc2-compliance" | "/terms-of-service-generator"
 type AppRouteHandlerRoutes = "/api/checkout" | "/api/generate"
 type PageRoutes = never
-type LayoutRoutes = "/" | "/contact"
+type LayoutRoutes = "/" | "/contact" | "/generate" | "/login" | "/signup"
 type RedirectRoutes = never
 type RewriteRoutes = never
 type Routes = AppRoutes | PageRoutes | LayoutRoutes | RedirectRoutes | RewriteRoutes | AppRouteHandlerRoutes
@@ -50,6 +50,9 @@ export type ParamsOf<Route extends Routes> = ParamMap[Route]
 interface LayoutSlotMap {
   "/": never
   "/contact": never
+  "/generate": never
+  "/login": never
+  "/signup": never
 }
 
 

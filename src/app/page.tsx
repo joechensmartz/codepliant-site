@@ -108,7 +108,7 @@ const comparisons = [
   },
   {
     before: "Miss GDPR or AI Act requirements entirely",
-    after: "97.8% detection precision across 100 repos",
+    after: "97.8% detection precision",
   },
 ];
 
@@ -168,6 +168,21 @@ export default function Home() {
               Click to select, then copy. No account or API key needed.
             </span>
           </div>
+
+          {/* Generate service link */}
+          <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-6)]">
+            or{" "}
+            <a
+              href="/generate"
+              className="text-brand hover:text-brand-hover font-medium transition-colors duration-150 inline-flex items-center gap-[var(--space-1)]"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            >
+              let us generate them for you
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </p>
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row items-start gap-[var(--space-4)]">
@@ -583,6 +598,16 @@ export default function Home() {
             <code className="bg-code-bg text-code-fg px-[var(--space-6)] py-[var(--space-3)] rounded-lg font-mono text-[length:var(--text-sm)] select-all">
               npx codepliant go
             </code>
+            <a
+              href="/generate"
+              className="inline-flex items-center gap-[var(--space-2)] border border-border-subtle hover:border-brand text-ink hover:text-brand px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            >
+              Get Documents Generated
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
             <a
               href="https://github.com/joechensmartz/codepliant"
               className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150 py-[var(--space-3)]"

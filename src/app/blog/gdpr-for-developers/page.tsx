@@ -1030,8 +1030,28 @@ Env vars:     AUTH0_SECRET, NEXTAUTH_SECRET, CLERK_SECRET_KEY`}
             </ol>
           </div>
 
+          {/* Generate service CTA */}
+          <div className="rounded-lg border border-brand/20 bg-brand/5 p-6 mt-16 mb-8">
+            <p className="text-[length:var(--text-sm)] text-ink mb-[var(--space-2)] font-semibold">
+              Need GDPR-compliant documents fast?
+            </p>
+            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
+              Point us at your GitHub repo and we will generate privacy policies, data inventories, and GDPR documentation automatically.
+            </p>
+            <a
+              href="/generate"
+              className="inline-flex items-center gap-[var(--space-2)] text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium transition-colors duration-150"
+              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            >
+              Try our document generation service
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
+
           {/* CTA */}
-          <section className="bg-surface-secondary rounded-lg p-8 text-center mt-16 mb-16">
+          <section className="bg-surface-secondary rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
               Check your GDPR compliance now
             </h2>

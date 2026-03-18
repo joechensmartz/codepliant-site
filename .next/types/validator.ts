@@ -339,10 +339,37 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../src/app/generate/layout.tsx
+{
+  type __IsExpected<Specific extends LayoutConfig<"/generate">> = Specific
+  const handler = {} as typeof import("../../src/app/generate/layout.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/layout.tsx
 {
   type __IsExpected<Specific extends LayoutConfig<"/">> = Specific
   const handler = {} as typeof import("../../src/app/layout.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/login/layout.tsx
+{
+  type __IsExpected<Specific extends LayoutConfig<"/login">> = Specific
+  const handler = {} as typeof import("../../src/app/login/layout.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/signup/layout.tsx
+{
+  type __IsExpected<Specific extends LayoutConfig<"/signup">> = Specific
+  const handler = {} as typeof import("../../src/app/signup/layout.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

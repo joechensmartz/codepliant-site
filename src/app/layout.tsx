@@ -151,6 +151,7 @@ function Footer() {
               Product
             </h3>
             <ul className="space-y-[var(--space-2)] text-ink-secondary">
+              <li><a href="/generate" className={linkClass}>Generate Docs</a></li>
               <li><a href="/docs" className={linkClass}>Documentation</a></li>
               <li><a href="/pricing" className={linkClass}>Pricing</a></li>
               <li><a href="/compare" className={linkClass}>Compare</a></li>
