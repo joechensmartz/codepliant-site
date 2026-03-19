@@ -39,8 +39,12 @@ export async function signOut() {
 }
 
 export async function getUser() {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // First try getSession (reads from localStorage, no network call)
+  // This ensures the session is restored before we check
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return null;
+
+  // Then verify with the server
+  const { data: { user } } = await supabase.auth.getUser();
   return user;
 }

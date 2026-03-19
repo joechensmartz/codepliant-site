@@ -31,13 +31,21 @@ export default function BillingPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function load() {
-      try {
-        const currentUser = await getUser();
-        if (!currentUser) {
-          router.push("/login?redirect=/dashboard/billing");
-          return;
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === "INITIAL_SESSION") {
+          if (!session) {
+            router.push("/login?redirect=/dashboard/billing");
+            return;
+          }
+          loadData(session.user);
         }
+      }
+    );
+    return () => { authSub.unsubscribe(); };
+
+    async function loadData(currentUser: User) {
+      try {
         setUser(currentUser);
 
         const { data: subData, error: subError } = await supabase
@@ -64,7 +72,6 @@ export default function BillingPage() {
         setLoading(false);
       }
     }
-    load();
   }, [router]);
 
   async function openPortal() {

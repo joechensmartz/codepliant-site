@@ -36,24 +36,25 @@ export default function SettingsPage() {
   const isGoogleUser = user?.app_metadata?.provider === "google" ||
     user?.app_metadata?.providers?.includes("google");
 
-  const loadUser = useCallback(async () => {
-    const currentUser = await getUser();
-    if (!currentUser) {
-      router.push("/login?redirect=/dashboard/settings");
-      return;
-    }
-    setUser(currentUser);
-    setDisplayName(
-      currentUser.user_metadata?.full_name ||
-        currentUser.user_metadata?.name ||
-        ""
-    );
-    setLoading(false);
-  }, [router]);
-
   useEffect(() => {
-    loadUser();
-  }, [loadUser]);
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "INITIAL_SESSION") {
+          if (!session) {
+            router.push("/login?redirect=/dashboard/settings");
+            return;
+          }
+          const u = session.user;
+          setUser(u);
+          setDisplayName(
+            u.user_metadata?.full_name || u.user_metadata?.name || ""
+          );
+          setLoading(false);
+        }
+      }
+    );
+    return () => { authSub.unsubscribe(); };
+  }, [router]);
 
   async function handleNameSave(e: React.FormEvent) {
     e.preventDefault();
