@@ -15,11 +15,13 @@ if (typeof window !== 'undefined') {
         if (h && typeof h === 'object' && !Array.isArray(h) && !(h instanceof Headers)) {
           const cleaned: Record<string, string> = {};
           for (const [k, v] of Object.entries(h)) {
-            if (typeof v === 'string' && v !== 'undefined' && v !== 'null'
-                && !v.includes('\n') && !v.includes('\r')
-                && v !== 'Bearer undefined' && v !== 'Bearer null') {
-              cleaned[k] = v;
+            if (typeof v !== 'string') continue;
+            // Only strip Authorization if it has an invalid Bearer value
+            if (k.toLowerCase() === 'authorization' &&
+                (v === 'Bearer undefined' || v === 'Bearer null' || v === 'Bearer ' || v === 'undefined')) {
+              continue;
             }
+            cleaned[k] = v;
           }
           return originalFetch(input, { ...init, headers: cleaned });
         }
