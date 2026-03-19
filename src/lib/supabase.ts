@@ -8,12 +8,19 @@ const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
 // See: https://github.com/supabase/supabase-js/issues/1590
 const safeFetch: typeof fetch = (input, init) => {
   if (init?.headers) {
-    const headers = new Headers(init.headers);
-    const auth = headers.get('Authorization');
-    if (auth === 'Bearer undefined' || auth === 'Bearer null' || auth === 'Bearer ') {
-      headers.delete('Authorization');
+    // Clean invalid header values before constructing Headers
+    const raw = init.headers as Record<string, string>;
+    const cleaned: Record<string, string> = {};
+    const entries = typeof raw.entries === 'function'
+      ? Array.from((raw as Headers).entries())
+      : Object.entries(raw);
+    for (const [key, val] of entries) {
+      if (val !== undefined && val !== null && val !== 'undefined' && val !== 'null'
+          && val !== 'Bearer undefined' && val !== 'Bearer null' && val !== 'Bearer ') {
+        cleaned[key] = String(val);
+      }
     }
-    return fetch(input, { ...init, headers });
+    return fetch(input, { ...init, headers: cleaned });
   }
   return fetch(input, init);
 };
