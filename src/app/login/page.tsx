@@ -22,7 +22,7 @@ function LoginForm() {
 
     try {
       await signIn(email, password);
-      router.push(redirectTo);
+      window.location.href = redirectTo;
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Failed to sign in"
