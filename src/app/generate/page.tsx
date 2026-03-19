@@ -11,6 +11,7 @@ const plans = [
     period: "/mo",
     description: "5 document generations per month",
     features: ["5 generations/mo", "Publication-ready PDF, DOCX, HTML", "Professional formatting", "Download as ZIP"],
+    popular: true,
   },
   {
     id: "pro",
@@ -19,7 +20,6 @@ const plans = [
     period: "/mo",
     description: "30 document generations per month",
     features: ["30 generations/mo", "Everything in Starter", "Company branding on documents", "Priority support"],
-    popular: true,
   },
 ];
 
@@ -27,7 +27,7 @@ export default function GeneratePage() {
   const [repoUrl, setRepoUrl] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
-  const [selectedPlan, setSelectedPlan] = useState("pro");
+  const [selectedPlan, setSelectedPlan] = useState("starter");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -73,17 +73,10 @@ export default function GeneratePage() {
           <h1 className="text-[length:var(--text-2xl)] font-bold tracking-tight mb-[var(--space-4)]">
             Generate Compliance Documents
           </h1>
-          <p className="text-[length:var(--text-lg)] text-ink-secondary max-w-[560px] mx-auto mb-[var(--space-4)]">
+          <p className="text-[length:var(--text-lg)] text-ink-secondary max-w-[560px] mx-auto">
             Point us at your repo. We scan your code and generate
-            publication-ready compliance documents.
+            publication-ready compliance documents in all 4 formats: MD, HTML, DOCX, and PDF.
           </p>
-          <div className="rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-3)] max-w-[560px] mx-auto">
-            <p className="text-[length:var(--text-sm)] text-ink-secondary text-center">
-              The CLI generates free Markdown documents locally via{" "}
-              <code className="font-mono text-brand">npx codepliant go</code>.
-              This service generates publication-ready PDF, DOCX, and HTML.
-            </p>
-          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-[var(--space-8)]">
@@ -242,18 +235,10 @@ export default function GeneratePage() {
           </button>
 
           <p className="text-[length:var(--text-xs)] text-ink-tertiary text-center">
-            Secure payment via Stripe. Documents delivered instantly after payment.
+            Secure payment via Stripe. Generation starts immediately after payment.
           </p>
         </form>
 
-        {/* Free CLI note */}
-        <div className="mt-[var(--space-8)] rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-4)] text-center">
-          <p className="text-[length:var(--text-sm)] text-ink-secondary">
-            The CLI is always free. Run{" "}
-            <code className="font-mono text-brand">npx codepliant go</code>{" "}
-            locally at no cost.
-          </p>
-        </div>
       </div>
     </section>
   );

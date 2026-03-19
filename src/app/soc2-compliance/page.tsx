@@ -123,7 +123,7 @@ function softwareJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant SOC 2 Compliance Tool",
-    version: "1.1.0",
+    version: "1.1.1",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:

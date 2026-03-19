@@ -76,7 +76,7 @@ const releases: Release[] = [
     ],
   },
   {
-    version: "1.1.0",
+    version: "1.1.1",
     date: "2026-03-17",
     summary:
       "Major update: 5 new ecosystem scanners, 4 new generators, 12+ CLI features, and 6,700+ tests across 13 ecosystems.",
@@ -163,11 +163,11 @@ const releases: Release[] = [
     version: "1.0.0",
     date: "2026-03-16",
     summary:
-      "The stable release. 123+ document types, 13 ecosystems, 200+ service signatures.",
+      "The stable release. 138+ document types, 13 ecosystems, 200+ service signatures.",
     changes: [
       {
         category: "new",
-        text: "Stable release with 123+ compliance document types",
+        text: "Stable release with 138+ compliance document types",
       },
       {
         category: "new",

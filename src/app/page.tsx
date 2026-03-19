@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     absolute: "Codepliant — Compliance Docs from Code",
   },
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents. One command. Try free with npx codepliant go.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 138+ compliance documents. One command. Try free with npx codepliant go.",
   alternates: { canonical: "https://www.codepliant.site" },
 };
 
@@ -14,11 +14,11 @@ function jsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant",
-    version: "1.1.0",
+    version: "1.1.1",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
-      "Open source CLI that scans your codebase and generates 123+ compliance documents automatically.",
+      "Open source CLI that scans your codebase and generates 138+ compliance documents automatically.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
     ],
@@ -47,22 +47,16 @@ const proofPoints = [
     fact: "Tested against 1,200+ real open-source projects",
     detail:
       "Every scanner and generator is validated against real-world codebases across 13 ecosystems, from single-file CLIs to monorepos with 500K+ lines of code.",
-    link: "https://github.com/joechensmartz/codepliant",
-    linkText: "View on GitHub",
   },
   {
     fact: "6,711 automated tests passing",
     detail:
       "100% scanner coverage and 95.7% generator coverage (132 of 138). The full test suite runs on every commit to prevent regressions.",
-    link: "https://github.com/joechensmartz/codepliant",
-    linkText: "See the test suite",
   },
   {
     fact: "Zero network calls — your code never leaves your machine",
     detail:
       "Codepliant has no runtime dependencies and makes no outbound requests. All scanning and generation happens locally. Verify it yourself: the source is MIT licensed.",
-    link: "https://github.com/joechensmartz/codepliant",
-    linkText: "Read the source code",
   },
 ];
 
@@ -83,7 +77,7 @@ const steps = [
   {
     num: "03",
     title: "Ship",
-    code: "123+ documents generated",
+    code: "138+ documents generated",
     detail:
       "Privacy policy, terms of service, cookie policy, AI disclosure, and more — ready to publish.",
   },
@@ -155,7 +149,7 @@ export default function Home() {
             style={{ lineHeight: 1.5 }}
           >
             One command scans your codebase and generates privacy policies, terms
-            of service, AI disclosures, and 123+ compliance documents — tailored to
+            of service, AI disclosures, and 138+ compliance documents — tailored to
             what your app actually does.
           </p>
 
@@ -169,25 +163,10 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Generate service link */}
-          <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-6)]">
-            Free CLI generates Markdown. Need PDF/DOCX?{" "}
-            <a
-              href="/generate"
-              className="text-brand hover:text-brand-hover font-medium transition-colors duration-150 inline-flex items-center gap-[var(--space-1)]"
-              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-            >
-              Use our web service
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
-          </p>
-
           {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row items-start gap-[var(--space-4)]">
+          <div className="flex flex-col items-start gap-[var(--space-4)]">
             <a
-              href="https://github.com/joechensmartz/codepliant"
+              href="/docs"
               className="inline-flex items-center gap-[var(--space-2)] bg-brand hover:bg-brand-hover text-surface-primary px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >
@@ -206,43 +185,20 @@ export default function Home() {
                 <path d="M8 3v8.5M4.5 8L8 11.5 11.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
-            <a
-              href="https://www.npmjs.com/package/codepliant"
-              className="inline-flex items-center gap-[var(--space-2)] text-brand hover:text-brand-hover px-[var(--space-2)] py-[var(--space-3)] text-[length:var(--text-sm)] font-medium transition-colors duration-150"
-              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              npm package
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
           </div>
         </div>
       </section>
 
-      {/* Trust signals */}
-      <section aria-label="Trust signals and supported ecosystems" className="py-[var(--space-12)] px-[var(--space-6)] border-y border-border-subtle">
+      {/* Stats */}
+      <section aria-label="Key statistics" className="py-[var(--space-12)] px-[var(--space-6)] border-y border-border-subtle">
         <div className="max-w-[720px] mx-auto">
-          <div className="flex flex-wrap justify-center gap-x-[var(--space-8)] gap-y-[var(--space-4)] mb-[var(--space-8)]">
-            {["Zero network calls", "MIT Licensed", "No runtime dependencies", "1,200+ repos tested"].map((label) => (
-              <div key={label} className="flex items-center gap-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="text-green-600 shrink-0">
-                  <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
-                  <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                {label}
-              </div>
-            ))}
-          </div>
           <div className="flex flex-wrap justify-center gap-x-[var(--space-12)] gap-y-[var(--space-6)]">
             <div className="text-center">
               <span className="font-display text-[length:var(--text-xl)] font-bold">97.8%</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Detection precision</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">123+</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">138+</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Document types</span>
             </div>
             <div className="text-center">
@@ -250,28 +206,30 @@ export default function Home() {
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Tests passing</span>
             </div>
             <div className="text-center">
-              <span className="font-display text-[length:var(--text-xl)] font-bold">13</span>
+              <span className="font-display text-[length:var(--text-xl)] font-bold">13+</span>
               <span className="block text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-1)]">Ecosystems</span>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Supported ecosystems */}
-          <div className="mt-[var(--space-8)]">
-            <p className="text-[length:var(--text-xs)] text-ink-tertiary uppercase tracking-widest font-medium text-center mb-[var(--space-4)]">
-              Works with your stack
-            </p>
-            <div className="flex flex-wrap justify-center gap-[var(--space-3)]">
-              {["TypeScript", "Python", "Go", "Ruby", "Rust", "Java", "PHP", ".NET", "Swift", "Kotlin", "Elixir", "Terraform", "Docker"].map(
-                (eco) => (
-                  <span
-                    key={eco}
-                    className="text-[length:var(--text-sm)] text-ink-secondary border border-border-subtle rounded-md px-[var(--space-3)] py-[var(--space-1)] bg-surface-secondary"
-                  >
-                    {eco}
-                  </span>
-                )
-              )}
-            </div>
+      {/* Supported ecosystems */}
+      <section aria-label="Supported ecosystems" className="py-[var(--space-12)] px-[var(--space-6)]">
+        <div className="max-w-[720px] mx-auto">
+          <h2 className="text-[length:var(--text-sm)] text-ink-tertiary uppercase tracking-widest font-medium text-center mb-[var(--space-4)]">
+            Works with your stack
+          </h2>
+          <div className="flex flex-wrap justify-center gap-[var(--space-3)]">
+            {["TypeScript", "Python", "Go", "Ruby", "Rust", "Java", "PHP", ".NET", "Swift", "Kotlin", "Elixir", "Terraform", "Docker"].map(
+              (eco) => (
+                <span
+                  key={eco}
+                  className="text-[length:var(--text-sm)] text-ink-secondary border border-border-subtle rounded-md px-[var(--space-3)] py-[var(--space-1)] bg-surface-secondary"
+                >
+                  {eco}
+                </span>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -398,19 +356,24 @@ export default function Home() {
               <div className="border border-border-subtle rounded-lg overflow-hidden">
                 <div className="bg-surface-secondary px-[var(--space-4)] py-[var(--space-3)] border-b border-border-subtle flex items-center gap-[var(--space-2)]">
                   <span className="inline-block w-3 h-3 rounded-full bg-brand/70" aria-hidden="true" />
-                  <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">legal/ (generated)</span>
+                  <span className="text-[length:var(--text-xs)] font-mono text-ink-tertiary">compliance-docs/ (generated)</span>
                 </div>
                 <div className="p-[var(--space-4)] bg-code-bg text-[length:var(--text-xs)] font-mono leading-relaxed text-code-fg overflow-x-auto">
-                  <pre className="whitespace-pre" role="region" aria-label="Generated document file tree" tabIndex={0}>{`legal/
-├── PRIVACY_POLICY.md
-├── TERMS_OF_SERVICE.md
-├── COOKIE_POLICY.md
-├── AI_DISCLOSURE.md
-├── SECURITY.md
-├── DATA_FLOW_MAP.md
-└── DATA_CLASSIFICATION.md
+                  <pre className="whitespace-pre" role="region" aria-label="Generated document file tree" tabIndex={0}>{`compliance-docs/
+├── legal/
+│   ├── PRIVACY_POLICY.md
+│   ├── TERMS_OF_SERVICE.md
+│   └── COOKIE_POLICY.md
+├── security/
+│   ├── SECURITY.md
+│   └── INCIDENT_RESPONSE_PLAN.md
+├── privacy/
+│   ├── DATA_FLOW_MAP.md
+│   └── DATA_CLASSIFICATION.md
+└── ai/
+    └── AI_DISCLOSURE.md
 
-7 documents generated in 1.2s`}</pre>
+9 documents generated in 1.2s`}</pre>
                 </div>
               </div>
 
@@ -540,48 +503,35 @@ export default function Home() {
                 <p className="text-[length:var(--text-sm)] font-semibold text-ink mb-[var(--space-2)]">
                   {p.fact}
                 </p>
-                <p className="text-[length:var(--text-sm)] text-ink-secondary leading-relaxed mb-[var(--space-3)]">
+                <p className="text-[length:var(--text-sm)] text-ink-secondary leading-relaxed">
                   {p.detail}
                 </p>
-                <a
-                  href={p.link}
-                  className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150"
-                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {p.linkText}
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </a>
               </div>
             ))}
           </div>
+          <a
+            href="https://github.com/joechensmartz/codepliant"
+            className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150 mt-[var(--space-6)]"
+            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Verify on GitHub
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
 
-          {/* Link to real scan results */}
+          {/* Link to generated compliance docs for real projects */}
           <div className="mt-[var(--space-8)] p-[var(--space-4)] border border-border-subtle rounded-lg bg-surface-primary">
             <p className="text-[length:var(--text-sm)] text-ink-secondary">
-              See real scan results for{" "}
-              <a href="https://github.com/calcom/cal.com" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">cal.com</a>,{" "}
-              <a href="https://github.com/chatwoot/chatwoot" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">chatwoot</a>,{" "}
-              <a href="https://github.com/twentyhq/twenty" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">twenty</a>, and 1,200+ other projects in the{" "}
-              <a href="https://github.com/joechensmartz/codepliant" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">GitHub repository</a>.
+              See generated compliance docs for{" "}
+              <a href="https://github.com/joechensmartz/codepliant/tree/main/examples/real-projects/cal-com" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">Cal.com</a>,{" "}
+              <a href="https://github.com/joechensmartz/codepliant/tree/main/examples/real-projects/chatwoot" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">Chatwoot</a>,{" "}
+              <a href="https://github.com/joechensmartz/codepliant/tree/main/examples/real-projects/twenty" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">Twenty</a>, and{" "}
+              <a href="https://github.com/joechensmartz/codepliant/tree/main/examples/real-projects" className="text-brand hover:text-brand-hover font-medium" target="_blank" rel="noopener noreferrer">7 more real projects</a>.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Free & open source badge */}
-      <section aria-label="Free and open source" className="py-[var(--space-16)] px-[var(--space-6)]" id="pricing">
-        <div className="max-w-[640px] mx-auto text-center">
-          <span className="inline-flex items-center gap-[var(--space-2)] rounded-full border border-border-subtle bg-surface-secondary px-[var(--space-4)] py-[var(--space-2)] text-[length:var(--text-sm)] text-ink-secondary font-medium">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-green-600 shrink-0" aria-hidden="true">
-              <path d="M8 1a7 7 0 100 14A7 7 0 008 1z" stroke="currentColor" strokeWidth="1.2"/>
-              <path d="M5 8.5l2 2 4-4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            Free &amp; open source — all features included, MIT licensed
-          </span>
         </div>
       </section>
 
@@ -594,24 +544,16 @@ export default function Home() {
           <p className="text-ink-secondary mb-[var(--space-8)] text-[length:var(--text-base)]">
             Start generating compliance documents from your codebase today.
           </p>
-          <div className="flex flex-col sm:flex-row items-start gap-[var(--space-4)]">
+          <div className="flex flex-col items-start gap-[var(--space-4)]">
             <code className="bg-code-bg text-code-fg px-[var(--space-6)] py-[var(--space-3)] rounded-lg font-mono text-[length:var(--text-sm)] select-all">
               npx codepliant go
             </code>
             <a
-              href="/generate"
-              className="inline-flex items-center gap-[var(--space-2)] border border-border-subtle hover:border-brand text-ink hover:text-brand px-[var(--space-6)] py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150"
-              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-            >
-              Get Documents Generated
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8.5h8.5M8 5l3.5 3.5L8 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
-            <a
               href="https://github.com/joechensmartz/codepliant"
-              className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150 py-[var(--space-3)]"
+              className="text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium inline-flex items-center gap-[var(--space-2)] transition-colors duration-150"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Star on GitHub
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">

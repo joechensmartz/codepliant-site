@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Pricing — Starter $10/mo & Pro $30/mo",
   description:
-    "Codepliant CLI is free and open source. Document generation service: Starter at $10/mo (5 generations) or Pro at $30/mo (30 generations). Each generation produces 120+ compliance documents.",
+    "Codepliant CLI is free and open source. Document generation service: Starter at $10/mo (5 generations) or Pro at $30/mo (30 generations). Each generation produces 138+ compliance documents.",
   alternates: {
     canonical: "https://www.codepliant.site/pricing",
   },
   openGraph: {
     title: "Pricing | Codepliant",
     description:
-      "Free CLI for scanning code. Document generation from $10/mo. 120+ compliance documents per generation.",
+      "Free CLI for scanning code. Document generation from $10/mo. 138+ compliance documents per generation.",
     url: "https://www.codepliant.site/pricing",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Codepliant — Compliance Documents from Your Code" }],
   },
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
 
 const cliFeatures = [
   "Unlimited generations",
-  "All 123+ document types",
-  "Markdown output",
+  "All 138+ document types",
+  "Markdown + JSON output",
   "All 13 ecosystems",
   "8 ORM scanners",
   "4 languages (EN/DE/FR/ES)",
@@ -40,11 +40,11 @@ const allPlans = [
     name: "Free CLI",
     price: "$0",
     period: "forever",
-    description: "Run locally, generate Markdown",
+    description: "Markdown + JSON output, runs locally",
     features: [
       "Unlimited generations",
-      "All 123+ document types",
-      "Markdown output",
+      "All 138+ document types",
+      "Markdown + JSON output",
       "All 13 ecosystems",
       "Open source (MIT)",
       "Zero network calls",
@@ -57,14 +57,14 @@ const allPlans = [
     name: "Starter",
     price: "$10",
     period: "/mo",
-    description: "5 PDF/DOCX/HTML generations per month",
+    description: "5 cloud generations per month",
     features: [
       "5 generations per month",
-      "Publication-ready PDF, DOCX, HTML",
-      "Professional formatting",
+      "All 4 formats (MD, HTML, DOCX, PDF)",
+      "Per-document folders with every format",
+      "Cloud-based — no local install needed",
+      "Company name & email injection",
       "Download as ZIP",
-      "Just paste your GitHub repo URL",
-      "Email support",
     ],
     popular: true,
     cta: "Start Generating",
@@ -75,9 +75,10 @@ const allPlans = [
     name: "Pro",
     price: "$30",
     period: "/mo",
-    description: "30 PDF/DOCX/HTML generations per month",
+    description: "30 cloud generations per month",
     features: [
       "30 generations per month",
+      "All 4 formats (MD, HTML, DOCX, PDF)",
       "Everything in Starter",
       "Company branding on documents",
       "Priority support",
@@ -107,17 +108,17 @@ const faqs = [
   {
     question: "Can I use Codepliant for free?",
     answer:
-      "Yes. The CLI is free and open source under the MIT license. Run npx codepliant go to generate Markdown documents locally — unlimited, forever free. The subscription plans are for our web service that generates publication-ready PDF, DOCX, and HTML documents with professional formatting.",
+      "Yes. The CLI is free and open source under the MIT license. Run npx codepliant go to generate Markdown and JSON compliance documents locally — unlimited, forever free. The paid plans add HTML, DOCX, and PDF output via our cloud service, plus company branding and priority support.",
   },
   {
     question: "What counts as one generation?",
     answer:
-      "One generation means scanning one repository and producing all applicable compliance documents. Each generation typically produces 120+ documents tailored to your codebase.",
+      "One generation means scanning one repository and producing all applicable compliance documents. Each generation typically produces 138+ documents tailored to your codebase.",
   },
   {
     question: "What output formats are included?",
     answer:
-      "The free CLI generates Markdown documents locally. The paid web service generates publication-ready PDF, DOCX, and HTML with professional formatting. All paid formats are included in both Starter and Pro plans.",
+      "The free CLI generates Markdown and JSON locally — unlimited, no account needed. HTML, DOCX, and PDF are available through the paid cloud service, which also adds company name and email injection, per-document format folders, and priority support.",
   },
   {
     question: "What does \"codepliant diff\" do?",
@@ -136,7 +137,7 @@ function jsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant",
-    version: "1.1.0",
+    version: "1.1.1",
     description: "Open-source CLI that scans codebases and generates compliance documents automatically.",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
@@ -159,7 +160,7 @@ function jsonLd() {
           priceCurrency: "USD",
           billingDuration: "P1M",
         },
-        description: "5 document generations per month, 120+ documents each",
+        description: "5 document generations per month, 138+ documents each",
       },
       {
         "@type": "Offer",
@@ -237,15 +238,7 @@ export default function Pricing() {
               Simple, transparent pricing
             </h1>
             <p className="text-[length:var(--text-lg)] text-ink-secondary">
-              Markdown is free. PDF, DOCX, and HTML are paid.
-            </p>
-          </div>
-
-          {/* Free vs Paid distinction */}
-          <div className="rounded-lg border border-brand/20 bg-brand/5 p-[var(--space-4)] text-center mb-[var(--space-12)]">
-            <p className="text-[length:var(--text-sm)] text-ink-secondary">
-              <strong className="text-ink">Free CLI</strong> generates Markdown locally, always free, unlimited.{" "}
-              <strong className="text-ink">Paid service</strong> generates publication-ready PDF, DOCX, and HTML — ready to send to lawyers, investors, and partners.
+              Free CLI generates Markdown. Paid plans add HTML, DOCX, and PDF.
             </p>
           </div>
 
@@ -317,103 +310,18 @@ export default function Pricing() {
           </div>
           </div>
 
-          {/* Example output section */}
-          <div className="rounded-lg border border-border-subtle bg-surface-secondary p-[var(--space-6)] mb-[var(--space-16)]">
-            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
-              Run{" "}
-              <code className="font-mono text-brand">npx codepliant go</code>{" "}
-              in your project directory — no account needed.
-            </p>
-            <div className="grid grid-cols-2 gap-[var(--space-2)]">
-              {cliFeatures.map((f) => (
-                <div key={f} className="flex items-start gap-[var(--space-2)] text-[length:var(--text-xs)] text-ink-secondary">
-                  <svg
-                    className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {f}
-                </div>
-              ))}
-            </div>
+          {/* Example output download */}
+          <div className="text-center mb-[var(--space-16)]">
             <a
-              href="https://github.com/joechensmartz/codepliant"
-              className="inline-block mt-[var(--space-4)] text-[length:var(--text-sm)] text-brand hover:text-brand-hover font-medium transition-colors duration-150"
+              href="/example-compliance-docs.zip"
+              download
+              className="inline-flex items-center gap-[var(--space-2)] text-brand hover:text-brand-hover text-[length:var(--text-sm)] font-medium transition-colors duration-150"
               style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
             >
-              Get started on GitHub
-            </a>
-          </div>
-
-          {/* Example Output section */}
-          <div className="mb-[var(--space-16)]">
-            <div className="text-center mb-[var(--space-8)]">
-              <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
-                See what you get
-              </h2>
-              <p className="text-[length:var(--text-base)] text-ink-secondary">
-                Each generation produces 120+ compliance documents tailored to your codebase.
-              </p>
-            </div>
-
-            <div className="rounded-lg border border-border-subtle bg-surface-primary p-[var(--space-6)]">
-              <a
-                href="/example-compliance-docs.zip"
-                download
-                className="flex items-center gap-[var(--space-3)] mb-[var(--space-6)] py-[var(--space-3)] px-[var(--space-4)] rounded-lg bg-brand text-surface-primary hover:bg-brand-hover transition-colors duration-150 text-[length:var(--text-sm)] font-medium"
-                style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-              >
-                <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Download example ZIP (generated from a real Next.js project)
-              </a>
-
-              <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
-                What&apos;s inside:
-              </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-[var(--space-2)]">
-                {exampleDocs.map((doc) => (
-                  <div key={doc} className="flex items-start gap-[var(--space-2)] text-[length:var(--text-xs)] text-ink-secondary">
-                    <svg
-                      className="w-3.5 h-3.5 mt-0.5 shrink-0 text-brand"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                      aria-hidden="true"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {doc}
-                  </div>
-                ))}
-              </div>
-              <p className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-4)]">
-                ...and 100+ more documents covering security, governance, audit, HR, and vendor management.
-              </p>
-            </div>
-          </div>
-
-          {/* CTA banner */}
-          <div className="rounded-lg border border-brand/20 bg-brand/5 p-[var(--space-6)] text-center mb-[var(--space-16)]">
-            <p className="font-display font-semibold text-[length:var(--text-base)] text-ink mb-[var(--space-2)]">
-              Need expert compliance help?
-            </p>
-            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-4)]">
-              Get a compliance review, custom package, or enterprise consultation tailored to your project.
-            </p>
-            <a
-              href="/contact"
-              className="inline-block py-[var(--space-3)] px-[var(--space-6)] rounded-lg text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover"
-              style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-            >
-              Get Compliance Help
+              <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Download example ZIP (generated from a real Next.js project)
             </a>
           </div>
 

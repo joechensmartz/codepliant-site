@@ -13,7 +13,7 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 async function supabaseFetch(path: string, options: RequestInit = {}) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+  return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...options,
     headers: {
       apikey: SUPABASE_KEY,
@@ -23,7 +23,6 @@ async function supabaseFetch(path: string, options: RequestInit = {}) {
       ...options.headers,
     },
   });
-  return res;
 }
 
 export async function POST(req: NextRequest) {
@@ -38,19 +37,13 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
     if (session.payment_status !== "paid") {
-      return NextResponse.json(
-        { error: "Payment not completed" },
-        { status: 402 }
-      );
+      return NextResponse.json({ error: "Payment not completed" }, { status: 402 });
     }
 
     const { repoUrl, companyName, email, packageType } = session.metadata || {};
 
     if (!repoUrl) {
-      return NextResponse.json(
-        { error: "Missing repo URL in session" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing repo URL in session" }, { status: 400 });
     }
 
     // Check credits
@@ -74,44 +67,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Call Lambda to generate documents
-    const lambdaResponse = await fetch(LAMBDA_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        repoUrl,
-        companyName: companyName || "",
-        email: email || "",
-        packageType: packageType || "starter",
-        stripeSessionId: session_id,
-      }),
-    });
-
-    if (!lambdaResponse.ok) {
-      const errBody = await lambdaResponse.text();
-      console.error("Lambda error:", errBody);
-      return NextResponse.json(
-        { error: "Document generation failed. Please try again." },
-        { status: 500 }
-      );
-    }
-
-    const result = await lambdaResponse.json();
-
-    // Deduct credit
-    await supabaseFetch(
-      `subscriptions?id=eq.${sub.id}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify({
-          credits_used: sub.credits_used + 1,
-          updated_at: new Date().toISOString(),
-        }),
-      }
-    );
-
-    // Save order
-    await supabaseFetch("orders", {
+    // Create order in Supabase with status "downloading"
+    const orderRes = await supabaseFetch("orders", {
       method: "POST",
       body: JSON.stringify({
         stripe_session_id: session_id,
@@ -120,17 +77,49 @@ export async function POST(req: NextRequest) {
         repo_url: repoUrl,
         package_type: packageType || "starter",
         amount_cents: packageType === "pro" ? 3000 : 1000,
-        status: "completed",
-        download_url: result.downloadUrl,
-        document_count: result.documentCount,
-        s3_key: result.s3Key || "",
-        completed_at: new Date().toISOString(),
+        status: "downloading",
+        document_count: 0,
+        s3_key: "",
+        download_url: "",
       }),
     });
 
+    const orders = await orderRes.json();
+    const order = Array.isArray(orders) ? orders[0] : orders;
+
+    if (!order?.id) {
+      return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
+    }
+
+    // Deduct credit immediately
+    await supabaseFetch(`subscriptions?id=eq.${sub.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        credits_used: sub.credits_used + 1,
+        updated_at: new Date().toISOString(),
+      }),
+    });
+
+    // Fire Lambda asynchronously — don't await response
+    fetch(LAMBDA_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        repoUrl,
+        companyName: companyName || "",
+        email: email || "",
+        packageType: packageType || "starter",
+        stripeSessionId: session_id,
+        orderId: order.id,
+      }),
+    }).catch((err) => {
+      console.error("Lambda fire-and-forget error:", err.message);
+    });
+
+    // Return immediately with order ID for polling
     return NextResponse.json({
-      downloadUrl: result.downloadUrl,
-      documentCount: result.documentCount,
+      orderId: order.id,
+      status: "downloading",
       creditsRemaining: sub.credits_total - sub.credits_used - 1,
     });
   } catch (error: unknown) {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About Codepliant — Open Source Compliance",
   description:
-    "Codepliant is an open source CLI that scans your code and generates 123+ compliance documents. No lawyers, no questionnaires, no network calls. MIT licensed.",
+    "Codepliant is an open source CLI that scans your code and generates 138+ compliance documents. No lawyers, no questionnaires, no network calls. MIT licensed.",
   alternates: {
     canonical: "https://www.codepliant.site/about",
   },
@@ -49,7 +49,7 @@ const principles = [
 const stats = [
   { value: "6,711", label: "Tests passing" },
   { value: "1,200+", label: "Repos tested" },
-  { value: "123+", label: "Document types" },
+  { value: "138+", label: "Document types" },
   { value: "13", label: "Ecosystems" },
 ];
 
@@ -196,21 +196,9 @@ export default function About() {
                 Contributions are welcome and encouraged. Whether it&apos;s new
                 scanner signatures, additional document types, ecosystem support,
                 documentation improvements, or bug reports — the project grows
-                through community involvement.
-              </p>
-            </div>
-          </section>
-
-          {/* Community */}
-          <section className="mb-[var(--space-16)]">
-            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-4)]">Community-driven</h2>
-            <div className="space-y-[var(--space-4)] text-[length:var(--text-base)] text-ink-secondary leading-relaxed">
-              <p>
-                Codepliant is maintained by a growing community of developers
-                who believe compliance should be automated, not outsourced. The
-                project welcomes contributions of all kinds — from new scanner
-                signatures and document generators to documentation and bug
-                fixes.
+                through community involvement. Codepliant is maintained by a
+                growing community of developers who believe compliance should be
+                automated, not outsourced.
               </p>
             </div>
           </section>

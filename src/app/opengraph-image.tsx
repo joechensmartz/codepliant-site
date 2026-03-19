@@ -74,7 +74,7 @@ export default function OgImage() {
 
           {/* Badges */}
           <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
-            {["123+ doc types", "Open source", "Zero network calls"].map(
+            {["138+ doc types", "Open source", "Zero network calls"].map(
               (label) => (
                 <div
                   key={label}

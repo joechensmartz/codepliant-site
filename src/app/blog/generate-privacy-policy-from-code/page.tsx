@@ -428,7 +428,7 @@ codepliant go`}
             <CodeBlock filename="Terminal output">
 {`$ npx codepliant go
 
-  Codepliant v1.1.0
+  Codepliant v1.1.1
 
   Scanning project...
 
@@ -527,7 +527,7 @@ data.
             <p>
               The generated document also includes sections for data retention,
               user rights (GDPR and CCPA), cookie disclosures, and contact
-              information placeholders. Codepliant generates 123+ document
+              information placeholders. Codepliant generates 138+ document
               types across privacy policies, terms of service, cookie policies,
               AI disclosures, EULAs, and more.
             </p>

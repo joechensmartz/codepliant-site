@@ -47,7 +47,7 @@ function techArticleJsonLd() {
     about: {
       "@type": "SoftwareApplication",
       name: "Codepliant",
-      version: "1.1.0",
+      version: "1.1.1",
       applicationCategory: "DeveloperApplication",
     },
   };
@@ -74,7 +74,7 @@ function howToJsonLd() {
     "@type": "HowTo",
     name: "How to Generate Compliance Documents from Your Codebase",
     description:
-      "Generate privacy policies, terms of service, and 123+ compliance documents from your code in under a minute.",
+      "Generate privacy policies, terms of service, and 138+ compliance documents from your code in under a minute.",
     totalTime: "PT1M",
     tool: {
       "@type": "HowToTool",
@@ -90,7 +90,7 @@ function howToJsonLd() {
       {
         "@type": "HowToStep",
         name: "Review generated documents",
-        text: "Documents appear in your project's legal/ directory, including privacy policies, terms of service, and more.",
+        text: "Documents appear in categorized directories (legal/, security/, privacy/, ai/, etc.), including privacy policies, terms of service, and more.",
         url: "https://www.codepliant.site/docs#quick-start",
       },
       {
@@ -209,7 +209,7 @@ const configFields = [
   { field: "jurisdiction", type: "string", desc: "Primary regulation: \"GDPR\", \"CCPA\", or \"UK GDPR\"." },
   { field: "jurisdictions", type: "string[]", desc: "Array of all applicable jurisdictions if you serve multiple regions." },
   { field: "outputDir", type: "string", desc: "Where to write generated documents. Default: \"legal\"." },
-  { field: "outputFormat", type: "string", desc: "Output format: markdown, html, pdf, json, notion, confluence, wiki, docx, or all." },
+  { field: "outputFormat", type: "string", desc: "Output format: markdown or json (free CLI). HTML, PDF, DOCX, Notion, Confluence, and Wiki require the paid cloud service." },
   { field: "dpoName", type: "string", desc: "Data Protection Officer name (required for GDPR)." },
   { field: "dpoEmail", type: "string", desc: "Data Protection Officer email." },
   { field: "euRepresentative", type: "string", desc: "EU representative name (required if company is outside the EU)." },
@@ -224,13 +224,12 @@ const configFields = [
 
 const outputFormats = [
   { format: "Markdown", flag: "--format markdown", desc: "Default. Clean .md files ready for GitHub, docs sites, or static generators.", free: true },
-  { format: "HTML", flag: "--format html", desc: "Styled HTML documents ready to embed on your website. Available via web service.", free: false },
-  { format: "PDF", flag: "--format pdf", desc: "Publication-ready PDFs with professional formatting. Available via web service.", free: false },
   { format: "JSON", flag: "--format json", desc: "Structured JSON output for programmatic consumption.", free: true },
-  { format: "Notion", flag: "--format notion", desc: "Notion-compatible markdown with block structure. Available via web service.", free: false },
-  { format: "Confluence", flag: "--format confluence", desc: "Confluence wiki markup. Available via web service.", free: false },
-  { format: "DOCX", flag: "--format docx", desc: "Microsoft Word documents for legal review. Available via web service.", free: false },
-  { format: "All", flag: "--format all", desc: "Generate every format at once. Paid formats require web service.", free: false },
+  { format: "HTML", flag: "--format html", desc: "Styled HTML documents ready to embed on your website. Cloud service only.", free: false },
+  { format: "PDF", flag: "--format pdf", desc: "Publication-ready PDFs with professional formatting. Cloud service only.", free: false },
+  { format: "DOCX", flag: "--format docx", desc: "Microsoft Word documents for legal review. Cloud service only.", free: false },
+  { format: "Notion", flag: "--format notion", desc: "Notion-compatible markdown with block structure. Cloud service only.", free: false },
+  { format: "Confluence", flag: "--format confluence", desc: "Confluence wiki markup. Cloud service only.", free: false },
 ];
 
 const faqs = [
@@ -256,7 +255,7 @@ const faqs = [
   },
   {
     q: "What documents can Codepliant generate?",
-    a: "Over 123 document types including Privacy Policy, Terms of Service, Cookie Policy, AI Disclosure, EU AI Act Checklist, Data Processing Agreement, SBOM, Security Policy, Data Flow Map, Data Classification, DSAR procedures, and many more.",
+    a: "Over 138 document types including Privacy Policy, Terms of Service, Cookie Policy, AI Disclosure, EU AI Act Checklist, Data Processing Agreement, SBOM, Security Policy, Data Flow Map, Data Classification, DSAR procedures, and many more.",
   },
   {
     q: "How do I keep documents up to date?",
@@ -367,7 +366,7 @@ export default function Docs() {
 ├── SECURITY.md
 ├── DATA_FLOW_MAP.md
 ├── DATA_CLASSIFICATION.md
-└── ... (123+ document types)
+└── ... (138+ document types)
 
 Generated in ~1.2s`}</pre>
               </div>
@@ -558,11 +557,13 @@ Generated in ~1.2s`}</pre>
                 <tbody>
                   {[
                     { flag: "--output, -o <dir>", desc: "Output directory (default: ./legal)" },
-                    { flag: "--format <fmt>", desc: "Output format: markdown, html, pdf, json, notion, confluence, wiki, docx, all" },
+                    { flag: "--format <fmt>", desc: "Output format: markdown, json (free CLI). html, pdf, docx, notion, confluence, wiki require paid cloud service." },
                     { flag: "--json", desc: "Output scan results as JSON (for scan command)" },
                     { flag: "--quiet, -q", desc: "Suppress banner and non-essential output" },
                     { flag: "--dry-run", desc: "Preview what would be generated without writing files to disk" },
                     { flag: "--ci", desc: "CI mode: non-interactive, deterministic output" },
+                    { flag: "--company-name <name>", desc: "Inject company name into all generated documents" },
+                    { flag: "--contact-email <email>", desc: "Inject contact email into privacy policies and legal documents" },
                   ].map((f) => (
                     <tr key={f.flag} className="border-t border-border-subtle">
                       <td className="px-[var(--space-4)] py-[var(--space-3)] font-mono text-brand text-[length:var(--text-xs)] whitespace-nowrap align-top">
@@ -585,9 +586,9 @@ Generated in ~1.2s`}</pre>
             </h2>
             <p className="text-[length:var(--text-base)] text-ink-secondary mb-[var(--space-6)]" style={{ lineHeight: 1.6 }}>
               The free CLI generates Markdown and JSON locally — unlimited, no account needed.
-              Publication-ready PDF, DOCX, and HTML are available through our{" "}
-              <a href="/generate" className="text-brand hover:text-brand-hover transition-colors duration-150">web service</a>{" "}
-              starting at $10/mo.
+              HTML, DOCX, PDF, and other rich formats are available through our{" "}
+              <a href="/generate" className="text-brand hover:text-brand-hover transition-colors duration-150">paid cloud service</a>{" "}
+              (from $10/mo), which also adds per-document format folders, company name/email injection, and priority support.
             </p>
 
             <div className="border border-border-subtle rounded-lg overflow-hidden">
@@ -604,7 +605,7 @@ Generated in ~1.2s`}</pre>
                       Description
                     </th>
                     <th className="font-medium text-ink-tertiary px-[var(--space-4)] py-[var(--space-3)] text-center">
-                      Free
+                      Availability
                     </th>
                   </tr>
                 </thead>
@@ -625,25 +626,28 @@ Generated in ~1.2s`}</pre>
                       </td>
                       <td className="px-[var(--space-4)] py-[var(--space-3)] text-center align-top">
                         {f.free ? (
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            className="inline-block text-green-600"
-                            aria-label="Included in free tier"
-                          >
-                            <path
-                              d="M3.5 8.5L6.5 11.5L12.5 5"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
+                          <span className="inline-flex items-center gap-1 text-[length:var(--text-xs)] font-medium text-green-600">
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              className="inline-block"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="M3.5 8.5L6.5 11.5L12.5 5"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                            Free
+                          </span>
                         ) : (
-                          <span className="text-[length:var(--text-xs)] text-ink-tertiary">
-                            Paid
+                          <span className="text-[length:var(--text-xs)] font-medium text-brand">
+                            Cloud
                           </span>
                         )}
                       </td>
@@ -655,12 +659,34 @@ Generated in ~1.2s`}</pre>
 
             <div className="mt-[var(--space-6)] bg-code-bg text-code-fg rounded-lg px-[var(--space-6)] py-[var(--space-4)] font-mono text-[length:var(--text-sm)]">
               <p className="text-ink-tertiary text-[length:var(--text-xs)] mb-[var(--space-2)] select-none">
-                Generate HTML and Markdown at the same time:
+                Generate Markdown (free CLI):
               </p>
               <p>
                 <span className="text-ink-tertiary select-none">$ </span>
-                codepliant go --format all
+                codepliant go --company-name &quot;Acme Inc&quot;
               </p>
+            </div>
+
+            <div className="mt-[var(--space-4)]">
+              <p className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-2)]">
+                Multi-format output structure (Cloud service)
+              </p>
+              <p className="text-[length:var(--text-xs)] text-ink-secondary mb-[var(--space-3)]">
+                The paid cloud service generates each document in all 4 formats (MD, HTML, DOCX, PDF) within per-document folders:
+              </p>
+              <div className="bg-code-bg text-code-fg rounded-lg px-[var(--space-6)] py-[var(--space-4)] font-mono text-[length:var(--text-xs)] leading-relaxed overflow-x-auto">
+                <pre className="whitespace-pre" role="region" aria-label="Multi-format output file tree" tabIndex={0}>{`legal/
+├── PRIVACY_POLICY.md
+├── PRIVACY_POLICY.html
+├── PRIVACY_POLICY.docx
+├── PRIVACY_POLICY.pdf
+security/
+├── SECURITY.md
+├── SECURITY.html
+├── SECURITY.docx
+├── SECURITY.pdf
+...`}</pre>
+              </div>
             </div>
           </section>
 
@@ -799,17 +825,12 @@ Generated in ~1.2s`}</pre>
             <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-6)]" style={{ lineHeight: 1.6 }}>
               Codepliant generates documentation for multiple compliance frameworks. Each page explains the framework requirements and how Codepliant automates documentation.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-3)]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-3)]">
               {[
                 {
                   title: "GDPR Compliance",
                   href: "/gdpr-compliance",
                   desc: "Privacy policies, DPAs, data flow maps, and 12+ GDPR documents from your code.",
-                },
-                {
-                  title: "HIPAA Compliance",
-                  href: "/hipaa-compliance",
-                  desc: "PHI detection, risk assessments, BAA templates, and audit-ready HIPAA documentation.",
                 },
                 {
                   title: "SOC 2 Compliance",
@@ -820,11 +841,6 @@ Generated in ~1.2s`}</pre>
                   title: "AI Governance",
                   href: "/ai-governance",
                   desc: "EU AI Act and NIST AI RMF aligned governance documentation for AI-powered applications.",
-                },
-                {
-                  title: "Data Privacy Hub",
-                  href: "/data-privacy",
-                  desc: "GDPR, CCPA, LGPD, PIPEDA, and DPDP Act documentation from a single scan.",
                 },
               ].map((page) => (
                 <a
@@ -838,69 +854,6 @@ Generated in ~1.2s`}</pre>
                   </h3>
                   <p className="text-[length:var(--text-xs)] text-ink-secondary">
                     {page.desc}
-                  </p>
-                </a>
-              ))}
-            </div>
-          </section>
-
-          {/* Blog guides */}
-          <section className="mb-[var(--space-16)]">
-            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-3)]">
-              Guides &amp; Tutorials
-            </h2>
-            <p className="text-[length:var(--text-sm)] text-ink-secondary mb-[var(--space-6)]" style={{ lineHeight: 1.6 }}>
-              In-depth guides covering specific compliance topics, with practical examples and code snippets.
-            </p>
-            <div className="space-y-[var(--space-3)]">
-              {[
-                {
-                  title: "Generate a Privacy Policy from Code in 30 Seconds",
-                  href: "/blog/generate-privacy-policy-from-code",
-                  desc: "Step-by-step tutorial for scanning your codebase and generating an accurate privacy policy.",
-                },
-                {
-                  title: "GDPR Compliance for Developers",
-                  href: "/blog/gdpr-for-developers",
-                  desc: "Practical guide to consent, data subject rights, DPAs, and common GDPR mistakes.",
-                },
-                {
-                  title: "How to Write a Privacy Policy for Your SaaS App",
-                  href: "/blog/privacy-policy-for-saas",
-                  desc: "GDPR Article 13, CCPA requirements, and a template you can adapt.",
-                },
-                {
-                  title: "SOC 2 for Startups: A Developer's Survival Guide",
-                  href: "/blog/soc2-for-startups",
-                  desc: "Trust Service Criteria, common mistakes, and a 30-day readiness timeline.",
-                },
-                {
-                  title: "HIPAA for SaaS Developers",
-                  href: "/blog/hipaa-for-developers",
-                  desc: "PHI identifiers, technical safeguards, BAAs, and compliance automation.",
-                },
-                {
-                  title: "EU AI Act: What Developers Need to Know",
-                  href: "/blog/eu-ai-act-deadline",
-                  desc: "Risk classifications, Article 50 transparency, and the August 2026 deadline.",
-                },
-                {
-                  title: "Colorado AI Act Compliance Guide",
-                  href: "/blog/colorado-ai-act",
-                  desc: "SB 24-205 requirements, algorithmic impact assessments, and NIST AI RMF defense.",
-                },
-              ].map((post) => (
-                <a
-                  key={post.href}
-                  href={post.href}
-                  className="block border border-border-subtle rounded-lg p-[var(--space-4)] hover:border-brand transition-colors duration-150"
-                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
-                >
-                  <h3 className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">
-                    {post.title}
-                  </h3>
-                  <p className="text-[length:var(--text-xs)] text-ink-secondary">
-                    {post.desc}
                   </p>
                 </a>
               ))}

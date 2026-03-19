@@ -197,9 +197,14 @@ export default function ContactPage() {
 
             {/* Service Type */}
             <fieldset>
-              <legend className="block text-[length:var(--text-sm)] font-medium mb-[var(--space-3)]">
+              <legend className="block text-[length:var(--text-sm)] font-medium mb-[var(--space-2)]">
                 What do you need? <span className="text-red-500" aria-hidden="true">*</span>
               </legend>
+              <p className="text-[length:var(--text-xs)] text-ink-tertiary mb-[var(--space-3)]">
+                Professional services — separate from our{" "}
+                <a href="/pricing" className="text-brand hover:text-brand-hover transition-colors duration-150">self-serve plans</a>{" "}
+                ($10/mo and $30/mo).
+              </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[var(--space-3)]">
                 {serviceTypes.map((service) => (
                   <label

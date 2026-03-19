@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | Codepliant",
   },
   description:
-    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents automatically. 97.8% precision. Open source.",
+    "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 138+ compliance documents automatically. 97.8% precision. Open source.",
   metadataBase: new URL("https://www.codepliant.site"),
   openGraph: {
     type: "website",
@@ -33,13 +33,13 @@ export const metadata: Metadata = {
     siteName: "Codepliant",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
-      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 123+ compliance documents automatically.",
+      "Scan your codebase and generate privacy policies, terms of service, AI disclosures, and 138+ compliance documents automatically.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Codepliant — Compliance Documents from Your Code",
     description:
-      "Scan your codebase and generate 123+ compliance documents. One command. 97.8% precision.",
+      "Scan your codebase and generate 138+ compliance documents. One command. 97.8% precision.",
   },
   robots: {
     index: true,
@@ -69,12 +69,8 @@ function Header() {
 
         {/* Desktop nav */}
         <div className="hidden sm:flex items-center gap-[var(--space-6)] text-[length:var(--text-sm)] text-ink-secondary">
-          <a href="/pricing" className={linkClass} style={linkStyle}>Pricing</a>
           <a href="/docs" className={linkClass} style={linkStyle}>Docs</a>
-          <a href="/changelog" className={linkClass} style={linkStyle}>Changelog</a>
-          <a href="/blog" className={linkClass} style={linkStyle}>Blog</a>
-          <a href="/about" className={linkClass} style={linkStyle}>About</a>
-          <a href="/generate" className="inline-flex items-center px-[var(--space-3)] py-1 rounded-md text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover" style={linkStyle}>Generate Docs</a>
+          <a href="/pricing" className={linkClass} style={linkStyle}>Pricing</a>
           <a
             href="https://github.com/joechensmartz/codepliant"
             className={linkClass}
@@ -85,13 +81,13 @@ function Header() {
             GitHub<span className="sr-only"> (opens in new tab)</span>
           </a>
           <AuthNav />
+          <a href="/generate" className="inline-flex items-center px-[var(--space-3)] py-1 rounded-md text-[length:var(--text-sm)] font-medium transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover" style={linkStyle}>Generate Docs</a>
         </div>
 
-        {/* Mobile nav — always-visible compact links + hamburger for secondary */}
+        {/* Mobile nav */}
         <div className="flex sm:hidden items-center gap-[var(--space-3)] text-[length:var(--text-sm)] text-ink-secondary">
           <a href="/docs" className={linkClass} style={linkStyle}>Docs</a>
           <a href="/pricing" className={linkClass} style={linkStyle}>Pricing</a>
-          {/* Hamburger menu using <details> for remaining links */}
           <details className="relative">
             <summary className="list-none cursor-pointer p-3 -m-2 hover:text-ink transition-colors duration-150 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Open navigation menu">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -99,11 +95,9 @@ function Header() {
               </svg>
             </summary>
             <div className="absolute right-0 top-full mt-2 w-48 bg-surface-primary border border-border-subtle rounded-lg shadow-lg py-[var(--space-2)] z-50" role="menu">
-              <a href="/blog" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Blog</a>
-              <a href="/changelog" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Changelog</a>
-              <a href="/about" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">About</a>
               <a href="/generate" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors font-medium text-brand">Generate Docs</a>
-              <a href="/contact" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Get Help</a>
+              <a href="/blog" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">Blog</a>
+              <a href="/about" role="menuitem" className="block px-[var(--space-4)] py-[var(--space-3)] min-h-[44px] flex items-center hover:bg-surface-secondary transition-colors">About</a>
               <a
                 href="https://github.com/joechensmartz/codepliant"
                 role="menuitem"
@@ -155,7 +149,6 @@ function Footer() {
               <li><a href="/docs" className={linkClass}>Documentation</a></li>
               <li><a href="/pricing" className={linkClass}>Pricing</a></li>
               <li><a href="/compare" className={linkClass}>Compare</a></li>
-              <li><a href="/docs" className={linkClass}>Get Started</a></li>
             </ul>
           </div>
 
@@ -215,6 +208,7 @@ function Footer() {
             </h3>
             <ul className="space-y-[var(--space-2)] text-ink-secondary">
               <li><a href="/about" className={linkClass}>About</a></li>
+              <li><a href="/feedback" className={linkClass}>Send Feedback</a></li>
               <li><a href="/contact" className={linkClass}>Get Compliance Help</a></li>
               <li>
                 <a
@@ -256,7 +250,7 @@ function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Codepliant",
-    description: "Open-source CLI that scans codebases and generates compliance documents — privacy policies, terms of service, AI disclosures, and 123+ document types.",
+    description: "Open-source CLI that scans codebases and generates compliance documents — privacy policies, terms of service, AI disclosures, and 138+ document types.",
     url: "https://www.codepliant.site",
     logo: "https://www.codepliant.site/opengraph-image",
     sameAs: [
@@ -273,15 +267,7 @@ function webSiteJsonLd() {
     name: "Codepliant",
     url: "https://www.codepliant.site",
     description:
-      "Open-source CLI that scans codebases and generates 123+ compliance documents automatically.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: "https://www.codepliant.site/docs?q={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
+      "Open-source CLI that scans codebases and generates 138+ compliance documents automatically.",
   };
 }
 

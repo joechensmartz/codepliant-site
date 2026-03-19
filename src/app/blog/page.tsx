@@ -77,9 +77,9 @@ const posts = [
   },
   {
     slug: "privacy-policy-for-saas",
-    title: "How to Generate a Privacy Policy from Your Codebase",
+    title: "Privacy Policy Requirements for SaaS Products: A Developer's Checklist",
     description:
-      "Stop guessing what your privacy policy should say. Scan your code to detect services, data flows, and third-party integrations, then generate accurate documents.",
+      "What every SaaS privacy policy must include under GDPR and CCPA. A practical checklist covering data collection disclosures, third-party services, user rights, and how to keep your policy accurate as your codebase evolves.",
     date: "March 15, 2026",
     readTime: "8 min read",
     tag: "Privacy",
@@ -174,7 +174,7 @@ export default function BlogIndex() {
             </h2>
             <p className="text-ink-secondary text-sm mb-6">
               Scan your codebase to detect services, data flows, and AI
-              integrations. Generate 123+ compliance documents automatically.
+              integrations. Generate 138+ compliance documents automatically.
             </p>
             <div className="bg-code-bg text-code-fg px-6 py-3 rounded-lg font-mono text-sm inline-block">
               npx codepliant go

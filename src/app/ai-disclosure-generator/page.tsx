@@ -103,7 +103,7 @@ function softwareJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant AI Disclosure Generator",
-    version: "1.1.0",
+    version: "1.1.1",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:

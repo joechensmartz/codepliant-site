@@ -124,7 +124,7 @@ function softwareJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant HIPAA Compliance Tool",
-    version: "1.1.0",
+    version: "1.1.1",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:

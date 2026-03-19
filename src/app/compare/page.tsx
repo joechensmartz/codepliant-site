@@ -35,7 +35,7 @@ const faqs = [
   {
     question: "Is Codepliant really free?",
     answer:
-      "The CLI is completely free and open source under the MIT license. You get all 123+ document types, all ecosystems, and all features at no cost locally. We also offer a hosted generation service starting at $10/mo for teams that want us to scan their repos and deliver publication-ready documents.",
+      "The CLI is completely free and open source under the MIT license. You get all 138+ document types in Markdown and JSON, all ecosystems, and all scanning features at no cost locally. For HTML, DOCX, and PDF output, we offer a cloud service starting at $10/mo that scans your repo and delivers publication-ready documents in all 4 formats.",
   },
   {
     question: "Why is code scanning better than form builders?",
@@ -145,7 +145,7 @@ const features: FeatureRow[] = [
   },
   {
     feature: "Total Document Types",
-    codepliant: "123+",
+    codepliant: "138+",
     termly: "~10",
     iubenda: "~10",
     vanta: "N/A (audit evidence, not docs)",
@@ -191,14 +191,14 @@ const features: FeatureRow[] = [
   },
   {
     feature: "Free Tier",
-    codepliant: "CLI: all features, unlimited Markdown",
+    codepliant: "CLI: Markdown + JSON free, all formats via cloud",
     termly: "Limited (1 policy, Termly branding)",
     iubenda: "Limited (basic policy only)",
     vanta: "No free tier",
   },
   {
     feature: "Pricing",
-    codepliant: "CLI free (Markdown) / From $10/mo (PDF, DOCX, HTML)",
+    codepliant: "Free CLI (MD + JSON) / $10/mo (MD + HTML + DOCX + PDF)",
     termly: "$14-20/mo",
     iubenda: "From $29/yr",
     vanta: "$10,000+/yr",
@@ -240,11 +240,11 @@ function softwareJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant",
-    version: "1.1.0",
+    version: "1.1.1",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:
-      "Open source compliance tool that scans your codebase and generates 123+ compliance documents including privacy policies, SOC 2 checklists, HIPAA risk assessments, and AI disclosures.",
+      "Open source compliance tool that scans your codebase and generates 138+ compliance documents including privacy policies, SOC 2 checklists, HIPAA risk assessments, and AI disclosures.",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -332,9 +332,9 @@ export default function Compare() {
               <div className="bg-brand-muted border border-brand/20 rounded-lg p-5">
                 <p className="font-semibold mb-2 text-brand">Codepliant</p>
                 <p className="text-sm text-ink-secondary">
-                  Open source CLI. Scans your code, generates 123+ compliance
-                  documents. CLI is free (Markdown output, unlimited). Web service
-                  from $10/mo for publication-ready PDF, DOCX, and HTML.
+                  Open source CLI. Scans your code, generates 138+ compliance
+                  documents. Free CLI outputs Markdown + JSON. Paid cloud
+                  service ($10/mo) adds HTML, DOCX, and PDF.
                 </p>
               </div>
               <div className="bg-surface-secondary rounded-lg p-5">
@@ -433,7 +433,7 @@ export default function Compare() {
               <div className="bg-brand-muted border border-brand/20 rounded-lg p-4 flex-1 text-center">
                 <p className="font-semibold text-brand mb-1">Codepliant</p>
                 <p className="text-ink-secondary">
-                  Free CLI (Markdown) / $10/mo (PDF/DOCX/HTML)
+                  Free CLI (MD + JSON) / $10/mo (all 4 formats)
                 </p>
                 <p className="text-ink-tertiary text-xs mt-1">
                   Scans your actual code
@@ -630,136 +630,6 @@ export default function Compare() {
             </div>
           </section>
 
-          {/* Codepliant advantages deep dive */}
-          <section className="mb-16">
-            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
-              Why developers choose Codepliant
-            </h2>
-            <div className="space-y-6 text-base text-ink-secondary leading-relaxed">
-              <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-                Accuracy from code, not memory
-              </h3>
-              <p>
-                When you fill out a form builder, you are working from memory.
-                Do you remember every analytics SDK in your package.json? Every
-                environment variable that connects to a third-party service?
-                Every database field that stores personal data? Codepliant scans
-                all of this automatically. In benchmark testing across 1,200+
-                open source repositories, Codepliant detected data practices
-                that questionnaire-based tools consistently miss.
-              </p>
-
-              <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-                123+ document types vs 10
-              </h3>
-              <p>
-                Termly generates approximately 10 document types: privacy
-                policy, terms and conditions, cookie policy, EULA, disclaimer,
-                return policy, shipping policy, acceptable use policy, and
-                impressum. Iubenda covers a similar range. Codepliant generates
-                123+ document types covering GDPR (privacy policy, DPA, DSAR
-                guide, DPIA, data flow map), SOC 2 (readiness checklist, control
-                mapping, gap analysis), HIPAA (risk assessment, BAA, PHI
-                detection report), the EU AI Act (AI disclosure, model
-                inventory, risk assessment), and many more.
-              </p>
-
-              <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-                From $10/mo vs $10,000+/year
-              </h3>
-              <p>
-                Vanta starts at $10,000/year for a single framework. Add-ons
-                like Trust Center ($6,000/year) and Vendor Risk Management
-                ($11,200/year) push costs higher. For a 5-person startup that
-                needs SOC 2 documentation, that is a significant expense.
-                Codepliant generates SOC 2 readiness checklists, control
-                mappings, and gap analyses from your codebase — free with the CLI
-                or from $10/mo with our hosted service. When you
-                are ready for a formal audit, Vanta makes sense. Until then,
-                Codepliant gives you the documentation you need.
-              </p>
-
-              <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-                Continuous compliance via CI/CD
-              </h3>
-              <p>
-                Termly and Iubenda documents are static — they reflect what you
-                entered in the form at a point in time. As your application
-                evolves, your compliance documents drift from reality.
-                Codepliant integrates into your CI/CD pipeline so documents
-                regenerate on every deployment. New analytics SDK? It appears in
-                your next privacy policy. New AI integration? Your AI disclosure
-                updates automatically.
-              </p>
-
-              <h3 className="text-xl font-bold tracking-tight text-ink pt-2">
-                Open source and self-hosted
-              </h3>
-              <p>
-                Codepliant runs entirely on your machine. Your code never leaves
-                your environment. For companies with strict data security
-                requirements — which is most companies that need SOC 2 or HIPAA
-                compliance — this is a significant advantage over cloud-based
-                tools that require you to describe your application to a
-                third-party service. The MIT license means no vendor lock-in.
-              </p>
-            </div>
-          </section>
-
-          {/* Pricing comparison */}
-          <section className="mb-16">
-            <h2 className="text-[length:var(--text-xl)] font-bold tracking-tight mb-[var(--space-6)]">
-              Pricing comparison
-            </h2>
-            <div className="space-y-4">
-              {[
-                {
-                  tool: "Codepliant",
-                  free: "CLI: all 123+ document types, all ecosystems, unlimited Markdown generation",
-                  paid: "Web service: Starter at $10/mo (5 generations) or Pro at $30/mo (30 generations). Publication-ready PDF, DOCX, and HTML with professional formatting.",
-                  highlight: true,
-                },
-                {
-                  tool: "Termly",
-                  free: "1 policy with Termly branding, basic cookie consent banner",
-                  paid: "Starter at $14/mo ($10/mo annual) for 2 policies + CMP. Pro+ at $20/mo ($15/mo annual) for all generators + unlimited CMP.",
-                  highlight: false,
-                },
-                {
-                  tool: "Iubenda",
-                  free: "Basic privacy policy with limited clauses",
-                  paid: "From $29/yr for full privacy policy, cookie solution, and consent management.",
-                  highlight: false,
-                },
-                {
-                  tool: "Vanta",
-                  free: "No free tier",
-                  paid: "Core plan from $10,000/yr (single framework). Plus $15,000-$30,000/yr. Growth $30,000+. Scale up to $80,000/yr. Requires sales call.",
-                  highlight: false,
-                },
-              ].map((item) => (
-                <div
-                  key={item.tool}
-                  className={
-                    item.highlight
-                      ? "bg-brand-muted border border-brand/20 rounded-lg p-5"
-                      : "bg-surface-secondary rounded-lg p-5"
-                  }
-                >
-                  <p className="font-semibold mb-2">{item.tool}</p>
-                  <p className="text-sm text-ink-secondary mb-1">
-                    <span className="font-medium text-ink">Free: </span>
-                    {item.free}
-                  </p>
-                  <p className="text-sm text-ink-secondary">
-                    <span className="font-medium text-ink">Paid: </span>
-                    {item.paid}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-
           {/* CTA */}
           <section className="bg-brand-muted border border-brand/20 rounded-lg p-8 text-center mb-16">
             <h2 className="text-xl font-bold mb-3">
@@ -780,24 +650,6 @@ export default function Compare() {
               >
                 Read the docs
               </Link>
-              <span className="text-ink-tertiary hidden sm:inline">|</span>
-              <a
-                href="https://github.com/joechensmartz/codepliant"
-                className="text-brand font-medium hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View on GitHub
-              </a>
-              <span className="text-ink-tertiary hidden sm:inline">|</span>
-              <a
-                href="https://www.npmjs.com/package/codepliant"
-                className="text-brand font-medium hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                npm package
-              </a>
             </div>
           </section>
 

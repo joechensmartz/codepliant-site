@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { signIn, signInWithGoogle } from "../../lib/auth";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const rawRedirect = searchParams.get("redirect") || "/dashboard";
+  const redirectTo = rawRedirect.startsWith("/") && !rawRedirect.startsWith("//") ? rawRedirect : "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,7 +22,7 @@ export default function LoginPage() {
 
     try {
       await signIn(email, password);
-      router.push("/dashboard");
+      router.push(redirectTo);
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Failed to sign in"
@@ -43,7 +47,7 @@ export default function LoginPage() {
         </div>
 
         <button
-          onClick={() => signInWithGoogle()}
+          onClick={() => signInWithGoogle(redirectTo)}
           className="w-full py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-semibold transition-colors duration-150 bg-surface-secondary border border-border-subtle text-ink hover:bg-surface-primary flex items-center justify-center gap-[var(--space-3)]"
           style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
         >
@@ -85,12 +89,20 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-[length:var(--text-sm)] font-medium mb-[var(--space-2)]"
-            >
-              Password
-            </label>
+            <div className="flex items-center justify-between mb-[var(--space-2)]">
+              <label
+                htmlFor="password"
+                className="block text-[length:var(--text-sm)] font-medium"
+              >
+                Password
+              </label>
+              <a
+                href="/forgot-password"
+                className="text-[length:var(--text-xs)] text-brand hover:text-brand-hover font-medium transition-colors duration-150"
+              >
+                Forgot password?
+              </a>
+            </div>
             <input
               id="password"
               type="password"
@@ -129,5 +141,21 @@ export default function LoginPage() {
         </p>
       </div>
     </section>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <section className="py-[var(--space-24)] px-[var(--space-6)]">
+          <div className="max-w-[400px] mx-auto text-center text-ink-secondary">
+            Loading...
+          </div>
+        </section>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }

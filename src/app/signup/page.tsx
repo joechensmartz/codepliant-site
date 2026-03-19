@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { signUp, signInWithGoogle } from "../../lib/auth";
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const rawRedirect = searchParams.get("redirect") || "/dashboard";
+  const redirectTo = rawRedirect.startsWith("/") && !rawRedirect.startsWith("//") ? rawRedirect : "/dashboard";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +23,7 @@ export default function SignupPage() {
 
     try {
       await signUp(email, password, name);
-      router.push("/dashboard");
+      router.push(redirectTo);
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Failed to create account"
@@ -44,7 +48,7 @@ export default function SignupPage() {
         </div>
 
         <button
-          onClick={() => signInWithGoogle()}
+          onClick={() => signInWithGoogle(redirectTo)}
           className="w-full py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-semibold transition-colors duration-150 bg-surface-secondary border border-border-subtle text-ink hover:bg-surface-primary flex items-center justify-center gap-[var(--space-3)]"
           style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
         >
@@ -149,5 +153,21 @@ export default function SignupPage() {
         </p>
       </div>
     </section>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <section className="py-[var(--space-24)] px-[var(--space-6)]">
+          <div className="max-w-[400px] mx-auto text-center text-ink-secondary">
+            Loading...
+          </div>
+        </section>
+      }
+    >
+      <SignupForm />
+    </Suspense>
   );
 }

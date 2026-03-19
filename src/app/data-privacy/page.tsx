@@ -246,7 +246,7 @@ const faqs = [
   {
     question: "What documents does Codepliant generate for data privacy?",
     answer:
-      "Codepliant generates privacy policies, cookie policies, data processing agreements, data flow maps, DSAR guides, data retention policies, consent documentation, AI disclosures, terms of service, and many more — over 123 document types across all supported compliance frameworks.",
+      "Codepliant generates privacy policies, cookie policies, data processing agreements, data flow maps, DSAR guides, data retention policies, consent documentation, AI disclosures, terms of service, and many more — over 138 document types across all supported compliance frameworks.",
   },
 ];
 
@@ -277,7 +277,7 @@ function softwareJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Codepliant Data Privacy Compliance Tool",
-    version: "1.1.0",
+    version: "1.1.1",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "macOS, Linux, Windows",
     description:

@@ -38,7 +38,7 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "tsx src/cli.ts",
+    "dev": "next dev",
     "test": "tsx --test src/**/*.test.ts",
     "mcp": "node dist/mcp/server.js",
     "prepublishOnly": "npm run build && npm test"
