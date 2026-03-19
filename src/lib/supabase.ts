@@ -3,36 +3,39 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
 const supabaseKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
 
-// Custom fetch that strips invalid header values (undefined/null/empty Bearer)
-// Fixes: "TypeError: Failed to execute 'fetch' on 'Window': Invalid value"
-// See: https://github.com/supabase/supabase-js/issues/1590
-const safeFetch: typeof fetch = (input, init) => {
-  if (init?.headers) {
-    // Clean invalid header values before constructing Headers
-    const raw = init.headers as Record<string, string>;
-    const cleaned: Record<string, string> = {};
-    const entries = typeof raw.entries === 'function'
-      ? Array.from((raw as Headers).entries())
-      : Object.entries(raw);
-    for (const [key, val] of entries) {
-      if (val !== undefined && val !== null && val !== 'undefined' && val !== 'null'
-          && val !== 'Bearer undefined' && val !== 'Bearer null' && val !== 'Bearer ') {
-        cleaned[key] = String(val);
+// Patch global fetch to strip invalid header values
+// Supabase SDK sends "Authorization: Bearer undefined" when no session exists
+// Ref: https://github.com/supabase/supabase-js/issues/1590
+if (typeof window !== 'undefined') {
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = (input: RequestInfo | URL, init?: RequestInit) => {
+    if (init?.headers) {
+      try {
+        const h = init.headers;
+        if (h && typeof h === 'object' && !Array.isArray(h) && !(h instanceof Headers)) {
+          const cleaned: Record<string, string> = {};
+          for (const [k, v] of Object.entries(h)) {
+            if (typeof v === 'string' && v !== 'undefined' && v !== 'null'
+                && !v.includes('\n') && !v.includes('\r')
+                && v !== 'Bearer undefined' && v !== 'Bearer null') {
+              cleaned[k] = v;
+            }
+          }
+          return originalFetch(input, { ...init, headers: cleaned });
+        }
+      } catch {
+        // fall through to original
       }
     }
-    return fetch(input, { ...init, headers: cleaned });
-  }
-  return fetch(input, init);
-};
+    return originalFetch(input, init);
+  };
+}
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
-  },
-  global: {
-    fetch: safeFetch,
   },
 });
 
