@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').replace(/\s+/g, ''), {
   apiVersion: "2025-05-28.basil" as Stripe.LatestApiVersion,
 });
 
 const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\s+/g, ''),
+  (process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').replace(/\s+/g, '')
 );
 
 export async function POST(req: NextRequest) {

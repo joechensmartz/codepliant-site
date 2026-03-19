@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').replace(/\s+/g, ''), {
   apiVersion: "2025-05-28.basil" as Stripe.LatestApiVersion,
 });
 
@@ -18,22 +18,15 @@ const PLANS: Record<string, { priceId: string; credits: number }> = {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { repoUrl, companyName, email, packageType } = body;
+    const { email, plan: planName } = await req.json();
 
-    if (!repoUrl || !email || !packageType) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+    if (!email || !planName) {
+      return NextResponse.json({ error: "Missing email or plan" }, { status: 400 });
     }
 
-    const plan = PLANS[packageType];
+    const plan = PLANS[planName];
     if (!plan) {
-      return NextResponse.json(
-        { error: "Invalid package type. Use 'starter' or 'pro'" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid plan. Use 'starter' or 'pro'" }, { status: 400 });
     }
 
     const origin = req.headers.get("origin") || "https://www.codepliant.site";
@@ -41,28 +34,19 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       customer_email: email,
-      line_items: [
-        {
-          price: plan.priceId,
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: plan.priceId, quantity: 1 }],
       mode: "subscription",
-      success_url: `${origin}/generate/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/generate`,
+      success_url: `${origin}/dashboard?subscribed=true`,
+      cancel_url: `${origin}/pricing`,
       metadata: {
-        repoUrl,
-        companyName: companyName || "",
         email,
-        packageType,
+        packageType: planName,
         credits: String(plan.credits),
       },
       subscription_data: {
         metadata: {
-          repoUrl,
-          companyName: companyName || "",
           email,
-          packageType,
+          packageType: planName,
           credits: String(plan.credits),
         },
       },

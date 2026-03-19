@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').replace(/\s+/g, ''), {
   apiVersion: "2025-05-28.basil" as Stripe.LatestApiVersion,
 });
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\s+/g, '');
+const SUPABASE_KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').replace(/\s+/g, '');
 
 async function supabaseFetch(path: string, options: RequestInit = {}) {
   return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      (process.env.STRIPE_WEBHOOK_SECRET || '').replace(/\s+/g, '')
     );
   } catch (err) {
     console.error("Webhook signature verification failed:", err);

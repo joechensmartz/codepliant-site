@@ -67,8 +67,8 @@ const allPlans = [
       "Download as ZIP",
     ],
     popular: true,
-    cta: "Start Generating",
-    ctaHref: "/generate",
+    cta: "Subscribe",
+    ctaHref: "/pricing/subscribe?plan=starter",
     ctaStyle: "solid" as const,
   },
   {
@@ -83,8 +83,8 @@ const allPlans = [
       "Company branding on documents",
       "Priority support",
     ],
-    cta: "Start Generating",
-    ctaHref: "/generate",
+    cta: "Subscribe",
+    ctaHref: "/pricing/subscribe?plan=pro",
     ctaStyle: "solid" as const,
   },
 ];
