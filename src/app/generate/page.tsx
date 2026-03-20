@@ -109,6 +109,7 @@ export default function GeneratePage() {
       if (!res.ok) throw new Error(data.error || "Generation failed");
       setOrderId(data.orderId);
       setStatus("downloading");
+      window.history.pushState({}, "", `/generate?order=${data.orderId}`);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An error occurred");
       setStatus("failed");

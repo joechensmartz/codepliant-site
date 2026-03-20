@@ -84,13 +84,22 @@ function CreditBar({
 
 const statusColors: Record<string, string> = {
   completed: "bg-brand-muted text-brand",
-  processing: "bg-urgency-muted text-urgency",
   downloading: "bg-urgency-muted text-urgency",
   scanning: "bg-urgency-muted text-urgency",
   generating: "bg-urgency-muted text-urgency",
   packaging: "bg-urgency-muted text-urgency",
   pending: "bg-surface-secondary text-ink-tertiary",
   failed: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+};
+
+const statusLabels: Record<string, string> = {
+  completed: "Completed",
+  downloading: "Processing",
+  scanning: "Processing",
+  generating: "Processing",
+  packaging: "Processing",
+  pending: "Pending",
+  failed: "Failed",
 };
 
 const packageLabels: Record<string, string> = {
@@ -329,7 +338,7 @@ export default function DashboardPage() {
                               "bg-surface-secondary text-ink-tertiary"
                             }`}
                           >
-                            {order.status}
+                            {statusLabels[order.status] || order.status}
                           </span>
                         </div>
                         <p className="text-[length:var(--text-xs)] text-ink-tertiary truncate max-w-[400px]">
