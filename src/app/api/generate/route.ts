@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const LAMBDA_URL =
-  process.env.LAMBDA_GENERATE_URL ||
-  "https://sckh2y77zmfxs5njxuancarodu0gmiwo.lambda-url.us-east-1.on.aws/";
+import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\s+/g, '');
 const SUPABASE_KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').replace(/\s+/g, '');
@@ -82,19 +79,26 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    // Fire Lambda async
-    fetch(LAMBDA_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    // Fire Lambda async (Event = fire-and-forget, returns immediately)
+    const lambda = new LambdaClient({
+      region: (process.env.AWS_REGION || "us-east-1").replace(/\s+/g, ""),
+      credentials: {
+        accessKeyId: (process.env.AWS_ACCESS_KEY_ID || "").replace(/\s+/g, ""),
+        secretAccessKey: (process.env.AWS_SECRET_ACCESS_KEY || "").replace(/\s+/g, ""),
+      },
+    });
+    lambda.send(new InvokeCommand({
+      FunctionName: "codepliant-generate",
+      InvocationType: "Event",
+      Payload: new TextEncoder().encode(JSON.stringify({
         repoUrl,
         companyName: companyName || "",
         email,
         packageType: sub.plan,
         orderId: order.id,
-      }),
-    }).catch((err) => {
-      console.error("Lambda fire-and-forget error:", err.message);
+      })),
+    })).catch((err) => {
+      console.error("Lambda invoke error:", err.message);
     });
 
     return NextResponse.json({
