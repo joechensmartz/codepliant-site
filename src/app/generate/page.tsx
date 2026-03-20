@@ -78,6 +78,28 @@ export default function GeneratePage() {
     setSubmitting(true);
 
     try {
+      // Validate GitHub URL and check if repo is public
+      const match = repoUrl.match(/github\.com\/([^/]+\/[^/]+)/);
+      if (!match) {
+        throw new Error("Please enter a valid GitHub repository URL (e.g., https://github.com/org/repo)");
+      }
+      const slug = match[1].replace(/\.git$/, "");
+      const ghRes = await fetch(`https://api.github.com/repos/${slug}`, {
+        headers: { "Accept": "application/vnd.github.v3+json" },
+      });
+      if (ghRes.status === 404) {
+        throw new Error("Repository not found. Please check the URL and make sure the repo exists.");
+      }
+      if (ghRes.status === 403) {
+        throw new Error("GitHub rate limit reached. Please wait a moment and try again.");
+      }
+      if (ghRes.ok) {
+        const ghData = await ghRes.json();
+        if (ghData.private) {
+          throw new Error("Private repositories are not supported yet. Please use a public GitHub repository.");
+        }
+      }
+
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
