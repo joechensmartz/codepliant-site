@@ -292,7 +292,7 @@ export default function BillingPage() {
                 <button
                   onClick={() => handleCheckout("pro")}
                   disabled={portalLoading}
-                  className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-brand bg-brand-muted hover:bg-brand-muted/80 transition-colors duration-150 disabled:opacity-50"
+                  className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-border-subtle hover:border-brand transition-colors duration-150 disabled:opacity-50"
                 >
                   <span className="text-[length:var(--text-lg)] font-bold mb-[var(--space-1)]">
                     $30<span className="text-[length:var(--text-sm)] font-normal text-ink-secondary">/mo</span>
