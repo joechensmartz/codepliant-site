@@ -41,31 +41,62 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
+  console.log("Webhook event received:", event.type);
+
   try {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
+        console.log("Checkout session:", {
+          mode: session.mode,
+          subscription: session.subscription,
+          email: session.customer_email,
+          metadata: session.metadata,
+        });
+
         if (session.mode === "subscription" && session.subscription) {
-          const sub = await stripe.subscriptions.retrieve(
-            session.subscription as string
-          );
+          let periodStart: string | undefined;
+          let periodEnd: string | undefined;
+
+          try {
+            const sub = await stripe.subscriptions.retrieve(
+              session.subscription as string
+            );
+            // Handle both number (unix timestamp) and string (ISO) formats
+            periodStart = typeof sub.current_period_start === "number"
+              ? new Date(sub.current_period_start * 1000).toISOString()
+              : String(sub.current_period_start);
+            periodEnd = typeof sub.current_period_end === "number"
+              ? new Date(sub.current_period_end * 1000).toISOString()
+              : String(sub.current_period_end);
+          } catch (subErr) {
+            console.error("Failed to retrieve subscription:", subErr);
+          }
+
           const plan = session.metadata?.packageType || "starter";
           const credits = plan === "pro" ? 30 : 5;
 
-          await supabaseFetch("subscriptions", {
+          const insertBody = {
+            user_email: session.customer_email || session.metadata?.email || "",
+            stripe_customer_id: session.customer as string,
+            stripe_subscription_id: session.subscription as string,
+            plan,
+            credits_total: credits,
+            credits_used: 0,
+            status: "active",
+            current_period_start: periodStart || new Date().toISOString(),
+            current_period_end: periodEnd || new Date(Date.now() + 30 * 86400000).toISOString(),
+          };
+
+          console.log("Inserting subscription:", insertBody);
+
+          const res = await supabaseFetch("subscriptions", {
             method: "POST",
-            body: JSON.stringify({
-              user_email: session.customer_email || session.metadata?.email || "",
-              stripe_customer_id: session.customer as string,
-              stripe_subscription_id: sub.id,
-              plan,
-              credits_total: credits,
-              credits_used: 0,
-              status: "active",
-              current_period_start: new Date(sub.current_period_start * 1000).toISOString(),
-              current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
-            }),
+            body: JSON.stringify(insertBody),
           });
+
+          const resText = await res.text();
+          console.log("Supabase insert response:", res.status, resText);
         }
         break;
       }
