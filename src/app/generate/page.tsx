@@ -34,6 +34,14 @@ export default function GeneratePage() {
           setUser({ email: session.user.email });
         }
         setLoading(false);
+
+        // If ?order=xxx in URL, resume tracking that order
+        const params = new URLSearchParams(window.location.search);
+        const existingOrder = params.get("order");
+        if (existingOrder) {
+          setOrderId(existingOrder);
+          setStatus("downloading"); // will be updated by polling
+        }
       }
     });
     return () => { subscription.unsubscribe(); };

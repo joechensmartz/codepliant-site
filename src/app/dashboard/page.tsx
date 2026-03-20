@@ -351,28 +351,33 @@ export default function DashboardPage() {
                             : ""}
                         </p>
                       </div>
-                      <div className="shrink-0">
+                      <div className="shrink-0 flex flex-col gap-[var(--space-2)]">
                         {canDownload && (
                           <a
                             href={order.download_url!}
-                            className="inline-flex items-center px-[var(--space-3)] py-[var(--space-2)] rounded-lg text-[length:var(--text-xs)] font-medium bg-brand text-surface-primary hover:bg-brand-hover transition-colors duration-150"
-                            style={{
-                              transitionTimingFunction:
-                                "var(--ease-out-quart)",
-                            }}
+                            className="inline-flex items-center justify-center px-[var(--space-3)] py-[var(--space-2)] rounded-lg text-[length:var(--text-xs)] font-medium bg-brand text-surface-primary hover:bg-brand-hover transition-colors duration-150"
+                            style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
                           >
                             Download
                           </a>
                         )}
                         {expired && order.status === "completed" && (
-                          <span className="inline-flex items-center px-[var(--space-3)] py-[var(--space-2)] rounded-lg text-[length:var(--text-xs)] font-medium text-ink-tertiary bg-surface-secondary">
+                          <span className="inline-flex items-center justify-center px-[var(--space-3)] py-[var(--space-2)] rounded-lg text-[length:var(--text-xs)] font-medium text-ink-tertiary bg-surface-secondary">
                             Link expired
                           </span>
+                        )}
+                        {["downloading", "scanning", "packaging"].includes(order.status) && (
+                          <a
+                            href={`/generate?order=${order.id}`}
+                            className="inline-flex items-center justify-center px-[var(--space-3)] py-[var(--space-2)] rounded-lg text-[length:var(--text-xs)] font-medium text-brand bg-brand-muted hover:bg-brand-muted/80 transition-colors duration-150"
+                          >
+                            View Progress
+                          </a>
                         )}
                         {order.status === "failed" && (
                           <a
                             href="/contact"
-                            className="inline-flex items-center px-[var(--space-3)] py-[var(--space-2)] rounded-lg text-[length:var(--text-xs)] font-medium text-urgency bg-urgency-muted hover:opacity-80 transition-opacity duration-150"
+                            className="inline-flex items-center justify-center px-[var(--space-3)] py-[var(--space-2)] rounded-lg text-[length:var(--text-xs)] font-medium text-urgency bg-urgency-muted hover:opacity-80 transition-opacity duration-150"
                           >
                             Contact Support
                           </a>

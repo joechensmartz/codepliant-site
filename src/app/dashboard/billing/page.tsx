@@ -245,20 +245,30 @@ export default function BillingPage() {
               </div>
 
               {/* Manage Button */}
-              <button
-                onClick={openPortal}
-                disabled={portalLoading}
-                className="w-full py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-semibold transition-colors duration-150 border border-border-subtle text-ink hover:bg-surface-secondary disabled:opacity-60 disabled:cursor-not-allowed"
-                style={{
-                  transitionTimingFunction: "var(--ease-out-quart)",
-                }}
-              >
-                {portalLoading
-                  ? "Opening portal..."
-                  : subscription.status === "cancelled"
-                    ? "Resubscribe"
-                    : "Manage Subscription"}
-              </button>
+              <div className="flex gap-[var(--space-3)]">
+                <button
+                  onClick={openPortal}
+                  disabled={portalLoading}
+                  className="flex-1 py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-semibold transition-colors duration-150 border border-border-subtle text-ink hover:bg-surface-secondary disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                >
+                  {portalLoading
+                    ? "Opening..."
+                    : subscription.status === "cancelled"
+                      ? "Resubscribe"
+                      : "Manage Subscription"}
+                </button>
+                {subscription.plan === "starter" && subscription.status === "active" && (
+                  <button
+                    onClick={() => handleCheckout("pro")}
+                    disabled={portalLoading}
+                    className="flex-1 py-[var(--space-3)] rounded-lg text-[length:var(--text-sm)] font-semibold transition-colors duration-150 bg-brand text-surface-primary hover:bg-brand-hover disabled:opacity-60 disabled:cursor-not-allowed"
+                    style={{ transitionTimingFunction: "var(--ease-out-quart)" }}
+                  >
+                    Upgrade to Pro — $30/mo
+                  </button>
+                )}
+              </div>
               <p className="text-[length:var(--text-xs)] text-ink-tertiary mt-[var(--space-2)] text-center">
                 Manage payment methods, view invoices, or cancel your
                 subscription through Stripe&apos;s secure portal.
