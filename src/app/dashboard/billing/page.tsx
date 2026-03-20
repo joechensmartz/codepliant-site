@@ -74,6 +74,25 @@ export default function BillingPage() {
     }
   }, [router]);
 
+  async function handleCheckout(plan: string) {
+    if (!user?.email) return;
+    setPortalLoading(true);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email, plan }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Checkout failed");
+      if (data.url) window.location.href = data.url;
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Checkout failed");
+    } finally {
+      setPortalLoading(false);
+    }
+  }
+
   async function openPortal() {
     if (!user?.email) return;
     setPortalLoading(true);
@@ -259,46 +278,28 @@ export default function BillingPage() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[var(--space-3)]">
-                <a
-                  href="/pricing/subscribe?plan=starter"
-                  className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-border-subtle hover:border-brand transition-colors duration-150"
-                  style={{
-                    transitionTimingFunction: "var(--ease-out-quart)",
-                  }}
+                <button
+                  onClick={() => handleCheckout("starter")}
+                  disabled={portalLoading}
+                  className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-border-subtle hover:border-brand transition-colors duration-150 disabled:opacity-50"
                 >
                   <span className="text-[length:var(--text-lg)] font-bold mb-[var(--space-1)]">
-                    $10
-                    <span className="text-[length:var(--text-sm)] font-normal text-ink-secondary">
-                      /mo
-                    </span>
+                    $10<span className="text-[length:var(--text-sm)] font-normal text-ink-secondary">/mo</span>
                   </span>
-                  <span className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">
-                    Starter
-                  </span>
-                  <span className="text-[length:var(--text-xs)] text-ink-tertiary">
-                    5 generations/mo
-                  </span>
-                </a>
-                <a
-                  href="/pricing/subscribe?plan=pro"
-                  className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-brand bg-brand-muted hover:bg-brand-muted/80 transition-colors duration-150"
-                  style={{
-                    transitionTimingFunction: "var(--ease-out-quart)",
-                  }}
+                  <span className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">Starter</span>
+                  <span className="text-[length:var(--text-xs)] text-ink-tertiary">5 generations/mo</span>
+                </button>
+                <button
+                  onClick={() => handleCheckout("pro")}
+                  disabled={portalLoading}
+                  className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-brand bg-brand-muted hover:bg-brand-muted/80 transition-colors duration-150 disabled:opacity-50"
                 >
                   <span className="text-[length:var(--text-lg)] font-bold mb-[var(--space-1)]">
-                    $30
-                    <span className="text-[length:var(--text-sm)] font-normal text-ink-secondary">
-                      /mo
-                    </span>
+                    $30<span className="text-[length:var(--text-sm)] font-normal text-ink-secondary">/mo</span>
                   </span>
-                  <span className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">
-                    Pro
-                  </span>
-                  <span className="text-[length:var(--text-xs)] text-ink-tertiary">
-                    30 generations/mo
-                  </span>
-                </a>
+                  <span className="text-[length:var(--text-sm)] font-semibold mb-[var(--space-1)]">Pro</span>
+                  <span className="text-[length:var(--text-xs)] text-ink-tertiary">30 generations/mo</span>
+                </button>
               </div>
             </div>
           </div>
