@@ -260,7 +260,7 @@ export default function BillingPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[var(--space-3)]">
                 <a
-                  href="/generate"
+                  href="/pricing/subscribe?plan=starter"
                   className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-border-subtle hover:border-brand transition-colors duration-150"
                   style={{
                     transitionTimingFunction: "var(--ease-out-quart)",
@@ -280,7 +280,7 @@ export default function BillingPage() {
                   </span>
                 </a>
                 <a
-                  href="/generate"
+                  href="/pricing/subscribe?plan=pro"
                   className="flex flex-col items-center p-[var(--space-4)] rounded-xl border border-brand bg-brand-muted hover:bg-brand-muted/80 transition-colors duration-150"
                   style={{
                     transitionTimingFunction: "var(--ease-out-quart)",
