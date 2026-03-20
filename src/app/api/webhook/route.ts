@@ -55,23 +55,9 @@ export async function POST(req: NextRequest) {
         });
 
         if (session.mode === "subscription" && session.subscription) {
-          let periodStart: string | undefined;
-          let periodEnd: string | undefined;
-
-          try {
-            const sub = await stripe.subscriptions.retrieve(
-              session.subscription as string
-            );
-            // Handle both number (unix timestamp) and string (ISO) formats
-            periodStart = typeof sub.current_period_start === "number"
-              ? new Date(sub.current_period_start * 1000).toISOString()
-              : String(sub.current_period_start);
-            periodEnd = typeof sub.current_period_end === "number"
-              ? new Date(sub.current_period_end * 1000).toISOString()
-              : String(sub.current_period_end);
-          } catch (subErr) {
-            console.error("Failed to retrieve subscription:", subErr);
-          }
+          const now = new Date();
+          const periodStart = now.toISOString();
+          const periodEnd = new Date(now.getTime() + 30 * 86400000).toISOString();
 
           const plan = session.metadata?.packageType || "starter";
           const credits = plan === "pro" ? 30 : 5;
